@@ -137,6 +137,7 @@ pjson = "rero_ils.dojson.cli:pretty_json_dump"
 marc21toebooks = "rero_ils.modules.ebooks.dojson.contrib.marc21:marc21"
 marc21tojson = "rero_ils.modules.documents.dojson.contrib.marc21tojson:marc21tojson"
 unimarctojson = "rero_ils.modules.documents.dojson.contrib.unimarctojson:unimarc"
+rt_000414_item_lofi = "rero_ils.modules.documents.dojson.contrib.marc21tojson.rt_000414.item_lofi:marc21"
 
 [tool.poetry.plugins."flask.commands"]
 reroils = "rero_ils.modules.cli.reroils:reroils"

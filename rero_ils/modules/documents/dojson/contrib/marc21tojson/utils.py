@@ -827,10 +827,7 @@ def do_provision_activity(data, marc21, key, value):
         marc21.bib_id, marc21.rero_id, key, value, '3')
     if subfield_3:
         notes = publication.get('note')
-        if notes:
-            notes = [notes]
-        else:
-            notes = []
+        notes = [notes] if notes else []
         notes.append(subfield_3)
         publication['note'] = ', '.join(notes)
 
@@ -845,7 +842,7 @@ def do_provision_activity(data, marc21, key, value):
         }
 
         _, link = get_field_link_data(value)
-        try:
+        with contextlib.suppress(Exception):
             alt_gr = marc21.alternate_graphic['264'][link]
             subfield = \
                 marc21.get_subfields(alt_gr['field'], code='c')
@@ -854,8 +851,6 @@ def do_provision_activity(data, marc21, key, value):
                     'language': marc21.get_language_script(
                         alt_gr['script'])
             })
-        except Exception as err:
-            pass
         publication.setdefault('statement', [])
         publication['statement'].append(date)
     # make second provision activity for 260 $ e $f $g
@@ -878,7 +873,6 @@ def do_provision_activity(data, marc21, key, value):
                 publication = None
             publications.append(publication_260)
             data['provisionActivity'] = publications
-
     return publication or None
 
 

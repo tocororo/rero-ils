@@ -251,22 +251,31 @@ def validate_documents_with_items(infile, verbose, debug):
         f'Validate documents and items from {infile.name}.',
         fg='green'
     )
+    # document schema
     schema_path = current_jsonschemas.url_to_path(
         get_schema_for_resource('doc'))
     schema = current_jsonschemas.get_schema(path=schema_path)
     doc_schema = _records_state.replace_refs(schema)
+    # item schema
     schema_path = current_jsonschemas.url_to_path(
         get_schema_for_resource('item'))
     schema = current_jsonschemas.get_schema(path=schema_path)
     item_schema = _records_state.replace_refs(schema)
+    # local field schema
+    schema_path = current_jsonschemas.url_to_path(
+        get_schema_for_resource('lofi'))
+    schema = current_jsonschemas.get_schema(path=schema_path)
+    lofi_schema = _records_state.replace_refs(schema)
     doc_pid = next(
         DocumentsSearch().filter('match_all').source('pid').scan()).pid
 
     document_errors = 0
     item_errors = 0
+    local_field_errors = 0
     for count, record in enumerate(read_json_record(infile), 1):
         pid = record.get('pid')
         items = record.pop('items', [])
+        local_fields = record.pop('local_fields', [])
         if verbose:
             click.echo(f'{count: <8} document validate {pid}')
         try:
@@ -296,11 +305,29 @@ def validate_documents_with_items(infile, verbose, debug):
                     f'Error validate in item: {count} {pid} {idx} {trace}',
                     fg='red'
                 )
+        for idx, local_field in enumerate(local_fields, 1):
+            if verbose:
+                click.echo(f'{"": <12} local_field validate {idx}')
+            try:
+                validate(local_field, lofi_schema)
+            except ValidationError:
+                local_field_errors += 1
+                if debug:
+                    trace = traceback.format_exc(1)
+                else:
+                    trace = "\n".join(traceback.format_exc(1).split('\n')[:6])
+                click.secho(
+                    'Error validate in local field: '
+                    f'{count} {pid} {idx} {trace}',
+                    fg='red'
+                )
     color = 'green'
     if document_errors or item_errors:
         color = 'red'
     click.secho(
-        f'document errors: {document_errors} item errors: {item_errors}',
+        f'document errors: {document_errors} '
+        f'item errors: {item_errors}'
+        f'local field errors: {local_field_errors}',
         fg=color
     )
 
@@ -735,17 +762,27 @@ def do_worker(marc21records, results, pid_required, debug, dojson,
             if not record.get("$schema"):
                 # create dummy schema in data
                 record["$schema"] = 'dummy'
-            if not pid_required:
-                if not record.get("pid"):
-                    # create dummy pid in data
-                    record["pid"] = 'dummy'
+            if not pid_required and not record.get("pid"):
+                # create dummy pid in data
+                record["pid"] = 'dummy'
             if schema:
+                items = record.pop('items', None)
+                local_fields = record.pop('local_fields', None)
                 validate(record, schema)
+                if items:
+                    # TODO: items validation
+                    # for item in items:
+                    #     validate(item, _records_state.replace_refs(schema))
+                    record['items'] = items
+                if local_fields:
+                    #  TODO: local fields validation
+                    # for local_field in local_fields:
+                    #     validate(local_field, True)
+                    record['local_fields'] = local_fields
             if record["$schema"] == 'dummy':
                 del record["$schema"]
-            if not pid_required:
-                if record["pid"] == 'dummy':
-                    del record["pid"]
+            if not pid_required and record["pid"] == 'dummy':
+                del record["pid"]
             results.append({
                 'status': True,
                 'record': record
