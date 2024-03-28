@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -25,18 +25,33 @@ from flask_principal import RoleNeed
 from flask_security import login_required, roles_required
 from invenio_access.permissions import Permission
 
+from rero_ils.modules.users.models import UserRole
+
 from .modules.patrons.api import current_librarian, current_patrons
 
-request_item_permission = Permission(RoleNeed('patron'))
+request_item_permission = Permission(RoleNeed(UserRole.PATRON))
 librarian_permission = Permission(
-    RoleNeed('librarian'), RoleNeed('system_librarian'))
+    RoleNeed(UserRole.PROFESSIONAL_READ_ONLY),
+    RoleNeed(UserRole.CATALOG_MANAGER),
+    RoleNeed(UserRole.CIRCULATION_MANAGER),
+    RoleNeed(UserRole.USER_MANAGER),
+    RoleNeed(UserRole.STATISTICS_MANAGER),
+    RoleNeed(UserRole.LIBRARY_ADMINISTRATOR),
+    RoleNeed(UserRole.ACQUISITION_MANAGER),
+    RoleNeed(UserRole.FULL_PERMISSIONS)
+)
 admin_permission = Permission(RoleNeed('admin'))
 editor_permission = Permission(RoleNeed('editor'), RoleNeed('admin'))
 monitoring_permission = Permission(RoleNeed('monitoring'))
 
 
+def admin_permission_factory(record, *args, **kwargs):
+    """User has admin role."""
+    return admin_permission
+
+
 def librarian_permission_factory(record, *args, **kwargs):
-    """User has editor role."""
+    """User has librarian role."""
     return librarian_permission
 
 
@@ -88,10 +103,9 @@ def can_access_professional_view(func):
     def decorated_view(*args, **kwargs):
         if not current_user.is_authenticated:
             return current_app.login_manager.unauthorized()
-        else:
-            if not current_librarian:
-                abort(403)
-            return func(*args, **kwargs)
+        if not current_librarian:
+            abort(403)
+        return func(*args, **kwargs)
     return decorated_view
 
 
@@ -99,7 +113,7 @@ def check_user_is_authenticated(redirect_to=None, code=302):
     """Check if user is authenticated.
 
     If user isn't authenticated :
-      - either it is redirect to a page if 'redirect_to' is defined.
+      - either it is redirected to a page if 'redirect_to' is defined.
       - either request is aborted (HTTP 403).
     :param redirect_to: the URL to redirect the user if it's not authenticated.
     :param code: the HTTP code to use for redirect (default=302)
@@ -147,7 +161,7 @@ def can_receive_regular_issue(holding):
     if not current_librarian:
         return False
     if current_librarian.organisation_pid == holding.organisation_pid:
-        if current_librarian.is_system_librarian:
+        if current_librarian.has_full_permissions:
             return True
         if holding.library_pid not in current_librarian.library_pids:
             return False

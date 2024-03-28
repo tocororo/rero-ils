@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
-# Copyright (C) 2020 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -23,7 +23,7 @@ from __future__ import absolute_import, print_function
 from functools import partial
 
 from elasticsearch_dsl import Q
-from flask_babelex import gettext as _
+from flask_babel import gettext as _
 
 from .models import PatronTypeIdentifier, PatronTypeMetadata
 from ..api import IlsRecord, IlsRecordsIndexer, IlsRecordsSearch
@@ -63,6 +63,15 @@ class PatronTypesSearch(IlsRecordsSearch):
         facets = {}
 
         default_filter = None
+
+    def by_organisation_pid(self, organisation_pid):
+        """Build a search to get hits related to an organisation pid.
+
+        :param organisation_pid: string - the organisation pid to filter with
+        :returns: An ElasticSearch query to get hits related the entity.
+        :rtype: `elasticsearch_dsl.Search`
+        """
+        return self.filter('term', organisation__pid=organisation_pid)
 
 
 class PatronType(IlsRecord):

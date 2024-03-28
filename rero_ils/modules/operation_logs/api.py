@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -31,7 +31,7 @@ from ..fetchers import FetchedPID
 
 
 class OperationLogsSearch(IlsRecordsSearch):
-    """RecordsSearch for Notifications."""
+    """RecordsSearch for OperationLogs."""
 
     class Meta:
         """Search only on Notifications index."""
@@ -42,6 +42,31 @@ class OperationLogsSearch(IlsRecordsSearch):
         facets = {}
 
         default_filter = None
+
+    def get_logs_by_notification_pid(self, notif_pid):
+        """Get operation logs records by notification pid.
+
+        :param notif_pid: The notification pid.
+        :returns a generator of ElasticSearch hit.
+        :rtype generator<dict>.
+        """
+        query = self.filter('term', notification__pid=notif_pid)
+        for hit in query.scan():
+            yield hit.to_dict()
+
+    def get_logs_by_record_pid(self, pid):
+        """Get all logs for a given record PID.
+
+        :param str pid: record PID.
+        :returns: List of logs.
+        """
+        return list(
+            self.filter(
+                'bool', must={
+                    'exists': {
+                        'field': 'loan'
+                    }
+                }).filter('term', record__value=pid).scan())
 
 
 def operation_log_id_fetcher(record_uuid, data):

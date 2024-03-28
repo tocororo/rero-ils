@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2022 RERO
-# Copyright (C) 2022 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -21,7 +21,7 @@
 from __future__ import absolute_import, print_function
 
 from rero_ils.filter import format_date_filter
-from rero_ils.modules.documents.dumpers import DocumentGenericDumper
+from rero_ils.modules.documents.dumpers import document_title_dumper
 from rero_ils.modules.items.dumpers import ItemNotificationDumper
 from rero_ils.modules.loans.models import LoanState
 from rero_ils.modules.locations.api import Location
@@ -47,7 +47,7 @@ class AtDeskCirculationNotification(InternalCirculationNotification):
     """
 
     def can_be_cancelled(self):
-        """Check if a notification can be canceled.
+        """Check if a notification can be cancelled.
 
         An AT_DESK notification can be sent only if a request is done on the
         related item and this request is now in state ITEM_AT_DESK.
@@ -98,7 +98,6 @@ class AtDeskCirculationNotification(InternalCirculationNotification):
             return context
 
         context['loans'] = []
-        doc_dumper = DocumentGenericDumper()
         item_dumper = ItemNotificationDumper()
         patron_dumper = PatronNotificationDumper()
         for notification in notifications:
@@ -113,7 +112,8 @@ class AtDeskCirculationNotification(InternalCirculationNotification):
             )
             # merge doc and item metadata preserving document key
             item_data = notification.item.dumps(dumper=item_dumper)
-            doc_data = notification.document.dumps(dumper=doc_dumper)
+            doc_data = notification.document.dumps(
+                dumper=document_title_dumper)
             doc_data = {**item_data, **doc_data}
             # pickup location name --> !! pickup is on notif.request_loan, not
             # on notif.loan

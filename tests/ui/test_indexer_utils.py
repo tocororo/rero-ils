@@ -18,9 +18,38 @@
 """API tests for indexer utilities."""
 import pytest
 from elasticsearch import NotFoundError
+from mock import mock
+from utils import flush_index
 
 from rero_ils.modules.documents.api import DocumentsSearch
 from rero_ils.modules.indexer_utils import record_to_index
+from rero_ils.modules.libraries.api import LibrariesIndexer, LibrariesSearch
+
+
+def test_record_indexing(app, lib_martigny):
+    """Test record indexing process."""
+
+    # TEST#1 :: Test indexing without $ref replacement
+    app.config['INDEXER_REPLACE_REFS'] = False
+    lib_martigny.reindex()
+    flush_index(LibrariesSearch.Meta.index)
+    record = LibrariesSearch().get_record_by_pid(lib_martigny.pid)
+    assert '$ref' in record.organisation.to_dict()
+
+    # TEST#2 :: Raise exception during indexing process
+    with mock.patch(
+        'rero_ils.modules.api.IlsRecordsIndexer._index_action',
+        side_effect=Exception('Test!')
+    ):
+        indexer = LibrariesIndexer()
+        indexer.bulk_index([lib_martigny.id])
+        res = indexer.process_bulk_queue()
+        assert res[1] == (0, 0)
+
+    # RESET INDEX
+    app.config['INDEXER_REPLACE_REFS'] = True
+    lib_martigny.reindex()
+    flush_index(LibrariesSearch.Meta.index)
 
 
 def test_record_to_index(app):
@@ -30,23 +59,23 @@ def test_record_to_index(app):
     assert record_to_index({
         '$schema': 'https://bib.rero.ch/schemas/'
         'documents/document-v0.0.1.json'
-    }) == ('documents-document-v0.0.1', '_doc')
+    }) == 'documents-document-v0.0.1'
     assert record_to_index({
         '$schema': 'https://bib.rero.ch/schemas/'
         'documents/document-v0.0.1.json'
-    }) == ('documents-document-v0.0.1', '_doc')
+    }) == 'documents-document-v0.0.1'
 
     # for mef-mef-contributions
     assert record_to_index({
         '$schema': 'https://mef.rero.ch/schemas/'
         'mef/mef-contribution-v0.0.1.json'
-    }) == ('contributions-contribution-v0.0.1', '_doc')
+    }) == 'remote_entities-remote_entity-v0.0.1'
 
     # for others
     assert record_to_index({
         '$schema': 'https://bib.rero.ch/schemas/'
         'organisations/organisation-v0.0.1.json'
-    }) == ('organisations-organisation-v0.0.1', '_doc')
+    }) == 'organisations-organisation-v0.0.1'
 
 
 def test_get_resource_from_ES(document):

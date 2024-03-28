@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
-# Copyright (C) 2021 UCLOUVAIN
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLOUVAIN
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -23,8 +23,8 @@ from dojson import utils
 from flask import current_app
 
 from rero_ils.dojson.utils import ReroIlsMarc21Overdo, build_identifier, \
-    build_string_from_subfields, get_contribution_link, \
-    remove_trailing_punctuation
+    build_string_from_subfields, get_mef_link, remove_trailing_punctuation
+from rero_ils.modules.entities.models import EntityType
 
 from ..utils import do_abbreviated_title, \
     do_acquisition_terms_from_field_037, do_classification, do_contribution, \
@@ -39,7 +39,7 @@ from ..utils import do_abbreviated_title, \
     do_specific_document_relation, do_summary, do_table_of_contents, \
     do_temporal_coverage, do_title, do_type, \
     do_usage_and_access_policy_from_field_506_540, do_work_access_point, \
-    do_work_access_point_240
+    do_work_access_point_240, perform_subdivisions
 
 marc21 = ReroIlsMarc21Overdo()
 
@@ -319,49 +319,19 @@ def marc21_to_subjects_6XX(self, key, value):
         subjects :  for 6xx with $2 rero
         subjects_imported : for 6xx having indicator 2 '0' or '2'
     """
-
-    def perform_subdivisions(field):
-        """Perform subject subdivisions from MARC field."""
-        subdivisions = {
-            'v': 'genreForm_subdivisions',
-            'x': 'topic_subdivisions',
-            'y': 'temporal_subdivisions',
-            'z': 'place_subdivisions'
-        }
-        for code, subdivision in subdivisions.items():
-            for subfield_value in utils.force_list(value.get(code, [])):
-                field.setdefault(subdivision, []).append(subfield_value)
-
     type_per_tag = {
-        '600': 'bf:Person',
-        '610': 'bf:Organisation',
-        '611': 'bf:Organisation',
-        '600t': 'bf:Work',
-        '610t': 'bf:Work',
-        '611t': 'bf:Work',
-        '630': 'bf:Work',
-        '650': 'bf:Topic',  # or bf:Temporal, changed by code
-        '651': 'bf:Place',
-        '655': 'bf:Topic'
+        '600': EntityType.PERSON,
+        '610': EntityType.ORGANISATION,
+        '611': EntityType.ORGANISATION,
+        '600t': EntityType.WORK,
+        '610t': EntityType.WORK,
+        '611t': EntityType.WORK,
+        '630': EntityType.WORK,
+        '650': EntityType.TOPIC,  # or bf:Temporal, changed by code
+        '651': EntityType.PLACE,
+        '655': EntityType.TOPIC
     }
 
-    field_data_per_tag = {
-        '600': 'preferred_name',
-        '610': 'preferred_name',
-        '611': 'preferred_name',
-        '600t': 'title',
-        '610t': 'title',
-        '611t': 'title',
-        '630': 'title',
-        '650': 'term',
-        '651': 'preferred_name',
-        '655': 'term'
-    }
-
-    conference_per_tag = {
-        '610': False,
-        '611': True
-    }
     source_per_indicator_2 = {
         '0': 'LCSH',
         '2': 'MeSH'
@@ -379,7 +349,7 @@ def marc21_to_subjects_6XX(self, key, value):
             'subjects_imported'
         )
 
-    if subfield_2 == 'rero':
+    if subfield_2 in ['rero', 'gnd', 'idref']:
         if tag_key in ['600', '610', '611'] and value.get('t'):
             tag_key += 't'
         data_type = type_per_tag[tag_key]
@@ -388,7 +358,7 @@ def marc21_to_subjects_6XX(self, key, value):
         if tag_key == '650':
             for subfield_a in subfields_a:
                 if subfield_a[0].isdigit():
-                    data_type = 'bf:Temporal'
+                    data_type = EntityType.TEMPORAL
                     break
 
         subject = {
@@ -413,43 +383,45 @@ def marc21_to_subjects_6XX(self, key, value):
         if tag_key == '655':
             # remove the square brackets
             string_build = re.sub(r'^\[(.*)\]$', r'\1', string_build)
-        subject[field_data_per_tag[tag_key]] = string_build
+        subject['authorized_access_point'] = string_build
 
-        if tag_key in ['610', '611']:
-            subject['conference'] = conference_per_tag[tag_key]
-        elif tag_key in ['600t', '610t', '611t']:
+        conference_per_tag = {
+            '610': False,
+            '611': True
+        }
+        # if tag_key in ['610', '611']:
+        #     subject['conference'] = conference_per_tag[tag_key]
+        # elif tag_key in ['600t', '610t', '611t']:
+        if tag_key in ['600t', '610t', '611t']:
             creator_tag_key = tag_key[:3]  # to keep only tag:  600, 610, 611
-            subject['creator'] = remove_trailing_punctuation(
+            creator = remove_trailing_punctuation(
                 build_string_from_subfields(
                     value, subfield_code_per_tag[creator_tag_key]), '.', '.')
+            if creator:
+                subject['authorized_access_point'] = \
+                    f'{creator}. {subject["authorized_access_point"]}'
         field_key = 'genreForm' if tag_key == '655' else config_field_key
-        subfields_0 = utils.force_list(value.get('0'))
-        if data_type in ['bf:Person', 'bf:Organisation'] and subfields_0:
-            ref = get_contribution_link(marc21.bib_id, marc21.rero_id,
-                                        subfields_0[0], key)
-            if ref:
-                subject = {
-                    '$ref': ref,
-                    'type': data_type,
-                }
-        if not subject.get('$ref'):
-            identifier = build_identifier(value)
-            if identifier:
+        if field_key != 'subjects_imported' and (ref := get_mef_link(
+            bibid=marc21.bib_id,
+            reroid=marc21.rero_id,
+            entity_type=data_type,
+            ids=utils.force_list(value.get('0')),
+            key=key
+        )):
+            subject = {
+                '$ref': ref
+            }
+        else:
+            if identifier := build_identifier(value):
+                sub_2 = next(iter(utils.force_list(value.get('2') or [])), '')
+                if data_type == EntityType.TOPIC and sub_2.lower() == 'rero':
+                    identifier['type'] = 'RERO'
                 subject['identifiedBy'] = identifier
-            subfields_2 = utils.force_list(value.get('2'))
+            if field_key != 'genreForm':
+                perform_subdivisions(subject, value)
 
-            if identifier \
-                    and data_type == 'bf:Topic' \
-                    and len(subfields_2) > 0 \
-                    and subfields_2[0].lower() == 'rero':
-                identifier['type'] = 'RERO-RAMEAU'
-            if identifier:
-                subject['identifiedBy'] = identifier
-
-            perform_subdivisions(subject)
-
-        if subject.get('$ref') or subject.get(field_data_per_tag[tag_key]):
-            self.setdefault(field_key, []).append(subject)
+        if subject.get('$ref') or subject.get('authorized_access_point'):
+            self.setdefault(field_key, []).append(dict(entity=subject))
 
     elif subfield_2 == 'rerovoc' or indicator_2 in ['0', '2']:
         term_string = build_string_from_subfields(
@@ -460,14 +432,12 @@ def marc21_to_subjects_6XX(self, key, value):
             data = {
                 'type': type_per_tag[tag_key],
                 'source': source,
-                field_data_per_tag[tag_key]: term_string
+                'authorized_access_point': term_string
             }
-            perform_subdivisions(data)
+            perform_subdivisions(data, value)
 
-            if tag_key in ['610', '611']:
-                data['conference'] = conference_per_tag[tag_key]
             if data:
-                self.setdefault(config_field_key, []).append(data)
+                self.setdefault(config_field_key, []).append(dict(entity=data))
 
 
 @marc21.over('sequence_numbering', '^362..')

@@ -1,0 +1,1097 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Statistics configuration",
+  "additionalProperties": false,
+  "propertiesOrder": [
+    "name",
+    "description",
+    "is_active",
+    "frequency",
+    "filter_by_libraries",
+    "category"
+  ],
+  "required": [
+    "$schema",
+    "pid",
+    "name",
+    "frequency",
+    "is_active",
+    "library",
+    "category"
+  ],
+  "properties": {
+    "$schema": {
+      "title": "Schema",
+      "description": "Schema to validate statistics configuration records against.",
+      "type": "string",
+      "minLength": 9,
+      "default": "https://bib.rero.ch/schemas/stats_cfg/stat_cfg-v0.0.1.json"
+    },
+    "pid": {
+      "title": "Configuration ID",
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "title": "Name",
+      "description": "Name of the configuration.",
+      "type": "string",
+      "minLength": 1,
+      "widget": {
+        "formlyConfig": {
+          "focus": true
+        }
+      }
+    },
+    "description": {
+      "title": "Description",
+      "description": "Description of the configuration.",
+      "type": "string",
+      "minLength": 1,
+      "widget": {
+        "formlyConfig": {
+          "type": "textarea",
+          "props": {
+            "rows": 3
+          }
+        }
+      }
+    },
+    "frequency": {
+      "title": "Frequency",
+      "description": "Frequency at which the statistics reports are created.",
+      "type": "string",
+      "default": "month",
+      "enum": [
+        "month",
+        "year"
+      ],
+      "widget": {
+        "formlyConfig": {
+          "props": {
+            "options": [
+              {
+                "value": "month",
+                "label": "monthly"
+              },
+              {
+                "value": "year",
+                "label": "yearly"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "is_active": {
+      "title": "Active",
+      "description": "Is the configuration active?",
+      "type": "boolean",
+      "default": true
+    },
+    "filter_by_libraries": {
+      "title": "Filter numbers by libraries",
+      "description": "If disabled, stats are calculated for the whole organisation. If enabled, calculate stats only for the resources belonging to the selected libraries.",
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 0,
+      "items": {
+        "title": "Library",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "$ref"
+        ],
+        "properties": {
+          "$ref": {
+            "type": "string",
+            "pattern": "^https://bib.rero.ch/api/libraries/.*?$",
+            "widget": {
+              "formlyConfig": {
+                "props": {
+                  "fieldMap": "libraries"
+                }
+              }
+            }
+          }
+        }
+      },
+      "widget": {
+        "formlyConfig": {
+          "expressions": {
+            "hide": "field?.parent?.model?.category?.indicator?.type == 'number_of_patrons'"
+          }
+        }
+      }
+    },
+    "library": {
+      "title": "Library",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "$ref"
+      ],
+      "properties": {
+        "$ref": {
+          "title": "Library URI",
+          "type": "string",
+          "pattern": "^https://bib.rero.ch/api/libraries/.*?$"
+        }
+      }
+    },
+    "category": {
+      "title": "Category",
+      "description": "Category of the configuration.",
+      "type": "object",
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "propertiesOrder": [
+            "type",
+            "indicator"
+          ],
+          "required": [
+            "type",
+            "indicator"
+          ],
+          "title": "Catalog",
+          "properties": {
+            "type": {
+              "title": "Type",
+              "type": "string",
+              "const": "catalog",
+              "default": "catalog",
+              "widget": {
+                "formlyConfig": {
+                  "wrappers": [
+                    "hide"
+                  ]
+                }
+              }
+            },
+            "indicator": {
+              "title": "Indicator",
+              "type": "object",
+              "oneOf": [
+                {
+                  "additionalProperties": false,
+                  "propertiesOrder": [
+                    "type",
+                    "distributions"
+                  ],
+                  "required": [
+                    "type"
+                  ],
+                  "title": "Number of documents",
+                  "properties": {
+                    "type": {
+                      "title": "Type",
+                      "type": "string",
+                      "const": "number_of_documents",
+                      "default": "number_of_documents",
+                      "widget": {
+                        "formlyConfig": {
+                          "wrappers": [
+                            "hide"
+                          ]
+                        }
+                      }
+                    },
+                    "distributions": {
+                      "allOf": [
+                        {
+                          "$ref": "#/definitions/distributions"
+                        },
+                        {
+                          "items": {
+                            "additionalProperties": false,
+                            "title": "distributions",
+                            "type": "string",
+                            "enum": [
+                              "created_month",
+                              "created_year",
+                              "owning_library",
+                              "imported"
+                            ]
+                          },
+                          "widget": {
+                            "formlyConfig": {
+                              "type": "selectWithSort",
+                              "props": {
+                                "sort": false,
+                                "options": [
+                                  {
+                                    "value": "created_month",
+                                    "label": "created_month"
+                                  },
+                                  {
+                                    "value": "created_year",
+                                    "label": "created_year"
+                                  },
+                                  {
+                                    "value": "owning_library",
+                                    "label": "owning_library"
+                                  },
+                                  {
+                                    "value": "imported",
+                                    "label": "imported"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "additionalProperties": false,
+                  "propertiesOrder": [
+                    "type",
+                    "distributions"
+                  ],
+                  "required": [
+                    "type"
+                  ],
+                  "title": "Number of serial holdings",
+                  "properties": {
+                    "type": {
+                      "title": "Type",
+                      "type": "string",
+                      "const": "number_of_serial_holdings",
+                      "default": "number_of_serial_holdings",
+                      "widget": {
+                        "formlyConfig": {
+                          "wrappers": [
+                            "hide"
+                          ]
+                        }
+                      }
+                    },
+                    "distributions": {
+                      "allOf": [
+                        {
+                          "$ref": "#/definitions/distributions"
+                        },
+                        {
+                          "items": {
+                            "additionalProperties": false,
+                            "title": "distributions",
+                            "type": "string",
+                            "enum": [
+                              "created_month",
+                              "created_year",
+                              "owning_library"
+                            ]
+                          },
+                          "widget": {
+                            "formlyConfig": {
+                              "type": "selectWithSort",
+                              "props": {
+                                "sort": false,
+                                "options": [
+                                  {
+                                    "value": "created_month",
+                                    "label": "created_month"
+                                  },
+                                  {
+                                    "value": "created_year",
+                                    "label": "created_year"
+                                  },
+                                  {
+                                    "value": "owning_library",
+                                    "label": "owning_library"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "additionalProperties": false,
+                  "propertiesOrder": [
+                    "type",
+                    "distributions"
+                  ],
+                  "required": [
+                    "type"
+                  ],
+                  "title": "Number of items",
+                  "properties": {
+                    "type": {
+                      "title": "Type",
+                      "type": "string",
+                      "const": "number_of_items",
+                      "default": "number_of_items",
+                      "widget": {
+                        "formlyConfig": {
+                          "wrappers": [
+                            "hide"
+                          ]
+                        }
+                      }
+                    },
+                    "distributions": {
+                      "allOf": [
+                        {
+                          "$ref": "#/definitions/distributions"
+                        },
+                        {
+                          "items": {
+                            "additionalProperties": false,
+                            "title": "distributions",
+                            "type": "string",
+                            "enum": [
+                              "created_month",
+                              "created_year",
+                              "document_type",
+                              "document_subtype",
+                              "owning_library",
+                              "owning_location",
+                              "type"
+                            ]
+                          },
+                          "widget": {
+                            "formlyConfig": {
+                              "type": "selectWithSort",
+                              "props": {
+                                "sort": false,
+                                "options": [
+                                  {
+                                    "value": "created_month",
+                                    "label": "created_month"
+                                  },
+                                  {
+                                    "value": "created_year",
+                                    "label": "created_year"
+                                  },
+                                  {
+                                    "value": "document_type",
+                                    "label": "document_type"
+                                  },
+                                  {
+                                    "value": "document_subtype",
+                                    "label": "document_subtype"
+                                  },
+                                  {
+                                    "value": "owning_library",
+                                    "label": "owning_library"
+                                  },
+                                  {
+                                    "value": "owning_location",
+                                    "label": "owning_location"
+                                  },
+                                  {
+                                    "value": "type",
+                                    "label": "type (standard/issue)"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "additionalProperties": false,
+                  "propertiesOrder": [
+                    "type",
+                    "distributions",
+                    "period"
+                  ],
+                  "required": [
+                    "type"
+                  ],
+                  "title": "Number of deleted items",
+                  "properties": {
+                    "type": {
+                      "title": "Type",
+                      "type": "string",
+                      "const": "number_of_deleted_items",
+                      "default": "number_of_deleted_items",
+                      "widget": {
+                        "formlyConfig": {
+                          "wrappers": [
+                            "hide"
+                          ]
+                        }
+                      }
+                    },
+                    "distributions": {
+                      "allOf": [
+                        {
+                          "$ref": "#/definitions/distributions"
+                        },
+                        {
+                          "items": {
+                            "additionalProperties": false,
+                            "title": "distributions",
+                            "type": "string",
+                            "enum": [
+                              "action_month",
+                              "action_year",
+                              "owning_library",
+                              "operator_library"
+                            ]
+                          },
+                          "widget": {
+                            "formlyConfig": {
+                              "type": "selectWithSort",
+                              "props": {
+                                "sort": false,
+                                "options": [
+                                  {
+                                    "value": "action_month",
+                                    "label": "action_month"
+                                  },
+                                  {
+                                    "value": "action_year",
+                                    "label": "action_year"
+                                  },
+                                  {
+                                    "value": "owning_library",
+                                    "label": "owning_library"
+                                  },
+                                  {
+                                    "value": "operator_library",
+                                    "label": "operator_library"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "period": {
+                      "$ref": "#/definitions/period"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "propertiesOrder": [
+            "type",
+            "indicator"
+          ],
+          "required": [
+            "type",
+            "indicator"
+          ],
+          "title": "Circulation",
+          "properties": {
+            "type": {
+              "title": "Type",
+              "type": "string",
+              "const": "circulation",
+              "default": "circulation",
+              "widget": {
+                "formlyConfig": {
+                  "wrappers": [
+                    "hide"
+                  ]
+                }
+              }
+            },
+            "indicator": {
+              "title": "Indicator",
+              "type": "object",
+              "oneOf": [
+                {
+                  "additionalProperties": false,
+                  "propertiesOrder": [
+                    "type",
+                    "distributions"
+                  ],
+                  "required": [
+                    "type"
+                  ],
+                  "title": "Number of ill requests",
+                  "properties": {
+                    "type": {
+                      "title": "Type",
+                      "type": "string",
+                      "const": "number_of_ill_requests",
+                      "default": "number_of_ill_requests",
+                      "widget": {
+                        "formlyConfig": {
+                          "wrappers": [
+                            "hide"
+                          ]
+                        }
+                      }
+                    },
+                    "distributions": {
+                      "allOf": [
+                        {
+                          "$ref": "#/definitions/distributions"
+                        },
+                        {
+                          "items": {
+                            "title": "distributions",
+                            "type": "string",
+                            "enum": [
+                              "created_month",
+                              "created_year",
+                              "pickup_location",
+                              "status"
+                            ]
+                          },
+                          "widget": {
+                            "formlyConfig": {
+                              "type": "selectWithSort",
+                              "props": {
+                                "sort": false,
+                                "options": [
+                                  {
+                                    "value": "created_month",
+                                    "label": "created_month"
+                                  },
+                                  {
+                                    "value": "created_year",
+                                    "label": "created_year"
+                                  },
+                                  {
+                                    "value": "pickup_location",
+                                    "label": "pickup_location"
+                                  },
+                                  {
+                                    "value": "status",
+                                    "label": "request_status"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "additionalProperties": false,
+                  "propertiesOrder": [
+                    "type",
+                    "distributions",
+                    "period"
+                  ],
+                  "required": [
+                    "type"
+                  ],
+                  "title": "Number of checkins",
+                  "properties": {
+                    "type": {
+                      "title": "Type",
+                      "type": "string",
+                      "const": "number_of_checkins",
+                      "default": "number_of_checkins",
+                      "widget": {
+                        "formlyConfig": {
+                          "wrappers": [
+                            "hide"
+                          ]
+                        }
+                      }
+                    },
+                    "distributions": {
+                      "$ref": "#/definitions/circulation_distributions"
+                    },
+                    "period": {
+                      "$ref": "#/definitions/period"
+                    }
+                  }
+                },
+                {
+                  "additionalProperties": false,
+                  "propertiesOrder": [
+                    "type",
+                    "distributions",
+                    "period"
+                  ],
+                  "required": [
+                    "type"
+                  ],
+                  "title": "Number of checkouts",
+                  "properties": {
+                    "type": {
+                      "title": "Type",
+                      "type": "string",
+                      "const": "number_of_checkouts",
+                      "default": "number_of_checkouts",
+                      "widget": {
+                        "formlyConfig": {
+                          "wrappers": [
+                            "hide"
+                          ]
+                        }
+                      }
+                    },
+                    "distributions": {
+                      "$ref": "#/definitions/circulation_distributions"
+                    },
+                    "period": {
+                      "$ref": "#/definitions/period"
+                    }
+                  }
+                },
+                {
+                  "additionalProperties": false,
+                  "propertiesOrder": [
+                    "type",
+                    "distributions",
+                    "period"
+                  ],
+                  "required": [
+                    "type"
+                  ],
+                  "title": "Number of renewals",
+                  "properties": {
+                    "type": {
+                      "title": "Type",
+                      "type": "string",
+                      "const": "number_of_extends",
+                      "default": "number_of_extends",
+                      "widget": {
+                        "formlyConfig": {
+                          "wrappers": [
+                            "hide"
+                          ]
+                        }
+                      }
+                    },
+                    "distributions": {
+                      "$ref": "#/definitions/circulation_distributions"
+                    },
+                    "period": {
+                      "$ref": "#/definitions/period"
+                    }
+                  }
+                },
+                {
+                  "additionalProperties": false,
+                  "propertiesOrder": [
+                    "type",
+                    "distributions",
+                    "period"
+                  ],
+                  "required": [
+                    "type"
+                  ],
+                  "title": "Number of requests",
+                  "properties": {
+                    "type": {
+                      "title": "Type",
+                      "type": "string",
+                      "const": "number_of_requests",
+                      "default": "number_of_requests",
+                      "widget": {
+                        "formlyConfig": {
+                          "wrappers": [
+                            "hide"
+                          ]
+                        }
+                      }
+                    },
+                    "distributions": {
+                      "$ref": "#/definitions/request_distributions"
+                    },
+                    "period": {
+                      "$ref": "#/definitions/period"
+                    }
+                  }
+                },
+                {
+                  "additionalProperties": false,
+                  "propertiesOrder": [
+                    "type",
+                    "distributions",
+                    "period"
+                  ],
+                  "required": [
+                    "type"
+                  ],
+                  "title": "Number of validated requests",
+                  "properties": {
+                    "type": {
+                      "title": "Type",
+                      "type": "string",
+                      "const": "number_of_validate_requests",
+                      "default": "number_of_validate_requests",
+                      "widget": {
+                        "formlyConfig": {
+                          "wrappers": [
+                            "hide"
+                          ]
+                        }
+                      }
+                    },
+                    "distributions": {
+                      "$ref": "#/definitions/request_distributions"
+                    },
+                    "period": {
+                      "$ref": "#/definitions/period"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "propertiesOrder": [
+            "type",
+            "indicator"
+          ],
+          "required": [
+            "indicator",
+            "type"
+          ],
+          "title": "User management",
+          "properties": {
+            "type": {
+              "title": "Type",
+              "type": "string",
+              "const": "user_management",
+              "default": "user_management",
+              "widget": {
+                "formlyConfig": {
+                  "wrappers": [
+                    "hide"
+                  ]
+                }
+              }
+            },
+            "indicator": {
+              "title": "Indicator",
+              "type": "object",
+              "oneOf": [
+                {
+                  "additionalProperties": false,
+                  "propertiesOrder": [
+                    "type",
+                    "distributions"
+                  ],
+                  "required": [
+                    "type"
+                  ],
+                  "title": "Number of patrons",
+                  "properties": {
+                    "type": {
+                      "title": "Type",
+                      "type": "string",
+                      "const": "number_of_patrons",
+                      "default": "number_of_patrons",
+                      "widget": {
+                        "formlyConfig": {
+                          "wrappers": [
+                            "hide"
+                          ]
+                        }
+                      }
+                    },
+                    "distributions": {
+                      "$ref": "#/definitions/patrons_distributions"
+                    }
+                  }
+                },
+                {
+                  "additionalProperties": false,
+                  "propertiesOrder": [
+                    "type",
+                    "distributions",
+                    "period"
+                  ],
+                  "required": [
+                    "type",
+                    "period"
+                  ],
+                  "title": "Number of active patrons",
+                  "properties": {
+                    "type": {
+                      "title": "Type",
+                      "type": "string",
+                      "const": "number_of_active_patrons",
+                      "default": "number_of_active_patrons",
+                      "widget": {
+                        "formlyConfig": {
+                          "wrappers": [
+                            "hide"
+                          ]
+                        }
+                      }
+                    },
+                    "distributions": {
+                      "$ref": "#/definitions/patrons_distributions"
+                    },
+                    "period": {
+                      "$ref": "#/definitions/period"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "distributions": {
+      "title": "Distributions",
+      "description": "Up to 2 filters by which to distribute the data in the generated tables. The first value is the lines; the second value is the columns.",
+      "type": "array",
+      "minItems": 0,
+      "default": [],
+      "maxItems": 2,
+      "uniqueItems": true
+    },
+    "period": {
+      "title": "Period",
+      "description": "The time range to filter the data relevant to a specific period: latest month or latest year. Leave empty to not filter the data. Example: process the number of checkouts performed in the last month.",
+      "type": "string",
+      "enum": [
+        "month",
+        "year"
+      ],
+      "widget": {
+        "formlyConfig": {
+          "props": {
+            "options": [
+              {
+                "value": "month",
+                "label": "month"
+              },
+              {
+                "value": "year",
+                "label": "year"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "circulation_distributions": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/distributions"
+        },
+        {
+          "items": {
+            "title": "distributions",
+            "type": "string",
+            "enum": [
+              "transaction_month",
+              "transaction_year",
+              "owning_library",
+              "owning_location",
+              "transaction_location",
+              "patron_type",
+              "patron_age",
+              "patron_postal_code",
+              "document_type",
+              "transaction_channel"
+            ]
+          },
+          "widget": {
+            "formlyConfig": {
+              "type": "selectWithSort",
+              "props": {
+                "sort": false,
+                "options": [
+                  {
+                    "value": "transaction_month",
+                    "label": "transaction_month"
+                  },
+                  {
+                    "value": "transaction_year",
+                    "label": "transaction_year"
+                  },
+                  {
+                    "value": "owning_library",
+                    "label": "owning_library"
+                  },
+                  {
+                    "value": "owning_location",
+                    "label": "owning_location"
+                  },
+                  {
+                    "value": "transaction_location",
+                    "label": "transaction_location"
+                  },
+                  {
+                    "value": "patron_type",
+                    "label": "patron_type"
+                  },
+                  {
+                    "value": "patron_age",
+                    "label": "patron_age"
+                  },
+                  {
+                    "value": "patron_postal_code",
+                    "label": "patron_postal_code"
+                  },
+                  {
+                    "value": "document_type",
+                    "label": "document_type"
+                  },
+                  {
+                    "value": "transaction_channel",
+                    "label": "transaction_channel"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "request_distributions": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/distributions"
+        },
+        {
+          "items": {
+            "title": "distributions",
+            "type": "string",
+            "enum": [
+              "transaction_month",
+              "transaction_year",
+              "owning_library",
+              "owning_location",
+              "patron_type",
+              "patron_age",
+              "patron_postal_code",
+              "document_type",
+              "transaction_channel",
+              "pickup_location"
+            ]
+          },
+          "widget": {
+            "formlyConfig": {
+              "type": "selectWithSort",
+              "props": {
+                "sort": false,
+                "options": [
+                  {
+                    "value": "transaction_month",
+                    "label": "transaction_month"
+                  },
+                  {
+                    "value": "transaction_year",
+                    "label": "transaction_year"
+                  },
+                  {
+                    "value": "owning_library",
+                    "label": "owning_library"
+                  },
+                  {
+                    "value": "owning_location",
+                    "label": "owning_location"
+                  },
+                  {
+                    "value": "patron_type",
+                    "label": "patron_type"
+                  },
+                  {
+                    "value": "patron_age",
+                    "label": "patron_age"
+                  },
+                  {
+                    "value": "patron_postal_code",
+                    "label": "patron_postal_code"
+                  },
+                  {
+                    "value": "document_type",
+                    "label": "document_type"
+                  },
+                  {
+                    "value": "transaction_channel",
+                    "label": "transaction_channel"
+                  },
+                  {
+                    "value": "pickup_location",
+                    "label": "pickup_location"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "patrons_distributions": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/distributions"
+        },
+        {
+          "items": {
+            "title": "distributions",
+            "type": "string",
+            "enum": [
+              "created_month",
+              "created_year",
+              "gender",
+              "type",
+              "postal_code",
+              "birth_year",
+              "role"
+            ]
+          },
+          "widget": {
+            "formlyConfig": {
+              "type": "selectWithSort",
+              "props": {
+                "sort": false,
+                "options": [
+                  {
+                    "value": "created_month",
+                    "label": "created_month"
+                  },
+                  {
+                    "value": "created_year",
+                    "label": "created_year"
+                  },
+                  {
+                    "value": "gender",
+                    "label": "gender"
+                  },
+                  {
+                    "value": "type",
+                    "label": "patron_type"
+                  },
+                  {
+                    "value": "postal_code",
+                    "label": "postal_code"
+                  },
+                  {
+                    "value": "birth_year",
+                    "label": "birth_year"
+                  },
+                  {
+                    "value": "role",
+                    "label": "role"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

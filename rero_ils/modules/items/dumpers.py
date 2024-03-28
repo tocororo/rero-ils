@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
-# Copyright (C) 2021 UCLouvain
+# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -17,10 +17,22 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """Items dumpers."""
+from copy import deepcopy
 
 from invenio_records.dumpers import Dumper as InvenioRecordsDumper
 
+from rero_ils.modules.commons.exceptions import MissingDataException
+from rero_ils.modules.documents.api import Document
+from rero_ils.modules.documents.dumpers import \
+    TitleDumper as DocumentTitleDumper
 from rero_ils.modules.holdings.api import Holding
+from rero_ils.modules.holdings.dumpers import ClaimIssueHoldingDumper
+from rero_ils.modules.libraries.dumpers import \
+    LibrarySerialClaimNotificationDumper
+from rero_ils.modules.loans.dumpers import \
+    CirculationDumper as LoanCirculationDumper
+from rero_ils.modules.locations.api import Location
+from rero_ils.modules.vendors.dumpers import VendorClaimIssueNotificationDumper
 
 
 class ItemNotificationDumper(InvenioRecordsDumper):
@@ -68,4 +80,68 @@ class ItemCirculationDumper(InvenioRecordsDumper):
             data['second_call_number'] = holding.get('second_call_number')
             data = {k: v for k, v in data.items() if v}
 
+        return data
+
+
+class ClaimIssueNotificationDumper(InvenioRecordsDumper):
+    """Item issue dumper for claim notification."""
+
+    def dump(self, record, data):
+        """Dump an item issue for claim notification generation."""
+        if not record.is_issue:
+            raise TypeError('record must be an `ItemIssue` resource')
+        if not (holding := record.holding):
+            raise MissingDataException('item.holding')
+        if not (vendor := holding.vendor):
+            raise MissingDataException('item.holding.vendor')
+
+        data.update({
+            'vendor': vendor.dumps(
+                dumper=VendorClaimIssueNotificationDumper()),
+            'document': holding.document.dumps(
+                dumper=DocumentTitleDumper()),
+            'library': holding.library.dumps(
+                dumper=LibrarySerialClaimNotificationDumper()),
+            'holdings': holding.dumps(
+                dumper=ClaimIssueHoldingDumper()),
+            'enumerationAndChronology': record.enumerationAndChronology,
+            'claim_counter': record.claims_count
+        })
+        return {k: v for k, v in data.items() if v is not None}
+
+
+class CirculationActionDumper(InvenioRecordsDumper):
+    """Item issue dumper for circulation actions."""
+
+    def dump(self, record, data):
+        """Dump an item for circulation actions."""
+        item = record.replace_refs()
+        data = deepcopy(dict(item))
+        document = Document.get_record_by_pid(item['document']['pid'])
+        doc_data = document.dumps()
+        data['document']['title'] = doc_data['title']
+
+        location = Location.get_record_by_pid(item['location']['pid'])
+        loc_data = deepcopy(dict(location))
+        data['location']['name'] = loc_data['name']
+        # TODO: check if it is required
+        data['location']['organisation'] = {
+            'pid': record.organisation_pid
+        }
+
+        # add library and location name on same field (used for sorting)
+        library = location.get_library()
+        data['library_location_name'] = \
+            f'{library["name"]}: {data["location"]["name"]}'
+
+        data['actions'] = list(record.actions)
+
+        # add the current pending requests count
+        data['current_pending_requests'] = record.get_requests(output='count')
+        # add metadata of the first pending request
+        requests = record.get_requests(sort_by='_created')
+        if first_request := next(requests, None):
+            data['pending_loans'] = [
+                first_request.dumps(LoanCirculationDumper())
+            ]
         return data

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -16,11 +16,14 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """rero-ils UNIMARC model definition."""
+import contextlib
+from copy import deepcopy
 
 import jsonref
 from dojson import utils
 from dojson.utils import GroupableOrderedDict
 from flask import current_app
+from isbnlib import EAN13
 from pkg_resources import resource_string
 
 from rero_ils.dojson.utils import ReroIlsUnimarcOverdo, TitlePartList, \
@@ -28,6 +31,10 @@ from rero_ils.dojson.utils import ReroIlsUnimarcOverdo, TitlePartList, \
     get_field_link_data, make_year, not_repetitive, \
     remove_trailing_punctuation
 from rero_ils.modules.documents.api import Document
+from rero_ils.modules.documents.dojson.contrib.marc21tojson.utils import \
+    get_mef_link
+from rero_ils.modules.documents.utils import create_authorized_access_point
+from rero_ils.modules.entities.models import EntityType
 
 _ISSUANCE_MAIN_TYPE_PER_BIB_LEVEL = {
     'a': 'rdami:1001',
@@ -304,42 +311,42 @@ def unimarc_type_and_issuance(self, key, value):
     Sounds: LDR/6: i|j
     E-books (imported from Cantook)
     """
-    type = [{"main_type": "docmaintype_other"}]
+    doc_type = [{"main_type": "docmaintype_other"}]
 
     if unimarc.admin_meta_data:
         self['adminMetadata'] = unimarc.admin_meta_data
 
     if unimarc.record_type == 'a':
         if unimarc.bib_level == 'm':
-            type = [{
+            doc_type = [{
                 "main_type": "docmaintype_book",
                 "subtype": "docsubtype_other_book"
             }]
         elif unimarc.bib_level == 's':
-            type = [{
+            doc_type = [{
                 "main_type": "docmaintype_serial"
             }]
         elif unimarc.bib_level == 'a':
-            type = [{
+            doc_type = [{
                 "main_type": "docmaintype_article",
             }]
     elif unimarc.record_type in ['c', 'd']:
-        type = [{
+        doc_type = [{
             "main_type": "docmaintype_score",
             "subtype": "docsubtype_printed_score"
         }]
     elif unimarc.record_type in ['i', 'j']:
-        type = [{
+        doc_type = [{
             "main_type": "docmaintype_audio",
             "subtype": "docsubtype_music"
         }]
     elif unimarc.record_type == 'g':
-        type = [{
+        doc_type = [{
             "main_type": "docmaintype_movie_series",
             "subtype": "docsubtype_movie"
         }]
         # Todo 007
-    self['type'] = type
+    self['type'] = doc_type
 
     # get the mode of issuance
     self['issuance'] = {}
@@ -375,8 +382,7 @@ def unimarc_bnf_id(self, key, value):
 @utils.ignore_value
 def marc21_to_tableOfContents(self, key, value):
     """Get tableOfContents from repetitive field 464."""
-    table_of_contents = build_string_from_subfields(value, 't')
-    if table_of_contents:
+    if table_of_contents := build_string_from_subfields(value, 't'):
         self.setdefault('tableOfContents', []).append(table_of_contents)
 
 
@@ -450,8 +456,7 @@ def unimarc_title(self, key, value):
                     if blob_key != '__order__':
                         index += 1
                 title_data['type'] = title_type
-                the_part_list = part_list.get_part_list()
-                if the_part_list:
+                if the_part_list := part_list.get_part_list():
                     title_data['part'] = the_part_list
                 if title_data:
                     title_list.append(title_data)
@@ -470,22 +475,43 @@ def unimarc_title(self, key, value):
 @utils.ignore_value
 def marc21_to_part_of(self, key, value):
     """Get part_of."""
-    part_of = {}
-    subfield_x = not_repetitive(
-        unimarc.bib_id, 'unimarc', key, value, 'x', default='').strip()
     linked_pid = None
-    if subfield_x:
+    if subfield_x := not_repetitive(
+            unimarc.bib_id, 'unimarc', key, value, 'x', default='').strip():
         for pid in Document.get_document_pids_by_issn(subfield_x):
             linked_pid = pid
             break
     if linked_pid:
-        part_of['document'] = {
+        part_of = {'document': {
             '$ref': f'https://bib.rero.ch/api/documents/{linked_pid}'
-        }
-        subfield_v = not_repetitive(
-            unimarc.bib_id, 'unimarc', key, value, 'v', default='').strip()
-        if subfield_v:
-            part_of['numbering'] = subfield_v
+        }}
+        numbering = []
+        if subfield_v := utils.force_list(value.get('v')):
+            with contextlib.suppress(ValueError):
+                numbering.append({'volume': str(subfield_v[0])})
+        if subfield_d := utils.force_list(value.get('d')):
+            # get a years range
+            years = subfield_d[0].split('-')
+            with contextlib.suppress(ValueError):
+                if numbering:
+                    numbering[0]['year'] = str(years[0])
+                else:
+                    numbering.append({'year': str(years[0])})
+                if len(years) > 1:
+                    if years := range(int(years[0]), int(years[1]) + 1):
+                        numbering_years = deepcopy(numbering)
+                        # TODO: save year ranges as string ex: 2022-2024
+                        # if we have a year range add the same numbering data
+                        # for every year
+                        for year in years[1:]:
+                            if numbering:
+                                number_year = deepcopy(numbering[0])
+                            number_year['year'] = str(year)
+                            numbering_years.append(number_year)
+                        numbering = numbering_years
+        if numbering:
+            part_of['numbering'] = numbering
+
         self['partOf'] = self.get('partOf', [])
         self['partOf'].append(part_of)
 
@@ -498,7 +524,6 @@ def unimarc_languages(self, key, value):
     languages: 101 [$a, repetitive]
     """
     languages = utils.force_list(value.get('a'))
-    to_return = []
     schema_in_bytes = resource_string(
         'rero_ils.jsonschemas',
         'common/languages-v0.0.1.json'
@@ -506,11 +531,11 @@ def unimarc_languages(self, key, value):
     schema = jsonref.loads(schema_in_bytes.decode('utf8'))
     langs = schema['language']['enum']
 
-    for language in languages:
-        if language in langs:
-            to_return.append({'value': language, 'type': 'bf:Language'})
-
-    return to_return
+    return [
+        {'value': language, 'type': 'bf:Language'}
+        for language in languages
+        if language in langs
+    ]
 
 
 @unimarc.over('contribution', '7[01][0123]..')
@@ -527,15 +552,15 @@ def unimarc_to_contribution(self, key, value):
     711 Nom de collectivité – Autre responsabilité principale
     712 Nom de collectivité – Responsabilité secondaire
     """
-    agent = {}
-    agent['preferred_name'] = ', '.join(utils.force_list(value.get('a', '')))
-    agent['type'] = 'bf:Person'
+    agent = {
+        'preferred_name': ', '.join(utils.force_list(value.get('a', ''))),
+        'type': EntityType.PERSON
+    }
 
     if key[:3] in ['700', '701', '702', '703']:
-        if agent['preferred_name']:
-            if value.get('b'):
-                agent['preferred_name'] += \
-                    ', ' + ', '.join(utils.force_list(value.get('b')))
+        if agent['preferred_name'] and value.get('b'):
+            agent['preferred_name'] += \
+                ', ' + ', '.join(utils.force_list(value.get('b')))
         if value.get('d'):
             agent['numeration'] = value.get('d')
 
@@ -546,26 +571,19 @@ def unimarc_to_contribution(self, key, value):
             date = utils.force_list(value.get('f'))[0]
             date = date.replace('-....', '-')
             dates = date.split('-')
-            try:
-                date_of_birth = dates[0].strip()
-                if date_of_birth:
+            with contextlib.suppress(Exception):
+                if date_of_birth := dates[0].strip():
                     agent['date_of_birth'] = date_of_birth
-            except Exception:
-                pass
-            try:
-                date_of_death = dates[1].strip()
-                if date_of_death:
+            with contextlib.suppress(Exception):
+                if date_of_death := dates[1].strip():
                     agent['date_of_death'] = date_of_death
-            except Exception:
-                pass
 
     if key[:3] in ['710', '711', '712']:
         agent['type'] = 'bf:Organisation'
         agent['conference'] = key[3] == '1'
-        if agent['preferred_name']:
-            if value.get('c'):
-                agent['preferred_name'] += \
-                    ', ' + ', '.join(utils.force_list(value.get('c')))
+        if agent['preferred_name'] and value.get('c'):
+            agent['preferred_name'] += \
+                ', ' + ', '.join(utils.force_list(value.get('c')))
         if value.get('b'):
             agent['subordinate_unit'] = utils.force_list(value.get('b'))
         if value.get('d'):
@@ -583,53 +601,73 @@ def unimarc_to_contribution(self, key, value):
             agent['conference_date'] = remove_trailing_punctuation(
                 conference_date
             ).lstrip('(').rstrip(')')
-    IDREF_ROLE_CONV = {
-        "070": "aut",
-        "230": "cmp",
-        "205": "ctb",
-        "340": "edt",
-        "420": "hnr",
-        "440": "ill",
-        "600": "pht",
-        "590": "prf",
-        "730": "trl",
-        "080": "aui",
-        "160": "bsl",
-        "300": "drt",
-        "430": "ilu",
-        "651": "pbd",
-        "350": "egr",
-        "630": "pro",
-        "510": "ltg",
-        "365": "exp",
-        "727": "dgs",
-        "180": "ctg",
-        "220": "com",
-        "210": "cmm",
-        "200": "chr",
-        "110": "bnd",
-        "720": "ato",
-        "030": "arr",
-        "020": "ann",
-        "632": "adi",
-        "005": "act",
-        "390": "fmo",
-        "545": "mus"
-    }
     roles = []
     if value.get('4'):
+        IDREF_ROLE_CONV = {
+            "070": "aut",
+            "230": "cmp",
+            "205": "ctb",
+            "340": "edt",
+            "420": "hnr",
+            "440": "ill",
+            "600": "pht",
+            "590": "prf",
+            "730": "trl",
+            "080": "aui",
+            "160": "bsl",
+            "300": "drt",
+            "430": "ilu",
+            "651": "pbd",
+            "350": "egr",
+            "630": "pro",
+            "510": "ltg",
+            "365": "exp",
+            "727": "dgs",
+            "180": "ctg",
+            "220": "com",
+            "210": "cmm",
+            "200": "chr",
+            "110": "bnd",
+            "720": "ato",
+            "030": "arr",
+            "020": "ann",
+            "632": "adi",
+            "005": "act",
+            "390": "fmo",
+            "545": "mus"
+        }
         for role in utils.force_list(value.get('4')):
-            role_conv = IDREF_ROLE_CONV.get(role)
-            if role_conv:
+            if role_conv := IDREF_ROLE_CONV.get(role):
                 roles.append(role_conv)
         roles = list(set(roles))
     if not roles:
         roles = ['aut']
 
-    return {
-        'agent': agent,
-        'role': roles
-    }
+    ids = utils.force_list(value.get('3')) or []
+    ids = [f'(idref){id_}' for id_ in ids]
+    if ids and (ref := get_mef_link(
+        bibid=unimarc.bib_id,
+        reroid=unimarc.rero_id,
+        entity_type=EntityType.PERSON,
+        ids=ids,
+        key=key
+    )):
+        return {
+            'entity': {
+                '$ref': ref,
+                '_text': create_authorized_access_point(agent)
+            },
+            'role': roles
+        }
+    else:
+        return {
+            'entity': {
+                'authorized_access_point':
+                    create_authorized_access_point(agent),
+                'type': agent['type']
+            },
+            'role': roles
+        }
 
 
 @unimarc.over('editionStatement', '^205..')
@@ -638,16 +676,14 @@ def unimarc_to_contribution(self, key, value):
 def unimarc_to_edition_statement(self, key, value):
     """Get edition statement data.
 
-    editionDesignation: 205 [$a non repetitive] (without trailing ponctuation)
+    editionDesignation: 205 [$a non repetitive] (without trailing punctuation)
     responsibility: 205 [$f non repetitive]
     """
     edition_data = {}
-    subfields_a = utils.force_list(value.get('a'))
-    if subfields_a:
+    if subfields_a := utils.force_list(value.get('a')):
         subfield_a = subfields_a[0]
         edition_data['editionDesignation'] = [{'value': subfield_a.strip()}]
-    subfields_f = utils.force_list(value.get('f'))
-    if subfields_f:
+    if subfields_f := utils.force_list(value.get('f')):
         subfield_f = subfields_f[0]
         edition_data['responsibility'] = [{'value': subfield_f}]
     return edition_data or None
@@ -660,10 +696,10 @@ def unimarc_publishers_provision_activity_publication(self, key, value):
     """Get provision activity dates."""
     def build_place_or_agent_data(code, label, index):
         type_per_code = {
-            'a': 'bf:Place',
-            'c': 'bf:Agent',
-            'e': 'bf:Place',
-            'g': 'bf:Agent'
+            'a': EntityType.PLACE,
+            'c': EntityType.AGENT,
+            'e': EntityType.PLACE,
+            'g': EntityType.AGENT
         }
         place_or_agent_data = {
             'type': type_per_code[code],
@@ -682,7 +718,6 @@ def unimarc_publishers_provision_activity_publication(self, key, value):
                 country = _COUNTRY_UNIMARC_MARC21.get(country_codes[0])
                 if country:
                     place['country'] = country
-                    place['type'] = 'bf:Place'
         return place
 
     # only take 214 if exists
@@ -702,9 +737,9 @@ def unimarc_publishers_provision_activity_publication(self, key, value):
             field_d = utils.force_list(field_d)[0]
             copyright_date = self.get('copyrightDate', [])
             if field_d[0] == 'P':
-                copyright_date.append('℗ ' + field_d[2:])
+                copyright_date.append(f'℗ {field_d[2:]}')
             else:
-                copyright_date.append('© ' + field_d)
+                copyright_date.append(f'© {field_d}')
             self['copyrightDate'] = copyright_date
     else:
         start_date = None
@@ -729,11 +764,14 @@ def unimarc_publishers_provision_activity_publication(self, key, value):
                 statement = []
                 for blob_key, blob_value in items:
                     if blob_key in ('a', 'c'):
-                        type = 'bf:Publication'
+                        publication_type = 'bf:Publication'
                         if index == 1:
                             old_type = 'bf:Publication'
-                            publication = {'type': type, 'statement': []}
-                        if type != old_type:
+                            publication = {
+                                'type': publication_type,
+                                'statement': []
+                            }
+                        if publication_type != old_type:
                             subfields_h = utils.force_list(value.get('h'))
                             publication['statement'] = statement
                             if subfields_h:
@@ -745,20 +783,23 @@ def unimarc_publishers_provision_activity_publication(self, key, value):
                             statement = []
                             publications.append(publication)
                             publication = {
-                                'type': type,
+                                'type': publication_type,
                                 'statement': [],
                             }
-                            old_type = type
+                            old_type = publication_type
 
                         place_or_agent_data = build_place_or_agent_data(
                             blob_key, blob_value, index)
                         statement.append(place_or_agent_data)
                     if blob_key in ('e', 'g'):
-                        type = 'bf:Manufacture'
+                        publication_type = 'bf:Manufacture'
                         if index == 1:
                             old_type = 'bf:Manufacture'
-                            publication = {'type': type, 'statement': []}
-                        if type != old_type:
+                            publication = {
+                                'type': publication_type,
+                                'statement': []
+                            }
+                        if publication_type != old_type:
                             subfields_d = utils.force_list(value.get('d'))
                             publication['statement'] = statement
                             if subfields_d:
@@ -776,10 +817,10 @@ def unimarc_publishers_provision_activity_publication(self, key, value):
                             statement = []
                             publications.append(publication)
                             publication = {
-                                'type': type,
+                                'type': publication_type,
                                 'statement': [],
                             }
-                            old_type = type
+                            old_type = publication_type
                         place_or_agent_data = build_place_or_agent_data(
                             blob_key, blob_value, index)
                         statement.append(place_or_agent_data)
@@ -787,11 +828,11 @@ def unimarc_publishers_provision_activity_publication(self, key, value):
                         index += 1
                 if statement:
                     publication = {
-                        'type': type,
+                        'type': publication_type,
                         'statement': statement,
                     }
                     date_subfield = 'd'
-                    if type == 'bf:Manufacture':
+                    if publication_type == 'bf:Manufacture':
                         date_subfield = 'h'
                     subfields = utils.force_list(value.get(date_subfield))
                     if subfields:
@@ -829,9 +870,8 @@ def unimarc_publishers_provision_activity_publication(self, key, value):
                     index += 1
             if statement:
                 publication['statement'] = statement
-            if publication['type'] == 'bf:Publication':
-                if place:
-                    publication['place'] = [place]
+            if publication['type'] == 'bf:Publication' and place:
+                publication['place'] = [place]
 
             subfields_d = utils.force_list(value.get('d'))
             if subfields_d:
@@ -896,22 +936,18 @@ def unimarc_series_statement(self, key, value):
         if blob_key in subfield_selection:
             if blob_key == 'a':
                 fist_a_value = blob_value
-                try:
+                with contextlib.suppress(KeyError):
                     subfield_selection.remove('a')
-                except KeyError:
-                    pass
             elif blob_key == 'e':
-                fist_a_value += ': ' + blob_value
+                fist_a_value += f': {blob_value}'
             elif blob_key == 'i':
                 # we keep on the $e associeted to the $a
-                try:
+                with contextlib.suppress(KeyError):
                     subfield_selection.remove('e')
-                except KeyError:
-                    pass
                 if fist_a_value:
                     new_data.append(('a', fist_a_value))
-                    for v_value in pending_v_values:
-                        new_data.append(('v', v_value))
+                    new_data.extend(
+                        ('v', v_value) for v_value in pending_v_values)
                     fist_a_value = None
                     pending_v_values = []
                 new_data.append(('a', blob_value))
@@ -919,9 +955,7 @@ def unimarc_series_statement(self, key, value):
                 pending_v_values.append(blob_value)
     if fist_a_value:
         new_data.append(('a', fist_a_value))
-    for v_value in pending_v_values:
-        new_data.append(('v', v_value))
-
+    new_data.extend(('v', v_value) for v_value in pending_v_values)
     new_value = GroupableOrderedDict(tuple(new_data))
     unimarc.extract_series_statement_from_marc_field(key, new_value, self)
 
@@ -976,15 +1010,15 @@ def unimarc_identifier_isbn(self, key, value):
             "type": "bf:Isbn",
             "value": value.get('a').replace('-', '')
         }
-        if value.get('b'):
-            isbn['qualifier'] = value.get('b')
+        if qualifiers := utils.force_list(value.get('b')):
+            isbn['qualifier'] = ', '.join(qualifiers)
         identifiers.append(isbn)
 
     if value.get('z'):
-        for data in utils.force_list(value.get('z')):
+        for value in utils.force_list(value.get('z')):
             isbn = {
                 "type": "bf:Isbn",
-                "value": data.replace('-', ''),
+                "value": value.replace('-', ''),
                 'status': 'invalid or cancelled'
             }
             identifiers.append(isbn)
@@ -1074,7 +1108,6 @@ def unimarc_identifier_isbn_tag073(self, key, value):
     * qualifier = 073$b
     * ""status"":""invalid or cancelled"" = 073$z
     """
-    from isbnlib import EAN13
     identifiers = self.get('identifiedBy', [])
     if value.get('a'):
         ean = {
@@ -1120,10 +1153,7 @@ def unimarc_subjects(self, key, value):
         'RERO_ILS_IMPORT_6XX_TARGET_ATTRIBUTE',
         'subjects_imported'
     )
-
-    to_return = ''
-    if value.get('a'):
-        to_return = value.get('a')
+    to_return = value.get('a') or ''
     if value.get('b'):
         to_return += ', ' + ', '.join(utils.force_list(value.get('b')))
     if value.get('d'):
@@ -1135,12 +1165,12 @@ def unimarc_subjects(self, key, value):
     if value.get('y'):
         to_return += ' -- ' + ' -- '.join(utils.force_list(value.get('y')))
     if to_return:
-        data = {
-            'type': "bf:Topic",
-            'term': to_return
-        }
+        data = dict(entity={
+            'type': EntityType.TOPIC,
+            'authorized_access_point': to_return
+        })
         if source := value.get('2', None):
-            data['source'] = source
+            data['entity']['source'] = source
         self.setdefault(config_field_key, []).append(data)
 
 
@@ -1149,10 +1179,6 @@ def unimarc_subjects(self, key, value):
 @utils.ignore_value
 def marc21_to_electronicLocator_from_field_856(self, key, value):
     """Get electronicLocator from field 856."""
-    electronic_locator = None
-    if value.get('u'):
-        electronic_locator = {
-            'url': value.get('u'),
-            'type': 'resource'
-        }
-    return electronic_locator
+    return (
+        {'url': value.get('u'), 'type': 'resource'} if value.get('u') else None
+    )

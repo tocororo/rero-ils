@@ -1,0 +1,49 @@
+{
+  "title": "Link to a genre, form",
+  "type": "object",
+  "additionalProperties": false,
+  "propertiesOrder": [
+    "$ref"
+  ],
+  "required": [
+    "$ref"
+  ],
+  "properties": {
+    "$ref": {
+      "title": "Genre, form",
+      "type": "string",
+      "pattern": "^(https://mef.rero.ch/api/concepts/(gnd|idref|rero)/.*|https://bib.rero.ch/api/local_entities/.*?)$",
+      "widget": {
+        "formlyConfig": {
+          "type": "entityTypeahead",
+          "wrappers": [
+            "form-field-horizontal"
+          ],
+          "props": {
+            "filters": {
+              "options": [
+                {
+                  "label": "Genre, form",
+                  "value": "concepts-genreForm"
+                }
+              ]
+            },
+            "itemCssClass": "col-12"
+          }
+        }
+      }
+    },
+    "pid": {
+      "title": "MEF ID",
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "widget": {
+    "formlyConfig": {
+      "props": {
+        "containerCssClass": "row"
+      }
+    }
+  }
+}

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2022 RERO
-# Copyright (C) 2022 UCLouvain
+# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -17,10 +17,10 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """API for manipulating Acquisition Orders."""
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import partial
 
-from flask_babelex import gettext as _
+from flask_babel import gettext as _
 from invenio_records_rest.utils import obj_or_import_string
 
 from rero_ils.modules.acquisition.acq_order_lines.api import AcqOrderLine, \
@@ -40,7 +40,6 @@ from rero_ils.modules.notifications.models import NotificationType
 from rero_ils.modules.providers import Provider
 from rero_ils.modules.utils import extracted_data_from_ref, \
     get_endpoint_configuration, get_objects, get_ref_for_pid, sorted_pids
-from rero_ils.modules.vendors.api import Vendor
 
 from .extensions import AcquisitionOrderCompleteDataExtension, \
     AcquisitionOrderExtension
@@ -114,14 +113,13 @@ class AcqOrder(AcquisitionIlsRecord):
         # TODO : should be used into `pre_create` hook extensions but seems not
         #   work as expected.
         AcquisitionOrderCompleteDataExtension.populate_currency(data)
-        record = super().create(
-            data, id_, delete_pid, dbcommit, reindex, **kwargs)
-        return record
+        return super().create(data, id_, delete_pid, dbcommit, reindex,
+                              **kwargs)
 
     @property
     def vendor(self):
         """Shortcut for vendor."""
-        return Vendor.get_record_by_pid(self.vendor_pid)
+        return extracted_data_from_ref(self.get('vendor'), data='record')
 
     @property
     def organisation_pid(self):
@@ -352,6 +350,16 @@ class AcqOrder(AcquisitionIlsRecord):
         :param includes: a list of statuses to include order lines.
         :return a generator of related order lines (or length).
         """
+
+        def preserve_order(query):
+            """Keep results in order.
+
+            :param: query: the es query.
+            :return the es query.
+            """
+            return query.params(preserve_order=True) \
+                .sort({'pid': {"order": "asc"}})
+
         query = AcqOrderLinesSearch().filter('term', acq_order__pid=self.pid)
         if includes:
             query = query.filter('terms', status=includes)
@@ -359,9 +367,9 @@ class AcqOrder(AcquisitionIlsRecord):
         if output == 'count':
             return query.count()
         elif output == 'query':
-            return query
+            return preserve_order(query)
         else:
-            return get_objects(AcqOrderLine, query)
+            return get_objects(AcqOrderLine, preserve_order(query))
 
     def get_order_provisional_total_amount(self):
         """Get provisional total amount of this order."""
@@ -458,6 +466,7 @@ class AcqOrder(AcquisitionIlsRecord):
         """
         # Create the notification and dispatch it synchronously.
         record = {
+            'creation_date': datetime.now(timezone.utc).isoformat(),
             'notification_type': NotificationType.ACQUISITION_ORDER,
             'context': {
                 'order': {'$ref': get_ref_for_pid('acor', self.pid)},
@@ -468,8 +477,8 @@ class AcqOrder(AcquisitionIlsRecord):
         dispatcher_result = Dispatcher.dispatch_notifications(
             notification_pids=[notif.get('pid')])
 
-        # If the dispatcher result is good, update the order_lines status and
-        # reindex myself. Reload the notification to obtain the right
+        # If the dispatcher result is correct, update the order_lines status
+        # and reindex myself. Reload the notification to obtain the right
         # notification metadata (status, process_date, ...)
         if dispatcher_result.get('sent', 0):
             order_date = datetime.now().strftime('%Y-%m-%d')
@@ -479,7 +488,7 @@ class AcqOrder(AcquisitionIlsRecord):
                 order_line['order_date'] = order_date
                 order_line.update(order_line, dbcommit=True, reindex=True)
             self.reindex()
-            notif = Notification.get_record_by_id(notif.id)
+            notif = Notification.get_record(notif.id)
 
         return notif
 

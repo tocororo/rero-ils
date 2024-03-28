@@ -23,14 +23,16 @@ from copy import deepcopy
 from invenio_jsonschemas import current_jsonschemas
 from utils import flush_index, login_user_for_view
 
-from rero_ils.modules.loans.logs.api import LoanOperationLog
+from rero_ils.modules.loans.logs.api import LoanOperationLog, \
+    LoanOperationLogsSearch
 from rero_ils.modules.patrons.api import Patron
 
 
 def test_loan_operation_log(client, operation_log_data,
-                            loan_validated_martigny, librarian_martigny):
+                            loan_validated_martigny, librarian_martigny,
+                            default_user_password):
     """Test operation logs creation."""
-    login_user_for_view(client, librarian_martigny)
+    login_user_for_view(client, librarian_martigny, default_user_password)
 
     operation_log = LoanOperationLog.create(deepcopy(loan_validated_martigny),
                                             index_refresh='wait_for')
@@ -56,7 +58,7 @@ def test_loan_operation_log(client, operation_log_data,
         'type': 'children',
         'age': patron.age,
         'postal_code': '1920',
-        'gender': 'no_information',
+        'gender': 'male',
         'local_codes': ['code1']
     }
     assert log_data['loan']['item'] == {
@@ -96,19 +98,19 @@ def test_anonymize_logs(item2_on_loan_martigny_patron_and_loan_on_loan):
 
     flush_index(LoanOperationLog.index_name)
 
-    logs = LoanOperationLog.get_logs_by_record_pid(loan['pid'])
-    assert len(logs) == 2
+    logs = LoanOperationLogsSearch().get_logs_by_record_pid(loan['pid'])
+    assert len(logs) == 3
     for log in logs:
         assert log['loan']['patron']['pid'] == patron['pid']
         assert log['loan']['patron']['name'] == 'Roduit, Louis'
 
     loan.anonymize(loan)
 
-    logs = LoanOperationLog.get_logs_by_record_pid(loan['pid'])
-    assert len(logs) == 2
+    logs = LoanOperationLogsSearch().get_logs_by_record_pid(loan['pid'])
+    assert len(logs) == 3
     for log in logs:
         log = log.to_dict()
         md5_hash = hashlib.md5(patron['pid'].encode()).hexdigest()
         assert log['loan']['patron']['hashed_pid'] == f'{md5_hash}'
-        assert not log['loan']['patron'].get('name')
-        assert not log['loan']['patron'].get('pid')
+        assert log['loan']['patron'].get('name') == 'anonymized'
+        assert log['loan']['patron'].get('pid') == 'anonymized'

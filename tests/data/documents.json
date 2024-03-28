@@ -53,8 +53,7 @@
     ],
     "contribution": [
       {
-        "agent": {
-          "type": "bf:Person",
+        "entity": {
           "$ref": "https://mef.rero.ch/api/agents/idref/223977268"
         },
         "role": [
@@ -62,8 +61,7 @@
         ]
       },
       {
-        "agent": {
-          "type": "bf:Person",
+        "entity": {
           "$ref": "https://mef.rero.ch/api/agents/rero/A017671081"
         },
         "role": [
@@ -103,8 +101,7 @@
         "startDate": 1987,
         "place": [
           {
-            "country": "sz",
-            "type": "bf:Place"
+            "country": "sz"
           }
         ]
       }
@@ -128,12 +125,16 @@
     ],
     "subjects": [
       {
-        "type": "bf:Topic",
-        "term": "contrat de construction"
+        "entity": {
+          "type": "bf:Topic",
+          "authorized_access_point": "contrat de construction"
+        }
       },
       {
-        "type": "bf:Topic",
-        "term": "Suisse"
+        "entity": {
+          "type": "bf:Topic",
+          "authorized_access_point": "Suisse"
+        }
       }
     ],
     "adminMetadata": {
@@ -171,8 +172,7 @@
     ],
     "contribution": [
       {
-        "agent": {
-          "type": "bf:Person",
+        "entity": {
           "$ref": "https://mef.rero.ch/api/agents/idref/223977268"
         },
         "role": [
@@ -234,8 +234,7 @@
         "startDate": 1999,
         "place": [
           {
-            "country": "gw",
-            "type": "bf:Place"
+            "country": "gw"
           }
         ]
       }

@@ -1,0 +1,59 @@
+{
+  "title": "Genre, form (textual)",
+  "type": "object",
+  "additionalProperties": false,
+  "propertiesOrder": [
+    "authorized_access_point",
+    "type",
+    "identifiedBy",
+    "source"
+  ],
+  "required": [
+    "type",
+    "authorized_access_point"
+  ],
+  "properties": {
+    "type": {
+      "title": "Type",
+      "type": "string",
+      "default": "bf:Topic",
+      "const": "bf:Topic",
+      "widget": {
+        "formlyConfig": {
+          "wrappers": [
+            "hide"
+          ]
+        }
+      }
+    },
+    "authorized_access_point": {
+      "title": "Access Point",
+      "type": "string",
+      "minLength": 1,
+      "widget": {
+        "formlyConfig": {
+          "props": {
+            "itemCssClass": "col-lg-6",
+            "placeholder": "Example: Electronic serials"
+          }
+        }
+      }
+    },
+    "source": {
+      "title": "Source",
+      "description": "Source of the genre or form.",
+      "type": "string",
+      "minLength": 3
+    },
+    "identifiedBy": {
+      "$ref": "https://bib.rero.ch/schemas/common/identifier-v0.0.1.json#/identifier"
+    }
+  },
+  "widget": {
+    "formlyConfig": {
+      "props": {
+        "containerCssClass": "row"
+      }
+    }
+  }
+}

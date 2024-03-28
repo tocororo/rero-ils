@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
-# Copyright (C) 2020 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -56,19 +56,20 @@ from lxml import etree
 from werkzeug.local import LocalProxy
 from werkzeug.security import gen_salt
 
+from rero_ils.modules.documents.api import Document, DocumentsSearch
+from rero_ils.modules.documents.dojson.contrib.marc21tojson.rero import marc21
+from rero_ils.modules.documents.views import get_cover_art
+from rero_ils.modules.entities.remote_entities.api import RemoteEntity
+from rero_ils.modules.items.api import Item
+from rero_ils.modules.libraries.api import Library
+from rero_ils.modules.loans.tasks import \
+    delete_loans_created as task_delete_loans_created
+from rero_ils.modules.local_fields.api import LocalField
 from rero_ils.modules.locations.api import Location
-
-from ..contributions.api import Contribution
-from ..documents.api import Document, DocumentsSearch
-from ..documents.dojson.contrib.marc21tojson.rero import marc21
-from ..documents.views import get_cover_art
-from ..items.api import Item
-from ..libraries.api import Library
-from ..loans.tasks import delete_loans_created as task_delete_loans_created
-from ..local_fields.api import LocalField
-from ..patrons.cli import users_validate
-from ..selfcheck.cli import create_terminal, list_terminal, update_terminal
-from ..utils import JsonWriter, extracted_data_from_ref, \
+from rero_ils.modules.patrons.cli import users_validate
+from rero_ils.modules.selfcheck.cli import create_terminal, list_terminal, \
+    update_terminal
+from rero_ils.modules.utils import JsonWriter, extracted_data_from_ref, \
     get_record_class_from_schema_or_pid_type, get_schema_for_resource, \
     read_json_record, read_xml_record
 
@@ -79,12 +80,10 @@ def queue_count():
     """Count tasks in celery."""
     inspector = current_celery.control.inspect()
     task_count = 0
-    reserved = inspector.reserved()
-    if reserved:
+    if reserved := inspector.reserved():
         for _, values in reserved.items():
             task_count += len(values)
-    active = inspector.active()
-    if active:
+    if active := inspector.active():
         for _, values in active.items():
             task_count += len(values)
     return task_count
@@ -423,7 +422,7 @@ def create_documents_with_items_lofis(infile, dont_stop_on_error,
             if debug:
                 traceback.print_exc()
             if save_errors:
-                error_file_lofi.write(record)
+                error_file_lofi.write(local_field_rec)
             if not dont_stop_on_error:
                 sys.exit(1)
         return counts
@@ -544,7 +543,7 @@ def create_documents_with_items_lofis(infile, dont_stop_on_error,
                     if debug:
                         traceback.print_exc()
                     if save_errors:
-                        error_file_item.write(record)
+                        error_file_item.write(item_rec)
                     if not dont_stop_on_error:
                         sys.exit(1)
                 # Local fields for items
@@ -1572,9 +1571,7 @@ def export(verbose, pid_type, outfile_name, pidfile, indent, schema):
     else:
         pids = record_class.get_all_pids()
 
-    contributions_sources = current_app.config.get(
-        'RERO_ILS_CONTRIBUTIONS_SOURCES', [])
-
+    agents_sources = current_app.config.get('RERO_ILS_AGENTS_SOURCES', [])
     for count, pid in enumerate(pids, 1):
         try:
             rec = record_class.get_record_by_pid(pid)
@@ -1583,9 +1580,9 @@ def export(verbose, pid_type, outfile_name, pidfile, indent, schema):
                     f'{count: <8} {pid_type} export {rec.pid}:{rec.id}')
             if not schema:
                 rec.pop('$schema', None)
-                if isinstance(rec, Contribution):
-                    for contribution_source in contributions_sources:
-                        rec.get(contribution_source, {}).pop('$schema', None)
+                if isinstance(rec, RemoteEntity):
+                    for agent_source in agents_sources:
+                        rec.get(agent_source, {}).pop('$schema', None)
             outfile.write(rec)
         except Exception as err:
             click.echo(err)
@@ -1640,7 +1637,7 @@ def create_personal(
     return token
 
 
-@utils.command('tokens_create')
+@utils.command()
 @click.option('-n', '--name', required=True)
 @click.option(
     '-u', '--user', required=True, callback=process_user,
@@ -1652,13 +1649,16 @@ def create_personal(
     '-t', '--access_token', 'access_token', required=False,
     help='personalized access_token.')
 @with_appcontext
-def tokens_create(name, user, scopes, internal, access_token):
+def token_create(name, user, scopes, internal, access_token):
     """Create a personal OAuth token."""
-    token = create_personal(
-        name, user.id, scopes=scopes, is_internal=internal,
-        access_token=access_token)
-    db.session.commit()
-    click.secho(token.access_token, fg='blue')
+    if user:
+        token = create_personal(
+            name, user.id, scopes=scopes, is_internal=internal,
+            access_token=access_token)
+        db.session.commit()
+        click.secho(token.access_token, fg='blue')
+    else:
+        click.secho('No user found', fg='red')
 
 
 @utils.command('add_cover_urls')

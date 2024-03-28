@@ -27,18 +27,19 @@ import pytest
 from dotenv import load_dotenv
 
 pytest_plugins = (
-    # 'celery.contrib.pytest',
+    'celery.contrib.pytest',
     'fixtures.circulation',
     'fixtures.metadata',
     'fixtures.organisations',
     'fixtures.acquisition',
     'fixtures.sip2',
-    'fixtures.basics'
+    'fixtures.basics',
+    'fixtures.mef'
 )
 
 
 @pytest.fixture(scope='module')
-def es(appctx):
+def search(appctx):
     """Setup and teardown all registered Elasticsearch indices.
 
     Scope: module
@@ -74,32 +75,51 @@ def es(appctx):
 def data():
     """Load fixture data file."""
     with open(join(dirname(__file__), 'data/data.json')) as f:
-        data = json.load(f)
-        return data
+        return json.load(f)
+
+
+@pytest.fixture(scope="module")
+def role_policies_data():
+    """Load fixture role policies data file."""
+    path = 'data/policies/role_policies.json'
+    with open(join(dirname(__file__), path)) as f:
+        return json.load(f)
+
+
+@pytest.fixture(scope="module")
+def system_role_policies_data():
+    """Load fixture role policies data file."""
+    path = 'data/policies/system_role_policies.json'
+    with open(join(dirname(__file__), path)) as f:
+        return json.load(f)
 
 
 @pytest.fixture(scope="module")
 def acquisition():
     """Load fixture acquisition file."""
     with open(join(dirname(__file__), 'data/acquisition.json')) as f:
-        data = json.load(f)
-        return data
+        return json.load(f)
 
 
 @pytest.fixture(scope="module")
 def holdings():
     """Load fixture holdings file."""
     with open(join(dirname(__file__), 'data/holdings.json')) as f:
-        data = json.load(f)
-        return data
+        return json.load(f)
 
 
 @pytest.fixture(scope="module")
 def local_fields():
     """Load local fields file."""
     with open(join(dirname(__file__), 'data/local_fields.json')) as f:
-        data = json.load(f)
-        return data
+        return json.load(f)
+
+
+@pytest.fixture(scope="module")
+def mef_entities():
+    """Load MEF entities file."""
+    with open(join(dirname(__file__), 'data/mef.json')) as f:
+        return json.load(f)
 
 
 @pytest.fixture(scope="session")
@@ -191,6 +211,27 @@ def app_config(app_config):
     app_config['WTF_CSRF_ENABLED'] = False
     # enable operation logs validation for the tests
     app_config['RERO_ILS_ENABLE_OPERATION_LOG_VALIDATION'] = True
+    app_config['RERO_ILS_MEF_CONFIG'] = {
+        'agents': {
+            'base_url': 'https://mef.rero.ch/api/agents',
+            'sources': ['idref', 'gnd']
+        },
+        'concepts': {
+            'base_url': 'https://mef.rero.ch/api/concepts',
+            'sources': ['idref']
+        },
+        'concepts-genreForm': {
+            'base_url': 'https://mef.rero.ch/api/concepts',
+            'sources': ['idref'],
+            'filters': [
+                {'idref.bnf_type': 'sujet Rameau'}
+            ]
+        },
+        'places': {
+            'base_url': 'https://mef.rero.ch/api/places',
+            'sources': ['idref']
+        },
+    }
     return app_config
 
 
@@ -229,6 +270,24 @@ def instance_path():
     if not invenio_instance_path:
         os.environ.pop('INVENIO_INSTANCE_PATH', None)
         shutil.rmtree(path)
+
+
+@pytest.fixture(scope='module')
+def mef_agents_url(app):
+    """Get MEF agent URL from config."""
+    return app.config\
+        .get('RERO_ILS_MEF_CONFIG', {})\
+        .get('agents', {})\
+        .get('base_url')
+
+
+@pytest.fixture(scope='module')
+def mef_concepts_url(app):
+    """Get MEF agent URL from config."""
+    return app.config\
+        .get('RERO_ILS_MEF_CONFIG', {})\
+        .get('concepts', {})\
+        .get('base_url')
 
 
 @pytest.fixture(scope="module")
@@ -319,6 +378,14 @@ def loc_recordid_all_2014043016():
     """Load LoC recordid 2014043016 xml file."""
     file_name = join(
         dirname(__file__), 'data/xml/loc/loc_recordid_all_2014043016.xml')
+    with open(file_name, 'rb') as file:
+        return file.read()
+
+
+@pytest.fixture(scope="module")
+def loc_without_010():
+    """Load LoC without 010."""
+    file_name = join(dirname(__file__), 'data/xml/loc/loc_without_010.xml')
     with open(file_name, 'rb') as file:
         return file.read()
 

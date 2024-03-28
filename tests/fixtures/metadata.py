@@ -26,13 +26,17 @@ import mock
 import pytest
 from utils import flush_index, mock_response
 
-from rero_ils.modules.contributions.api import Contribution, \
-    ContributionsSearch
 from rero_ils.modules.documents.api import Document, DocumentsSearch
+from rero_ils.modules.entities.local_entities.api import LocalEntitiesSearch, \
+    LocalEntity
+from rero_ils.modules.entities.remote_entities.api import \
+    RemoteEntitiesSearch, RemoteEntity
 from rero_ils.modules.holdings.api import Holding, HoldingsSearch
 from rero_ils.modules.items.api import Item, ItemsSearch
 from rero_ils.modules.local_fields.api import LocalField, LocalFieldsSearch
 from rero_ils.modules.operation_logs.api import OperationLog
+from rero_ils.modules.stats_cfg.api import StatConfiguration, \
+    StatsConfigurationSearch
 from rero_ils.modules.templates.api import Template, TemplatesSearch
 
 
@@ -192,6 +196,12 @@ def document_data_ref(data):
 
 
 @pytest.fixture(scope="module")
+def document_data_subject_ref(data):
+    """Load document ref data."""
+    return deepcopy(data.get('doc9'))
+
+
+@pytest.fixture(scope="module")
 def document2_data_ref(data):
     """Load document ref data."""
     return deepcopy(data.get('doc7'))
@@ -246,31 +256,91 @@ def journal(app, journal_data):
 
 
 @pytest.fixture(scope="module")
-def contribution_person_data(data):
-    """Load mef contribution person data."""
-    return deepcopy(data.get('cont_pers'))
+def entity_topic_data(data):
+    """Load mef concept topic data."""
+    return deepcopy(data.get('ent_topic'))
 
 
 @pytest.fixture(scope="function")
-def contribution_person_data_tmp(app, data):
-    """Load mef contribution data person scope function."""
-    contribution_person = deepcopy(data.get('cont_pers'))
-    sources = app.config.get('RERO_ILS_CONTRIBUTIONS_SOURCES', [])
-    for source in sources:
-        if source in contribution_person:
-            contribution_person[source].pop('$schema', None)
-    return contribution_person
+def entity_topic_data_tmp(app, data):
+    """Load mef concept data topic scope function."""
+    entity_topic = deepcopy(data.get('ent_topic'))
+    for source in app.config.get('RERO_ILS_AGENTS_SOURCES', []):
+        if source in entity_person:
+            entity_topic[source].pop('$schema', None)
+    return entity_topic
 
 
 @pytest.fixture(scope="module")
-def contribution_person_response_data(contribution_person_data):
+def entity_topic_data_2(data):
+    """Load mef concept topic data."""
+    return deepcopy(data.get('ent_topic2'))
+
+
+@pytest.fixture(scope="module")
+def entity_topic_data_temporal(data):
+    """Load mef concept topic temporal data."""
+    return deepcopy(data.get('ent_topic_temporal'))
+
+
+@pytest.fixture(scope="module")
+def entity_place_data(data):
+    """Load mef place data."""
+    return deepcopy(data.get('ent_place'))
+
+
+@pytest.fixture(scope="module")
+def entity_person_response_data(entity_topic_data):
+    """Load mef concept topic response data."""
+    return {
+        'hits': {
+            'hits': [
+                {
+                    'id': entity_topic_data['pid'],
+                    'metadata': entity_topic_data
+                }
+            ]
+        }
+    }
+
+
+@pytest.fixture(scope="module")
+def entity_topic(app, entity_topic_data):
+    """Load contribution person record."""
+    cont = RemoteEntity.create(
+        data=entity_topic_data,
+        delete_pid=False,
+        dbcommit=True,
+        reindex=True)
+    flush_index(RemoteEntitiesSearch.Meta.index)
+    return cont
+
+
+@pytest.fixture(scope="module")
+def entity_person_data(data):
+    """Load mef contribution person data."""
+    return deepcopy(data.get('ent_pers'))
+
+
+@pytest.fixture(scope="function")
+def entity_person_data_tmp(app, data):
+    """Load mef contribution data person scope function."""
+    entity_person = deepcopy(data.get('ent_pers'))
+    for source in app.config.get('RERO_ILS_AGENTS_SOURCES', []):
+        if source in entity_person:
+            entity_person[source].pop('$schema', None)
+    return entity_person
+
+
+@pytest.fixture(scope="module")
+def entity_person_response_data(entity_person_data):
     """Load mef contribution person response data."""
     return {
         'hits': {
             'hits': [
                 {
-                    'id': contribution_person_data['pid'],
-                    'metadata': contribution_person_data
+                    'id': entity_person_data['pid'],
+                    'metadata': entity_person_data
                 }
             ]
         }
@@ -278,73 +348,108 @@ def contribution_person_response_data(contribution_person_data):
 
 
 @pytest.fixture(scope="module")
-def contribution_person(app, contribution_person_data):
+def entity_person(app, entity_person_data):
     """Load contribution person record."""
-    cont = Contribution.create(
-        data=contribution_person_data,
+    cont = RemoteEntity.create(
+        data=entity_person_data,
         delete_pid=False,
         dbcommit=True,
         reindex=True)
-    flush_index(ContributionsSearch.Meta.index)
+    flush_index(RemoteEntitiesSearch.Meta.index)
     return cont
 
 
 @pytest.fixture(scope="module")
-def contribution_organisation_data(data):
+def entity_person_data_all(data):
+    """Load mef contribution person data."""
+    return deepcopy(data.get('ent_pers_all'))
+
+
+@pytest.fixture(scope="module")
+def entity_person_all(app, entity_person_data_all):
+    """Load contribution person record."""
+    cont = RemoteEntity.create(
+        data=entity_person_data_all,
+        delete_pid=False,
+        dbcommit=True,
+        reindex=True)
+    flush_index(RemoteEntitiesSearch.Meta.index)
+    return cont
+
+
+@pytest.fixture(scope="module")
+def entity_person_rero_data(data):
+    """Load mef person data."""
+    return deepcopy(data.get('ent_pers_rero'))
+
+
+@pytest.fixture(scope="module")
+def entity_person_rero(app, entity_person_rero_data):
+    """Create mef person record."""
+    pers = RemoteEntity.create(
+        data=entity_person_rero_data,
+        delete_pid=False,
+        dbcommit=True,
+        reindex=True)
+    flush_index(RemoteEntitiesSearch.Meta.index)
+    return pers
+
+
+@pytest.fixture(scope="module")
+def entity_organisation_data(data):
     """Load mef contribution organisation data."""
-    return deepcopy(data.get('cont_org'))
+    return deepcopy(data.get('ent_org'))
 
 
 @pytest.fixture(scope="function")
-def contribution_organisation_data_tmp(data):
+def entity_organisation_data_tmp(data):
     """Load mef contribution data organisation scope function."""
     return deepcopy(data.get('cont_oeg'))
 
 
 @pytest.fixture(scope="module")
-def contribution_organisation_response_data(contribution_organisation_data):
+def entity_organisation_response_data(entity_organisation_data):
     """Load mef contribution organisation response data."""
-    json_data = {
+    return {
         'hits': {
             'hits': [
                 {
-                    'id': contribution_organisation_data['pid'],
-                    'metadata': contribution_organisation_data
+                    'id': entity_organisation_data['pid'],
+                    'metadata': entity_organisation_data
                 }
             ]
         }
     }
-    return json_data
 
 
 @pytest.fixture(scope="module")
-def contribution_organisation(app, contribution_organisation_data):
+def entity_organisation(app, entity_organisation_data):
     """Create mef contribution organisation record."""
-    org = Contribution.create(
-        data=contribution_organisation_data,
+    org = RemoteEntity.create(
+        data=entity_organisation_data,
         delete_pid=False,
         dbcommit=True,
         reindex=True)
-    flush_index(ContributionsSearch.Meta.index)
+    flush_index(RemoteEntitiesSearch.Meta.index)
     return org
 
 
 @pytest.fixture(scope="module")
 def person2_data(data):
     """Load mef person data."""
-    return deepcopy(data.get('cont_pers2'))
+    return deepcopy(data.get('ent_pers2'))
 
 
 @pytest.fixture(scope="function")
 def person2_data_tmp(data):
     """Load mef person data scope function."""
-    return deepcopy(data.get('cont_pers2'))
+    return deepcopy(data.get('ent_pers2'))
 
 
 @pytest.fixture(scope="module")
 def person2_response_data(person2_data):
     """Load mef person response data."""
-    json_data = {
+    return {
         'hits': {
             'hits': [
                 {
@@ -354,28 +459,123 @@ def person2_response_data(person2_data):
             ]
         }
     }
-    return json_data
 
 
 @pytest.fixture(scope="module")
 def person2(app, person2_data):
     """Create mef person record."""
-    pers = Contribution.create(
+    pers = RemoteEntity.create(
         data=person2_data,
         delete_pid=False,
         dbcommit=True,
         reindex=True)
-    flush_index(ContributionsSearch.Meta.index)
+    flush_index(RemoteEntitiesSearch.Meta.index)
     return pers
 
 
 @pytest.fixture(scope="module")
-@mock.patch('requests.get')
+def local_entity_person_data(data):
+    """Load mef contribution person data."""
+    return deepcopy(data.get('locent_pers'))
+
+
+@pytest.fixture(scope="module")
+def local_entity_person2_data(data):
+    """Load mef contribution person data."""
+    return deepcopy(data.get('locent_pers2'))
+
+
+@pytest.fixture(scope="module")
+def local_entity_org_data(data):
+    """Load mef contribution person data."""
+    return deepcopy(data.get('locent_org'))
+
+
+@pytest.fixture(scope="module")
+def local_entity_org2_data(data):
+    """Load mef contribution person data."""
+    return deepcopy(data.get('locent_org2'))
+
+
+@pytest.fixture(scope="module")
+def local_entity_work_data(data):
+    """Load mef contribution person data."""
+    return deepcopy(data.get('locent_work'))
+
+
+@pytest.fixture(scope="module")
+def local_entity_genre_form_data(data):
+    """Load mef genreForm local entity data."""
+    return deepcopy(data.get('locent_genreForm'))
+
+
+@pytest.fixture(scope="module")
+def local_entity_person(app, local_entity_person_data):
+    """Create mef person record."""
+    pers = LocalEntity.create(
+        data=local_entity_person_data,
+        delete_pid=False,
+        dbcommit=True,
+        reindex=True)
+    flush_index(LocalEntitiesSearch.Meta.index)
+    return pers
+
+
+@pytest.fixture(scope="module")
+def local_entity_person2(app, local_entity_person2_data):
+    """Create mef person record."""
+    pers = LocalEntity.create(
+        data=local_entity_person2_data,
+        delete_pid=False,
+        dbcommit=True,
+        reindex=True)
+    flush_index(LocalEntitiesSearch.Meta.index)
+    return pers
+
+
+@pytest.fixture(scope="module")
+def local_entity_org(app, local_entity_org_data):
+    """Create mef person record."""
+    org = LocalEntity.create(
+        data=local_entity_org_data,
+        delete_pid=False,
+        dbcommit=True,
+        reindex=True)
+    flush_index(LocalEntitiesSearch.Meta.index)
+    return org
+
+
+@pytest.fixture(scope="module")
+def local_entity_org2(app, local_entity_org2_data):
+    """Create mef person record."""
+    org = LocalEntity.create(
+        data=local_entity_org2_data,
+        delete_pid=False,
+        dbcommit=True,
+        reindex=True)
+    flush_index(LocalEntitiesSearch.Meta.index)
+    return org
+
+
+@pytest.fixture(scope="module")
+def local_entity_genre_form(app, local_entity_genre_form_data):
+    """Create mef person record."""
+    entity = LocalEntity.create(
+        data=local_entity_genre_form_data,
+        delete_pid=False,
+        dbcommit=True,
+        reindex=True)
+    flush_index(LocalEntitiesSearch.Meta.index)
+    return entity
+
+
+@pytest.fixture(scope="module")
+@mock.patch('requests.Session.get')
 def document_ref(mock_contributions_mef_get,
-                 app, document_data_ref, contribution_person_response_data):
+                 app, document_data_ref, entity_person_response_data):
     """Load document with mef records reference."""
     mock_contributions_mef_get.return_value = mock_response(
-        json_data=contribution_person_response_data
+        json_data=entity_person_response_data
     )
     doc = Document.create(
         data=document_data_ref,
@@ -387,7 +587,7 @@ def document_ref(mock_contributions_mef_get,
 
 
 @pytest.fixture(scope="module")
-@mock.patch('requests.get')
+@mock.patch('requests.Session.get')
 def document2_ref(mock_persons_mef_get,
                   app, document2_data_ref, person2_response_data):
     """Load document with mef records reference."""
@@ -796,6 +996,27 @@ def holding_lib_martigny_w_patterns(
 
 
 @pytest.fixture(scope="module")
+def holding_lib_saxon_w_patterns_data(holdings):
+    """Load holding of martigny library."""
+    return deepcopy(holdings.get('holding8'))
+
+
+@pytest.fixture(scope="module")
+def holding_lib_saxon_w_patterns(
+    app, journal, holding_lib_saxon_w_patterns_data,
+        loc_public_saxon, item_type_standard_martigny,
+        vendor_martigny):
+    """Create holding of saxon library with patterns."""
+    holding = Holding.create(
+        data=holding_lib_saxon_w_patterns_data,
+        delete_pid=False,
+        dbcommit=True,
+        reindex=True)
+    flush_index(HoldingsSearch.Meta.index)
+    return holding
+
+
+@pytest.fixture(scope="module")
 def holding_lib_sion_w_patterns_data(holdings):
     """Load holding of sion library."""
     return deepcopy(holdings.get('holding6'))
@@ -982,6 +1203,12 @@ def templ_doc_private_martigny_data(data):
     return deepcopy(data.get('tmpl2'))
 
 
+@pytest.fixture(scope="function")
+def templ_doc_private_martigny_data_tmp(data):
+    """Load template for a private document martigny data."""
+    return deepcopy(data.get('tmpl2'))
+
+
 @pytest.fixture(scope="module")
 def templ_doc_private_martigny(
         app, org_martigny, templ_doc_private_martigny_data,
@@ -989,6 +1216,46 @@ def templ_doc_private_martigny(
     """Create template for a private document martigny."""
     template = Template.create(
         data=templ_doc_private_martigny_data,
+        delete_pid=False,
+        dbcommit=True,
+        reindex=True)
+    flush_index(TemplatesSearch.Meta.index)
+    return template
+
+
+@pytest.fixture(scope="module")
+def templ_doc_private_saxon_data(data):
+    """Load template for a private document saxon data."""
+    return deepcopy(data.get('tmpl7'))
+
+
+@pytest.fixture(scope="module")
+def templ_doc_private_saxon(
+        app, org_martigny, templ_doc_private_saxon_data,
+        librarian_saxon):
+    """Create template for a private document saxon."""
+    template = Template.create(
+        data=templ_doc_private_saxon_data,
+        delete_pid=False,
+        dbcommit=True,
+        reindex=True)
+    flush_index(TemplatesSearch.Meta.index)
+    return template
+
+
+@pytest.fixture(scope="module")
+def templ_doc_public_saxon_data(data):
+    """Load template for a public document saxon data."""
+    return deepcopy(data.get('tmpl8'))
+
+
+@pytest.fixture(scope="module")
+def templ_doc_public_saxon(
+        app, org_martigny, templ_doc_public_saxon_data,
+        librarian_saxon):
+    """Create template for a public document saxon."""
+    template = Template.create(
+        data=templ_doc_public_saxon_data,
         delete_pid=False,
         dbcommit=True,
         reindex=True)
@@ -1009,6 +1276,26 @@ def templ_doc_public_sion(
     """Create template for a public document sion."""
     template = Template.create(
         data=templ_doc_public_sion_data,
+        delete_pid=False,
+        dbcommit=True,
+        reindex=True)
+    flush_index(TemplatesSearch.Meta.index)
+    return template
+
+
+@pytest.fixture(scope="module")
+def templ_doc_private_sion_data(data):
+    """Load template for a private document sion data."""
+    return deepcopy(data.get('tmpl9'))
+
+
+@pytest.fixture(scope="module")
+def templ_doc_private_sion(
+        app, org_sion, templ_doc_private_sion_data,
+        system_librarian_sion):
+    """Create template for a private document sion."""
+    template = Template.create(
+        data=templ_doc_private_sion_data,
         delete_pid=False,
         dbcommit=True,
         reindex=True)
@@ -1123,7 +1410,7 @@ def local_field_sion_data(local_fields):
 
 
 @pytest.fixture(scope="module")
-def local_field_sion(app, org_martigny, document, local_field_sion_data):
+def local_field_sion(app, org_sion, document, local_field_sion_data):
     """Load local field."""
     local_field = LocalField.create(
         data=local_field_sion_data,
@@ -1168,3 +1455,46 @@ def operation_log_data(data):
 def operation_log(operation_log_data, item_lib_sion):
     """Load operation log record."""
     return OperationLog.create(operation_log_data, index_refresh=True)
+
+
+# --- Statistics configurations
+@pytest.fixture(scope="module")
+def stats_cfg_martigny_data(data):
+    """Load statistics configuration of martigny organisation."""
+    return deepcopy(data.get('stats_cfg1'))
+
+
+@pytest.fixture(scope="module")
+def stats_cfg_martigny(
+        app,
+        stats_cfg_martigny_data,
+        system_librarian_martigny):
+    """Create stats_cfg of martigny organisation."""
+    stats_cfg = StatConfiguration.create(
+        data=stats_cfg_martigny_data,
+        delete_pid=False,
+        dbcommit=True,
+        reindex=True)
+    flush_index(StatsConfigurationSearch.Meta.index)
+    yield stats_cfg
+
+
+@pytest.fixture(scope="module")
+def stats_cfg_sion_data(data):
+    """Load statistics configuration of sion organisation."""
+    return deepcopy(data.get('stats_cfg2'))
+
+
+@pytest.fixture(scope="module")
+def stats_cfg_sion(
+        app,
+        stats_cfg_sion_data,
+        system_librarian_sion):
+    """Create stats_cfg of sion organisation."""
+    stats_cfg = StatConfiguration.create(
+        data=stats_cfg_sion_data,
+        delete_pid=False,
+        dbcommit=True,
+        reindex=True)
+    flush_index(StatsConfigurationSearch.Meta.index)
+    yield stats_cfg

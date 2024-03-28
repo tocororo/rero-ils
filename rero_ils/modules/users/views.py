@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -27,6 +27,7 @@ from flask_login import current_user
 from invenio_rest import ContentNegotiatedMethodView
 
 from .api import User
+from .models import UserRole
 from ...modules.patrons.api import Patron, current_librarian
 from ...permissions import login_and_librarian
 
@@ -123,18 +124,18 @@ class UsersResource(ContentNegotiatedMethodView):
     @check_user_permission
     def get(self, id):
         """Implement the GET."""
-        user = User.get_by_id(id)
+        user = User.get_record(id)
         return user.dumps()
 
     @check_user_permission
     def put(self, id):
         """Implement the PUT."""
-        user = User.get_by_id(id)
+        user = User.get_record(id)
         user = user.update(request.get_json())
         editing_own_public_profile = str(current_user.id) == id and \
             not (
-                current_user.has_role('system_librarian') and
-                current_user.has_role('librarian')
+                current_user.has_role(UserRole.FULL_PERMISSIONS) and
+                current_user.has_role(UserRole.USER_MANAGER)
         )
         if editing_own_public_profile:
             Patron.set_communication_channel(user)
@@ -169,7 +170,7 @@ class UsersCreateResource(ContentNegotiatedMethodView):
     @check_user_list_permission
     def get(self):
         """Get user info for the professionnal view."""
-        email_or_username = request.args.get('q', None).strip()
+        email_or_username = request.args.get('q', '').strip()
         hits = {
             'hits': {
                 'hits': [],
@@ -204,8 +205,8 @@ class UsersCreateResource(ContentNegotiatedMethodView):
         user = User.create(request.get_json())
         editing_own_public_profile = str(current_user.id) == user.id and \
             not (
-                current_user.has_role('system_librarian') and
-                current_user.has_role('librarian')
+                current_user.has_role(UserRole.FULL_PERMISSIONS) and
+                current_user.has_role(UserRole.USER_MANAGER)
         )
         if editing_own_public_profile:
             Patron.set_communication_channel(user)

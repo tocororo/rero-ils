@@ -1,0 +1,102 @@
+{
+  "identifier": {
+    "title": "Identifier",
+    "type": "object",
+    "additionalProperties": false,
+    "propertiesOrder": [
+      "type",
+      "value",
+      "source"
+    ],
+    "required": [
+      "type",
+      "value"
+    ],
+    "properties": {
+      "type": {
+        "$ref": "#/definitions/type_contribution"
+      },
+      "value": {
+        "$ref": "#/definitions/value"
+      },
+      "source": {
+        "$ref": "#/definitions/source"
+      }
+    },
+    "widget": {
+      "formlyConfig": {
+        "props": {
+          "containerCssClass": "row",
+          "itemCssClass": "col-lg-12",
+          "hide": true
+        }
+      }
+    }
+  },
+  "definitions": {
+    "type_contribution": {
+      "title": "Type",
+      "type": "string",
+      "enum": [
+        "bf:Local",
+        "IdRef",
+        "GND",
+        "RERO"
+      ],
+      "widget": {
+        "formlyConfig": {
+          "props": {
+            "itemCssClass": "col-lg-6",
+            "options": [
+              {
+                "value": "bf:Local",
+                "label": "bf:local"
+              },
+              {
+                "value": "IdRef",
+                "label": "IdRef"
+              },
+              {
+                "value": "GND",
+                "label": "GND"
+              },
+              {
+                "value": "RERO",
+                "label": "RERO"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "value": {
+      "title": "Value",
+      "type": "string",
+      "minLength": 1,
+      "widget": {
+        "formlyConfig": {
+          "props": {
+            "itemCssClass": "col-lg-6"
+          }
+        }
+      }
+    },
+    "source": {
+      "title": "Source",
+      "description": "Source in case of a local identifier.",
+      "type": "string",
+      "minLength": 1,
+      "widget": {
+        "formlyConfig": {
+          "expressions": {
+            "props.required": true,
+            "hide": "field?.parent?.model?.type !== 'bf:Local'"
+          },
+          "props": {
+            "itemCssClass": "col-lg-6"
+          }
+        }
+      }
+    }
+  }
+}

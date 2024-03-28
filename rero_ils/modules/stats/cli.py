@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -26,15 +26,23 @@ from dateutil.relativedelta import relativedelta
 from flask import current_app
 from flask.cli import with_appcontext
 
-from rero_ils.modules.stats.api import Stat, StatsForLibrarian, StatsForPricing
+from .api.api import Stat
+from .api.librarian import StatsForLibrarian
+from .api.pricing import StatsForPricing
+from .models import StatType
 
 
 @click.group()
 def stats():
-    """Notification management commands."""
+    """Statistics management commands."""
 
 
-@stats.command('dumps')
+@stats.group()
+def report():
+    """Stats report management commands."""
+
+
+@stats.command()
 @click.argument('type')
 @with_appcontext
 def dumps(type):
@@ -42,25 +50,25 @@ def dumps(type):
 
     :param type: type of statistics can be 'billing' or 'librarian'
     """
-    if type == 'billing':
+    if type == StatType.BILLING:
         pprint(StatsForPricing(to_date=arrow.utcnow()).collect(), indent=2)
-    elif type == 'librarian':
+    elif type == StatType.LIBRARIAN:
         pprint(StatsForLibrarian(to_date=arrow.utcnow()).collect(), indent=2)
 
 
-@stats.command('collect')
+@stats.command()
 @click.argument('type')
 @with_appcontext
 def collect(type):
-    """Extract the stats value and store it.
+    """Extract the stats values and store it.
 
     :param type: type of statistics can be 'billing' or 'librarian'
     """
     to_date = arrow.utcnow() - relativedelta(days=1)
     date_range = {}
-    if type == 'billing':
+    if type == StatType.BILLING:
         _stats = StatsForPricing(to_date=to_date)
-    elif type == 'librarian':
+    elif type == StatType.LIBRARIAN:
         _from = f'{to_date.year}-{to_date.month:02d}-01T00:00:00'
         _to = to_date.format(fmt='YYYY-MM-DDT23:59:59')
         date_range = {'from': _from, 'to': _to}
@@ -80,7 +88,7 @@ def collect(type):
             New pid: {stat.pid}', fg='green')
 
 
-@stats.command('collect_year')
+@stats.command()
 @click.argument('year', type=int)
 @click.argument('timespan', default='yearly')
 @click.option('--n_months', default=12)
@@ -95,7 +103,7 @@ def collect_year(year, timespan, n_months, force):
     :param force: force update of stat.
     """
     stat_pid = None
-    type = 'librarian'
+    type = StatType.LIBRARIAN
     if year:
         if timespan == 'montly':
             if n_months not in range(1, 13):
@@ -184,3 +192,59 @@ def collect_year(year, timespan, n_months, force):
                             New pid: {stat.pid}', fg='green')
 
         return
+
+
+@report.command()
+@click.argument('pid')
+@with_appcontext
+def dumps(pid):
+    """Extract the stats value for preview.
+
+    :param pid: pid value of the configuration to use.
+    """
+    from .api.report import StatsReport
+    from ..stats_cfg.api import StatConfiguration
+    cfg = StatConfiguration.get_record_by_pid(pid)
+    if not cfg:
+        click.secho(f'Configuration does not exists.', fg='red')
+    else:
+        from pprint import pprint
+        pprint(StatsReport(cfg).collect())
+
+
+@report.command()
+@click.argument('pid')
+@with_appcontext
+def collect(pid):
+    """Extract the stats report values and store it.
+
+    :param pid: pid value of the configuration to use.
+    """
+    from .api.report import StatsReport
+    from ..stats_cfg.api import StatConfiguration
+    cfg = StatConfiguration.get_record_by_pid(pid)
+    if not cfg:
+        click.secho(f'Configuration does not exists.', fg='red')
+    else:
+        stat_report = StatsReport(cfg)
+        values = stat_report.collect()
+        stat_report.create_stat(values)
+
+
+@report.command()
+@click.argument('frequency', type=click.Choice(['month', 'year']))
+@click.option('--delayed', '-d', is_flag=True,
+              help='Run indexing in background.')
+@with_appcontext
+def collect_all(frequency, delayed):
+    """Extract the stats report values and store it.
+
+    :param pid: pid value of the configuration to use.
+    """
+    from .tasks import collect_stats_reports
+    if delayed:
+        res = collect_stats_reports.delay(frequency)
+        click.secho(f'Generated reports delayed, task id: {res}', fg='green')
+    else:
+        res = collect_stats_reports(frequency)
+        click.secho(f'Generated {len(res)} reports.', fg='green')

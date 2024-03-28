@@ -20,9 +20,6 @@ from flask import url_for
 from invenio_accounts.testutils import login_user_via_session
 from utils import get_json, login_user
 
-from rero_ils.modules.permissions import RecordPermission, \
-    record_permission_factory
-
 
 def test_document_permissions(
         client, document, librarian_martigny,
@@ -104,32 +101,29 @@ def test_patrons_permissions(
     # simple librarian -----------------------------------------------
     login_user(client, librarian_martigny)
     # 1) should update and delete a librarian of the same library
-    data = call_api_permissions(client, 'patrons',
-                                librarian2_martigny.pid)
+    data = call_api_permissions(client, 'patrons', librarian2_martigny.pid)
     assert data['delete']['can']
     assert data['update']['can']
     # 2) should not update and delete a librarian of an other library
-    data = call_api_permissions(client, 'patrons',
-                                librarian_saxon.pid)
+    data = call_api_permissions(client, 'patrons', librarian_saxon.pid)
     assert not data['delete']['can']
     assert not data['update']['can']
-    # 3) should not update and delete a system librarian
+    # 3) should not delete a system librarian
+    #    but can update it (except some roles management)
     data = call_api_permissions(client, 'patrons',
                                 system_librarian_martigny.pid)
     assert not data['delete']['can']
-    assert not data['update']['can']
+    assert data['update']['can']
 
     # system librarian ----------------------------------------------
     login_user(client, system_librarian_martigny)
     # should update and delete a librarian of the same library
-    data = call_api_permissions(client, 'patrons',
-                                librarian2_martigny.pid)
+    data = call_api_permissions(client, 'patrons', librarian2_martigny.pid)
     assert data['delete']['can']
     assert data['update']['can']
 
     # should update and delete a librarian of an other library
-    data = call_api_permissions(client, 'patrons',
-                                librarian_saxon.pid)
+    data = call_api_permissions(client, 'patrons', librarian_saxon.pid)
     assert data['delete']['can']
     assert data['update']['can']
 
@@ -140,9 +134,8 @@ def test_patrons_permissions(
     assert data['delete']['can']
     assert data['update']['can']
 
-    # should not update and delete a system librarian of an other organisation
-    data = call_api_permissions(client, 'patrons',
-                                system_librarian_sion.pid)
+    # should not update and delete a system librarian of another organisation
+    data = call_api_permissions(client, 'patrons', system_librarian_sion.pid)
     assert not data['delete']['can']
     assert not data['update']['can']
 
@@ -185,33 +178,3 @@ def call_api_permissions(client, route_name, pid):
     )
     assert response.status_code == 200
     return get_json(response)
-
-
-def test_record_permission_factory(app, client, librarian_martigny):
-    """Test record permission factory."""
-
-    # disabled all permission, all operation on all resources are available
-    app.config['RERO_ILS_APP_DISABLE_PERMISSION_CHECKS'] = True
-    permission = record_permission_factory()
-    assert permission.can()
-
-    app.config['RERO_ILS_APP_DISABLE_PERMISSION_CHECKS'] = False
-    actions = ['list', 'read', 'create', 'update', 'delete']
-    # test default RecordPermission for not logged user
-    for action in actions:
-        permission = record_permission_factory(record={}, action=action)
-        assert not permission.can()
-
-    # test default RecordPermission for super_user
-    login_user_via_session(client, librarian_martigny.user)
-    for action in actions:
-        permission = record_permission_factory(record={}, action=action)
-        assert not permission.can()
-        permission = RecordPermission.create_permission(
-            {}, action, user=librarian_martigny.user
-        )
-        assert not permission.can()
-
-    # test dummy action
-    permission = record_permission_factory(record={}, action='dummy')
-    assert not permission.can()

@@ -23,7 +23,7 @@ from copy import deepcopy
 from datetime import datetime
 
 import pytest
-from invenio_accounts.ext import hash_password
+from flask_security.utils import hash_password
 from invenio_accounts.models import User
 from utils import flush_index
 
@@ -32,20 +32,39 @@ from rero_ils.modules.items.api import Item, ItemsSearch
 
 
 @pytest.fixture(scope='function')
-def user_with_profile(db):
+def user_without_profile(db, default_user_password):
+    """Create a simple invenio user with a profile."""
+    with db.session.begin_nested():
+        user = User(
+            email='user_without_profile@test.com',
+            password=hash_password(default_user_password),
+            user_profile=None,
+            active=True,
+        )
+        db.session.add(user)
+    db.session.commit()
+    return user
+
+
+@pytest.fixture(scope='function')
+def user_with_profile(db, default_user_password):
     """Create a simple invenio user with a profile."""
     with db.session.begin_nested():
         user = User(
             email='user_with_profile@test.com',
-            password=hash_password('123456'),
-            profile=dict(), active=True)
+            password=hash_password(default_user_password),
+            user_profile={},
+            active=True,
+        )
         db.session.add(user)
-        profile = user.profile
-        profile.birth_date = datetime(1990, 1, 1)
-        profile.first_name = 'User'
-        profile.last_name = 'With Profile'
-        profile.city = 'Nowhere'
+        profile = dict(
+            birth_date=datetime(1990, 1, 1),
+            first_name='User',
+            last_name='With Profile',
+            city='Nowhere'
+        )
         profile.username = 'user_with_profile'
+        user.user_profile = profile
         db.session.merge(user)
     db.session.commit()
     return user
@@ -131,15 +150,15 @@ def doc_title_travailleuses(app):
         }],
         'contribution': [
             {
-                'agent': {
-                    'preferred_name': 'Müller, John',
+                'entity': {
+                    'authorized_access_point': 'Müller, John',
                     'type': 'bf:Person'
                 },
                 'role': ['aut']
             },
             {
-                'agent': {
-                    'preferred_name': 'Corminbœuf, Gruß',
+                'entity': {
+                    'authorized_access_point': 'Corminbœuf, Gruß',
                     'type': 'bf:Person'
                 },
                 'role': ['aut']
@@ -177,6 +196,7 @@ def item_lib_martigny_masked(
         item_type_standard_martigny):
     """Create item of martigny library."""
     data = deepcopy(item_lib_martigny_data)
+    data['barcode'] = 'masked'
     data['pid'] = f'maked-{data["pid"]}'
     data['_masked'] = True
     item = Item.create(

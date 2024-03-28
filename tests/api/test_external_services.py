@@ -21,12 +21,14 @@
 # from utils import get_json, to_relative_url
 
 import mock
+import requests
 from flask import url_for
 from invenio_accounts.testutils import login_user_via_session
-from utils import VerifyRecordPermissionPatch, get_json, mock_response, \
-    to_relative_url
+from utils import VerifyRecordPermissionPatch, clean_text, get_json, \
+    mock_response, to_relative_url
 
 from rero_ils.modules.documents.api import Document
+from rero_ils.modules.imports.api import LoCImport
 
 
 @mock.patch('invenio_records_rest.views.verify_record_permission',
@@ -35,17 +37,17 @@ def test_documents_get(client, document):
     """Test record retrieval."""
     def clean_es_metadata(metadata):
         """Clean contribution from authorized_access_point_"""
-        contributions = []
-        for contribution in metadata.get('contribution', []):
-            agent = {}
-            for item in contribution['agent']:
-                if item == 'authorized_access_point':
-                    agent['preferred_name'] = contribution['agent'][item]
-                elif not item.startswith('authorized_access_point_'):
-                    agent[item] = contribution['agent'][item]
-            contribution['agent'] = agent
-            contributions.append(contribution)
-        # REMOVE DYNAMICALLY ADDED ES KEYS (see listener.py)
+        # Contributions, subject and genreForm are i18n indexed field, so it's
+        # too complicated to compare it from original record. Just take the
+        # data from original record ... not best, but not real alternatives.
+        if contribution := document.get('contribution'):
+            metadata['contribution'] = contribution
+        if subjects := document.get('subjects'):
+            metadata['subjects'] = subjects
+        if genreForms := document.get('genreForm'):
+            metadata['genreForm'] = genreForms
+
+        # REMOVE DYNAMICALLY ADDED ES KEYS (see indexer.py:IndexerDumper)
         metadata.pop('sort_date_new', None)
         metadata.pop('sort_date_old', None)
         metadata.pop('sort_title', None)
@@ -58,7 +60,7 @@ def test_documents_get(client, document):
     item_url = url_for('invenio_records_rest.doc_item', pid_value='doc1')
     res = client.get(item_url)
     assert res.status_code == 200
-    assert res.headers['ETag'] == '"{}"'.format(document.revision_id)
+    assert res.headers['ETag'] == f'"{document.revision_id}"'
     data = get_json(res)
     # DEV NOTES : Why removing `identifiedBy` key
     #   During the ES enrichment process, we complete the original identifiers
@@ -89,7 +91,6 @@ def test_documents_get(client, document):
 
     list_url = url_for('invenio_records_rest.doc_list', q="Vincent Berthe")
     res = client.get(list_url)
-    print(res.json)
     assert res.status_code == 200
     data = get_json(res)
     assert data['hits']['total']['value'] == 1
@@ -244,8 +245,7 @@ def test_documents_import_bnf_ean(mock_get, client, bnf_ean_any_123,
 
 
 @mock.patch('requests.get')
-@mock.patch('rero_ils.permissions.login_and_librarian',
-            mock.MagicMock())
+@mock.patch('rero_ils.permissions.login_and_librarian', mock.MagicMock())
 def test_documents_import_loc_isbn(mock_get, client, loc_isbn_all_123,
                                    loc_isbn_all_9781604689808,
                                    loc_isbn_all_9780821417478,
@@ -374,8 +374,26 @@ def test_documents_import_loc_isbn(mock_get, client, loc_isbn_all_123,
 
 
 @mock.patch('requests.get')
-@mock.patch('rero_ils.permissions.login_and_librarian',
-            mock.MagicMock())
+def test_documents_import_loc_missing_id(mock_get, client, loc_without_010):
+    """Test document import from LoC."""
+
+    mock_get.return_value = mock_response(
+        content=loc_without_010
+    )
+    results, status_code = LoCImport().search_records(
+        what='test',
+        relation='all',
+        where='anywhere',
+        max_results=100,
+        no_cache=True
+    )
+    assert status_code == 200
+    assert results['hits']['total']['value'] == 9
+    assert len(results['hits']['hits']) == 9
+
+
+@mock.patch('requests.get')
+@mock.patch('rero_ils.permissions.login_and_librarian', mock.MagicMock())
 def test_documents_import_dnb_isbn(mock_get, client, dnb_isbn_123,
                                    dnb_isbn_9783862729852,
                                    dnb_isbn_3858818526,
@@ -409,6 +427,7 @@ def test_documents_import_dnb_isbn(mock_get, client, dnb_isbn_123,
     data.update({
         "$schema": "https://bib.rero.ch/schemas/documents/document-v0.0.1.json"
     })
+    data = clean_text(data)
     assert Document.create(data)
     marc21_link = res_j.get('hits').get('hits')[0].get('links').get('marc21')
 
@@ -480,8 +499,7 @@ def test_documents_import_dnb_isbn(mock_get, client, dnb_isbn_123,
 
 
 @mock.patch('requests.get')
-@mock.patch('rero_ils.permissions.login_and_librarian',
-            mock.MagicMock())
+@mock.patch('rero_ils.permissions.login_and_librarian', mock.MagicMock())
 def test_documents_import_slsp_isbn(mock_get, client, slsp_anywhere_123,
                                     slsp_isbn_9782296076648,
                                     slsp_isbn_3908497272,
@@ -610,8 +628,7 @@ def test_documents_import_slsp_isbn(mock_get, client, slsp_anywhere_123,
 
 
 @mock.patch('requests.get')
-@mock.patch('rero_ils.permissions.login_and_librarian',
-            mock.MagicMock())
+@mock.patch('rero_ils.permissions.login_and_librarian', mock.MagicMock())
 def test_documents_import_ugent_isbn(mock_get, client, ugent_anywhere_123,
                                      ugent_isbn_9781108422925,
                                      ugent_book_without_26X,
@@ -716,8 +733,7 @@ def test_documents_import_ugent_isbn(mock_get, client, ugent_anywhere_123,
 
 
 @mock.patch('requests.get')
-@mock.patch('rero_ils.permissions.login_and_librarian',
-            mock.MagicMock())
+@mock.patch('rero_ils.permissions.login_and_librarian', mock.MagicMock())
 def test_documents_import_kul_isbn(mock_get, client, kul_anywhere_123,
                                    kul_isbn_9782265089419,
                                    kul_book_without_26X,
@@ -843,3 +859,54 @@ def test_documents_import_kul_isbn(mock_get, client, kul_anywhere_123,
     ))
     assert res.status_code == 200
     assert get_json(res).get('metadata', {}).get('ui_title_text')
+
+
+@mock.patch('requests.get')
+@mock.patch('rero_ils.permissions.login_and_librarian', mock.MagicMock())
+def test_documents_import_bnf_errors(mock_get, client):
+    """Test document import from bnf."""
+
+    mock_get.return_value = mock_response(
+        content=b''
+    )
+    res = client.get(url_for(
+        'api_imports.import_bnf',
+        q='ean:any',
+        no_cache=1
+    ))
+    assert res.status_code == 200
+    data = get_json(res)
+    assert not data.get('metadata')
+
+    mock_get.return_value = mock_response(
+        content=b'',
+        status=429
+    )
+    res = client.get(url_for(
+        'api_imports.import_bnf',
+        q='ean:any:123',
+        no_cache=1
+    ))
+    assert res.status_code == 429
+    data = get_json(res)
+    assert data.get('errors')
+
+    err_msg = 'error'
+    err_code = 555
+    error = requests.exceptions.HTTPError(err_msg)
+    error.response = mock.MagicMock()
+    error.response.status_code = err_code
+    error.response.content = 'Error Code'
+    mock_get.return_value = mock_response(
+        content=b'',
+        status=555,
+        raise_for_status=error
+    )
+    res = client.get(url_for(
+        'api_imports.import_bnf',
+        q='ean:any:123',
+        no_cache=1
+    ))
+    data = get_json(res)
+    assert res.status_code == err_code
+    assert data['errors']['message'] == err_msg

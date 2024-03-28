@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -25,13 +25,13 @@ from .tasks import create_records, delete_records
 from ..utils import set_timestamp
 
 
-def publish_harvested_records(sender=None, records=None, max=None,
+def publish_harvested_records(sender=None, records=None, max_results=None,
                               *args, **kwargs):
     """Create, index the harvested records."""
     # name = kwargs['name']
     records = records if records else []
-    if max:
-        records = list(records)[:int(max)]
+    if max_results:
+        records = list(records)[:int(max_results)]
     converted_records = []
     deleted_records = []
     for record in records:
@@ -54,18 +54,15 @@ def publish_harvested_records(sender=None, records=None, max=None,
             converted_records.append(rec)
     if converted_records:
         current_app.logger.info(
-            'publish_harvester: received {count} records to create'
-            .format(count=len(converted_records))
+            f'publish_harvester: received {len(converted_records)} '
+            'records to create'
         )
         create_records(converted_records)
     if deleted_records:
         current_app.logger.info(
-            'publish_harvester: received {count} records to delete'
-            .format(count=len(deleted_records))
+            f'publish_harvester: received {len(deleted_records)} '
+            'records to delete'
         )
         delete_records(deleted_records)
-    msg = 'deleted: {delete_count}, created: {create_count}'.format(
-        delete_count=len(deleted_records),
-        create_count=len(converted_records)
-    )
+    msg = f'deleted: {len(deleted_records)}, created: {len(converted_records)}'
     set_timestamp('ebooks-harvester', msg=msg)

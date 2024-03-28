@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2022 RERO
-# Copyright (C) 2022 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -21,12 +21,12 @@
 from datetime import datetime, timezone
 
 from flask import current_app
-from flask_babelex import gettext as _
+from flask_babel import gettext as _
 from invenio_circulation.errors import CirculationException, \
     ItemNotAvailableError
 
 from rero_ils.modules.documents.api import Document
-from rero_ils.modules.documents.utils import title_format_text_head
+from rero_ils.modules.documents.extensions import TitleExtension
 from rero_ils.modules.errors import ItemBarcodeNotFound, NoCirculationAction, \
     PatronBarcodeNotFound
 from rero_ils.modules.items.api import Item
@@ -79,7 +79,7 @@ def validate_patron_account(barcode=None, **kwargs):
     :return: ``True`` if patron exists or ``False``.
     """
     patron = Patron.get_patron_by_barcode(
-        barcode, filter_by_org_pid=kwargs.get('institution_id'))
+        barcode=barcode, org_pid=kwargs.get('institution_id'))
     return patron and patron.is_patron
 
 
@@ -92,11 +92,11 @@ def authorize_patron(barcode, password, **kwargs):
     :return: ``True`` if patron is authorized or ``False``.
     """
     patron = Patron.get_patron_by_barcode(
-        barcode, filter_by_org_pid=kwargs.get('institution_id'))
+        barcode=barcode, org_pid=kwargs.get('institution_id'))
     if patron and patron.is_patron:
         # User email is an optional field. When User hasn't email address,
         # we take his username as login.
-        user_login = patron.user.email or patron.user.profile.username
+        user_login = patron.user.email or patron.user.username
         return authorize_selfckeck_user(user_login, password)
     return False
 
@@ -128,7 +128,7 @@ def enable_patron(barcode, **kwargs):
         from invenio_sip2.models import SelfcheckEnablePatron
         institution_id = kwargs.get('institution_id')
         patron = Patron.get_patron_by_barcode(
-            barcode, filter_by_org_pid=institution_id)
+            barcode=barcode, org_pid=institution_id)
         if patron:
             return SelfcheckEnablePatron(
                 patron_status=get_patron_status(patron),
@@ -157,7 +157,7 @@ def patron_status(barcode, **kwargs):
         from invenio_sip2.models import SelfcheckPatronStatus
         institution_id = kwargs.get('institution_id')
         patron = Patron.get_patron_by_barcode(
-            barcode, filter_by_org_pid=institution_id)
+            barcode=barcode, org_pid=institution_id)
         if patron:
             patron_status_response = SelfcheckPatronStatus(
                 patron_status=get_patron_status(patron),
@@ -165,8 +165,7 @@ def patron_status(barcode, **kwargs):
                 patron_id=barcode,
                 patron_name=patron.formatted_name,
                 institution_id=patron.organisation_pid,
-                currency_type=patron.get_organisation().get(
-                    'default_currency'),
+                currency_type=patron.organisation.get('default_currency'),
                 valid_patron=patron.is_patron
             )
 
@@ -194,7 +193,7 @@ def patron_information(barcode, **kwargs):
         from invenio_sip2.models import SelfcheckPatronInformation
         institution_id = kwargs.get('institution_id')
         patron = Patron.get_patron_by_barcode(
-            barcode, filter_by_org_pid=institution_id)
+            barcode=barcode, org_pid=institution_id)
         if patron:
             patron_dumps = patron.dumps()
             patron_account_information = SelfcheckPatronInformation(
@@ -209,8 +208,7 @@ def patron_information(barcode, **kwargs):
                         patron_dumps.get('email')),
                 home_phone=patron_dumps.get('home_phone'),
                 home_address=format_patron_address(patron),
-                currency_type=patron.get_organisation().get(
-                    'default_currency'),
+                currency_type=patron.organisation.get('default_currency'),
                 valid_patron=patron.is_patron
             )
 
@@ -285,7 +283,7 @@ def item_information(item_barcode, **kwargs):
 
                 item_information = SelfcheckItemInformation(
                     item_id=item.get('barcode'),
-                    title_id=title_format_text_head(document.get('title')),
+                    title_id=TitleExtension.format_text(document.get('title')),
                     circulation_status=map_item_circulation_status(
                         item.status),
                     fee_type=SelfcheckFeeType.OTHER,
@@ -360,14 +358,14 @@ def selfcheck_checkout(transaction_user_pid, item_barcode, patron_barcode,
                     raise ItemBarcodeNotFound
                 document = Document.get_record_by_pid(item.document_pid)
                 checkout = SelfcheckCheckout(
-                    title_id=title_format_text_head(document.get('title')),
+                    title_id=TitleExtension.format_text(document.get('title')),
                 )
 
                 staffer = Patron.get_record_by_pid(transaction_user_pid)
-                if staffer.is_librarian:
+                if staffer.is_professional_user:
                     patron = Patron.get_patron_by_barcode(
-                        patron_barcode,
-                        filter_by_org_pid=terminal.organisation_pid)
+                        barcode=patron_barcode,
+                        org_pid=terminal.organisation_pid)
                     if not patron:
                         raise PatronBarcodeNotFound
                     # do checkout
@@ -470,11 +468,11 @@ def selfcheck_checkin(transaction_user_pid, item_barcode, **kwargs):
                     raise ItemBarcodeNotFound
 
                 document = Document.get_record_by_pid(item.document_pid)
-                checkin['title_id'] = title_format_text_head(
+                checkin['title_id'] = TitleExtension.format_text(
                     document.get('title')
                 )
                 staffer = Patron.get_record_by_pid(transaction_user_pid)
-                if staffer.is_librarian:
+                if staffer.is_professional_user:
                     # do checkin
                     result, data = item.checkin(
                         transaction_user_pid=staffer.pid,
@@ -500,7 +498,7 @@ def selfcheck_checkin(transaction_user_pid, item_barcode, **kwargs):
                     _('Error encountered: item not found'))
                 checkin.get('screen_messages', []).append(
                     _('Error encountered: please contact a librarian'))
-            except NoCirculationAction as circ_no_action:
+            except NoCirculationAction:
                 checkin.get('screen_messages', []).append(
                     _('No circulation action is possible'))
             except CirculationException as circ_err:
@@ -541,11 +539,11 @@ def selfcheck_renew(transaction_user_pid, item_barcode, **kwargs):
 
                 document = Document.get_record_by_pid(item.document_pid)
                 renew = SelfcheckRenew(
-                    title_id=title_format_text_head(document.get('title'))
+                    title_id=TitleExtension.format_text(document.get('title'))
                 )
 
                 staffer = Patron.get_record_by_pid(transaction_user_pid)
-                if staffer.is_librarian:
+                if staffer.is_professional_user:
                     # do extend loan
                     result, data = item.extend_loan(
                         transaction_user_pid=staffer.pid,

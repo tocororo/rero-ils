@@ -26,8 +26,7 @@
     "$schema",
     "first_name",
     "last_name",
-    "birth_date",
-    "username"
+    "birth_date"
   ],
   "properties": {
     "$schema": {
@@ -62,7 +61,7 @@
       "title": "Date of birth",
       "type": "string",
       "format": "date",
-      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$",
+      "pattern": "^(19|2[0-9])[0-9]{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$",
       "widget": {
         "formlyConfig": {
           "validation": {
@@ -70,7 +69,7 @@
               "patternMessage": "Should be in the following format: 2022-12-31 (YYYY-MM-DD)."
             }
           },
-          "templateOptions": {
+          "props": {
             "placeholder": "Example: 1985-12-29"
           }
         }
@@ -84,36 +83,43 @@
         "other",
         "no_information"
       ],
-      "form": {
-        "options": [
-          {
-            "label": "male",
-            "value": "male"
-          },
-          {
-            "label": "female",
-            "value": "female"
-          },
-          {
-            "label": "other",
-            "value": "other"
-          },
-          {
-            "label": "no_information",
-            "value": "no_information"
+      "widget": {
+        "formlyConfig": {
+          "props": {
+            "options": [
+              {
+                "label": "male",
+                "value": "male"
+              },
+              {
+                "label": "female",
+                "value": "female"
+              },
+              {
+                "label": "other",
+                "value": "other"
+              },
+              {
+                "label": "no_information",
+                "value": "no_information"
+              }
+            ]
           }
-        ]
+        }
       }
     },
     "username": {
       "title": "Username",
       "description": "Login username for the web interface.",
       "type": "string",
-      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-_]{2}[a-zA-Z0-9-_]*$",
+      "pattern": "^[a-zA-Z0-9-_]{2,255}$",
       "minLength": 3,
       "maxLength": 255,
       "widget": {
         "formlyConfig": {
+          "expressionProperties": {
+            "templateOptions.required": "true"
+          },
           "validation": {
             "messages": {
               "patternMessage": "Username must start with a letter or a number, be at least three characters long and only contain alphanumeric characters, dashes and underscores.",
@@ -129,10 +135,12 @@
       "type": "string",
       "minLength": 1,
       "maxLength": 255,
-      "form": {
-        "type": "textarea",
-        "templateOptions": {
-          "rows": 2
+      "widget": {
+        "formlyConfig": {
+          "type": "textarea",
+          "props": {
+            "rows": 2
+          }
         }
       }
     },
@@ -149,7 +157,20 @@
       "maxLength": 255
     },
     "country": {
-      "$ref": "https://bib.rero.ch/schemas/common/countries-v0.0.1.json#/country"
+      "allOf": [
+        {
+          "widget": {
+            "formlyConfig": {
+              "props": {
+                "itemCssClass": "col-lg-12"
+              }
+            }
+          }
+        },
+        {
+          "$ref": "https://bib.rero.ch/schemas/common/countries-v0.0.1.json#/country"
+        }
+      ]
     },
     "home_phone": {
       "title": "Home phone number",
@@ -165,7 +186,7 @@
               "patternMessage": "Phone number with the international prefix, without spaces, ie +41221234567."
             }
           },
-          "templateOptions": {
+          "props": {
             "placeholder": "Example: +41791231212"
           }
         }
@@ -185,7 +206,7 @@
               "patternMessage": "Phone number with the international prefix, without spaces, ie +41221234567."
             }
           },
-          "templateOptions": {
+          "props": {
             "placeholder": "Example: +41791231212"
           }
         }
@@ -205,7 +226,7 @@
               "patternMessage": "Phone number with the international prefix, without spaces, ie +41221234567."
             }
           },
-          "templateOptions": {
+          "props": {
             "placeholder": "Example: +41791231212"
           }
         }
@@ -225,7 +246,7 @@
               "patternMessage": "Phone number with the international prefix, without spaces, ie +41221234567."
             }
           },
-          "templateOptions": {
+          "props": {
             "placeholder": "Example: +41791231212"
           }
         }
@@ -255,18 +276,20 @@
     "password": {
       "title": "Password",
       "type": "string",
-      "minLength": 6,
       "maxLength": 255,
       "widget": {
-        "templateOptions": {
-          "type": "password"
+        "formlyConfig": {
+          "type": "passwordGenerator",
+          "props": {
+            "api": "/api/user/password/generate"
+          }
         }
       }
     }
   },
   "widget": {
     "formlyConfig": {
-      "templateOptions": {
+      "props": {
         "hideLabel": true
       }
     }

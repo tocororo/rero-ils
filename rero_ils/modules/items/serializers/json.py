@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
-# Copyright (C) 2020 UCLouvain
+# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2020-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -19,10 +19,9 @@
 """RERO Item JSON serialization."""
 
 from rero_ils.modules.documents.api import DocumentsSearch
-from rero_ils.modules.documents.utils import title_format_text_head
+from rero_ils.modules.documents.extensions import TitleExtension
 from rero_ils.modules.item_types.api import ItemTypesSearch
 from rero_ils.modules.items.api import Item
-from rero_ils.modules.items.models import ItemStatus
 from rero_ils.modules.libraries.api import LibrariesSearch
 from rero_ils.modules.locations.api import LocationsSearch
 from rero_ils.modules.organisations.api import OrganisationsSearch
@@ -36,24 +35,23 @@ class ItemsJSONSerializer(JSONSerializer, CachedDataSerializerMixin):
 
     def _postprocess_search_hit(self, hit: dict) -> None:
         """Post-process each hit of a search result."""
+        def _set_item_type_circulation_information(metadata, pid):
+            """Get Item type circulation information.
+
+            :param: metadata: The item record.
+            :param: pid: the item type pid.
+            """
+            record = self.get_resource(ItemTypesSearch(), pid) or {}
+            if circulation := record.get('circulation_information'):
+                metadata['item_type']['circulation_information'] = circulation
+
         metadata = hit.get('metadata', {})
         doc_pid = metadata.get('document').get('pid')
         document = self.get_resource(DocumentsSearch(), doc_pid)
-        metadata['ui_title_text'] = title_format_text_head(
+        metadata['ui_title_text'] = TitleExtension.format_text(
             document['title'], with_subtitle=True)
 
         item = self.get_resource(Item, metadata.get('pid'))
-        metadata['available'] = item.available
-        metadata['availability'] = {
-            'available': metadata['available'],
-            'status': metadata['status'],
-            'display_text': item.availability_text,
-            'request': item.number_of_requests()
-        }
-        if not metadata['available'] \
-           and metadata['status'] == ItemStatus.ON_LOAN:
-            metadata['availability']['due_date'] = \
-                item.get_item_end_date(format='long', language='en')
 
         # Item in collection
         if collection := item.in_collection():
@@ -77,6 +75,13 @@ class ItemsJSONSerializer(JSONSerializer, CachedDataSerializerMixin):
         location_pid = metadata['location']['pid']
         location = self.get_resource(LocationsSearch(), location_pid)
         metadata['location']['name'] = location.get('name')
+
+        # Try to serialize circulation information from best possible
+        # related `ItemType` resource if exists.
+        if itty_pid := metadata.get('temporary_item_type', {}).get('pid'):
+            itty_rec = self.get_resource(ItemTypesSearch(), itty_pid) or {}
+            if circulation := itty_rec.get('circulation_information'):
+                metadata['item_type']['circulation_information'] = circulation
 
         super()._postprocess_search_hit(hit)
 
@@ -106,4 +111,34 @@ class ItemsJSONSerializer(JSONSerializer, CachedDataSerializerMixin):
             aggregations.get('vendor', {}).get('buckets', []),
             VendorsSearch, 'name'
         )
+        if aggregations.get('current_requests'):
+            aggregations['current_requests']['type'] = 'range'
+            aggregations['current_requests']['config'] = {
+                'min': 1,
+                'max': 100,
+                'step': 1
+            }
+        if aggr := aggregations.get('claims_date'):
+            JSONSerializer.add_date_range_configuration(aggr)
+
         super()._postprocess_search_aggregations(aggregations)
+
+    def preprocess_record(self, pid, record, links_factory=None, **kwargs):
+        """Prepare a record and persistent identifier for serialization.
+
+        :param pid: Persistent identifier instance.
+        :param record: Record instance.
+        :param links_factory: Factory function for record links.
+        """
+        if record.is_issue and (notifications := record.claim_notifications):
+            dates = [
+                notification['creation_date']
+                for notification in notifications
+                if 'creation_date' in notification
+            ]
+            record.setdefault('issue', {})['claims'] = {
+                'counter': len(notifications),
+                'dates': dates
+            }
+        return super().preprocess_record(
+            pid=pid, record=record, links_factory=links_factory, kwargs=kwargs)

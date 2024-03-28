@@ -16,12 +16,14 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """Search tests."""
-
+import mock
 from flask import url_for
-from utils import get_json, login_user_via_session
+from utils import VerifyRecordPermissionPatch, get_json
 
 
-def test_document_search(
+@mock.patch('invenio_records_rest.views.verify_record_permission',
+            mock.MagicMock(return_value=VerifyRecordPermissionPatch))
+def test_documents_search(
         client,
         doc_title_travailleurs,
         doc_title_travailleuses
@@ -317,30 +319,32 @@ def test_document_search(
     hits = get_json(res)['hits']
     assert hits['total']['value'] == 1
 
-
-def test_patrons_search(
-        client,
-        librarian_martigny
-):
-    """Test document boosting."""
-    login_user_via_session(client, librarian_martigny.user)
-    birthdate = librarian_martigny.dumps()['birth_date']
-    # complete birthdate
+    # test wildcard query with boolean sub property
+    # See: elasticsearch query_string lenient property
+    #      for more details
     list_url = url_for(
-        'invenio_records_rest.ptrn_list',
-        q='{birthdate}'.format(birthdate=birthdate),
-        simple='1'
+        'invenio_records_rest.doc_list',
+        q=r'subjects.\*:test'
     )
     res = client.get(list_url)
     hits = get_json(res)['hits']
-    assert hits['total']['value'] == 1
+    assert hits
 
-    # birth year
+    # test wildcard query with boolean sub property
+    # See: elasticsearch query_string lenient property
+    #      for more details
     list_url = url_for(
-        'invenio_records_rest.ptrn_list',
-        q='{birthdate}'.format(birthdate=birthdate.split('-')[0]),
-        simple='1'
+        'invenio_records_rest.doc_list',
+        q=r'autocomplete_title:travailleu'
     )
     res = client.get(list_url)
     hits = get_json(res)['hits']
-    assert hits['total']['value'] == 1
+    assert hits['total']['value'] != 0
+
+    list_url = url_for(
+        'invenio_records_rest.doc_list',
+        q=r'autocomplete_title:travailleur'
+    )
+    res = client.get(list_url)
+    hits = get_json(res)['hits']
+    assert hits['total']['value'] != 0

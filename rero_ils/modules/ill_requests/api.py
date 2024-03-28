@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -17,19 +18,24 @@
 
 """API for manipulating ill_requests."""
 
+from datetime import datetime, timezone
 from functools import partial
 
-from flask_babelex import gettext as _
+from dateutil.relativedelta import *
+from elasticsearch_dsl.query import Q
+from flask import current_app
+from flask_babel import gettext as _
+
+from rero_ils.modules.api import IlsRecord, IlsRecordsIndexer, IlsRecordsSearch
+from rero_ils.modules.fetchers import id_fetcher
+from rero_ils.modules.locations.api import Location
+from rero_ils.modules.minters import id_minter
+from rero_ils.modules.providers import Provider
+from rero_ils.modules.utils import extracted_data_from_ref
 
 from .extensions import IllRequestOperationLogObserverExtension
 from .models import ILLRequestIdentifier, ILLRequestMetadata, \
-    ILLRequestNoteStatus
-from ..api import IlsRecord, IlsRecordsIndexer, IlsRecordsSearch
-from ..fetchers import id_fetcher
-from ..locations.api import Location
-from ..minters import id_minter
-from ..providers import Provider
-from ..utils import extracted_data_from_ref
+    ILLRequestNoteStatus, ILLRequestStatus
 
 # provider
 ILLRequestProvider = type(
@@ -51,6 +57,24 @@ class ILLRequestsSearch(IlsRecordsSearch):
 
         index = 'ill_requests'
         doc_types = None
+
+    def get_ill_requests_total_for_patron(self, patron_pid):
+        """Get the total number of ill requests filtered by date for a patron.
+
+        Months defined in config.py.
+
+        :param patron_pid: the patron pid being searched.
+        :return: return total of ill requests.
+        """
+        months = current_app.config.get('RERO_ILS_ILL_HIDE_MONTHS', 6)
+        date_delta = datetime.now(timezone.utc) - relativedelta(months=months)
+        filters = Q(
+            'range',
+            _created={'lte': 'now', 'gte': date_delta}
+        )
+        filters |= Q('term', status=ILLRequestStatus.PENDING)
+        filters &= Q('term', patron__pid=patron_pid)
+        return self.filter(filters).count()
 
 
 class ILLRequest(IlsRecord):

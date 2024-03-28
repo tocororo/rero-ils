@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -27,11 +28,11 @@ from invenio_search import current_search
 def record_to_index(record):
     """Get index/doc_type given a record.
 
-    It tries to extract from `record['$schema']` the index and doc_type.
+    It tries to extract from `record['$schema']` the index.
     If it fails, return the default values.
 
     :param record: The record object.
-    :return: Tuple (index, doc_type).
+    :return: index.
     """
     index_names = current_search.mappings.keys()
     schema = record.get('$schema', '')
@@ -40,12 +41,10 @@ def record_to_index(record):
 
     # authorities specific transformation
     if re.search(r'/mef/', schema):
-        schema = re.sub(r'/mef/', '/contributions/', schema)
-        schema = re.sub(r'mef-contribution', 'contribution', schema)
-    index, doc_type = schema_to_index(schema, index_names=index_names)
+        schema = re.sub(r'/mef/', '/remote_entities/', schema)
+        schema = re.sub(r'mef-contribution', 'remote_entity', schema)
 
-    if index and doc_type:
-        return index, doc_type
+    if index := schema_to_index(schema, index_names=index_names):
+        return index
     else:
-        return (current_app.config['INDEXER_DEFAULT_INDEX'],
-                current_app.config['INDEXER_DEFAULT_DOC_TYPE'])
+        return current_app.config['INDEXER_DEFAULT_INDEX']

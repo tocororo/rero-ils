@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -25,10 +25,12 @@ import re
 import dateparser
 from babel.dates import format_date, format_datetime, format_time
 from flask import current_app, render_template
+from flask_babel import gettext as _
 from invenio_i18n.ext import current_i18n
 from jinja2 import TemplateNotFound
 from markupsafe import Markup
 
+from .modules.message import Message
 from .modules.utils import extracted_data_from_ref
 
 
@@ -58,14 +60,11 @@ def node_assets(package, patterns=[
     def to_html(value):
         value = re.sub(r'(.*?)\/static', '/static', value)
         # default: js
-        html_code = '<script {tags} src="{value}"></script>'
+        html_code = f'<script {tags} src="{value}"></script>'
         # styles
         if _type == 'css':
-            html_code = '<link {tags} href="{value}" rel="stylesheet">'
-        return html_code.format(
-                value=value,
-                tags=tags
-            )
+            html_code = f'<link {tags} href="{value}" rel="stylesheet">'
+        return html_code
     output_files = []
     for pattern in patterns:
         files = glob.glob(os.path.join(package_path, pattern))
@@ -100,6 +99,10 @@ def format_date_filter(
     # TODO: Using the library or organisation timezone in the future
     if not locale:
         locale = current_i18n.locale.language
+
+    # Date formatting in GB English (DD/MM/YYYY)
+    if locale == 'en':
+        locale += '_GB'
 
     if timezone:
         tzinfo = timezone
@@ -145,7 +148,7 @@ def empty_data(data, replacement_string='No data'):
     if data:
         return data
     else:
-        msg = '<em class="no-data">{0}</em>'.format(replacement_string)
+        msg = f'<em class="no-data">{replacement_string}</em>'
         return Markup(msg)
 
 
@@ -172,5 +175,30 @@ def address_block(metadata, language=None):
         tpl_file = f'rero_ils/address_block/{language}.tpl.txt'
         return render_template(tpl_file, data=metadata)
     except TemplateNotFound:
-        tpl_file = f'rero_ils/address_block/eng.tpl.txt'
+        tpl_file = 'rero_ils/address_block/eng.tpl.txt'
         return render_template(tpl_file, data=metadata)
+
+
+def message_filter(key):
+    """Message filter.
+
+    :param key: key of the message.
+    :return: none or a json (check structure into the class Message).
+    """
+    return Message.get(key)
+
+
+def translate(data, prefix='', separator=', '):
+    """Translate data.
+
+    :param data: the data to translate
+    :param prefix: A prefix as a character string
+    :param separator: A character string separator.
+    :return: The translated string
+    """
+    if data:
+        if isinstance(data, list):
+            translated = [_(f'{prefix}{item}') for item in data]
+            return separator.join(translated)
+        elif isinstance(data, str):
+            return _(f'{prefix}{data}')

@@ -16,7 +16,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """Tests REST API acquisition orders."""
-
 import json
 from copy import deepcopy
 
@@ -44,31 +43,6 @@ def test_acq_orders_library_facets(
     assert all(facet_name in data['aggregations'] for facet_name in facets)
 
 
-def test_acq_orders_permissions(client, acq_order_fiction_martigny,
-                                json_header):
-    """Test record retrieval."""
-    item_url = url_for('invenio_records_rest.acor_item', pid_value='acor1')
-
-    res = client.get(item_url)
-    assert res.status_code == 401
-
-    res, _ = postdata(
-        client,
-        'invenio_records_rest.acor_list',
-        {}
-    )
-    assert res.status_code == 401
-
-    res = client.put(
-        url_for('invenio_records_rest.acor_item', pid_value='acor1'),
-        data={},
-        headers=json_header
-    )
-
-    res = client.delete(item_url)
-    assert res.status_code == 401
-
-
 @mock.patch('invenio_records_rest.views.verify_record_permission',
             mock.MagicMock(return_value=VerifyRecordPermissionPatch))
 def test_acq_order_get(client, acq_order_fiction_martigny):
@@ -78,7 +52,7 @@ def test_acq_order_get(client, acq_order_fiction_martigny):
     res = client.get(item_url)
     assert res.status_code == 200
 
-    assert res.headers['ETag'] == '"{}"'.format(acq_order.revision_id)
+    assert res.headers['ETag'] == f'"{acq_order.revision_id}"'
 
     data = get_json(res)
     assert acq_order.dumps() == data['metadata']
@@ -106,27 +80,25 @@ def test_acq_order_get(client, acq_order_fiction_martigny):
     del metadata['organisation']
     del metadata['order_lines']
     del metadata['receipts']
+    metadata.pop('budget', None)
     assert data['hits']['hits'][0]['metadata'] == acq_order.replace_refs()
 
 
 @mock.patch('invenio_records_rest.views.verify_record_permission',
             mock.MagicMock(return_value=VerifyRecordPermissionPatch))
-def test_acq_orders_post_put_delete(client, org_martigny, vendor2_martigny,
-                                    acq_order_fiction_saxon,
-                                    json_header):
+def test_acq_orders_post_put_delete(
+    client, org_martigny, vendor2_martigny, acq_order_fiction_saxon,
+    acq_order_fiction_saxon_data, json_header
+):
     """Test record retrieval."""
     # Create record / POST
-    item_url = url_for('invenio_records_rest.acor_item', pid_value='1')
-    list_url = url_for('invenio_records_rest.acor_list', q='pid:1')
-
-    acq_order_fiction_saxon['pid'] = '1'
+    acq_order_fiction_saxon_data.pop('pid', None)
     res, data = postdata(
         client,
         'invenio_records_rest.acor_list',
-        acq_order_fiction_saxon
+        acq_order_fiction_saxon_data
     )
     assert res.status_code == 201
-
     # Check that the returned record matches the given data
     assert data['metadata'].pop('account_statement') == {
         'provisional': {
@@ -138,9 +110,15 @@ def test_acq_orders_post_put_delete(client, org_martigny, vendor2_martigny,
             'quantity': 0
         }
     }
+
     assert data['metadata'].pop('status') == AcqOrderStatus.PENDING
     assert not data['metadata'].pop('order_date', None)
-    assert data['metadata'] == acq_order_fiction_saxon
+    acq_order_fiction_saxon_data['pid'] = data['metadata']['pid']
+    assert data['metadata'] == acq_order_fiction_saxon_data
+
+    pid = data['metadata']['pid']
+    item_url = url_for('invenio_records_rest.acor_item', pid_value=pid)
+    list_url = url_for('invenio_records_rest.acor_list', q=f'pid:{pid}')
 
     res = client.get(item_url)
     assert res.status_code == 200
@@ -157,14 +135,14 @@ def test_acq_orders_post_put_delete(client, org_martigny, vendor2_martigny,
     }
     assert data['metadata'].pop('status') == AcqOrderStatus.PENDING
     assert not data['metadata'].pop('order_date', None)
-    assert acq_order_fiction_saxon == data['metadata']
+    assert acq_order_fiction_saxon_data == data['metadata']
 
     # Update record/PUT
-    data = acq_order_fiction_saxon
-    data['reference'] = 'Test reference'
+    api_data = acq_order_fiction_saxon_data
+    api_data['reference'] = 'Test reference'
     res = client.put(
         item_url,
-        data=json.dumps(data),
+        data=json.dumps(api_data),
         headers=json_header
     )
     assert res.status_code == 200
@@ -188,7 +166,6 @@ def test_acq_orders_post_put_delete(client, org_martigny, vendor2_martigny,
     # Delete record/DELETE
     res = client.delete(item_url)
     assert res.status_code == 204
-
     res = client.get(item_url)
     assert res.status_code == 410
 
@@ -228,110 +205,6 @@ def test_filtered_acq_orders_get(
     assert res.status_code == 200
     data = get_json(res)
     assert data['hits']['total']['value'] == 1
-
-
-def test_acq_order_secure_api(client, json_header,
-                              acq_order_fiction_martigny,
-                              librarian_martigny,
-                              librarian_sion):
-    """Test acq order secure api access."""
-    # Martigny
-    login_user_via_session(client, librarian_martigny.user)
-    record_url = url_for('invenio_records_rest.acor_item',
-                         pid_value=acq_order_fiction_martigny.pid)
-
-    res = client.get(record_url)
-    assert res.status_code == 200
-
-    # Sion
-    login_user_via_session(client, librarian_sion.user)
-    record_url = url_for('invenio_records_rest.acor_item',
-                         pid_value=acq_order_fiction_martigny.pid)
-
-    res = client.get(record_url)
-    assert res.status_code == 403
-
-
-def test_acq_order_secure_api_create(client, json_header,
-                                     org_martigny,
-                                     vendor_martigny, vendor2_martigny,
-                                     acq_order_fiction_martigny,
-                                     librarian_martigny,
-                                     librarian_sion,
-                                     acq_order_fiction_saxon,
-                                     system_librarian_martigny):
-    """Test acq order secure api create."""
-    # Martigny
-    login_user_via_session(client, librarian_martigny.user)
-    post_entrypoint = 'invenio_records_rest.acor_list'
-
-    data = acq_order_fiction_saxon
-    del acq_order_fiction_saxon['pid']
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        data
-    )
-    assert res.status_code == 403
-
-    data = deepcopy(acq_order_fiction_martigny)
-    del data['pid']
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        data
-    )
-    assert res.status_code == 201
-
-    login_user_via_session(client, system_librarian_martigny.user)
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        data
-    )
-    assert res.status_code == 201
-
-    # Sion
-    login_user_via_session(client, librarian_sion.user)
-
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        acq_order_fiction_saxon
-    )
-    assert res.status_code == 403
-
-
-def test_acq_order_secure_api_update(client,
-                                     org_sion,
-                                     vendor_sion,
-                                     acq_order_fiction_sion,
-                                     librarian_martigny,
-                                     librarian_sion,
-                                     json_header):
-    """Test acq order secure api update."""
-    # Sion
-    login_user_via_session(client, librarian_sion.user)
-    record_url = url_for('invenio_records_rest.acor_item',
-                         pid_value=acq_order_fiction_sion.pid)
-    data = acq_order_fiction_sion
-    data['reference'] = 'Test update reference'
-    res = client.put(
-        record_url,
-        data=json.dumps(data),
-        headers=json_header
-    )
-    assert res.status_code == 200
-
-    # Martigny
-    login_user_via_session(client, librarian_martigny.user)
-
-    res = client.put(
-        record_url,
-        data=json.dumps(data),
-        headers=json_header
-    )
-    assert res.status_code == 403
 
 
 def test_acq_order_history_api(

@@ -16,15 +16,12 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """Document filters tests."""
-
-from rero_ils.modules.documents.api import Document
-from rero_ils.modules.documents.models import DocumentSubjectType
 from rero_ils.modules.documents.views import cartographic_attributes, \
-    contribution_format, identified_by, main_title_text, note_general, \
-    notes_except_general, part_of_format, provision_activity, \
+    contribution_format, doc_entity_label, identified_by, main_title_text, \
+    note_general, notes_except_general, part_of_format, provision_activity, \
     provision_activity_not_publication, provision_activity_original_date, \
-    provision_activity_publication, subject_format, title_variants, \
-    work_access_point
+    provision_activity_publication, title_variants, work_access_point
+from rero_ils.modules.entities.models import EntityType
 
 
 def test_note_general():
@@ -311,7 +308,7 @@ def test_work_access_point():
                     'partNumber': 'part section designation'
                 }
             ],
-            'agent': {
+            'creator': {
                 'type': 'bf:Person',
                 'qualifier': 'physicien',
                 'numeration': 'XX',
@@ -337,7 +334,7 @@ def test_work_access_point():
                     'partName': 'Title',
                     'partNumber': 'part designation'
                 }],
-            'agent': {
+            'creator': {
                 'type': 'bf:Organisation',
                 'place': 'Lausanne',
                 'numbering': '4',
@@ -359,7 +356,7 @@ def test_work_access_point():
             ]
         },
         {
-            'agent': {
+            'creator': {
                 'type': 'bf:Person',
                 'qualifier': 'pianiste',
                 'date_of_birth': '1980',
@@ -373,7 +370,7 @@ def test_work_access_point():
                     'partNumber': 'part number'
                 }
             ],
-            'agent': {
+            'creator': {
                 'type': 'bf:Person',
                 'qualifier': 'pianiste'
             },
@@ -394,11 +391,37 @@ def test_work_access_point():
     assert results == work_access_point(wap)
 
 
-def test_contribution_format(db, document_data):
+def test_contribution_format(db, entity_organisation):
     """Test contribution format."""
-    result = 'Nebehay, Christian Michael'
-    doc = Document.create(document_data, delete_pid=True)
-    assert contribution_format(doc.pid, 'en', 'global').startswith(result)
+    entity = entity_organisation
+    contributions = [{
+        'entity': {
+            'authorized_access_point': 'author_def',
+            'authorized_access_point_fr': 'author_fr'
+        }
+    }]
+
+    # ---- Textual contribution
+    # With english language
+    link_part = '/global/search/documents?q=' \
+                'contribution.entity.authorized_access_point_en%3A' \
+                '%22author_def%22'
+    assert link_part in contribution_format(contributions, 'en', 'global')
+
+    # With french language
+    link_part = '/global/search/documents?q=' \
+                'contribution.entity.authorized_access_point_fr%3A' \
+                '%22author_fr%22'
+    assert link_part in contribution_format(contributions, 'fr', 'global')
+
+    # ---- Remote contribution
+    contributions = [{
+        'entity': {'pid': entity.pid}
+    }]
+    link_part = f'/global/search/documents?q=' \
+                f'contribution.entity.pids.{entity.resource_type}%3A' \
+                f'{entity.pid}'
+    assert link_part in contribution_format(contributions, 'en', 'global')
 
 
 def test_identifiedby_format():
@@ -538,12 +561,71 @@ def test_main_title_text():
     assert extract[0].get('_text') is not None
 
 
-def test_subject_format():
-    """Test subject format filter."""
+def test_doc_entity_label_filter(entity_person, local_entity_person):
+    """Test entity label filter."""
+
+    # Remote entity
+    remote_pid = entity_person['idref']['pid']
     data = {
-        'term': 'subject topic',
-        'type': DocumentSubjectType.TOPIC
+        'entity': {
+            '$ref': f'https://mef.rero.ch/api/concepts/idref/{remote_pid}',
+            'pid': remote_pid
+        }
     }
-    assert subject_format(data, None) == 'subject topic'
-    data['type'] = DocumentSubjectType.ORGANISATION
-    assert subject_format(data, None) == 'Subject parsing error !'
+    entity_type, value, label = doc_entity_label(data['entity'], 'fr')
+    assert 'remote' == entity_type
+    assert 'ent_pers' == value
+    assert 'Loy, Georg, 1885-19..' == label
+
+    # Local entity
+    pid = local_entity_person['pid']
+    data = {
+        'entity': {
+            '$ref': f'https://bib.rero.ch/api/local_entities/{pid}'
+        }
+    }
+    entity_type, value, label = doc_entity_label(data['entity'], 'fr')
+    assert 'local' == entity_type
+    assert 'locent_pers' == value
+    assert 'Loy, Georg (1881-1968)' == label
+
+    entity_type, value, label = doc_entity_label(data['entity'], 'en')
+    assert 'local' == entity_type
+    assert 'locent_pers' == value
+    assert 'Loy, Georg (1881-1968)' == label
+
+    # Textual
+    data = {
+        'entity': {
+            'authorized_access_point': 'subject topic'
+        }
+    }
+    entity_type, value, label = doc_entity_label(data['entity'], None)
+    assert 'textual' == entity_type
+    assert 'subject topic' == value
+    assert 'subject topic' == label
+
+    entity_type, value, label = doc_entity_label(data['entity'], 'fr')
+    assert 'textual' == entity_type
+    assert 'subject topic' == value
+    assert 'subject topic' == label
+
+    # Textual with subdivision
+    data['entity']['subdivisions'] = [
+        {
+            'entity': {
+                'authorized_access_point': 'Sub 1',
+                'type': EntityType.TOPIC
+            }
+        },
+        {
+            'entity': {
+                'authorized_access_point': 'Sub 2',
+                'type': EntityType.TOPIC
+            }
+        }
+    ]
+    entity_type, value, label = doc_entity_label(data['entity'], 'fr')
+    assert 'textual' == entity_type
+    assert 'subject topic' == value
+    assert 'subject topic - Sub 1 - Sub 2' == label

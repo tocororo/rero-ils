@@ -2,6 +2,18 @@
   "settings": {
     "analysis": {
       "analyzer": {
+        "autocomplete": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "icu_normalizer",
+            "icu_folding",
+            "french_elision",
+            "italian_elision",
+            "edge_ngram_filter"
+          ]
+        },
         "search_autocomplete": {
           "type": "custom",
           "tokenizer": "standard",
@@ -306,7 +318,7 @@
       "contribution": {
         "type": "object",
         "properties": {
-          "agent": {
+          "entity": {
             "type": "object",
             "properties": {
               "type": {
@@ -318,14 +330,25 @@
               "pid": {
                 "type": "keyword"
               },
-              "id_gnd": {
-                "type": "keyword"
-              },
-              "id_idref": {
-                "type": "keyword"
-              },
-              "id_rero": {
-                "type": "keyword"
+              "pids": {
+                "type": "object",
+                "properties": {
+                  "gnd": {
+                    "type": "keyword"
+                  },
+                  "idref": {
+                    "type": "keyword"
+                  },
+                  "rero": {
+                    "type": "keyword"
+                  },
+                  "remote": {
+                    "type": "keyword"
+                  },
+                  "local": {
+                    "type": "keyword"
+                  }
+                }
               },
               "authorized_access_point_en": {
                 "type": "text",
@@ -362,9 +385,6 @@
                 "type": "text"
               },
               "parallel_access_point": {
-                "type": "text"
-              },
-              "preferred_name": {
                 "type": "text"
               },
               "identifiedBy": {
@@ -505,14 +525,11 @@
           "place": {
             "type": "object",
             "properties": {
-              "type": {
-                "type": "text"
-              },
               "canton": {
-                "type": "text"
+                "type": "keyword"
               },
               "country": {
-                "type": "text"
+                "type": "keyword"
               },
               "identifiedBy": {
                 "type": "object",
@@ -832,103 +849,194 @@
       "subjects": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "keyword"
-          },
-          "preferred_name": {
-            "type": "text",
-            "copy_to": "facet_subjects"
-          },
-          "term": {
-            "type": "text",
-            "copy_to": "facet_subjects",
-            "fields": {
-              "eng": {
-                "type": "text",
-                "analyzer": "english"
-              },
-              "fre": {
-                "type": "text",
-                "analyzer": "french"
-              },
-              "ger": {
-                "type": "text",
-                "analyzer": "german"
-              },
-              "ita": {
-                "type": "text",
-                "analyzer": "italian"
-              }
-            }
-          },
-          "title": {
-            "type": "text",
-            "copy_to": "facet_subjects"
-          },
-          "creator": {
-            "type": "text"
-          },
-          "conference": {
-            "type": "boolean"
-          },
-          "identifiedBy": {
+          "entity": {
             "type": "object",
             "properties": {
               "type": {
                 "type": "keyword"
               },
+              "primary_source": {
+                "type": "keyword"
+              },
+              "pid": {
+                "type": "keyword"
+              },
+              "pids": {
+                "type": "object",
+                "properties": {
+                  "gnd": {
+                    "type": "keyword"
+                  },
+                  "idref": {
+                    "type": "keyword"
+                  },
+                  "rero": {
+                    "type": "keyword"
+                  },
+                  "remote": {
+                    "type": "keyword"
+                  },
+                  "local": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "authorized_access_point_en": {
+                "type": "text",
+                "analyzer": "english",
+                "copy_to": "facet_subject_en"
+              },
+              "authorized_access_point_fr": {
+                "type": "text",
+                "analyzer": "french",
+                "copy_to": "facet_subject_fr"
+              },
+              "authorized_access_point_de": {
+                "type": "text",
+                "analyzer": "german",
+                "copy_to": "facet_subject_de"
+              },
+              "authorized_access_point_it": {
+                "type": "text",
+                "analyzer": "italian",
+                "copy_to": "facet_subject_it"
+              },
               "source": {
                 "type": "keyword"
               },
-              "value": {
-                "type": "keyword"
+              "variant_access_point": {
+                "type": "text"
+              },
+              "parallel_access_point": {
+                "type": "text"
+              },
+              "subdivisions": {
+                "type": "object",
+                "properties": {
+                  "entity": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "keyword"
+                      },
+                      "isGenreForm": {
+                        "type": "boolean"
+                      },
+                      "authorized_access_point_en": {
+                        "type": "text",
+                        "analyzer": "english",
+                        "copy_to": "facet_subject_en"
+                      },
+                      "authorized_access_point_fr": {
+                        "type": "text",
+                        "analyzer": "french",
+                        "copy_to": "facet_subject_fr"
+                      },
+                      "authorized_access_point_de": {
+                        "type": "text",
+                        "analyzer": "german",
+                        "copy_to": "facet_subject_de"
+                      },
+                      "authorized_access_point_it": {
+                        "type": "text",
+                        "analyzer": "italian",
+                        "copy_to": "facet_subject_it"
+                      },
+                      "identifiedBy": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "keyword"
+                          },
+                          "value": {
+                            "type": "keyword"
+                          },
+                          "source": {
+                            "type": "keyword"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "identifiedBy": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "keyword"
+                  },
+                  "value": {
+                    "type": "keyword"
+                  },
+                  "source": {
+                    "type": "keyword"
+                  }
+                }
               }
             }
-          },
-          "source": {
-            "type": "keyword"
-          },
-          "genreForm_subdivisions": {
-            "type": "keyword",
-            "copy_to": "facet_subjects"
-          },
-          "topic_subdivisions": {
-            "type": "keyword",
-            "copy_to": "facet_subjects"
-          },
-          "temporal_subdivisions": {
-            "type": "keyword",
-            "copy_to": "facet_subjects"
-          },
-          "place_subdivisions": {
-            "type": "keyword",
-            "copy_to": "facet_subjects"
           }
         }
       },
-      "facet_subjects": {
+      "facet_subject_en": {
+        "type": "keyword"
+      },
+      "facet_subject_fr": {
+        "type": "keyword"
+      },
+      "facet_subject_de": {
+        "type": "keyword"
+      },
+      "facet_subject_it": {
         "type": "keyword"
       },
       "subjects_imported": {
         "type": "object",
         "properties": {
+          "pid": {
+            "type": "keyword"
+          },
+          "sources": {
+            "type": "keyword"
+          },
           "type": {
             "type": "keyword"
           },
-          "preferred_name": {
+          "authorized_access_point": {
             "type": "text"
           },
-          "term": {
-            "type": "text"
-          },
-          "title": {
-            "type": "text"
-          },
-          "creator": {
-            "type": "text"
-          },
-          "conference": {
-            "type": "boolean"
+          "subdivisions": {
+            "type": "object",
+            "properties": {
+              "entity": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "keyword"
+                  },
+                  "authorized_access_point": {
+                    "type": "keyword"
+                  },
+                  "identifiedBy": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "keyword"
+                      },
+                      "genreForm": {
+                        "type": "boolean"
+                      },
+                      "value": {
+                        "type": "keyword"
+                      },
+                      "source": {
+                        "type": "keyword"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "identifiedBy": {
             "type": "object",
@@ -954,9 +1062,6 @@
         "properties": {
           "pid": {
             "type": "keyword"
-          },
-          "available": {
-            "type": "boolean"
           },
           "location": {
             "type": "object",
@@ -1034,10 +1139,12 @@
             }
           },
           "call_number": {
-            "type": "text"
+            "type": "text",
+            "copy_to": "call_numbers"
           },
           "second_call_number": {
-            "type": "text"
+            "type": "text",
+            "copy_to": "call_numbers"
           },
           "index": {
             "type": "text"
@@ -1061,13 +1168,15 @@
                 "type": "keyword"
               },
               "call_number": {
-                "type": "text"
+                "type": "text",
+                "copy_to": "call_numbers"
+              },
+              "second_call_number": {
+                "type": "text",
+                "copy_to": "call_numbers"
               },
               "status": {
                 "type": "keyword"
-              },
-              "available": {
-                "type": "boolean"
               },
               "acquisition": {
                 "type": "nested",
@@ -1195,6 +1304,12 @@
       "supplement": {
         "type": "object",
         "properties": {
+          "pid": {
+            "type": "keyword"
+          },
+          "type": {
+            "type": "keyword"
+          },
           "label": {
             "type": "text"
           },
@@ -1226,6 +1341,12 @@
       "supplementTo": {
         "type": "object",
         "properties": {
+          "pid": {
+            "type": "keyword"
+          },
+          "type": {
+            "type": "keyword"
+          },
           "label": {
             "type": "text"
           },
@@ -1257,6 +1378,12 @@
       "otherEdition": {
         "type": "object",
         "properties": {
+          "pid": {
+            "type": "keyword"
+          },
+          "type": {
+            "type": "keyword"
+          },
           "label": {
             "type": "text"
           },
@@ -1288,6 +1415,12 @@
       "otherPhysicalFormat": {
         "type": "object",
         "properties": {
+          "pid": {
+            "type": "keyword"
+          },
+          "type": {
+            "type": "keyword"
+          },
           "label": {
             "type": "text"
           },
@@ -1319,6 +1452,12 @@
       "issuedWith": {
         "type": "object",
         "properties": {
+          "pid": {
+            "type": "keyword"
+          },
+          "type": {
+            "type": "keyword"
+          },
           "label": {
             "type": "text"
           },
@@ -1350,6 +1489,12 @@
       "precededBy": {
         "type": "object",
         "properties": {
+          "pid": {
+            "type": "keyword"
+          },
+          "type": {
+            "type": "keyword"
+          },
           "label": {
             "type": "text"
           },
@@ -1381,6 +1526,12 @@
       "succeededBy": {
         "type": "object",
         "properties": {
+          "pid": {
+            "type": "keyword"
+          },
+          "type": {
+            "type": "keyword"
+          },
           "label": {
             "type": "text"
           },
@@ -1412,6 +1563,12 @@
       "relatedTo": {
         "type": "object",
         "properties": {
+          "pid": {
+            "type": "keyword"
+          },
+          "type": {
+            "type": "keyword"
+          },
           "label": {
             "type": "text"
           },
@@ -1637,33 +1794,95 @@
       "genreForm": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "keyword"
-          },
-          "term": {
-            "type": "text",
-            "copy_to": "facet_genre_form"
-          },
-          "identifiedBy": {
+          "entity": {
             "type": "object",
             "properties": {
               "type": {
                 "type": "keyword"
               },
+              "primary_source": {
+                "type": "keyword"
+              },
+              "pid": {
+                "type": "keyword"
+              },
+              "pids": {
+                "type": "object",
+                "properties": {
+                  "gnd": {
+                    "type": "keyword"
+                  },
+                  "idref": {
+                    "type": "keyword"
+                  },
+                  "rero": {
+                    "type": "keyword"
+                  },
+                  "remote": {
+                    "type": "keyword"
+                  },
+                  "local": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "authorized_access_point_en": {
+                "type": "text",
+                "analyzer": "english",
+                "copy_to": "facet_genre_form_en"
+              },
+              "authorized_access_point_fr": {
+                "type": "text",
+                "analyzer": "french",
+                "copy_to": "facet_genre_form_fr"
+              },
+              "authorized_access_point_de": {
+                "type": "text",
+                "analyzer": "german",
+                "copy_to": "facet_genre_form_de"
+              },
+              "authorized_access_point_it": {
+                "type": "text",
+                "analyzer": "italian",
+                "copy_to": "facet_genre_form_it"
+              },
               "source": {
                 "type": "keyword"
               },
-              "value": {
-                "type": "keyword"
+              "variant_access_point": {
+                "type": "text"
+              },
+              "parallel_access_point": {
+                "type": "text"
+              },
+              "identifiedBy": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "keyword"
+                  },
+                  "value": {
+                    "type": "keyword"
+                  },
+                  "source": {
+                    "type": "keyword"
+                  }
+                }
               }
             }
-          },
-          "source": {
-            "type": "keyword"
           }
         }
       },
-      "facet_genre_form": {
+      "facet_genre_form_en": {
+        "type": "keyword"
+      },
+      "facet_genre_form_de": {
+        "type": "keyword"
+      },
+      "facet_genre_form_fr": {
+        "type": "keyword"
+      },
+      "facet_genre_form_it": {
         "type": "keyword"
       },
       "genreForm_imported": {
@@ -1672,7 +1891,7 @@
           "type": {
             "type": "keyword"
           },
-          "term": {
+          "authorized_access_point": {
             "type": "text"
           },
           "identifiedBy": {
@@ -1768,6 +1987,61 @@
       "work_access_point": {
         "type": "object",
         "properties": {
+          "creator": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "keyword"
+              },
+              "preferred_name": {
+                "type": "keyword"
+              },
+              "date_of_birth": {
+                "type": "keyword"
+              },
+              "date_of_death": {
+                "type": "keyword"
+              },
+              "qualifier": {
+                "type": "keyword"
+              },
+              "numeration": {
+                "type": "keyword"
+              },
+              "fully_form_of_name": {
+                "type": "keyword"
+              },
+              "subordinate_unit": {
+                "type": "keyword"
+              },
+              "conference": {
+                "type": "boolean"
+              },
+              "place": {
+                "type": "keyword"
+              },
+              "numbering": {
+                "type": "keyword"
+              },
+              "conference_date": {
+                "type": "keyword"
+              },
+              "identifiedBy": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "keyword"
+                  },
+                  "value": {
+                    "type": "keyword"
+                  },
+                  "source": {
+                    "type": "keyword"
+                  }
+                }
+              }
+            }
+          },
           "title": {
             "type": "text"
           },
@@ -1829,9 +2103,6 @@
           }
         }
       },
-      "available": {
-        "type": "boolean"
-      },
       "organisation": {
         "properties": {
           "type": {
@@ -1867,6 +2138,9 @@
             "ignore_above": 256
           }
         }
+      },
+      "call_numbers": {
+        "type": "text"
       },
       "_draft": {
         "type": "boolean"

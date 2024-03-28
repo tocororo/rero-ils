@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2023 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -23,37 +23,16 @@ from datetime import datetime, timedelta
 import mock
 from flask import url_for
 from invenio_accounts.testutils import login_user_via_session
-from utils import VerifyRecordPermissionPatch, get_json, mock_response, \
-    postdata
+from utils import VerifyRecordPermissionPatch, clean_text, flush_index, \
+    get_json, mock_response, postdata
 
-from rero_ils.modules.documents.utils import clean_text, get_remote_cover
+from rero_ils.modules.commons.identifiers import IdentifierType
+from rero_ils.modules.documents.api import DocumentsSearch
+from rero_ils.modules.documents.utils import get_remote_cover
 from rero_ils.modules.documents.views import can_request, \
     record_library_pickup_locations
+from rero_ils.modules.operation_logs.api import OperationLogsSearch
 from rero_ils.modules.utils import get_ref_for_pid
-
-
-def test_documents_permissions(client, document, json_header):
-    """Test record retrieval."""
-    item_url = url_for('invenio_records_rest.doc_item', pid_value='doc1')
-
-    res = client.get(item_url)
-    assert res.status_code == 200
-
-    res, _ = postdata(
-        client,
-        'invenio_records_rest.doc_list',
-        {}
-    )
-    assert res.status_code == 401
-
-    res = client.put(
-        url_for('invenio_records_rest.doc_item', pid_value='doc1'),
-        data={},
-        headers=json_header
-    )
-
-    res = client.delete(item_url)
-    assert res.status_code == 401
 
 
 def test_documents_newacq_filters(app, client,
@@ -65,18 +44,27 @@ def test_documents_newacq_filters(app, client,
                                   ):
     login_user_via_session(client, system_librarian_martigny.user)
 
+    def datetime_delta(**args):
+        """Apply delta on date time."""
+        return datetime.now() + timedelta(**args)
+
+    def datetime_milliseconds(date):
+        """datetime get milliseconds."""
+        return round(date.timestamp() * 1000)
+
     # compute useful date
-    today = datetime.today()
-    past = (today - timedelta(days=1)).strftime('%Y-%m-%d')
-    future = (today + timedelta(days=10)).strftime('%Y-%m-%d')
-    future_1 = (today + timedelta(days=11)).strftime('%Y-%m-%d')
+    today = datetime.now()
+    past = datetime_delta(days=-1).strftime('%Y-%m-%d')
+    future = datetime_delta(days=10).strftime('%Y-%m-%d')
+    future_1 = datetime_delta(days=11).strftime('%Y-%m-%d')
+    acq_past_timestamp = datetime_milliseconds(datetime_delta(days=-30))
+    acq_future_timestamp = datetime_milliseconds(datetime_delta(days=1))
     today = today.strftime('%Y-%m-%d')
 
-    # Add a new items with acq_date
+    # add a new item with acq_date
     new_acq1 = deepcopy(item_lib_martigny_data)
     new_acq1['pid'] = 'itemacq1'
     new_acq1['acquisition_date'] = today
-    del new_acq1['barcode']
     res, data = postdata(client, 'invenio_records_rest.item_list', new_acq1)
     assert res.status_code == 201
 
@@ -84,7 +72,6 @@ def test_documents_newacq_filters(app, client,
     new_acq2['pid'] = 'itemacq2'
     new_acq2['acquisition_date'] = future
     new_acq2['location']['$ref'] = get_ref_for_pid('loc', loc_public_saxon.pid)
-    del new_acq2['barcode']
     res, data = postdata(client, 'invenio_records_rest.item_list', new_acq2)
     assert res.status_code == 201
 
@@ -117,7 +104,7 @@ def test_documents_newacq_filters(app, client,
     doc_list = url_for(
         'invenio_records_rest.doc_list',
         view='global',
-        new_acquisition='{0}:{1}'.format(past, future_1),
+        new_acquisition=f'{past}:{future_1}',
         organisation='org1'
     )
     res = client.get(doc_list, headers=rero_json_header)
@@ -129,7 +116,7 @@ def test_documents_newacq_filters(app, client,
     doc_list = url_for(
         'invenio_records_rest.doc_list',
         view='global',
-        new_acquisition='{0}:{1}'.format(past, future_1),
+        new_acquisition=f'{past}:{future_1}',
         library='lib2'
     )
     res = client.get(doc_list, headers=rero_json_header)
@@ -140,7 +127,7 @@ def test_documents_newacq_filters(app, client,
     doc_list = url_for(
         'invenio_records_rest.doc_list',
         view='global',
-        new_acquisition='{0}:{1}'.format(past, future_1),
+        new_acquisition=f'{past}:{future_1}',
         location='loc3'
     )
     res = client.get(doc_list, headers=rero_json_header)
@@ -151,12 +138,23 @@ def test_documents_newacq_filters(app, client,
     doc_list = url_for(
         'invenio_records_rest.doc_list',
         view='global',
-        new_acquisition='{0}:{1}'.format(past, today),
+        new_acquisition=f'{past}:{today}',
         location='loc3'
     )
     res = client.get(doc_list, headers=rero_json_header)
     data = get_json(res)
     assert data['hits']['total']['value'] == 0
+
+    # check new_acquisition filters with -- separator and timestamp
+    # Ex: 1696111200000--1700089200000
+    doc_list = url_for(
+        'invenio_records_rest.doc_list',
+        view='global',
+        acquisition=f'{acq_past_timestamp}--{acq_future_timestamp}'
+    )
+    res = client.get(doc_list, headers=rero_json_header)
+    data = get_json(res)
+    assert data['hits']['total']['value'] == 1
 
 
 @mock.patch('invenio_records_rest.views.verify_record_permission',
@@ -173,7 +171,7 @@ def test_documents_facets(
     facet_keys = [
         'document_type', 'author', 'language', 'subject_no_fiction',
         'subject_fiction', 'genreForm', 'intendedAudience',
-        'year', 'status'
+        'year', 'status', 'acquisition'
     ]
     assert all(key in data['aggregations'] for key in facet_keys)
 
@@ -214,11 +212,11 @@ def test_documents_facets(
         ({'view': 'global', 'author': ['Great Edition', 'Peter James']}, 1),
         ({'view': 'global', 'author': ['J.K. Rowling', 'Peter James']}, 0),
         # i18n facets
-        ({'view': 'global', 'author': 'Nebehay, Christian Michael'}, 2),
+        ({'view': 'global', 'author': 'Nebehay, Christian Michael'}, 1),
         ({'view': 'global',
-          'author': 'Nebehay, Christian Michael, 1909-2003', 'lang': 'de'}, 1),
+          'author': 'Nebehay, Christian Michael, 1909-2003', 'lang': 'de'}, 0),
         ({'view': 'global',
-          'author': 'Nebehay, Christian Michael', 'lang': 'thl'}, 2),
+          'author': 'Nebehay, Christian Michael', 'lang': 'thl'}, 1),
     ]
     for params, value in checks:
         url = url_for('invenio_records_rest.doc_list', **params)
@@ -399,7 +397,7 @@ def test_documents_post_put_delete(
         headers=rero_json_header
     )
     assert res.status_code == 200
-    # assert res.headers['ETag'] != '"{}"'.format(librarie.revision_id)
+    # assert res.headers['ETag'] != f'"{librarie.revision_id}"'
 
     # Check that the returned record matches the given data
     data = get_json(res)
@@ -427,7 +425,7 @@ def test_documents_post_put_delete(
 
 
 def test_documents_get_resolve_rero_json(
-    client, document_ref, contribution_person_data, rero_json_header,
+    client, document_ref, entity_person_data, rero_json_header,
 ):
     """Test record get with resolve and mimetype rero+json."""
     api_url = url_for('invenio_records_rest.doc_item', pid_value='doc2',
@@ -435,8 +433,8 @@ def test_documents_get_resolve_rero_json(
     res = client.get(api_url, headers=rero_json_header)
     assert res.status_code == 200
     metadata = get_json(res).get('metadata', {})
-    pid = metadata['contribution'][0]['agent']['pid']
-    assert pid == contribution_person_data['pid']
+    pid = metadata['contribution'][0]['entity']['pid']
+    assert pid == entity_person_data['pid']
 
 
 def test_document_can_request_view(
@@ -508,10 +506,10 @@ def test_document_boosting(client, ebook_1, ebook_4):
     assert data['pid'] == ebook_1.pid
 
 
-@mock.patch('requests.get')
+@mock.patch('requests.Session.get')
 def test_documents_resolve(
-        mock_contributions_mef_get, client, loc_public_martigny, document_ref,
-        contribution_person_response_data
+    mock_contributions_mef_get, client, mef_agents_url, loc_public_martigny,
+    document_ref, entity_person_response_data
 ):
     """Test document detailed view with items filter."""
     res = client.get(url_for(
@@ -519,17 +517,16 @@ def test_documents_resolve(
         pid_value='doc2'
     ))
     assert res.json['metadata']['contribution'] == [{
-        'agent': {
-            '$ref': 'https://mef.rero.ch/api/agents/rero/A017671081',
-            'pid': 'cont_pers',
-            'type': 'bf:Person'
-            },
+        'entity': {
+            '$ref': f'{mef_agents_url}/rero/A017671081',
+            'pid': 'ent_pers',
+        },
         'role': ['aut']
     }]
     assert res.status_code == 200
 
     mock_contributions_mef_get.return_value = mock_response(
-        json_data=contribution_person_response_data
+        json_data=entity_person_response_data
     )
     res = client.get(url_for(
         'invenio_records_rest.doc_item',
@@ -537,7 +534,7 @@ def test_documents_resolve(
         resolve='1'
     ))
     assert res.json['metadata'][
-        'contribution'][0]['agent']['authorized_access_point_fr']
+        'contribution'][0]['entity']['authorized_access_point_fr']
     assert res.status_code == 200
 
 
@@ -691,3 +688,132 @@ def test_document_identifiers_search(client, document):
     url = url_for('invenio_records_rest.doc_list', **params)
     res = client.get(url)
     assert success(get_json(res))
+
+    # STEP#9 :: SEARCH ABOUT INVALID EAN IDENTIFIER
+    #    Ensure than if an invalid EAN identifier exists into the document
+    #    metadata, this identifier is searchable anyway.
+    original_data = deepcopy(document)
+    document['identifiedBy'].append({
+        'type': IdentifierType.EAN,
+        'value': 'invalid_ean_identifier'
+    })
+    document.update(document, dbcommit=True, reindex=True)
+    flush_index(DocumentsSearch.Meta.index)
+
+    params = {'identifiers': ['(bf:Ean)invalid_ean_identifier']}
+    url = url_for('invenio_records_rest.doc_list', **params)
+    res = client.get(url)
+    assert success(get_json(res))
+
+    # RESET THE DOCUMENT
+    document.update(original_data, dbcommit=True, reindex=True)
+
+
+def test_document_current_library_on_request_parameter(
+    app, db, client, system_librarian_martigny, lib_martigny,
+    lib_martigny_bourg, document, json_header
+):
+    """Test for library assignment if the current_library parameter
+    is present in the request."""
+    login_user_via_session(client, system_librarian_martigny.user)
+
+    # Assign library pid with current_librarian information
+    document['copyrightDate'] = ['© 2023']
+    doc_url = url_for('invenio_records_rest.doc_item', pid_value=document.pid)
+    res = client.put(doc_url, data=json.dumps(document), headers=json_header)
+    assert res.status_code == 200
+    flush_index(OperationLogsSearch.Meta.index)
+    oplg = next(OperationLogsSearch()
+                .filter('term', record__type='doc')
+                .filter('term', record__value=document.pid)
+                .params(preserve_order=True)
+                .sort({'date': 'desc'})
+                .scan())
+    assert oplg.library.value == lib_martigny.pid
+    db.session.rollback()
+
+    # Assign library pid with current_library request parameter
+    document['copyrightDate'] = ['© 1971']
+    doc_url = url_for(
+        'invenio_records_rest.doc_item',
+        pid_value=document.pid,
+        current_library=lib_martigny_bourg.pid)
+    res = client.put(doc_url, data=json.dumps(document), headers=json_header)
+    assert res.status_code == 200
+    flush_index(OperationLogsSearch.Meta.index)
+    oplg = next(OperationLogsSearch()
+                .filter('term', record__type='doc')
+                .filter('term', record__value=document.pid)
+                .params(preserve_order=True)
+                .sort({'date': 'desc'})
+                .scan())
+    assert oplg.library.value == lib_martigny_bourg.pid
+    db.session.rollback()
+
+
+def test_document_advanced_search_config(app, db, client,
+                                         system_librarian_martigny, document):
+    """Test for advanced search config."""
+    def check_field_data(key, field_data, data):
+        """Check content of the field data."""
+        field_data = field_data.get(key, [])
+        assert 0 < len(field_data)
+        assert data == field_data[0]
+
+    config_url = url_for('api_documents.advanced_search_config')
+
+    res = client.get(config_url)
+    assert res.status_code == 401
+
+    login_user_via_session(client, system_librarian_martigny.user)
+
+    res = client.get(config_url)
+    assert res.status_code == 200
+
+    json = res.json
+    assert 'fieldsConfig' in json
+    assert 'fieldsData' in json
+
+    fields_config_data = json.get('fieldsConfig')
+    assert 0 < len(fields_config_data)
+    assert {
+        'field': 'title.*',
+        'label': 'Title',
+        'value': 'title',
+        'options': {
+            'search_type': [
+                {'label': 'contains', 'value': 'contains'},
+                {'label': 'phrase', 'value': 'phrase'},
+            ]
+        }} \
+        == fields_config_data[0]
+
+    # Country: Only Phrase on search type options.
+    assert {
+        'field': 'provisionActivity.place.country',
+        'label': 'Country',
+        'value': 'country',
+        'options': {
+            'search_type': [
+                {'label': 'phrase', 'value': 'phrase'},
+            ]
+        }} \
+        == fields_config_data[3]
+
+    field_data = json.get('fieldsData')
+    data_keys = [
+        'canton', 'country', 'rdaCarrierType',
+        'rdaContentType', 'rdaMediaType'
+    ]
+    assert data_keys == list(field_data.keys())
+
+    check_field_data('canton', field_data,
+                     {'label': 'canton_ag', 'value': 'ag'})
+    check_field_data('country', field_data,
+                     {'label': 'country_aa', 'value': 'aa'})
+    check_field_data('rdaCarrierType', field_data,
+                     {'label': 'rdact:1002', 'value': 'rdact:1002'})
+    check_field_data('rdaContentType', field_data,
+                     {'label': 'rdaco:1002', 'value': 'rdaco:1002'})
+    check_field_data('rdaMediaType', field_data,
+                     {'label': 'rdamt:1001', 'value': 'rdamt:1001'})

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -23,28 +24,39 @@ from typing import Optional
 
 import click
 from elasticsearch_dsl.query import Q
-from flask import Blueprint, abort, current_app, jsonify, render_template
-from flask import request as flask_request
-from flask_babelex import gettext as _
+from flask import Blueprint, current_app, render_template, url_for
+from flask_babel import gettext as _
 from flask_login import current_user
 from invenio_records_ui.signals import record_viewed
 
+from rero_ils.modules.collections.api import CollectionsSearch
+from rero_ils.modules.entities.api import Entity
+from rero_ils.modules.entities.helpers import get_entity_record_from_data
+from rero_ils.modules.entities.models import EntityType
+from rero_ils.modules.holdings.models import HoldingNoteTypes
+from rero_ils.modules.items.models import ItemCirculationAction
+from rero_ils.modules.libraries.api import Library
+from rero_ils.modules.locations.api import Location
+from rero_ils.modules.organisations.api import Organisation
+from rero_ils.modules.patrons.api import current_patrons
+from rero_ils.modules.utils import extracted_data_from_ref
+
 from .api import Document, DocumentsSearch
-from .commons import SubjectFactory
-from .utils import create_authorized_access_point, \
-    display_alternate_graphic_first, edition_format_text, get_remote_cover, \
-    publication_statement_text, series_statement_format_text, \
+from .extensions import EditionStatementExtension, \
+    ProvisionActivitiesExtension, SeriesStatementExtension, TitleExtension
+from .utils import display_alternate_graphic_first, get_remote_cover, \
     title_format_text, title_format_text_alternate_graphic, \
-    title_format_text_head, title_variant_format_text
+    title_variant_format_text
 from ..collections.api import CollectionsSearch
-from ..contributions.api import Contribution
+from ..entities.api import Entity
+from ..entities.models import EntityType
 from ..holdings.models import HoldingNoteTypes
 from ..items.models import ItemCirculationAction
 from ..libraries.api import Library
 from ..locations.api import Location
 from ..organisations.api import Organisation
 from ..patrons.api import current_patrons
-from ..utils import cached, extracted_data_from_ref
+from ..utils import extracted_data_from_ref
 
 
 def doc_item_view_method(pid, record, template=None, **kwargs):
@@ -54,7 +66,7 @@ def doc_item_view_method(pid, record, template=None, **kwargs):
     :param pid: PID object.
     :param record: Record object.
     :param template: Template to render.
-    :param **kwargs: Additional view arguments based on URL rule.
+    :param kwargs: Additional view arguments based on URL rule.
     :return: The rendered template.
     """
     record_viewed.send(
@@ -65,14 +77,8 @@ def doc_item_view_method(pid, record, template=None, **kwargs):
     if viewcode != current_app.config.get('RERO_ILS_SEARCH_GLOBAL_VIEW_CODE'):
         organisation = Organisation.get_record_by_viewcode(viewcode)
 
-    record['available'] = Document.is_available(record.pid, viewcode)
-
     # build provision activity
-    provision_activities = record.get('provisionActivity', [])
-    for provision_activity in provision_activities:
-        pub_state_text = publication_statement_text(provision_activity)
-        if pub_state_text:
-            provision_activity['_text'] = pub_state_text
+    ProvisionActivitiesExtension().post_dump(record={}, data=record)
 
     # Counting holdings to display the get button
     from ..holdings.api import HoldingsSearch
@@ -102,19 +108,6 @@ def doc_item_view_method(pid, record, template=None, **kwargs):
         current_patrons=current_patrons,
         linked_documents_count=linked_documents_count
     )
-
-
-api_blueprint = Blueprint(
-    'api_documents',
-    __name__
-)
-
-
-@api_blueprint.route('/cover/<isbn>')
-@cached(timeout=300, query_string=True)
-def cover(isbn):
-    """Document cover service."""
-    return jsonify(get_remote_cover(isbn))
 
 
 blueprint = Blueprint(
@@ -255,48 +248,81 @@ def can_request(item):
 
 
 @blueprint.app_template_filter()
-def contribution_format(pid, language, viewcode, role=False):
+def contribution_format(contributions, language, viewcode, with_roles=False):
     """Format contribution for template in given language.
 
-    :param pid: pid for document.
+    :param contributions: the list of contributors to format.
     :param language: language to use.
     :param viewcode: viewcode to use.
-    :param role: display roles.
+    :param with_roles: display roles.
     :return the contribution in formatted form.
     """
-    doc = Document.get_record_by_pid(pid)
-    doc = doc.replace_refs()
     output = []
-    for contribution in doc.get('contribution', []):
-        cont_pid = contribution['agent'].get('pid')
-        if cont_pid:
-            contrib = Contribution.get_record_by_pid(cont_pid)
-            # add link <a href="url">link text</a>
-            authorized_access_point = contrib.get_authorized_access_point(
-                language=language
-            )
-            contribution_type = 'persons'
-            if contrib.get('type') == 'bf:Organisation':
-                contribution_type = 'corporate-bodies'
-            line = \
-                '<a href="/{viewcode}/{c_type}/{pid}">{text}</a>'.format(
-                    viewcode=viewcode,
-                    c_type=contribution_type,
-                    pid=cont_pid,
-                    text=authorized_access_point
-                )
+    for contrib in filter(lambda c: c.get('entity'), contributions):
+        if entity := get_entity_record_from_data(contrib['entity']):
+            text = entity.get_authorized_access_point(language=language)
+            args = {
+                'viewcode': viewcode,
+                'recordType': 'documents',
+                'q': f'contribution.entity.pids.{entity.resource_type}:'
+                     f'{entity.pid}',
+                'simple': 0
+            }
         else:
-            line = create_authorized_access_point(contribution['agent'])
+            default_key = 'authorized_access_point'
+            localized_key = f'authorized_access_point_{language}'
+            text = contrib['entity'].get(localized_key) or \
+                contrib['entity'].get(default_key)
+            args = {
+                'viewcode': viewcode,
+                'recordType': 'documents',
+                'q': f'contribution.entity.{localized_key}:"{text}"',
+                'simple': 0
+            }
+        url = url_for('rero_ils.search', **args)
+        label = f'<a href="{url}">{text}</a>'
 
-        if role:
-            roles = [_(role) for role in contribution.get('role', [])]
-            if roles:
-                line += '<span class="text-secondary"> ({role})</span>'.format(
-                    role=', '.join(roles)
-                )
+        if with_roles:
+            if roles := [_(role) for role in contrib.get('role', [])]:
+                roles_str = ', '.join(roles)
+                label += f'<span class="text-secondary"> ({roles_str})</span>'
+        output.append(label)
 
-        output.append(line)
-    return '&#8239;; '.join(output)
+    return ' ; '.join(output)
+
+
+@blueprint.app_template_filter()
+def doc_entity_label(entity, language=None, part_separator=' - ') -> str:
+    """Format an entity according to the available keys.
+
+    :param entity: the entity to analyze.
+    :param language: current language on interface.
+    :param part_separator: the string use to glue parts of the entity label.
+    :returns: the best possible label to display.
+    """
+    parts = []
+    if '$ref' in entity:
+        # Local or remote entity
+        if entity := Entity.get_record_by_ref(entity['$ref']):
+            entity_type = entity.resource_type
+            value = entity.pid
+            parts.append(entity.get_authorized_access_point(language=language))
+    else:
+        # Textual entity
+        entity_type = 'textual'
+        default_key = 'authorized_access_point'
+        localized_key = f'{default_key}_{language}'
+        value = entity.get(localized_key) or entity.get(default_key)
+        parts.append(value)
+
+    # Subdivisions (only for textual entity)
+    for subdivision in entity.get('subdivisions', []):
+        if sub_entity := subdivision.get('entity'):
+            _, _, label = doc_entity_label(
+                sub_entity, language, part_separator)
+            parts.append(label)
+
+    return entity_type, value, part_separator.join(filter(None, parts))
 
 
 @blueprint.app_template_filter()
@@ -304,10 +330,8 @@ def edition_format(editions):
     """Format edition for template."""
     output = []
     for edition in editions:
-        languages = edition_format_text(edition)
-        if languages:
-            for edition_text in languages:
-                output.append(edition_text.get('value'))
+        if languages := EditionStatementExtension.format_text(edition):
+            output.extend(edition.get('value') for edition in languages)
     return output
 
 
@@ -333,7 +357,7 @@ def part_of_format(part_of):
             lambda t: t['type'] == 'bf:Title', document.get('title')
         )
     )
-    output['title'] = title_format_text_head(bf_titles)
+    output['title'] = TitleExtension.format_text(bf_titles)
 
     # Format and set numbering (example: 2020, vol. 2, nr. 3, p. 302)
     if nums is not None:
@@ -394,9 +418,8 @@ def work_access_point(work_access_point):
     wap = []
     for work in work_access_point:
         agent_formatted = ''
-        if 'agent' in work:
-            agent = work['agent']
-            if agent['type'] == 'bf:Person':
+        if agent := work.get('creator'):
+            if agent['type'] == EntityType.PERSON:
                 # Person
                 name = []
                 if 'preferred_name' in agent:
@@ -424,7 +447,7 @@ def work_access_point(work_access_point):
                     agent_formatted += agent['preferred_name'] + '. '
                 if 'subordinate_unit' in agent:
                     for unit in agent['subordinate_unit']:
-                        agent_formatted += unit + '. '
+                        agent_formatted += f'{unit}. '
                 if 'numbering' in agent or 'conference_date' in agent or \
                    'place' in agent:
                     conf = [
@@ -456,25 +479,12 @@ def work_access_point(work_access_point):
     return wap
 
 
-@api_blueprint.route('/availabilty/<document_pid>', methods=['GET'])
-def document_availability(document_pid):
-    """HTTP GET request for document availability."""
-    view_code = flask_request.args.get('view_code')
-    if not view_code:
-        view_code = 'global'
-    document = Document.get_record_by_pid(document_pid)
-    if not document:
-        abort(404)
-    return jsonify({
-        'availability': Document.is_available(document_pid, view_code)
-    })
-
-
 @blueprint.app_template_filter()
 def create_publication_statement(provision_activity):
     """Create publication statement from place, agent and date values."""
     output = []
-    publication_texts = publication_statement_text(provision_activity)
+    publication_texts = \
+        ProvisionActivitiesExtension.format_text(provision_activity)
     for publication_text in publication_texts:
         language = publication_text.get('language', 'default')
         if display_alternate_graphic_first(language):
@@ -564,8 +574,9 @@ def create_title_text(titles, responsibility_statement=None):
     :return: the title text for display purpose
     :rtype: str
     """
-    return title_format_text_head(titles, responsibility_statement,
-                                  with_subtitle=True)
+    return TitleExtension.format_text(
+        titles, responsibility_statement,
+        with_subtitle=True)
 
 
 @blueprint.app_template_filter()
@@ -683,7 +694,7 @@ def get_articles(record):
         .filter('term', partOf__document__pid=record.get('pid')) \
         .source(['pid', 'title'])
     return [
-        {'title': title_format_text_head(hit.title), 'pid': hit.pid}
+        {'title': TitleExtension.format_text(hit.title), 'pid': hit.pid}
         for hit in search.scan()
     ]
 
@@ -727,25 +738,10 @@ def online_holdings(document_pid, viewcode='global'):
 
 
 @blueprint.app_template_filter()
-def subject_format(subject_data, language):
-    """Format the subject according to the available keys.
-
-    :param subject_data: the record subject.
-    :param language: current language on interface.
-    """
-    try:
-        return SubjectFactory \
-            .create_subject(subject_data) \
-            .render(language=language)
-    except (AttributeError, TypeError) as err:
-        # print(str(err))
-        return 'Subject parsing error !'
-
-
-@blueprint.app_template_filter()
 def series_statement_format(series):
     """Series statement format."""
-    return [series_statement_format_text(serie) for serie in series]
+    return [SeriesStatementExtension.format_text(
+        serie) for serie in series]
 
 
 @blueprint.app_template_filter()

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
-# Copyright (C) 2020 UCLouvain
+# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -20,16 +20,18 @@
 from functools import partial
 
 from elasticsearch_dsl.query import Q
-from flask_babelex import gettext as _
+from flask_babel import gettext as _
 
+from rero_ils.modules.api import IlsRecord, IlsRecordsIndexer, IlsRecordsSearch
+from rero_ils.modules.fetchers import id_fetcher
+from rero_ils.modules.loans.models import LoanState
+from rero_ils.modules.minters import id_minter
+from rero_ils.modules.providers import Provider
+from rero_ils.modules.utils import extracted_data_from_ref, sorted_pids
+
+from .extensions import IsPickupToExtension
+from .indexer import location_indexer_dumper, location_replace_refs_dumper
 from .models import LocationIdentifier, LocationMetadata
-from ..api import IlsRecord, IlsRecordsIndexer, IlsRecordsSearch
-from ..errors import MissingRequiredParameterError
-from ..fetchers import id_fetcher
-from ..loans.models import LoanState
-from ..minters import id_minter
-from ..providers import Provider
-from ..utils import extracted_data_from_ref, sorted_pids
 
 # provider
 LocationProvider = type(
@@ -56,6 +58,25 @@ class LocationsSearch(IlsRecordsSearch):
 
         default_filter = None
 
+    def location_pids(self, library_pid, source='pid'):
+        """Locations pid for given library.
+
+        :param library_pid: string - the library to filter with
+        :return: list of pid locations
+        :rtype: list
+        """
+        return [location.pid for location in self.filter(
+                'term', library__pid=library_pid).source(source).scan()]
+
+    def by_organisation_pid(self, organisation_pid):
+        """Build a search to get hits related to an organisation pid.
+
+        :param organisation_pid: string - the organisation pid to filter with
+        :returns: An ElasticSearch query to get hits related the entity.
+        :rtype: `elasticsearch_dsl.Search`
+        """
+        return self.filter('term', organisation__pid=organisation_pid)
+
 
 class Location(IlsRecord):
     """Location class."""
@@ -64,11 +85,16 @@ class Location(IlsRecord):
     fetcher = location_id_fetcher
     provider = LocationProvider
     model_cls = LocationMetadata
+    enable_jsonref = False
     pids_exist_check = {
         'required': {
             'lib': 'library'
         }
     }
+
+    _extensions = [
+        IsPickupToExtension()
+    ]
 
     def extended_validation(self, **kwargs):
         """Validate record against schema.
@@ -87,10 +113,11 @@ class Location(IlsRecord):
         return True
 
     @classmethod
-    def get_pickup_location_pids(cls, patron_pid=None, item_pid=None):
+    def get_pickup_location_pids(cls, patron_pid=None, item_pid=None,
+                                 is_ill_pickup=False):
         """Return pickup locations."""
-        from ..items.api import Item
-        from ..patrons.api import Patron
+        from rero_ils.modules.items.api import Item
+        from rero_ils.modules.patrons.api import Patron
         search = LocationsSearch()
 
         if item_pid:
@@ -98,7 +125,8 @@ class Location(IlsRecord):
             if loc.restrict_pickup_to:
                 search = search.filter('terms', pid=loc.restrict_pickup_to)
 
-        search = search.filter('term', is_pickup=True)
+        field = 'is_ill_pickup' if is_ill_pickup else 'is_pickup'
+        search = search.filter('term', **{field: True})
 
         if patron_pid:
             org_pid = Patron.get_record_by_pid(patron_pid).organisation_pid
@@ -152,6 +180,13 @@ class Location(IlsRecord):
         }
         return {k: v for k, v in links.items() if v}
 
+    def resolve(self):
+        """Resolve references data.
+
+        :returns: a fresh copy of the resolved data.
+        """
+        return self.dumps(location_replace_refs_dumper)
+
     def reasons_not_to_delete(self):
         """Get reasons not to delete record."""
         cannot_delete = {}
@@ -163,6 +198,11 @@ class Location(IlsRecord):
     def library_pid(self):
         """Get library pid for location."""
         return extracted_data_from_ref(self.get('library'))
+
+    @property
+    def library(self):
+        """Get library record related to this location."""
+        return extracted_data_from_ref(self.get('library'), data='record')
 
     @property
     def organisation_pid(self):
@@ -180,16 +220,27 @@ class Location(IlsRecord):
             for restrict_pickup_to in self.get('restrict_pickup_to', [])
         ]
 
+    @property
+    def pickup_name(self):
+        """Get pickup name for location."""
+        return self['pickup_name'] if 'pickup_name' in self \
+            else f"{self.library['code']}: {self['name']}"
+
     @classmethod
     def can_request(cls, record, **kwargs):
-        """Check if an record can be requested regarding its location.
+        """Check if a record can be requested regarding its location.
 
-        :param record : the record to check
+        :param record : the `Item` record to check
         :param kwargs : addition arguments
         :return a tuple with True|False and reasons to disallow if False.
         """
-        if record and not record.get_location().get('allow_request', False):
-            return False, [_('Record location disallows request.')]
+        if record:
+            location_method = 'get_location'
+            if hasattr(record, 'get_circulation_location'):
+                location_method = 'get_circulation_location'
+            location = getattr(record, location_method)()
+            if not location.get('allow_request', False):
+                return False, [_('Record location disallows request.')]
         return True, []
 
     def transaction_location_validator(self, location_pid):
@@ -207,6 +258,7 @@ class LocationsIndexer(IlsRecordsIndexer):
     """Holdings indexing class."""
 
     record_cls = Location
+    record_dumper = location_indexer_dumper
 
     def bulk_index(self, record_id_iterator):
         """Bulk index records.
@@ -214,50 +266,3 @@ class LocationsIndexer(IlsRecordsIndexer):
         :param record_id_iterator: Iterator yielding record UUIDs.
         """
         super().bulk_index(record_id_iterator, doc_type='loc')
-
-
-def search_locations_by_pid(organisation_pid=None, library_pid=None,
-                            is_online=False, is_pickup=False,
-                            sort_by_field='location_name', sort_order='asc',
-                            preserve_order=False):
-    """Retrieve locations attached to the given organisation or library.
-
-    :param organisation_pid: Organisation pid.
-    :param library_pid: Library pid.
-    :param is_online: Filter only on online location.
-    :param is_pickup: Filter only on pickup location.
-    :param sort_by_field: Location field used for sort.
-    :param sort_order: Sort order `asc` or `desc`.
-    :param preserve_order: Preserve order.
-    :returns: - A Search object.
-    """
-    search = LocationsSearch()
-
-    if organisation_pid:
-        search = search.filter('term', organisation__pid=organisation_pid)
-    elif library_pid:
-        search = search.filter('term', library__pid=library_pid)
-    else:
-        raise MissingRequiredParameterError(
-            "One of the parameters 'organisation_pid' "
-            "or 'library_pid' is required."
-        )
-
-    if is_online:
-        search = search.filter('term', is_online=is_online)
-
-    if is_pickup:
-        search = search.filter('term', is_pickup=is_pickup)
-
-    if sort_by_field:
-        search = search.sort({sort_by_field: {'order': sort_order}})
-        if preserve_order:
-            search = search.params(preserve_order=True)
-    return search
-
-
-def search_location_by_pid(loc_pid):
-    """Search location for the given location pid."""
-    loc_search = LocationsSearch().filter('term', pid=loc_pid)
-    for location in loc_search.scan():
-        return location

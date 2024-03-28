@@ -24,6 +24,16 @@
       "notification_type": {
         "type": "keyword"
       },
+      "effective_recipients": {
+        "properties": {
+          "type": {
+            "type": "keyword"
+          },
+          "address": {
+            "type": "keyword"
+          }
+        }
+      },
       "context": {
         "properties": {
           "loan": {
@@ -39,7 +49,20 @@
           "reminder_counter": {
             "type": "integer"
           },
+          "number": {
+            "type": "integer"
+          },
           "order": {
+            "properties": {
+              "pid": {
+                "type": "keyword"
+              },
+              "type": {
+                "type": "keyword"
+              }
+            }
+          },
+          "item": {
             "properties": {
               "pid": {
                 "type": "keyword"

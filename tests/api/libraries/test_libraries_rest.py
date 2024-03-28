@@ -18,6 +18,7 @@
 """Tests REST API libraries."""
 
 import json
+from datetime import datetime, timedelta
 
 import mock
 import pytest
@@ -36,19 +37,10 @@ def test_libraries_permissions(client, lib_martigny, json_header):
     res = client.get(item_url)
     assert res.status_code == 401
 
-    res, _ = postdata(
-        client,
-        'invenio_records_rest.lib_list',
-        {}
-    )
+    res, _ = postdata(client, 'invenio_records_rest.lib_list', {})
     assert res.status_code == 401
 
-    res = client.put(
-        item_url,
-        data={},
-        headers=json_header
-    )
-
+    client.put(item_url, data={}, headers=json_header)
     res = client.delete(item_url)
     assert res.status_code == 401
 
@@ -62,8 +54,7 @@ def test_libraries_get(client, lib_martigny):
 
     res = client.get(item_url)
     assert res.status_code == 200
-
-    assert res.headers['ETag'] == '"{}"'.format(lib_martigny.revision_id)
+    assert res.headers['ETag'] == f'"{lib_martigny.revision_id}"'
 
     data = get_json(res)
     assert lib_martigny.dumps() == data['metadata']
@@ -119,7 +110,7 @@ def test_libraries_post_put_delete(client, lib_martigny_data, json_header):
         headers=json_header
     )
     assert res.status_code == 200
-    # assert res.headers['ETag'] != '"{}"'.format(librarie.revision_id)
+    # assert res.headers['ETag'] != f'"{librarie.revision_id}"'
 
     # Check that the returned record matches the given data
     data = get_json(res)
@@ -161,8 +152,33 @@ def test_library_never_open(lib_sion):
     assert lib_sion.next_open()
 
     del lib_sion['opening_hours']
+    # add an exception date in the past
+    open_exception = {
+        'is_open': True,
+        'start_date': '2012-01-09',
+        'title': 'Ouverture exceptionnelle',
+        'times': [
+            {
+                'end_time': '16:00',
+                'start_time': '12:00'
+            }
+        ]
+    }
+
+    lib_sion['exception_dates'].append(open_exception)
     lib_sion.update(lib_sion, dbcommit=True, reindex=True)
 
+    # check that the exception in the past is not considered for next open date
+    with pytest.raises(LibraryNeverOpen):
+        assert lib_sion.next_open()
+
+    # compute a date in the future and add it as exception date
+    today = datetime.today()
+    future_date = (today + timedelta(days=14)).strftime('%Y-%m-%d')
+    open_exception['start_date'] = future_date
+    lib_sion.update(lib_sion, dbcommit=True, reindex=True)
+
+    # check that the exception in the future is considered as open date
     assert lib_sion._has_is_open()
 
     del lib_sion['exception_dates']
@@ -254,70 +270,33 @@ def test_library_secure_api(client, lib_martigny, lib_fully,
 
 
 def test_library_secure_api_create(client, lib_martigny,
-                                   lib_fully_data, librarian_martigny,
+                                   lib_fully_data, librarian2_martigny,
                                    librarian_sion,
                                    lib_martigny_data,
                                    system_librarian_martigny,
                                    system_librarian_sion):
     """Test library secure api create."""
     # Martigny
-    login_user_via_session(client, librarian_martigny.user)
+    login_user_via_session(client, librarian2_martigny.user)
     post_entrypoint = 'invenio_records_rest.lib_list'
 
     del lib_martigny_data['pid']
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        lib_martigny_data
-    )
-    # a librarian is not authorized to create its library record of its org
+    res, _ = postdata(client, post_entrypoint, lib_martigny_data)
+    # a not library manager is not authorized to create its library record
     assert res.status_code == 403
 
     del lib_fully_data['pid']
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        lib_fully_data
-    )
-    # a librarian is not authorized to create library record of its org
+    res, _ = postdata(client, post_entrypoint, lib_fully_data)
+    # a not library manager is not authorized to create library record
     assert res.status_code == 403
 
-    # Sion
-    login_user_via_session(client, librarian_sion.user)
-
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        lib_martigny_data
-    )
-    # a librarian is not authorized to create library record of other org
-    assert res.status_code == 403
-
+    # * sys_librarian is authorized to create its library record of its org
+    # * sys_librarian is authorized to create new library record in its org
     login_user_via_session(client, system_librarian_martigny.user)
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        lib_martigny_data
-    )
-    # a sys_librarian is authorized to create its library record of its org
+    res, _ = postdata(client, post_entrypoint, lib_martigny_data)
     assert res.status_code == 201
-
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        lib_fully_data
-    )
-    # a sys_librarian is authorized to create new library record in its org
+    res, _ = postdata(client, post_entrypoint, lib_fully_data)
     assert res.status_code == 201
-
-    login_user_via_session(client, system_librarian_sion.user)
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        lib_fully_data
-    )
-    # a sys_lib is not authorized to create new library record in other org
-    assert res.status_code == 403
 
 
 def test_library_secure_api_update(client, lib_fully, lib_martigny,
@@ -399,13 +378,13 @@ def test_library_secure_api_update(client, lib_fully, lib_martigny,
 
 
 def test_library_secure_api_delete(client, lib_fully, lib_martigny,
-                                   librarian_martigny,
+                                   librarian2_martigny,
                                    librarian_sion,
                                    system_librarian_martigny,
                                    system_librarian_sion):
     """Test library secure api delete."""
     # Martigny
-    login_user_via_session(client, librarian_martigny.user)
+    login_user_via_session(client, librarian2_martigny.user)
     record_url = url_for('invenio_records_rest.lib_item',
                          pid_value=lib_martigny.pid)
 

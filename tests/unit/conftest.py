@@ -25,6 +25,8 @@ import pytest
 from pkg_resources import resource_string
 from utils import get_schema
 
+from rero_ils.modules.entities.remote_entities.api import \
+    RemoteEntitiesSearch, RemoteEntity
 from rero_ils.modules.patrons.api import Patron
 
 
@@ -36,246 +38,265 @@ def create_app():
 
 
 @pytest.fixture()
-def circ_policy_schema(monkeypatch):
+def circ_policy_schema():
     """Circ policy Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.circ_policies.jsonschemas',
         'circ_policies/circ_policy-v0.0.1.json',
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def template_schema(monkeypatch):
+def template_schema():
     """Template Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.templates.jsonschemas',
         'templates/template-v0.0.1.json',
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def notification_schema(monkeypatch):
+def notification_schema():
     """Notifications Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.notifications.jsonschemas',
         '/notifications/notification-v0.0.1.json'
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def item_type_schema(monkeypatch):
+def item_type_schema():
     """Item type Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.item_types.jsonschemas',
         '/item_types/item_type-v0.0.1.json'
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def acq_account_schema(monkeypatch):
+def acq_account_schema():
     """Acq account Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.acquisition.acq_accounts.jsonschemas',
         '/acq_accounts/acq_account-v0.0.1.json'
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def acq_order_schema(monkeypatch):
+def acq_order_schema():
     """Acq order Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.acquisition.acq_orders.jsonschemas',
         '/acq_orders/acq_order-v0.0.1.json'
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def acq_order_line_schema(monkeypatch):
+def acq_order_line_schema():
     """Acq order line Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.acquisition.acq_order_lines.jsonschemas',
         '/acq_order_lines/acq_order_line-v0.0.1.json'
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def acq_receipt_line_schema(monkeypatch):
+def acq_receipt_line_schema():
     """Acq receipt line Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.acquisition.acq_receipt_lines.jsonschemas',
         '/acq_receipt_lines/acq_receipt_line-v0.0.1.json'
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def budget_schema(monkeypatch):
+def budget_schema():
     """Budget Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.acquisition.budgets.jsonschemas',
         '/budgets/budget-v0.0.1.json'
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def library_schema(monkeypatch):
+def library_schema():
     """Library Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.libraries.jsonschemas',
         'libraries/library-v0.0.1.json'
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def local_fields_schema(monkeypatch):
+def local_fields_schema():
     """Local fields Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.local_fields.jsonschemas',
         'local_fields/local_field-v0.0.1.json')
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def location_schema(monkeypatch):
+def location_schema():
     """Location Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.locations.jsonschemas',
         'locations/location-v0.0.1.json')
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def patron_transaction_schema(monkeypatch):
+def patron_transaction_schema():
     """Patron transaction Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.patron_transactions.jsonschemas',
         'patron_transactions/patron_transaction-v0.0.1.json')
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def patron_transaction_event_schema(monkeypatch):
+def patron_transaction_event_schema():
     """Patron transaction event Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.patron_transaction_events.jsonschemas',
         'patron_transaction_events/patron_transaction_event-v0.0.1.json')
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def organisation_schema(monkeypatch):
+def organisation_schema():
     """Organisation Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.organisations.jsonschemas',
         'organisations/organisation-v0.0.1.json',
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def patron_type_schema(monkeypatch):
+def patron_type_schema():
     """Patron type Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.patron_types.jsonschemas',
         '/patron_types/patron_type-v0.0.1.json',
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def patron_schema(monkeypatch):
+def patron_schema():
     """Patron Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.patrons.jsonschemas',
         '/patrons/patron-v0.0.1.json'
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture(scope="function")
 def patron_martigny_data_tmp_with_id(patron_martigny_data_tmp):
     """Load Martigny patron data scope function with a mocked user_id."""
-    patron = Patron.removeUserData(deepcopy(patron_martigny_data_tmp))
+    patron = Patron.remove_user_data(deepcopy(patron_martigny_data_tmp))
     # mock the user_id which is add by the Patron API.
     patron['user_id'] = 100
     return patron
 
 
 @pytest.fixture()
-def contributions_schema(monkeypatch):
-    """Patron Jsonschema for records."""
+def remote_entities_schema():
+    """Remote entity Jsonschema for records."""
     schema_in_bytes = resource_string(
-        'rero_ils.modules.contributions.jsonschemas',
-        '/contributions/contribution-v0.0.1.json'
+        'rero_ils.modules.entities.remote_entities.jsonschemas',
+        '/remote_entities/remote_entity-v0.0.1.json'
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def document_schema(monkeypatch):
+def local_entities_schema():
+    """Local entity Jsonschema for records."""
+    schema_in_bytes = resource_string(
+        'rero_ils.modules.entities.local_entities.jsonschemas',
+        '/local_entities/local_entity-v0.0.1.json'
+    )
+    return get_schema(schema_in_bytes)
+
+
+@pytest.fixture()
+def document_schema():
     """Jsonschema for documents."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.documents.jsonschemas',
         'documents/document-v0.0.1.json'
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def item_schema(monkeypatch):
+def item_schema():
     """Item Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.items.jsonschemas',
         'items/item-v0.0.1.json'
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def user_schema(monkeypatch):
+def user_schema():
     """User Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.users.jsonschemas',
         'users/user-v0.0.1.json'
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def holding_schema(monkeypatch):
+def holding_schema():
     """Holdings Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.holdings.jsonschemas',
         '/holdings/holding-v0.0.1.json')
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def ill_request_schema(monkeypatch):
+def ill_request_schema():
     """ILL requests JSONSchema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.ill_requests.jsonschemas',
         '/ill_requests/ill_request-v0.0.1.json')
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
-def operation_log_schema(monkeypatch):
+def operation_log_schema():
     """Operation log Jsonschema for records."""
     schema_in_bytes = resource_string(
         'rero_ils.modules.operation_logs.jsonschemas',
         'operation_logs/operation_log-v0.0.1.json'
     )
-    return get_schema(monkeypatch, schema_in_bytes)
+    return get_schema(schema_in_bytes)
+
+
+@pytest.fixture()
+def vendors_schema():
+    """Local fields Jsonschema for records."""
+    schema_in_bytes = resource_string(
+        'rero_ils.modules.vendors.jsonschemas',
+        'vendors/vendor-v0.0.1.json')
+    return get_schema(schema_in_bytes)
 
 
 @pytest.fixture()
@@ -288,11 +309,11 @@ def marc21_record():
 
 
 @pytest.fixture()
-def mef_record_with_idref_rero():
+def mef_record_with_idref_rero_data():
     """Mef record with idref rero."""
     return {
-        '$schema': 'https://ils.rero.ch/schemas/'
-                   'contributions/contribution-v0.0.1.json',
+        '$schema': 'https://bib.rero.ch/schemas/'
+                   'remote_entities/remote_entity-v0.0.1.json',
         'idref': {
             '$schema': 'https://mef.rero.ch/schemas/'
                        'agents_idref/idref-agent-v0.0.1.json',
@@ -319,15 +340,33 @@ def mef_record_with_idref_rero():
             'preferred_name': 'Honnoré, Patrick'},
         'sources': ['rero', 'idref'],
         'type': 'bf:Person',
-        'viaf_pid': '37141584'
+        'viaf_pid': '37141584',
+        'type': 'bf:Person'
     }
 
 
 @pytest.fixture()
-def mef_record_with_idref_gnd():
+def mef_record_with_idref_rero(mef_record_with_idref_rero_data):
+    """Mef record with idref rero."""
+    if entity := RemoteEntity.get_record_by_pid(
+            mef_record_with_idref_rero_data['pid']):
+        return entity
+    entity = RemoteEntity.create(
+        data=mef_record_with_idref_rero_data,
+        dbcommit=True,
+        reindex=True,
+        delete_pid=False
+    )
+    RemoteEntitiesSearch.flush_and_refresh()
+    return entity
+
+
+@pytest.fixture()
+def mef_record_with_idref_gnd_data():
     """Mef record with idref gnd."""
     return {
-        '$schema': 'https://mef.rero.ch/schemas/mef/mef-v0.0.1.json',
+        '$schema': 'https://bib.rero.ch/schemas/'
+                   'remote_entities/remote_entity-v0.0.1.json',
         'gnd': {
             '$schema': 'https://mef.rero.ch/schemas/'
                        'agents_gnd/gnd-agent-v0.0.1.json',
@@ -402,15 +441,34 @@ def mef_record_with_idref_gnd():
             ]
         },
         'pid': '5890765',
-        'viaf_pid': '143949988'
+        'viaf_pid': '143949988',
+        'sources': ['gnd', 'idref'],
+        'type': 'bf:Organisation'
     }
 
 
 @pytest.fixture()
-def mef_record_with_idref_gnd_rero():
+def mef_record_with_idref_gnd(mef_record_with_idref_gnd_data):
+    """Mef record with idref rero."""
+    if entity := RemoteEntity.get_record_by_pid(
+            mef_record_with_idref_gnd_data['pid']):
+        return entity
+    entity = RemoteEntity.create(
+        data=mef_record_with_idref_gnd_data,
+        dbcommit=True,
+        reindex=True,
+        delete_pid=False
+    )
+    RemoteEntitiesSearch.flush_and_refresh()
+    return entity
+
+
+@pytest.fixture()
+def mef_record_with_idref_gnd_rero_data():
     """Mef record with idref gnd rero is conference."""
     return {
-        '$schema': 'https://mef.rero.ch/schemas/mef/mef-v0.0.1.json',
+        '$schema': 'https://bib.rero.ch/schemas/'
+                   'remote_entities/remote_entity-v0.0.1.json',
         'gnd': {
             '$schema': 'https://mef.rero.ch/schemas/'
                        'agents_gnd/gnd-agent-v0.0.1.json',
@@ -483,5 +541,33 @@ def mef_record_with_idref_gnd_rero():
                 'Congrès ouvrier français'
             ]
         },
-        'viaf_pid': '134406719'
+        'viaf_pid': '134406719',
+        'sources': ['gnd', 'idref', 'rero'],
+        'type': 'bf:Organisation'
     }
+
+
+@pytest.fixture()
+def mef_record_with_idref_gnd_rero(mef_record_with_idref_gnd_rero_data):
+    """Mef record with idref rero."""
+    if entity := RemoteEntity.get_record_by_pid(
+            mef_record_with_idref_gnd_rero_data['pid']):
+        return entity
+    entity = RemoteEntity.create(
+        data=mef_record_with_idref_gnd_rero_data,
+        dbcommit=True,
+        reindex=True,
+        delete_pid=False
+    )
+    RemoteEntitiesSearch.flush_and_refresh()
+    return entity
+
+
+@pytest.fixture()
+def stats_cfg_schema():
+    """Template Jsonschema for records."""
+    schema_in_bytes = resource_string(
+        'rero_ils.modules.stats_cfg.jsonschemas',
+        'stats_cfg/stat_cfg-v0.0.1.json',
+    )
+    return get_schema(schema_in_bytes)

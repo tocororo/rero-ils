@@ -865,57 +865,44 @@ def test_unimarc_contribution():
     contribution = data.get('contribution')
     assert contribution == [
         {
-            'agent': {
+            'entity': {
                 'type': 'bf:Person',
-                'preferred_name': 'Jean-Paul',
-                'numeration': 'II',
-                'date_of_birth': '1954',
-                'qualifier': 'Pape'
+                'authorized_access_point': 'Jean-Paul II, Pape, 1954'
             },
             'role': ['aut']
         },
         {
-            'agent': {
+            'entity': {
                 'type': 'bf:Person',
-                'preferred_name': 'Dumont, Jean',
-                'date_of_birth': '1921',
-                'date_of_death': '2014',
-                'qualifier': 'Historien'
+                'authorized_access_point': 'Dumont, Jean, 1921-2014, Historien'
             },
             'role': ['aut']
         },
         {
-            'agent': {
+            'entity': {
                 'type': 'bf:Person',
-                'preferred_name': 'Dicker, J.',
-                'date_of_birth': '1921'
+                'authorized_access_point': 'Dicker, J., 1921'
             },
             'role': ['aut']
         },
         {
-            'agent': {
+            'entity': {
                 'type': 'bf:Organisation',
-                'preferred_name': 'RERO',
-                'conference': False
+                'authorized_access_point': 'RERO'
             },
             'role': ['aut']
         },
         {
-            'agent': {
+            'entity': {
                 'type': 'bf:Organisation',
-                'preferred_name': 'LOC',
-                'conference': False,
-                'numbering': '1',
-                'place': 'London',
-                'conference_date': '2020-02-02'
+                'authorized_access_point': 'LOC (1 : 2020-02-02 : London)'
             },
             'role': ['aut']
         },
         {
-            'agent': {
+            'entity': {
                 'type': 'bf:Organisation',
-                'preferred_name': 'BNF',
-                'conference': True
+                'authorized_access_point': 'BNF'
             },
             'role': ['aut']
         }
@@ -1068,8 +1055,7 @@ def test_unimarc_publishers_provision_activity():
         'type': 'bf:Publication',
         'place': [
             {
-                'country': 'fr',
-                'type': 'bf:Place'
+                'country': 'fr'
             },
         ],
         'statement': [
@@ -1386,7 +1372,7 @@ def test_unimarc_partOf_without_link(document):
       <datafield tag="410" ind1=" " ind2="0">
         <subfield code="t">Formation permanente en sciences humaines</subfield>
         <subfield code="x">0768-2026</subfield>
-        <subfield code="v">41</subfield>
+        <subfield code="v">24</subfield>
       </datafield>
     </record>
     """
@@ -1416,17 +1402,104 @@ def test_unimarc_partOf_with_link(document_with_issn):
       <datafield tag="410" ind1=" " ind2="0">
         <subfield code="t">Formation permanente en sciences humaines</subfield>
         <subfield code="x">0768-2026</subfield>
-        <subfield code="v">41</subfield>
+        <subfield code="v">24</subfield>
+        <subfield code="d">2024</subfield>
       </datafield>
     </record>
     """
     unimarcjson = create_record(unimarcxml)
     data = unimarc.do(unimarcjson)
     assert data['partOf'] == [{
-            'document': {'$ref': 'https://bib.rero.ch/api/documents/doc5'},
-            'numbering': '41'
-        }
-    ]
+        'document': {'$ref': 'https://bib.rero.ch/api/documents/doc5'},
+        'numbering': [{
+            'volume': '24',
+            'year': '2024'
+        }]
+    }]
+
+    unimarcxml = """
+    <record>
+      <datafield tag="410" ind1=" " ind2="0">
+        <subfield code="t">Formation permanente en sciences humaines</subfield>
+        <subfield code="x">0768-2026</subfield>
+        <subfield code="v">No 770, 15 mai 2024, pp. 31-41</subfield>
+        <subfield code="d">2024</subfield>
+      </datafield>
+    </record>
+    """
+    unimarcjson = create_record(unimarcxml)
+    data = unimarc.do(unimarcjson)
+    assert data['partOf'] == [{
+        'document': {'$ref': 'https://bib.rero.ch/api/documents/doc5'},
+        'numbering': [{
+            'volume': 'No 770, 15 mai 2024, pp. 31-41',
+            'year': '2024'
+        }]
+    }]
+
+    unimarcxml = """
+    <record>
+      <datafield tag="410" ind1=" " ind2="0">
+        <subfield code="t">Formation permanente en sciences humaines</subfield>
+        <subfield code="x">0768-2026</subfield>
+        <subfield code="v">3-4,11-15</subfield>
+        <subfield code="d">1867-1869</subfield>
+      </datafield>
+    </record>
+    """
+    unimarcjson = create_record(unimarcxml)
+    data = unimarc.do(unimarcjson)
+    assert data['partOf'] == [{
+        'document': {'$ref': 'https://bib.rero.ch/api/documents/doc5'},
+        'numbering': [{
+            'volume': '3-4,11-15',
+            'year': '1867'
+        }, {
+            'volume': '3-4,11-15',
+            'year': '1868'
+        }, {
+            'volume': '3-4,11-15',
+            'year': '1869'
+        }]
+    }]
+
+    unimarcxml = """
+    <record>
+      <datafield tag="410" ind1=" " ind2="0">
+        <subfield code="t">Formation permanente en sciences humaines</subfield>
+        <subfield code="x">0768-2026</subfield>
+        <subfield code="d">1867-1869</subfield>
+      </datafield>
+    </record>
+    """
+    unimarcjson = create_record(unimarcxml)
+    data = unimarc.do(unimarcjson)
+    assert data['partOf'] == [{
+        'document': {'$ref': 'https://bib.rero.ch/api/documents/doc5'},
+        'numbering': [{
+            'year': '1867'
+        }, {
+            'year': '1868'
+        }, {
+            'year': '1869'
+        }]
+    }]
+
+    unimarcxml = """
+    <record>
+      <datafield tag="410" ind1=" " ind2="0">
+        <subfield code="t">Formation permanente en sciences humaines</subfield>
+        <subfield code="x">0768-2026</subfield>
+        <subfield code="d">1869</subfield>
+      </datafield>
+    </record>
+    """
+    unimarcjson = create_record(unimarcxml)
+    data = unimarc.do(unimarcjson)
+    assert data['partOf'] == [{
+        'document': {'$ref': 'https://bib.rero.ch/api/documents/doc5'},
+        'numbering': [{'year': '1869'}]
+    }]
 
 
 # abstract: [330$a repetitive]
@@ -1556,12 +1629,17 @@ def test_unimarc_subjects():
     unimarcjson = create_record(unimarcxml)
     data = unimarc.do(unimarcjson)
     assert data.get('subjects_imported') == [{
-        'term': 'subjects 600',
-        'type': 'bf:Topic',
-        'source': 'rameau'
+        'entity': {
+            'authorized_access_point': 'subjects 600',
+            'type': 'bf:Topic',
+            'source': 'rameau'
+        }
     }, {
-        'term': 'Capet, Louis III, Jr., 1700-1780 -- France',
-        'type': 'bf:Topic'
+        'entity': {
+            'authorized_access_point':
+                'Capet, Louis III, Jr., 1700-1780 -- France',
+            'type': 'bf:Topic'
+        }
     }]
 
 

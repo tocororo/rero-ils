@@ -49,13 +49,13 @@ def test_count(app, script_info):
     assert result.output.strip().split('\n')[1] == 'Count: 2'
 
 
-@mock.patch('requests.get')
+@mock.patch('requests.Session.get')
 def test_create(mock_contributions_mef_get, app, script_info,
-                contribution_person_response_data):
+                entity_person_response_data):
     """Test create cli."""
     json_file_name = join(dirname(__file__), '../data/documents.json')
     mock_contributions_mef_get.return_value = mock_response(
-        json_data=contribution_person_response_data
+        json_data=entity_person_response_data
     )
 
     runner = CliRunner()
@@ -66,7 +66,7 @@ def test_create(mock_contributions_mef_get, app, script_info,
         obj=script_info
     )
     # assert result.exit_code == 0
-    assert result.output.strip().split('\n')[1:] == [
+    assert result.output.strip().split('\n')[3:] == [
         'DB commit: 2',
         'Append fixtures new identifiers: 2',
         'DB commit append: 2'
@@ -81,7 +81,7 @@ def test_create(mock_contributions_mef_get, app, script_info,
         obj=script_info
     )
     # assert result.exit_code == 0
-    assert result.output.strip().split('\n')[1:] == [
+    assert result.output.strip().split('\n')[3:] == [
         'DB commit: 2',
         'Append fixtures new identifiers: 0',
         'DB commit append: 0'

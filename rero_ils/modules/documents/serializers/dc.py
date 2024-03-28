@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2022 RERO
-# Copyright (C) 2022 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -28,7 +28,9 @@ from werkzeug.local import LocalProxy
 
 from rero_ils.modules.documents.api import Document
 from rero_ils.modules.documents.dojson.contrib.jsontodc import dublincore
-from rero_ils.modules.documents.utils import process_literal_contributions
+
+from ..dumpers import document_replace_refs_dumper
+from ..utils import process_i18n_literal_fields
 
 DEFAULT_LANGUAGE = LocalProxy(
     lambda: current_app.config.get('BABEL_DEFAULT_LANGUAGE'))
@@ -59,12 +61,9 @@ class DublinCoreSerializer(_DublinCoreSerializer):
     def transform_record(self, pid, record, links_factory=None,
                          language=DEFAULT_LANGUAGE, **kwargs):
         """Transform record into an intermediate representation."""
-        record = record.replace_refs()
-        contributions = process_literal_contributions(
-            record.get('contribution', [])
-        )
-        if contributions:
-            record['contribution'] = contributions
+        record = record.dumps(document_replace_refs_dumper)
+        if contributions := record.pop('contribution', []):
+            record['contribution'] = process_i18n_literal_fields(contributions)
         record = dublincore.do(record, language=language)
         return record
 

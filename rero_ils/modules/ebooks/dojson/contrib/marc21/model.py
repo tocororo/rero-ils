@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -30,6 +30,8 @@ from rero_ils.dojson.utils import ReroIlsMarc21Overdo, TitlePartList, \
     remove_trailing_punctuation
 from rero_ils.modules.documents.dojson.contrib.marc21tojson.utils import \
     do_language
+from rero_ils.modules.documents.utils import create_authorized_access_point
+from rero_ils.modules.entities.models import EntityType
 
 marc21 = ReroIlsMarc21Overdo()
 
@@ -128,60 +130,66 @@ def marc21_to_contribution(self, key, value):
     """Get contribution."""
     if key[4] == '2' or key[:3] not in ['100', '700', '710', '711']:
         return None
-    agent = {'type': 'bf:Person'}
+    agent_data = {'type': 'bf:Person'}
     if value.get('a'):
         name = utils.force_list(value.get('a'))[0]
-        agent['preferred_name'] = remove_trailing_punctuation(name)
+        agent_data['preferred_name'] = remove_trailing_punctuation(name)
 
         # 100|700 Person
     if key[:3] in ['100', '700']:
         if value.get('b'):
             numeration = utils.force_list(value.get('b'))[0]
-            agent['numeration'] = remove_trailing_punctuation(
+            agent_data['numeration'] = remove_trailing_punctuation(
                 numeration)
         if value.get('c'):
             qualifier = utils.force_list(value.get('c'))[0]
-            agent['qualifier'] = remove_trailing_punctuation(qualifier)
+            agent_data['qualifier'] = remove_trailing_punctuation(qualifier)
         if value.get('d'):
             date = utils.force_list(value.get('d'))[0]
             date = date.rstrip(',')
             dates = remove_trailing_punctuation(date).split('-')
             with contextlib.suppress(Exception):
                 if date_of_birth := dates[0].strip():
-                    agent['date_of_birth'] = date_of_birth
+                    agent_data['date_of_birth'] = date_of_birth
             with contextlib.suppress(Exception):
                 if date_of_death := dates[1].strip():
-                    agent['date_of_death'] = date_of_death
+                    agent_data['date_of_death'] = date_of_death
         if value.get('q'):
             fuller_form_of_name = utils.force_list(value.get('q'))[0]
-            agent['fuller_form_of_name'] = remove_trailing_punctuation(
+            agent_data['fuller_form_of_name'] = remove_trailing_punctuation(
                 fuller_form_of_name
             ).lstrip('(').rstrip(')')
 
     elif key[:3] in ['710', '711']:
-        agent['type'] = 'bf:Organisation'
-        agent['conference'] = key[:3] == '711'
+        agent_data['type'] = 'bf:Organisation'
+        agent_data['conference'] = key[:3] == '711'
         if value.get('e'):
             subordinate_units = [
                 subordinate_unit.rstrip('.') for subordinate_unit
                 in utils.force_list(value.get('e'))]
 
-            agent['subordinate_unit'] = subordinate_units
+            agent_data['subordinate_unit'] = subordinate_units
         if value.get('n'):
             numbering = utils.force_list(value.get('n'))[0]
-            agent['numbering'] = remove_trailing_punctuation(
+            agent_data['numbering'] = remove_trailing_punctuation(
                 numbering
             ).lstrip('(').rstrip(')')
         if value.get('d'):
             conference_date = utils.force_list(value.get('d'))[0]
             if conference_date := remove_trailing_punctuation(
                     conference_date).lstrip('(').rstrip(')'):
-                agent['conference_date'] = conference_date
+                agent_data['conference_date'] = conference_date
         if value.get('c'):
             place = utils.force_list(value.get('c'))[0]
             if place := remove_trailing_punctuation(
                     place).lstrip('(').rstrip(')'):
-                agent['place'] = place
+                agent_data['place'] = place
+    agent = {
+        'type': agent_data['type'],
+        'authorized_access_point': create_authorized_access_point(agent_data),
+    }
+    if agent_data.get('identifiedBy'):
+        agent['identifiedBy'] = agent_data['identifiedBy']
     roles = ['aut']
     if value.get('4'):
         roles = list(utils.force_list(value.get('4')))
@@ -192,7 +200,7 @@ def marc21_to_contribution(self, key, value):
     else:
         roles = ['ctb']
     return {
-        'agent': agent,
+        'entity': agent,
         'role': roles
     }
 
@@ -339,8 +347,8 @@ def marc21_to_provision_activity(self, key, value):
 
         def build_place_or_agent_data(code, label):
             type_per_code = {
-                'a': 'bf:Place',
-                'b': 'bf:Agent'
+                'a': EntityType.PLACE,
+                'b': EntityType.AGENT
             }
             return {'type': type_per_code[code], 'label': [{'value': value}]} \
                 if (value := remove_trailing_punctuation(label)) else None
@@ -361,7 +369,7 @@ def marc21_to_provision_activity(self, key, value):
         if marc21.country:
             place['country'] = marc21.country
         if place:
-            place['type'] = 'bf:Place'
+            place['type'] = EntityType.PLACE
         return place
 
     # the function marc21_to_provision_activity start here
@@ -483,18 +491,16 @@ def marc21_to_subjects(self, key, value):
     subjects: 6xx [duplicates could exist between several vocabularies,
         if possible deduplicate]
     """
-    subjects = self.get('subjects', [])
     seen = {}
     for subject in utils.force_list(value.get('a')):
         subject = {
-            'type': "bf:Topic",
-            'term': subject
+            'type': EntityType.TOPIC,
+            'authorized_access_point': subject
         }
         str_subject = str(subject)
         if str_subject not in seen:
-            subjects.append(subject)
             seen[str_subject] = 1
-    self['subjects'] = subjects
+            self.setdefault('subjects', []).append(dict(entity=subject))
     return None
 
 

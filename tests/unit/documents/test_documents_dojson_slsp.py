@@ -71,43 +71,33 @@ def test_marc21_to_contribution(mock_get):
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('contribution') == [{
-        'agent': {
+        'entity': {
             'type': 'bf:Person',
-            'preferred_name': 'Jean-Paul',
-            'numeration': 'II',
-            'date_of_birth': '1954',
-            'qualifier': 'Pape'
+            'authorized_access_point': 'Jean-Paul II, Pape, 1954'
         },
         'role': ['aut']
     }, {
-        'agent': {
+        'entity': {
             'type': 'bf:Person',
-            'preferred_name': 'Dumont, Jean',
-            'date_of_birth': '1921',
-            'date_of_death': '2014',
-            'qualifier': 'Historien'
+            'authorized_access_point': 'Dumont, Jean, 1921-2014, Historien'
         },
         'role': ['edt']
     }, {
-        'agent': {
+        'entity': {
             'type': 'bf:Organisation',
-            'preferred_name': 'RERO',
-            'conference': False
+            'authorized_access_point': 'RERO'
         },
         'role': ['ctb']
     }, {
-        'agent': {
+        'entity': {
             'type': 'bf:Organisation',
-            'preferred_name': 'Biennale de céramique contemporaine',
-            'conference_date': '2003',
-            'numbering': '17',
-            'place': 'Châteauroux',
-            'conference': True
+            'authorized_access_point':
+                'Biennale de céramique contemporaine (17 : 2003 : Châteauroux)'
         },
         'role': ['aut']
     }]
     assert data.get('work_access_point') == [{
-        'agent': {
+        'creator': {
             'date_of_birth': '1954',
             'numeration': 'II',
             'preferred_name': 'Jean-Paul',
@@ -116,7 +106,7 @@ def test_marc21_to_contribution(mock_get):
         },
         'title': 'Treaties, etc.'
     }, {
-        'agent': {
+        'creator': {
             'preferred_name': 'Santamaría, Germán',
             'type': 'bf:Person'
         },
@@ -148,7 +138,7 @@ def test_marc21_to_contribution(mock_get):
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('work_access_point') == [{
-        'agent': {
+        'creator': {
             'date_of_birth': '1919',
             'date_of_death': '1990',
             'preferred_name': 'Santamaría, Germán',
@@ -156,7 +146,7 @@ def test_marc21_to_contribution(mock_get):
         },
         'title': 'No morirás'
     }, {
-        'agent': {
+        'creator': {
             'date_of_birth': '1919',
             'preferred_name': 'Santamaría, Germán',
             'type': 'bf:Person'

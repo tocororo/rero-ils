@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2023 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -17,53 +17,54 @@
 
 """Common pytest fixtures and plugins."""
 
-
-from datetime import datetime
-
 import pytest
-from invenio_accounts.ext import hash_password
+from flask_security.utils import hash_password
 from invenio_accounts.models import User
 from invenio_search import current_search_client
 
 
 @pytest.fixture(scope='function')
-def user_with_profile(db):
+def user_with_profile(db, default_user_password):
     """Create a simple invenio user with a profile."""
     with db.session.begin_nested():
+        profile = dict(
+            birth_date='1990-01-01',
+            first_name='User',
+            last_name='With Profile',
+            city='Nowhere'
+        )
         user = User(
             email='user_with_profile@test.com',
-            password=hash_password('123456'),
-            profile=dict(), active=True)
+            username='user_with_profile',
+            password=hash_password(default_user_password),
+            user_profile=profile,
+            active=True,
+        )
         db.session.add(user)
-        profile = user.profile
-        profile.birth_date = datetime(1990, 1, 1)
-        profile.first_name = 'User'
-        profile.last_name = 'With Profile'
-        profile.city = 'Nowhere'
-        profile.username = 'user_with_profile'
-        db.session.merge(user)
     db.session.commit()
-    user.password_plaintext = '123456'
+    user.password_plaintext = default_user_password
     return user
 
 
 @pytest.fixture(scope='function')
-def user_without_email(db):
+def user_without_email(db, default_user_password):
     """Create a simple invenio user without email."""
     with db.session.begin_nested():
+        profile = dict(
+            birth_date='1990-01-01',
+            first_name='User',
+            last_name='With Profile',
+            city='Nowhere'
+        )
         user = User(
-            password=hash_password('123456'),
-            profile=dict(), active=True)
+            password=hash_password(default_user_password),
+            user_profile=profile,
+            username='user_without_email',
+            active=True,
+        )
         db.session.add(user)
-        profile = user.profile
-        profile.birth_date = datetime(1990, 1, 1)
-        profile.first_name = 'User'
-        profile.last_name = 'With Profile'
-        profile.city = 'Nowhere'
-        profile.username = 'user_without_email'
-        db.session.merge(user)
     db.session.commit()
-    user.password_plaintext = '123456'
+    user.password_plaintext = default_user_password
     return user
 
 

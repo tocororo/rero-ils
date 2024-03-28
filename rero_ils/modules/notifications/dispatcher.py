@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -77,24 +78,27 @@ class Dispatcher:
         #   The aggregation key we build ensure than aggregated notifications
         #   are always send to same recipient (patron, lib, vendor, ...) with
         #   the same communication channel. So we can check any notification
-        #   of the set to get the theses informations.
+        #   of the set to get the these informations.
         for aggr_key, aggr_notifications in aggregated.items():
             notification = aggr_notifications[0]
             comm_channel = notification.get_communication_channel()
             dispatcher_function = get_dispatcher_function(comm_channel)
             counter = len(aggr_notifications)
             if verbose:
-                current_app.logger.info(
-                    f'Dispatch notifications: {notification.type} '
-                    f'library: {notification.library.pid} '
-                    f'patron: {notification.patron.pid} '
-                    f'documents: {counter}'
-                )
-            result = dispatcher_function(aggr_notifications)
+                msg = f'Dispatch notifications: {notification.type} '
+                if hasattr(notification, 'library'):
+                    msg += f'library: {notification.library.pid} '
+                if hasattr(notification, 'patron'):
+                    msg += f'patron: {notification.patron.pid} '
+                msg += f'documents: {counter}'
+                current_app.logger.info(msg)
+            result, recipients = dispatcher_function(aggr_notifications)
             for notification in aggr_notifications:
                 notification.update_process_date(sent=result)
             if result:
                 sent += counter
+                for notification in aggr_notifications:
+                    notification.update_effective_recipients(recipients)
             else:
                 not_sent += counter
         return {
@@ -140,12 +144,15 @@ class Dispatcher:
         aggregated[aggr_key].append(notification)
 
     @staticmethod
-    def _create_email(recipients, reply_to, ctx_data, template):
+    def _create_email(recipients, reply_to, ctx_data, template,
+                      cc=None, bcc=None):
         """Create email message from template.
 
-        :param recipients: List of emails to send the message too.
+        :param recipients: Main recipient emails list
         :param reply_to: Reply to email address.
-        :param ctx_data: Dictionary with informations used in template.
+        :param cc: Email list where to send the message as "copy"
+        :param bcc: Email list where to send the message as "blind copy"
+        :param ctx_data: Dictionary with information used in template.
         :param template: Template to use to create TemplatedMessage.
         :returns: Message created.
         """
@@ -155,6 +162,8 @@ class Dispatcher:
                                           'noreply@rero.ch'),
             reply_to=','.join(reply_to),  # the client is unable to manage list
             recipients=recipients,
+            cc=cc,
+            bcc=bcc,
             ctx=ctx_data
         )
         # subject is the first line, body is the rest
@@ -181,7 +190,10 @@ class Dispatcher:
                 generator process working with CUPS (using RabbitMQ queue)
 
         :param notifications: the notification set to perform.
-        :return True if email is send, False if errors are found.
+        :return a tuple where first element is a boolean value to determine if
+            email was sent (False if errors are found) ; second element is a
+            list of used recipients.
+        :rtype tuple
         """
         notifications = notifications or []
         if not notifications:
@@ -219,14 +231,14 @@ class Dispatcher:
             current_app.logger.warning(
                 f'Notification#{notification.pid} for printing is lost :: '
                 f'({")(".join(error_reasons)})')
-            return False
+            return False, None
 
         # 2. Build the context to render the template
         notif_class = notification.__class__
         context = notif_class.get_notification_context(notifications)
         # 3. Force patron communication channel to 'mail'
-        #    In some cases we force the notification to be send by mail despite
-        #    the patron asked to received them by email (cipo reminders
+        #    In some cases we force the notification to be sent by mail despite
+        #    the patron asked to receive them by email (cipo reminders
         #    notifications with a communication channel to 'mail' value).
         #    Ensure than the ``include_patron_address`` are set to True.
         context['include_patron_address'] = True
@@ -239,14 +251,17 @@ class Dispatcher:
             template=notification.get_template_path()
         )
         task_send_email.apply_async((msg.__dict__,))
-        return True
+        return True, [(RecipientType.TO, recipient)]
 
     @staticmethod
     def send_notification_by_email(notifications):
         """Send the notification by email to the patron.
 
         :param notifications: the notification set to perform.
-        :return True if email is send, False if errors are found.
+        :return a tuple where first element is a boolean value to determine if
+            email was sent (False if errors are found) ; second element is a
+            list of used recipients.
+        :rtype tuple
         """
         notifications = notifications or []
         if not notifications:
@@ -255,6 +270,8 @@ class Dispatcher:
         notification = notifications[0]
         reply_to = notification.get_recipients(RecipientType.REPLY_TO)
         recipients = notification.get_recipients(RecipientType.TO)
+        cc = notification.get_recipients(RecipientType.CC)
+        bcc = notification.get_recipients(RecipientType.BCC)
 
         error_reasons = []
         if not recipients:
@@ -265,7 +282,7 @@ class Dispatcher:
             current_app.logger.warning(
                 f'Notification#{notification.pid} is lost :: '
                 f'({")(".join(error_reasons)})')
-            return False
+            return False, None
 
         # build the context for this notification set
         notif_class = notification.__class__
@@ -273,10 +290,12 @@ class Dispatcher:
 
         msg = Dispatcher._create_email(
             recipients=recipients,
+            cc=cc,
+            bcc=bcc,
             reply_to=reply_to,
             ctx_data=context,
             template=notification.get_template_path()
         )
         delay = context.get('delay', 0)
         task_send_email.apply_async((msg.__dict__,), countdown=delay)
-        return True
+        return True, [(RecipientType.TO, addr) for addr in recipients]

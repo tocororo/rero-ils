@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -23,6 +23,8 @@ from datetime import datetime
 
 from celery import shared_task
 from flask import current_app
+
+from rero_ils.modules.users.api import User
 
 from .api import Patron
 from ..patron_types.api import PatronType
@@ -52,11 +54,11 @@ def clean_obsolete_subscriptions():
         else:
             patron['patron']['subscriptions'] = subscriptions
 
-        # NOTE : this update will trigger the listener
-        #        `create_subscription_patron_transaction`. This listener will
-        #        create a new subscription if needed
+        # DEV NOTE : this update will trigger the listener
+        #     `create_subscription_patron_transaction`. This listener will
+        #     create a new subscription if needed
         patron.update(
-            Patron.removeUserData(patron.dumps()),
+            User.remove_fields(patron.dumps()),
             dbcommit=True,
             reindex=True
         )

@@ -7,14 +7,22 @@
     "items": {
       "title": "Content",
       "type": "string",
-      "form": {
-        "placeholder": "Example: Volume 1: Fondements / \u00e9dit\u00e9 par A. M\u00fcller"
+      "widget": {
+        "formlyConfig": {
+          "props": {
+            "placeholder": "Example: 1. Fundamentals / ed. by A. Miller"
+          }
+        }
       }
     },
-    "form": {
-      "hide": true,
-      "navigation": {
-        "essential": true
+    "widget": {
+      "formlyConfig": {
+        "props": {
+          "hide": true,
+          "navigation": {
+            "essential": true
+          }
+        }
       }
     }
   }

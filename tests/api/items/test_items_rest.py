@@ -25,16 +25,46 @@ import ciso8601
 import mock
 from flask import url_for
 from invenio_accounts.testutils import login_user_via_session
+from invenio_db import db
+from invenio_pidstore.models import PersistentIdentifier
 from utils import VerifyRecordPermissionPatch, flush_index, get_json, postdata
 
 from rero_ils.modules.circ_policies.api import CircPoliciesSearch
 from rero_ils.modules.holdings.api import Holding
-from rero_ils.modules.items.api import Item
+from rero_ils.modules.items.api import Item, ItemsSearch
 from rero_ils.modules.items.models import ItemNoteTypes, ItemStatus
 from rero_ils.modules.loans.api import Loan
 from rero_ils.modules.loans.models import LoanAction, LoanState
 from rero_ils.modules.loans.utils import get_extension_params
 from rero_ils.modules.utils import get_ref_for_pid
+
+
+@mock.patch('invenio_records_rest.views.verify_record_permission',
+            mock.MagicMock(return_value=VerifyRecordPermissionPatch))
+def test_orphean_pids(
+    client, document, loc_public_martigny, item_type_standard_martigny,
+    item_lib_martigny_data_tmp, json_header
+):
+    """Test record retrieval."""
+
+    item_data = item_lib_martigny_data_tmp
+    item_data.pop('pid', None)
+    item_data['foo'] = 'foo'
+    n_item_pids = PersistentIdentifier.query.filter_by(pid_type='item').count()
+    n_holdings = Holding.count()
+    res, _ = postdata(
+        client,
+        'invenio_records_rest.item_list',
+        item_data
+    )
+    # close the session as it is shared with the client
+    db.session.close()
+    assert res.status_code == 400
+    # no holding has been created
+    assert Holding.count() == n_holdings
+    # no orphean pids
+    assert PersistentIdentifier.query.filter_by(pid_type='item').count() \
+        == n_item_pids
 
 
 def test_items_permissions(client, item_lib_martigny,
@@ -132,11 +162,11 @@ def test_items_post_put_delete(client, document, loc_public_martigny,
 
     # test when item has a dirty barcode
     item_lib_martigny_data['pid'] = '1'
+    item_lib_martigny_data['barcode'] = '123456'
     item_record_with_dirty_barcode = deepcopy(item_lib_martigny_data)
 
-    item_record_with_dirty_barcode['barcode'] = ' {barcode} '.format(
-                barcode=item_record_with_dirty_barcode.get('barcode')
-            )
+    barcode = item_record_with_dirty_barcode.get('barcode')
+    item_record_with_dirty_barcode['barcode'] = f' {barcode} '
     res, data = postdata(
         client,
         'invenio_records_rest.item_list',
@@ -162,7 +192,7 @@ def test_items_post_put_delete(client, document, loc_public_martigny,
         headers=json_header
     )
     assert res.status_code == 200
-    # assert res.headers['ETag'] != '"{}"'.format(librarie.revision_id)
+    # assert res.headers['ETag'] != f'"{librarie.revision_id}"'
 
     # Check that the returned record matches the given data
     data = get_json(res)
@@ -183,9 +213,13 @@ def test_items_post_put_delete(client, document, loc_public_martigny,
     # Delete record/DELETE
     res = client.delete(item_url)
     assert res.status_code == 204
-
     res = client.get(item_url)
     assert res.status_code == 410
+
+    # Reset fixtures
+    item_url = url_for('invenio_records_rest.item_item', pid_value='pid')
+    res = client.delete(item_url)
+    assert res.status_code == 204
 
 
 def test_checkout_default_policy(client, lib_martigny,
@@ -785,7 +819,7 @@ def test_filtered_items_get(
     res = client.get(list_url)
     assert res.status_code == 200
     data = get_json(res)
-    assert data['hits']['total']['value'] == 5
+    assert data['hits']['total']['value'] == 4
 
     # Patron Sion
     login_user_via_session(client, patron_sion.user)
@@ -870,10 +904,10 @@ def test_items_notes(client, librarian_martigny, item_lib_martigny,
 
 def test_requested_loans_to_validate(
         client, librarian_martigny, loc_public_martigny,
-        item_type_standard_martigny, item2_lib_martigny, json_header,
-        item_type_missing_martigny, patron_sion, circulation_policies):
+        loc_restricted_martigny, item_type_standard_martigny,
+        item2_lib_martigny, json_header, item_type_missing_martigny,
+        patron_sion, circulation_policies):
     """Test requested loans to validate."""
-    login_user_via_session(client, librarian_martigny.user)
 
     holding_pid = item2_lib_martigny.holding_pid
     holding = Holding.get_record_by_pid(holding_pid)
@@ -892,12 +926,16 @@ def test_requested_loans_to_validate(
     item2_lib_martigny['temporary_item_type'] = {
         '$ref': get_ref_for_pid('itty', item_type_standard_martigny.pid)
     }
+    item2_lib_martigny['temporary_location'] = {
+        '$ref': get_ref_for_pid('loc', loc_restricted_martigny.pid)
+    }
 
     holding.update(holding, dbcommit=True, reindex=True)
     item2_lib_martigny.update(item2_lib_martigny, dbcommit=True, reindex=True)
 
     library_pid = librarian_martigny.replace_refs()['libraries'][0]['pid']
 
+    login_user_via_session(client, librarian_martigny.user)
     res, _ = postdata(
         client,
         'api_item.librarian_request',
@@ -922,8 +960,11 @@ def test_requested_loans_to_validate(
     assert LoanState.PENDING == requested_loan['loan']['state']
     assert patron_sion.pid == requested_loan['loan']['patron_pid']
 
+    assert requested_loan['item']['temporary_location']['name']
+
     # RESET - the item
     del item2_lib_martigny['temporary_item_type']
+    del item2_lib_martigny['temporary_location']
     holding.update(original_holding, dbcommit=True, reindex=True)
     item2_lib_martigny.update(original_item, dbcommit=True, reindex=True)
 
@@ -1064,20 +1105,79 @@ def test_item_possible_actions(client, item_lib_martigny,
 
 
 def test_items_facets(
-    client,
+    client, librarian_martigny, rero_json_header,
     item_lib_martigny,  # on shelf
     item_lib_fully,  # on loan
-    rero_json_header
 ):
     """Test record retrieval."""
+    login_user_via_session(client, librarian_martigny.user)
     list_url = url_for('invenio_records_rest.item_list')
     response = client.get(list_url, headers=rero_json_header)
     assert response.status_code == 200
-    data = get_json(response)
-    aggs = data['aggregations']
-    # check all facets are present
-    for facet in [
-        'document_type', 'issue_status', 'item_type', 'library', 'location',
-        'status', 'temporary_item_type', 'temporary_location', 'vendor'
-    ]:
-        assert aggs[facet]
+    facet_names = [
+        'document_type', 'item_type', 'library', 'location',
+        'status', 'temporary_item_type', 'temporary_location', 'vendor',
+        'claims_count', 'claims_date', 'current_requests'
+    ]
+    assert all(
+        name in response.json['aggregations']
+        for name in facet_names
+    )
+
+
+def test_items_rest_api_sort(
+    client, item_lib_martigny, item_lib_fully, rero_json_header
+):
+    """Test sorting option on `Item` REST API endpoints."""
+
+    item_lib_fully['second_call_number'] = 'second_call_number'
+    item_lib_fully.update(item_lib_fully, dbcommit=True, reindex=True)
+    flush_index(ItemsSearch.Meta.index)
+
+    # STEP 1 :: Sort on 'call_number'
+    #   * Ensure sort on `call_number` is possible
+    #   * Ensure `call_number.raw` ES field contains correct value
+    url = url_for('invenio_records_rest.item_list', sort='call_number')
+    response = client.get(url, headers=rero_json_header)
+    assert response.status_code == 200
+    data = response.json
+    first_hit = data['hits']['hits'][0]['metadata']
+    assert first_hit['call_number'] == item_lib_martigny['call_number']
+
+    url = url_for(
+        'invenio_records_rest.item_list',
+        q=f'call_number.raw:{item_lib_martigny["call_number"]}'
+    )
+    response = client.get(url, headers=rero_json_header)
+    assert response.status_code == 200
+    assert response.json['hits']['total']['value'] == 1
+
+    # STEP 2 :: Sort on 'second_call_number'
+    #   * Ensure sort `second_call_number` is possible
+    #   * Ensure `second_call_number.raw` ES field contains correct value
+    url = url_for('invenio_records_rest.item_list', sort='second_call_number')
+    response = client.get(url, headers=rero_json_header)
+    assert response.status_code == 200
+    data = response.json
+    first_hit = data['hits']['hits'][0]['metadata']
+    assert first_hit['second_call_number'] == \
+           item_lib_fully['second_call_number']
+
+    url = url_for(
+        'invenio_records_rest.item_list',
+        q=f'second_call_number.raw:"{item_lib_fully["second_call_number"]}"'
+    )
+    response = client.get(url, headers=rero_json_header)
+    assert response.status_code == 200
+    assert response.json['hits']['total']['value'] == 1
+    url = url_for(
+        'invenio_records_rest.item_list',
+        q=f'second_call_number.raw:"{item_lib_fully["second_call_number"]} "'
+    )
+    response = client.get(url, headers=rero_json_header)
+    assert response.status_code == 200
+    assert response.json['hits']['total']['value'] == 0
+
+    # Reset fixtures
+    del item_lib_fully['second_call_number']
+    item_lib_fully.update(item_lib_fully, dbcommit=True, reindex=True)

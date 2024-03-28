@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
+# Copyright (C) 2019-2023 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -28,12 +28,31 @@ import jinja2
 import pytz
 from elasticsearch_dsl import Q
 from flask import Blueprint, abort, make_response, render_template, request
-from flask_login import current_user
 
-from .api import Stat, StatsForPricing, StatsSearch
-from .permissions import StatPermission, check_logged_as_admin, \
-    check_logged_as_librarian
+from .api.api import Stat, StatsSearch
+from .api.pricing import StatsForPricing
+from .models import StatType
+from .permissions import check_logged_as_admin, check_logged_as_librarian
 from .serializers import StatCSVSerializer
+
+
+def stats_view_method(pid, record, template=None, **kwargs):
+    """Display the detail view..
+
+    :param pid: PID object.
+    :param record: Record object.
+    :param template: Template to render.
+    :param **kwargs: Additional view arguments based on URL rule.
+    :return: The rendered template.
+    """
+    # We make a `dumps` to trigger the extension on the statistical record
+    # that allows to filter the libraries.
+    record = record.dumps()
+    return render_template(
+        template,
+        record=record
+    )
+
 
 blueprint = Blueprint(
     'stats',
@@ -51,13 +70,13 @@ def stats_billing():
 
     Note: includes old statistics where the field type was absent.
     """
-    f = ~Q('exists', field='type') | Q('term', type='billing')
+    f = ~Q('exists', field='type') | Q('term', type=StatType.BILLING)
     search = StatsSearch().filter('bool', must=[f]).sort('-_created')\
         .source(['pid', '_created'])
     hits = search[0:100].execute().to_dict()
     return render_template(
         'rero_ils/stats_list.html', records=hits['hits']['hits'],
-        type='billing')
+        type=StatType.BILLING)
 
 
 @blueprint.route('/live', methods=['GET'])
@@ -75,7 +94,8 @@ def live_stats_billing():
 @check_logged_as_librarian
 def stats_librarian():
     """Show the list of the first 100 items on the librarian stats list."""
-    search = StatsSearch().filter('term', type='librarian').sort('-_created')\
+    search = StatsSearch()\
+        .filter('term', type=StatType.LIBRARIAN).sort('-_created')\
         .source(['pid', '_created', 'date_range'])
     hits = search[0:100].execute().to_dict()
     return render_template(
@@ -99,11 +119,13 @@ def stats_librarian_queries(record_pid):
     record = Stat.get_record_by_pid(record_pid)
     if not record:
         abort(404)
-    StatPermission.read(current_user, record)
+    # Filter the record to keep only values about connected user
+    # note : This is done by the `pre_dump` extension from `Stats` record,
+    record = record.dumps()
 
-    date_range = '{}_{}'.format(record['date_range']['from'].split('T')[0],
-                                record['date_range']['to'].split('T')[0])
-    filename = f'{query_id}_{date_range}.csv'
+    _from = record['date_range']['from'].split('T')[0]
+    _to = record['date_range']['to'].split('T')[0]
+    filename = f'{query_id}_{_from}_{_to}.csv'
 
     data = StringIO()
     w = csv.writer(data)
@@ -113,9 +135,9 @@ def stats_librarian_queries(record_pid):
                       'Item location', 'Checkins', 'Checkouts']
         w.writerow(fieldnames)
         for result in record['values']:
-            transaction_library = '{}: {}'\
-                      .format(result['library']['pid'],
-                              result['library']['name'])
+            transaction_library = \
+                f"{result['library']['pid']}: {result['library']['name']}"
+
             if not result[query_id]:
                 w.writerow((transaction_library, '-', '-', 0, 0))
             else:
@@ -137,7 +159,9 @@ def stats_librarian_queries(record_pid):
     return output
 
 
-@jinja2.contextfilter
+# JINJA FILTERS ===============================================================
+
+@jinja2.pass_context
 @blueprint.app_template_filter()
 def yearmonthfilter(context, value, format="%Y-%m-%dT%H:%M:%S"):
     """Convert datetime in local timezone.
@@ -145,16 +169,15 @@ def yearmonthfilter(context, value, format="%Y-%m-%dT%H:%M:%S"):
     value: datetime
     returns: year and month of datetime
     """
-    tz = pytz.timezone('Europe/Zurich')
     utc = pytz.timezone('UTC')
     value = datetime.datetime.strptime(value, format)
     value = utc.localize(value, is_dst=None).astimezone(pytz.utc)
     datetime_object = datetime.datetime.strptime(str(value.month), "%m")
     month_name = datetime_object.strftime("%b")
-    return "{} {}".format(month_name, value.year)
+    return f"{month_name} {value.year}"
 
 
-@jinja2.contextfilter
+@jinja2.pass_context
 @blueprint.app_template_filter()
 def stringtodatetime(context, value, format="%Y-%m-%dT%H:%M:%S"):
     """Convert string to datetime.
@@ -162,11 +185,10 @@ def stringtodatetime(context, value, format="%Y-%m-%dT%H:%M:%S"):
     value: string
     returns: datetime object
     """
-    datetime_object = datetime.datetime.strptime(value, format)
-    return datetime_object
+    return datetime.datetime.strptime(value, format)
 
 
-@jinja2.contextfilter
+@jinja2.pass_context
 @blueprint.app_template_filter()
 def sort_dict_by_key(context, dictionary):
     """Sort dict by dict of keys.
@@ -178,7 +200,7 @@ def sort_dict_by_key(context, dictionary):
     return StatCSVSerializer.sort_dict_by_key(dictionary)
 
 
-@jinja2.contextfilter
+@jinja2.pass_context
 @blueprint.app_template_filter()
 def sort_dict_by_library(context, dictionary):
     """Sort dict by library name.
@@ -190,7 +212,7 @@ def sort_dict_by_library(context, dictionary):
     return sorted(dictionary, key=lambda v: v['library']['name'])
 
 
-@jinja2.contextfilter
+@jinja2.pass_context
 @blueprint.app_template_filter()
 def process_data(context, value):
     """Process data.

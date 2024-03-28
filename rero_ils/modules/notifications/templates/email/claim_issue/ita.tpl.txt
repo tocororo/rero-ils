@@ -1,0 +1,33 @@
+Rivendicazioni "{{ issue.document.title_text }}" {{ issue | issue_client_reference }}
+
+Signora, signore,
+
+Abbiamo notato che non abbiamo ricevuto il seguente fascicolo:
+{{ issue.document.title_text }}
+{{ issue.enumerationAndChronology }}
+
+Di seguito sono riportate le informazioni relative al nostro abbonamento:
+{%- if issue.holdings %}
+{%- if issue.holdings and issue.holdings.client_id %}
+Numero cliente: {{ issue.holdings.client_id }}
+{%- endif %}
+{%- if issue.holdings and issue.holdings.order_reference %}
+Numero d'ordine: {{ issue.holdings.order_reference }}
+{%- endif %}
+{%- endif %}
+Numero di reclami per questo numero: {{ issue.claim_counter }}
+
+Vi ringraziamo in anticipo per averci assicurato di ricevere questo numero il prima possibile.
+
+
+Cordiali saluti,
+
+{{ issue.library.shipping_informations.name }}
+
+Indirizzo di spedizione:
+{{ issue.library.shipping_informations | address_block(language=issue.vendor.language) }}
+
+{% if issue.library.billing_informations -%}
+Indirizzo di fatturazione:
+{{ issue.library.billing_informations | address_block(language=issue.vendor.language) }}
+{%- endif %}

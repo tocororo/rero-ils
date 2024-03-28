@@ -1,0 +1,200 @@
+{
+  "aliases": {
+    "entities": {}
+  },
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "autocomplete": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "icu_normalizer",
+            "icu_folding",
+            "edge_ngram_filter"
+          ]
+        },
+        "search_autocomplete": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "icu_normalizer",
+            "icu_folding"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "date_detection": false,
+    "numeric_detection": false,
+    "properties": {
+      "autocomplete_name": {
+        "type": "text",
+        "analyzer": "autocomplete",
+        "search_analyzer": "search_autocomplete"
+      },
+      "authorized_access_point_sort": {
+        "type": "keyword",
+        "normalizer": "sort_normalizer"
+      },
+      "$schema": {
+        "type": "keyword"
+      },
+      "pid": {
+        "type": "keyword"
+      },
+      "type": {
+        "type": "keyword"
+      },
+      "authorized_access_point": {
+        "type": "text",
+        "copy_to": [
+          "autocomplete_name"
+        ]
+      },
+      "authorized_access_point_en": {
+        "type": "text",
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          },
+          "sort": {
+            "type": "keyword",
+            "normalizer": "sort_normalizer"
+          }
+        }
+      },
+      "authorized_access_point_fr": {
+        "type": "text",
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          },
+          "sort": {
+            "type": "keyword",
+            "normalizer": "sort_normalizer"
+          }
+        }
+      },
+      "authorized_access_point_de": {
+        "type": "text",
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          },
+          "sort": {
+            "type": "keyword",
+            "normalizer": "sort_normalizer"
+          }
+        }
+      },
+      "authorized_access_point_it": {
+        "type": "text",
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          },
+          "sort": {
+            "type": "keyword",
+            "normalizer": "sort_normalizer"
+          }
+        }
+      },
+      "identifier": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "keyword"
+          },
+          "source": {
+            "type": "keyword"
+          },
+          "value": {
+            "type": "text"
+          }
+        }
+      },
+      "source_catalog": {
+        "type": "keyword"
+      },
+      "name": {
+        "type": "text"
+      },
+      "alternative_names": {
+        "type": "text",
+        "copy_to": [
+          "autocomplete_name"
+        ]
+      },
+      "fuller_form_of_name": {
+        "type": "text",
+        "copy_to": [
+          "autocomplete_name"
+        ]
+      },
+      "gender": {
+        "type": "keyword"
+      },
+      "date_of_birth": {
+        "type": "keyword"
+      },
+      "date_of_death": {
+        "type": "keyword"
+      },
+      "qualifier": {
+        "type": "keyword"
+      },
+      "numeration": {
+        "type": "keyword"
+      },
+      "conference": {
+        "type": "keyword"
+      },
+      "subordinate_unit": {
+        "type": "keyword"
+      },
+      "conference_place": {
+        "type": "keyword"
+      },
+      "conference_numbering": {
+        "type": "keyword"
+      },
+      "conference_date": {
+        "type": "keyword"
+      },
+      "start_date": {
+        "type": "keyword"
+      },
+      "end_date": {
+        "type": "keyword"
+      },
+      "genreForm": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "text"
+      },
+      "creator": {
+        "type": "text"
+      },
+      "document_organisation_pids": {
+        "type": "keyword"
+      },
+      "deleted": {
+        "type": "date"
+      },
+      "resource_type": {
+        "type": "keyword"
+      },
+      "_created": {
+        "type": "date"
+      },
+      "_updated": {
+        "type": "date"
+      }
+    }
+  }
+}

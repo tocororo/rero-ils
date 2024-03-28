@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2022 RERO
-# Copyright (C) 2022 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -27,8 +27,8 @@ from rero_ils.modules.commons.identifiers import IdentifierFactory, \
 from rero_ils.utils import get_i18n_supported_languages
 
 from .base import BaseDocumentFormatterMixin
-from ..api import Document
-from ..utils import process_literal_contributions
+from ..dumpers import document_replace_refs_dumper
+from ..utils import process_i18n_literal_fields
 
 
 class RISSerializer(SerializerMixinInterface):
@@ -41,12 +41,9 @@ class RISSerializer(SerializerMixinInterface):
         :param record: Record instance.
         :param links_factory: Factory function for record links.
         """
-        Document.post_process(record)
-        record = record.replace_refs()
-        if contributions := process_literal_contributions(
-                record.get('contribution', [])):
-            record['contribution'] = contributions
-
+        record = record.dumps(document_replace_refs_dumper)
+        if contributions := record.pop('contribution', []):
+            record['contribution'] = process_i18n_literal_fields(contributions)
         # enrich record data with encoded identifier alternatives. The
         # record identifiers list should contain only distinct identifier !
         identifiers = set([
@@ -72,7 +69,6 @@ class RISSerializer(SerializerMixinInterface):
         def generate_export():
             for hit in search_result['hits']['hits']:
                 yield RISFormatter(record=hit['_source']).format()
-
         return stream_with_context(generate_export())
 
 

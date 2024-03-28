@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -156,10 +156,7 @@ def url_active(string, target):
         if link:
             string = string.replace(
                 link,
-                '<a href="{url}" target="{target}">{url}</a>'.format(
-                    url=link,
-                    target=target
-                )
+                f'<a href="{link}" target="{target}">{link}</a>'
             )
     return string
 
@@ -197,6 +194,7 @@ def schemaform(document_type):
     doc_type = document_type
     doc_type = re.sub('ies$', 'y', doc_type)
     doc_type = re.sub('s$', '', doc_type)
+    doc_type = re.sub('s_cfg$', '_cfg', doc_type)
     data = {}
     schema = None
     schema_name = None

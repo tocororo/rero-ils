@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
-# Copyright (C) 2020 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -24,8 +24,8 @@ import click
 
 from rero_ils.modules.acquisition.cli import acquisition
 from rero_ils.modules.apiharvester.cli import apiharvester
-from rero_ils.modules.contributions.cli import contribution
 from rero_ils.modules.ebooks.cli import oaiharvester
+from rero_ils.modules.entities.remote_entities.cli import entity
 from rero_ils.modules.monitoring.cli import monitoring
 from rero_ils.modules.notifications.cli import notifications
 from rero_ils.modules.stats.cli import stats
@@ -33,7 +33,6 @@ from rero_ils.schedulers import scheduler
 
 from .fixtures import fixtures
 from .index import index
-from .users import users
 from .utils import utils
 
 
@@ -44,7 +43,7 @@ def reroils():
 
 reroils.add_command(acquisition)
 reroils.add_command(apiharvester)
-reroils.add_command(contribution)
+reroils.add_command(entity)
 reroils.add_command(fixtures)
 reroils.add_command(index)
 reroils.add_command(monitoring)
@@ -52,5 +51,4 @@ reroils.add_command(notifications)
 reroils.add_command(oaiharvester)
 reroils.add_command(scheduler)
 reroils.add_command(stats)
-reroils.add_command(users)
 reroils.add_command(utils)

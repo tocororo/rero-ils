@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -37,11 +37,8 @@ def enrich_patron_data(sender, json=None, record=None, index=None,
         patron = record
         if not isinstance(record, Patron):
             patron = Patron.get_record_by_pid(record.get('pid'))
-        org_pid = patron.get_organisation()['pid']
-        if org_pid:
-            json['organisation'] = {
-                'pid': org_pid
-            }
+        if org_pid := patron.organisation['pid']:
+            json['organisation'] = {'pid': org_pid}
 
 
 def create_subscription_patron_transaction(sender, record=None, **kwargs):
@@ -68,14 +65,14 @@ def create_subscription_patron_transaction(sender, record=None, **kwargs):
             record.add_subscription(ptty, start_date, end_date)
 
 
-def update_from_profile(sender, profile=None, **kwargs):
+def update_from_profile(sender, user, **kwargs):
     """Update the patron linked with the user profile data.
 
     :param profile - the rero user profile
     """
-    for patron in Patron.get_patrons_by_user(profile.user):
+    for patron in Patron.get_patrons_by_user(user):
         patron.reindex()
         if patron.is_patron:
             from ..loans.api import anonymize_loans
-            if not profile.keep_history:
+            if not user.user_profile.get('keep_history', True):
                 anonymize_loans(patron=patron, dbcommit=True, reindex=True)

@@ -26,14 +26,14 @@ from flask import url_for
 from invenio_accounts.testutils import login_user_via_session
 from invenio_db import db
 from invenio_oauth2server.models import Client, Token
-from utils import VerifyRecordPermissionPatch, create_patron, get_json, \
-    postdata, to_relative_url
+from utils import VerifyRecordPermissionPatch, get_json, postdata, \
+    to_relative_url
 
 from rero_ils.modules.patron_transactions.api import PatronTransaction
 from rero_ils.modules.patrons.api import Patron
 from rero_ils.modules.patrons.models import CommunicationChannel
+from rero_ils.modules.patrons.utils import create_user_from_data
 from rero_ils.modules.utils import extracted_data_from_ref, get_ref_for_pid
-from rero_ils.utils import create_user_from_data
 
 
 def test_patrons_shortcuts(
@@ -61,8 +61,8 @@ def test_patrons_shortcuts(
 
 
 def test_filtered_patrons_get(
-        client, librarian_martigny, patron_martigny,
-        librarian_sion):
+    client, librarian_martigny, patron_martigny, librarian_sion
+):
     """Test patron filter by organisation."""
     # Martigny
     login_user_via_session(client, librarian_martigny.user)
@@ -75,13 +75,13 @@ def test_filtered_patrons_get(
 
     # Sion
     # TODO: find why it's failed
-    # login_user_via_session(client, librarian_sion.user)
-    # list_url = url_for('invenio_records_rest.ptrn_list')
+    login_user_via_session(client, librarian_sion.user)
+    list_url = url_for('invenio_records_rest.ptrn_list')
 
-    # res = client.get(list_url)
-    # assert res.status_code == 200
-    # data = get_json(res)
-    # assert data['hits']['total']['value'] == 1
+    res = client.get(list_url)
+    assert res.status_code == 200
+    data = get_json(res)
+    assert data['hits']['total']['value'] == 1
 
 
 def test_patron_has_valid_subscriptions(
@@ -111,8 +111,8 @@ def test_patron_has_valid_subscriptions(
     end = datetime.now() + timedelta(days=10)
     patron_sion.add_subscription(patron_type_grown_sion, start, end)
     assert patron_sion.has_valid_subscription
-    assert len(patron_sion.get_valid_subscriptions()) == 1
-    subscription = patron_sion.get_valid_subscriptions()[0]
+    assert len(patron_sion.valid_subscriptions) == 1
+    subscription = patron_sion.valid_subscriptions[0]
     assert subscription.get('start_date') == start.strftime('%Y-%m-%d')
 
     # Create a old subscription for this patron and check validity
@@ -120,7 +120,7 @@ def test_patron_has_valid_subscriptions(
     end = start + timedelta(days=10)
     patron_sion.add_subscription(patron_type_grown_sion, start, end)
     assert len(patron_sion.get('patron', {}).get('subscriptions', [])) == 2
-    assert len(patron_sion.get_valid_subscriptions()) == 1
+    assert len(patron_sion.valid_subscriptions) == 1
 
     # remove old subscriptions. Create an old one and check the patron doesn't
     # have any valid subscription
@@ -156,7 +156,7 @@ def test_patron_has_valid_subscriptions(
     # same check for a very old end_date
     end_date = end - timedelta(days=100)
     patrons = list(Patron.patrons_with_obsolete_subscription_pids(end_date))
-    assert len(patrons) == 0
+    assert not patrons
 
     # Reset the patron as at the beginning
     del patron_sion['patron']['subscriptions']
@@ -173,7 +173,7 @@ def test_patron_pending_subscription(client, patron_type_grown_sion,
     """Test get pending subscription for patron."""
     # At the beginning, `patron_sion` should have one pending
     # subscription.
-    pending_subscription = patron_sion.get_pending_subscriptions()
+    pending_subscription = patron_sion.pending_subscriptions
     assert len(pending_subscription) == 1
 
     # Pay this subscription.
@@ -205,35 +205,8 @@ def test_patron_pending_subscription(client, patron_type_grown_sion,
     # reload the patron and check the pending subscription. As we paid the
     # previous subscription, there will be none pending subscription
     patron_sion = Patron.get_record_by_pid(patron_sion.pid)
-    pending_subscription = patron_sion.get_pending_subscriptions()
+    pending_subscription = patron_sion.pending_subscriptions
     assert len(pending_subscription) == 0
-
-
-def test_patrons_permissions(client, librarian_martigny,
-                             json_header):
-    """Test record retrieval."""
-    item_url = url_for(
-        'invenio_records_rest.ptrn_item',
-        pid_value=librarian_martigny.pid)
-
-    res = client.get(item_url)
-    assert res.status_code == 401
-
-    res, _ = postdata(
-        client,
-        'invenio_records_rest.ptrn_list',
-        {}
-    )
-    assert res.status_code == 401
-
-    res = client.put(
-        item_url,
-        data={},
-        headers=json_header
-    )
-
-    res = client.delete(item_url)
-    assert res.status_code == 401
 
 
 @mock.patch('invenio_records_rest.views.verify_record_permission',
@@ -243,15 +216,16 @@ def test_patrons_get(client, librarian_martigny):
     patron = librarian_martigny
     item_url = url_for(
         'invenio_records_rest.ptrn_item',
-        pid_value=librarian_martigny.pid)
+        pid_value=librarian_martigny.pid
+    )
     list_url = url_for(
         'invenio_records_rest.ptrn_list',
-        q='pid:{pid}'.format(pid=librarian_martigny.pid))
+        q=f'pid:{librarian_martigny.pid}'
+    )
 
     res = client.get(item_url)
     assert res.status_code == 200
-
-    assert res.headers['ETag'] == '"{}"'.format(patron.revision_id)
+    assert res.headers['ETag'] == f'"{patron.revision_id}"'
 
     data = get_json(res)
     assert patron.dumps() == data['metadata']
@@ -275,19 +249,19 @@ def test_patrons_get(client, librarian_martigny):
     assert result == patron.replace_refs().dumps()
 
 
-@mock.patch('invenio_records_rest.views.verify_record_permission',
-            mock.MagicMock(return_value=VerifyRecordPermissionPatch))
-def test_patrons_post_put_delete(app, client, lib_martigny,
-                                 patron_type_children_martigny,
-                                 patron_martigny_data_tmp, json_header,
-                                 roles, mailbox):
+def test_patrons_post_put_delete(
+    app, client, lib_martigny, system_librarian_martigny,
+    patron_type_children_martigny, patron_martigny_data_tmp, json_header,
+    roles, mailbox
+):
     """Test record retrieval."""
+    login_user_via_session(client, system_librarian_martigny.user)
     pid_value = 'ptrn_1'
     item_url = url_for('invenio_records_rest.ptrn_item', pid_value=pid_value)
-    list_url = url_for(
-        'invenio_records_rest.ptrn_list', q='pid:%s' % pid_value)
+    list_url = url_for('invenio_records_rest.ptrn_list', q=f'pid:{pid_value}')
     patron_data = deepcopy(patron_martigny_data_tmp)
     patron_data['email'] = 'post_put_delete@test.ch'
+    patron_data['patron']['barcode'] = ['2384768231']
     patron_data['username'] = 'post_put_delete'
     patron_data = create_user_from_data(patron_data)
 
@@ -321,7 +295,6 @@ def test_patrons_post_put_delete(app, client, lib_martigny,
     data = get_json(res)
     # add dynamic property
     patron_data['user_id'] = data['metadata']['user_id']
-    data['metadata']['user_id']
 
     # Update record/PUT
     data = patron_data
@@ -332,7 +305,7 @@ def test_patrons_post_put_delete(app, client, lib_martigny,
         headers=json_header
     )
     assert res.status_code == 200
-    # assert res.headers['ETag'] != '"{}"'.format(ptrnrarie.revision_id)
+    # assert res.headers['ETag'] != f'"{ptrnrarie.revision_id}"'
 
     # Check that the returned record matches the given data
     data = get_json(res)
@@ -360,16 +333,17 @@ def test_patrons_post_put_delete(app, client, lib_martigny,
     ds.delete_user(ds.find_user(id=patron_data['user_id']))
 
 
-@mock.patch('invenio_records_rest.views.verify_record_permission',
-            mock.MagicMock(return_value=VerifyRecordPermissionPatch))
-def test_patrons_post_without_email(app, client, lib_martigny,
-                                    patron_type_children_martigny,
-                                    patron_martigny_data_tmp, json_header,
-                                    roles, mailbox):
+def test_patrons_post_without_email(
+    app, client, lib_martigny, patron_type_children_martigny,
+    patron_martigny_data_tmp, json_header, roles, mailbox,
+    system_librarian_martigny
+):
     """Test record retrieval."""
+    login_user_via_session(client, system_librarian_martigny.user)
     patron_data = deepcopy(patron_martigny_data_tmp)
     patron_data['email'] = 'post_without_email@test.ch'
     patron_data['username'] = 'post_without_email'
+    patron_data['patron']['barcode'] = ['23841238231']
     del patron_data['pid']
     del patron_data['email']
     patron_data['patron']['communication_channel'] = CommunicationChannel.MAIL
@@ -398,102 +372,10 @@ def test_patrons_post_without_email(app, client, lib_martigny,
     ds.delete_user(ds.find_user(id=patron_data['user_id']))
 
 
-def test_patron_secure_api(client, json_header,
-                           librarian_martigny,
-                           librarian_sion):
-    """Test patron type secure api access."""
-    # Martigny
-    login_user_via_session(client, librarian_martigny.user)
-    record_url = url_for('invenio_records_rest.ptrn_item',
-                         pid_value=librarian_martigny.pid)
-
-    res = client.get(record_url)
-    assert res.status_code == 200
-
-    # Sion
-    login_user_via_session(client, librarian_sion.user)
-    record_url = url_for('invenio_records_rest.ptrn_item',
-                         pid_value=librarian_martigny.pid)
-
-    res = client.get(record_url)
-    assert res.status_code == 403
-
-
-def test_patron_secure_api_create(app, client, patron_type_children_martigny,
-                                  patron_martigny_data,
-                                  librarian_martigny,
-                                  librarian_sion):
-    """Test patron secure api create."""
-    # Martigny
-    login_user_via_session(client, librarian_martigny.user)
-    post_entrypoint = 'invenio_records_rest.ptrn_list'
-
-    del patron_martigny_data['pid']
-    patron_martigny_data['email'] = 'secure_api@test.ch'
-    patron_martigny_data['username'] = 'secure_api'
-    data = create_user_from_data(patron_martigny_data)
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        data
-    )
-    assert res.status_code == 201
-
-    # # Sion
-    login_user_via_session(client, librarian_sion.user)
-
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        data
-    )
-    assert res.status_code == 403
-    ds = app.extensions['invenio-accounts'].datastore
-    ds.delete_user(ds.find_user(id=data['user_id']))
-
-
-def test_patron_secure_api_delete(app, client, librarian_martigny,
-                                  librarian_sion,
-                                  roles,
-                                  lib_martigny,
-                                  patron_type_children_martigny,
-                                  patron_martigny_data):
-    """Test patron secure api delete."""
-    data = deepcopy(patron_martigny_data)
-    data['username'] = 'api_delete'
-    data['email'] = 'api_delete@test.ch'
-    patron = create_patron(data)
-    login_user_via_session(client, librarian_martigny.user)
-    record_url = url_for('invenio_records_rest.ptrn_item',
-                         pid_value=patron.pid)
-
-    res = client.delete(record_url)
-    assert res.status_code == 204
-
-    # try to delete itself
-    record_url = url_for('invenio_records_rest.ptrn_item',
-                         pid_value=librarian_martigny.pid)
-    res = client.delete(record_url)
-    assert res.status_code == 403
-
-    # Sion
-    login_user_via_session(client, librarian_sion.user)
-
-    res = client.delete(record_url)
-    assert res.status_code == 403
-
-    # clean up
-    ds = app.extensions['invenio-accounts'].datastore
-    ds.delete_user(ds.find_user(id=patron['user_id']))
-
-
-def test_patrons_dirty_barcode(
-        client, patron_martigny, librarian_martigny):
+def test_patrons_dirty_barcode(client, patron_martigny, librarian_martigny):
     """Test patron update with dirty barcode."""
     barcode = patron_martigny.get('patron', {}).get('barcode')[0]
-    patron_martigny['patron']['barcode'] = [' {barcode} '.format(
-                barcode=barcode
-            )]
+    patron_martigny['patron']['barcode'] = [f' {barcode} ']
     patron_martigny.update(
         patron_martigny, dbcommit=True, reindex=True)
     patron = Patron.get_record_by_pid(patron_martigny.pid)
@@ -507,7 +389,7 @@ def test_patrons_dirty_barcode(
 
 def test_patrons_circulation_informations(
      client, patron_sion, librarian_martigny,
-     patron3_martigny_blocked, yesterday, tomorrow):
+     patron3_martigny_blocked, yesterday, tomorrow, ill_request_sion):
     """test patron circulation informations."""
     url = url_for(
         'api_patrons.patron_circulation_informations',
@@ -519,8 +401,22 @@ def test_patrons_circulation_informations(
     login_user_via_session(client, librarian_martigny.user)
     res = client.get(url)
     assert res.status_code == 200
-    data = get_json(res)
+    data = res.json
     assert len(data['messages']) == 0
+
+    url = url_for(
+        'api_patrons.patron_circulation_informations',
+        patron_pid=patron_sion.pid
+    )
+    res = client.get(url)
+    data = res.json
+    assert res.status_code == 200
+    assert 'engaged' in data['fees']
+    assert 'preview' in data['fees']
+    assert data['messages'] == []
+    assert data['statistics'] == {
+        'ill_requests': 1
+    }
 
     url = url_for(
         'api_patrons.patron_circulation_informations',
@@ -528,7 +424,7 @@ def test_patrons_circulation_informations(
     )
     res = client.get(url)
     assert res.status_code == 200
-    data = get_json(res)
+    data = res.json
     assert 'error' == data['messages'][0]['type']
     assert 'This patron is currently blocked' in data['messages'][0]['content']
 
@@ -538,7 +434,7 @@ def test_patrons_circulation_informations(
     patron['patron']['blocked'] = False
     patron.update(patron, dbcommit=True, reindex=True)
     res = client.get(url)
-    data = get_json(res)
+    data = res.json
     assert 'error' == data['messages'][0]['type']
     assert 'Patron rights expired.' in data['messages'][0]['content']
 
@@ -594,6 +490,16 @@ def test_patron_info(app, client, patron_martigny, librarian_martigny):
         _redirect_uris='')
 
     # token with all scopes
+    librarian_token = Token(
+        client=oauth_client,
+        user=librarian_martigny.user,
+        token_type='bearer',
+        access_token='test_librarian_access',
+        expires=None,
+        is_personal=False,
+        is_internal=False,
+        _scopes=' '.join(scopes))
+
     token = Token(
         client=oauth_client,
         user=patron_martigny.user,
@@ -615,7 +521,9 @@ def test_patron_info(app, client, patron_martigny, librarian_martigny):
         is_internal=False)
 
     db.session.add(oauth_client)
+    db.session.add(librarian_token)
     db.session.add(token)
+    db.session.add(no_scope_token)
     db.session.commit()
 
     # denied with a wrong token
@@ -644,8 +552,85 @@ def test_patron_info(app, client, patron_martigny, librarian_martigny):
         'fullname':
         'Roduit, Louis',
         'patron_types': [{
-            'expiration_date': '2023-10-07T00:00:00',
+            'expiration_date':
+                patron_martigny['patron']['expiration_date']+'T00:00:00',
             'institution': 'org1',
             'patron_type': 'patron-code'
         }]
     }
+
+    # librarian information with all scopes
+    res = client.get(
+        url_for('api_patrons.info', access_token=librarian_token.access_token))
+    assert res.status_code == 200
+    assert res.json == {
+        'birthdate':
+        '1965-02-07',
+        'fullname':
+        'Pedronni, Marie'
+    }
+
+
+def test_patrons_search(client, librarian_martigny):
+    """Test patron search."""
+    login_user_via_session(client, librarian_martigny.user)
+    birthdate = librarian_martigny.dumps()['birth_date']
+    # complete birthdate
+    list_url = url_for(
+        'invenio_records_rest.ptrn_list', q=f'{birthdate}', simple='1'
+    )
+    res = client.get(list_url)
+    hits = get_json(res)['hits']
+    assert hits['total']['value'] == 1
+
+    # birth year
+    list_url = url_for(
+        'invenio_records_rest.ptrn_list',
+        q=f'{birthdate.split("-")[0]}',
+        simple='1'
+    )
+    res = client.get(list_url)
+    hits = get_json(res)['hits']
+    assert hits['total']['value'] == 1
+
+
+def test_patrons_expired(client, librarian_martigny, patron_martigny):
+    """Test patron expired filter."""
+    login_user_via_session(client, librarian_martigny.user)
+    list_url = url_for('invenio_records_rest.ptrn_list', simple='1')
+    res = client.get(list_url)
+    hits = get_json(res)['hits']
+    assert hits['total']['value'] == 6
+
+    original_expiration_date = patron_martigny['patron']['expiration_date']
+    patron_martigny['patron']['barcode'] = ['4098124352']
+
+    new_expiration_date = datetime.now() - timedelta(days=10)
+    patron_martigny['patron']['expiration_date'] = new_expiration_date \
+        .strftime("%Y-%m-%d")
+    patron_martigny.update(patron_martigny, dbcommit=True, reindex=True)
+
+    list_url = url_for(
+        'invenio_records_rest.ptrn_list', expired='true', simple='1')
+    res = client.get(list_url)
+    hits = get_json(res)['hits']
+    assert hits['total']['value'] == 1
+
+    patron_martigny['patron']['expiration_date'] = original_expiration_date
+    patron_martigny.update(patron_martigny, dbcommit=True, reindex=True)
+
+
+def test_patrons_blocked(client, librarian_martigny, patron_martigny,
+                         patron3_martigny_blocked):
+    """Test patron blocked filter."""
+    login_user_via_session(client, librarian_martigny.user)
+    list_url = url_for('invenio_records_rest.ptrn_list', simple='1')
+    res = client.get(list_url)
+    hits = get_json(res)['hits']
+    assert hits['total']['value'] == 6
+
+    list_url = url_for(
+        'invenio_records_rest.ptrn_list', blocked='true', simple='1')
+    res = client.get(list_url)
+    hits = get_json(res)['hits']
+    assert hits['total']['value'] == 1

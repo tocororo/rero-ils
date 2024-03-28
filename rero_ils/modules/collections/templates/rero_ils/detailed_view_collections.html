@@ -1,7 +1,7 @@
 {# -*- coding: utf-8 -*-
 
   RERO ILS
-  Copyright (C) 2020 RERO
+  Copyright (C) 2019-2022 RERO
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU Affero General Public License as published by
@@ -58,7 +58,7 @@
         <dl class="row pt-2 ml-4">
           <!-- CONTRIBUTION -->
           {%- if document.contribution %}
-            {{ dl(_('Contribution'),document.pid | contribution_format(current_i18n.language, viewcode, true)) }}
+            {{ dl(_('Contribution'),document.contribution | contribution_format(current_i18n.language, viewcode, true)) }}
           {%- endif %}
           <!-- PROVISION ACTIVITY -->
           {%- for provision_activity in document.provisionActivity %}

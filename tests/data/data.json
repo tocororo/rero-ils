@@ -187,11 +187,36 @@
       },
       "billing_informations": {
         "name": "martigny billing dept",
+        "email": "reroilstest+martignyshipping@gmail.com",
         "address": {
           "street": "Place de l'\u00e9querre 12",
           "city": "Aristo",
           "zip_code": "1234",
           "country": "be"
+        }
+      }
+    },
+    "serial_acquisition_settings": {
+      "shipping_informations": {
+        "name": "Cover, Harry",
+        "email": "reroilstest+serial+shipping@gmail.com",
+        "phone": "+4134567890",
+        "address": {
+          "street": "Via Challand 133 bte/2",
+          "zip_code": "11100",
+          "city": "Aosta",
+          "country": "sz"
+        }
+      },
+      "billing_informations": {
+        "name": "Derata, Daisy",
+        "email": "reroilstest+serial+billing@gmail.com",
+        "phone": "+4134567890",
+        "address": {
+          "street": "Via Challand 133 bte/10",
+          "zip_code": "11100",
+          "city": "Aosta",
+          "country": "sz"
         }
       }
     },
@@ -941,6 +966,8 @@
     },
     "is_pickup": true,
     "pickup_name": "MARTIGNY-PUBLIC: Public Space",
+    "is_ill_pickup": true,
+    "ill_pickup_name": "MARTIGNY-PUBLIC: ILL Public Space",
     "allow_request": true
   },
   "loc2": {
@@ -963,6 +990,8 @@
     },
     "is_pickup": true,
     "pickup_name": "SAXON-PUBLIC: Public Space",
+    "is_ill_pickup": true,
+    "ill_pickup_name": "SAXON-PUBLIC: ILL Public Space",
     "allow_request": true
   },
   "loc4": {
@@ -985,6 +1014,8 @@
     },
     "is_pickup": true,
     "pickup_name": "FULLY-PUBLIC: Public Space",
+    "is_ill_pickup": true,
+    "ill_pickup_name": "FULLY-PUBLIC: ILL Public Space",
     "allow_request": true
   },
   "loc6": {
@@ -1084,6 +1115,8 @@
     },
     "is_pickup": true,
     "pickup_name": "SAILLON-PUBLIC: Public Space",
+    "is_ill_pickup": true,
+    "ill_pickup_name": "SAILLON-PUBLIC: ILL Public Space",
     "allow_request": true
   },
   "loc15": {
@@ -1489,8 +1522,8 @@
       }
     ]
   },
-  "cont_pers": {
-    "$schema": "https://bib.rero.ch/schemas/contributions/contribution-v0.0.1.json",
+  "ent_pers": {
+    "$schema": "https://bib.rero.ch/schemas/remote_entities/remote_entity-v0.0.1.json",
     "gnd": {
       "$schema": "https://mef.test.rero.ch/schemas/gnd/gnd-contribution-v0.0.1.json",
       "bf:Agent": "bf:Person",
@@ -1537,7 +1570,7 @@
       "authorized_access_point": "Loy, Georg, 1885-19..",
       "preferred_name": "Loy, Georg"
     },
-    "pid": "cont_pers",
+    "pid": "ent_pers",
     "type": "bf:Person",
     "sources": [
       "gnd",
@@ -1546,8 +1579,32 @@
     ],
     "viaf_pid": "70119347"
   },
-  "cont_org": {
-    "$schema": "https://bib.rero.ch/schemas/contributions/contribution-v0.0.1.json",
+  "ent_pers2": {
+    "$schema": "https://bib.rero.ch/schemas/remote_entities/remote_entity-v0.0.1.json",
+    "pid": "ent_pers2",
+    "rero": {
+      "$schema": "https://mef.rero.ch/schemas/agents_rero/rero-agent-v0.0.1.json",
+      "authorized_access_point": "Athenagoras (patriarche oecum\u00e9nique ; 1)",
+      "bf:Agent": "bf:Person",
+      "identifier": "http://data.rero.ch/02-A009963344",
+      "numeration": "1)",
+      "pid": "A009963344",
+      "preferred_name": "Athenagoras (patriarche oecum\u00e9nique ; 1)",
+      "qualifier": "(patriarche oecum\u00e9nique",
+      "variant_access_point": [
+        "Spyrou, Aristokles"
+      ],
+      "variant_name": [
+        "Spyrou, Aristokles"
+      ]
+    },
+    "sources": [
+      "rero"
+    ],
+    "type": "bf:Person"
+  },
+  "ent_org": {
+    "$schema": "https://bib.rero.ch/schemas/remote_entities/remote_entity-v0.0.1.json",
     "gnd": {
       "$schema": "https://mef.rero.ch/schemas/gnd/gnd-contribution-v0.0.1.json",
       "bf:Agent": "bf:Organisation",
@@ -1557,6 +1614,7 @@
       "md5": "215b8b7fc6fd58fdb149258f5e385bf3",
       "pid": "1161956409",
       "preferred_name": "Convegno internazionale di italianistica Craiova",
+      "authorized_access_point": "Convegno internazionale di italianistica Craiova",
       "variant_access_point": [
         "VIII Convegno internazionale di italianistica dell'Universita\u0300 di Craiova, 16-17 settembre 2016"
       ]
@@ -1568,9 +1626,10 @@
       "identifier": "http://data.rero.ch/02-A027711299",
       "md5": "4e68fe5569c8ab038b8069e883ebae2b",
       "pid": "A027711299",
-      "preferred_name": "Convegno internazionale di Italianistica"
+      "preferred_name": "Convegno internazionale di Italianistica",
+      "authorized_access_point": "Convegno internazionale di Italianistica"
     },
-    "pid": "cont_org",
+    "pid": "ent_org",
     "type": "bf:Organisation",
     "sources": [
       "rero",
@@ -1578,8 +1637,283 @@
     ],
     "viaf_pid": "3117153063217219320007"
   },
-  "cont_pers2": {
-    "$schema": "https://mef.rero.ch/schemas/mef/mef-v0.0.1.json",
+  "ent_topic": {
+    "$schema": "https://bib.rero.ch/schemas/remote_entities/remote_entity-v0.0.1.json",
+    "idref": {
+      "$schema": "https://mef.rero.ch/schemas/concepts_idref/idref-concept-v0.0.1.json",
+      "authorized_access_point": "Swing (jazz)",
+      "bnf_type": "genre/forme Rameau",
+      "broader": [
+        {
+          "authorized_access_point": "Jazz"
+        }
+      ],
+      "classification": [
+        {
+          "classificationPortion": "780",
+          "name": "Musique",
+          "type": "bf:ClassificationDdc"
+        }
+      ],
+      "closeMatch": [
+        {
+          "authorized_access_point": "Swing (Music)",
+          "identifiedBy": {
+            "source": "LCSH",
+            "type": "uri",
+            "value": "http://id.loc.gov/authorities/subjects/sh90002707"
+          },
+          "source": "LCSH"
+        },
+        {
+          "authorized_access_point": "Swing (Musique)",
+          "source": "RVMLaval"
+        }
+      ],
+      "identifiedBy": [
+        {
+          "source": "IdRef",
+          "type": "uri",
+          "value": "http://www.idref.fr/030752787"
+        },
+        {
+          "source": "BNF",
+          "type": "uri",
+          "value": "http://catalogue.bnf.fr/ark:/12148/cb12210583w"
+        }
+      ],
+      "md5": "522d2821a0939bf38725c3d08a093ee5",
+      "note": [
+        {
+          "label": [
+            "Grand Larousse universel",
+            "Encycl. universalis - http://www.universalis-edu.com (2010-09-02)",
+            "Dict. du jazz / P. Carles, A. Clergeat, J.-L. Comolli, 1994",
+            "Encycl. illustr\u00e9e de toutes les musiques / P. Du Noyer, 2004",
+            "Oxford music online - http://www.grovemusic.com (2007-07-05)",
+            "Jazz styles - http://www.jazz-styles.com (2007-07-05)"
+          ],
+          "noteType": "dataSource"
+        },
+        {
+          "label": [
+            "Style de jazz jou\u00e9 dans les ann\u00e9es 1930 et 1940, appel\u00e9 \"mainstream\" (courant pricipal) dans ses prolongements plus r\u00e9cents"
+          ],
+          "noteType": "general"
+        }
+      ],
+      "pid": "030752787",
+      "related": [
+        {
+          "authorized_access_point": "Zazous"
+        },
+        {
+          "authorized_access_point": "Western swing"
+        }
+      ],
+      "variant_access_point": [
+        "Jazz classique",
+        "Mainstream (jazz)",
+        "Middle jazz",
+        "Modern mainstream (jazz)"
+      ]
+    },
+    "pid": "14613205",
+    "type": "bf:Topic",
+    "sources": [
+      "idref"
+    ]
+  },
+  "ent_topic2": {
+    "$schema": "https://bib.rero.ch/schemas/remote_entities/remote_entity-v0.0.1.json",
+    "pid": "ent_topic2",
+    "rero": {
+      "$schema": "https://mef.rero.ch/schemas/concepts_rero/rero-concept-v0.0.1.json",
+      "authorized_access_point": "Bases de donn\u00e9es d\u00e9ductives",
+      "broader": [
+        {
+          "authorized_access_point": "Bases de donn\u00e9es"
+        }
+      ],
+      "identifiedBy": [
+        {
+          "source": "RERO",
+          "type": "bf:Local",
+          "value": "A021039750"
+        },
+        {
+          "source": "BNF",
+          "type": "bf:Local",
+          "value": "FRBNF122513889"
+        },
+        {
+          "type": "uri",
+          "value": "http://catalogue.bnf.fr/ark:/12148/cb122513884"
+        }
+      ],
+      "note": [
+        {
+          "label": [
+            "Deductive data bases"
+          ],
+          "noteType": "general"
+        }
+      ],
+      "pid": "A021039750"
+    },
+    "sources": [
+      "rero"
+    ]
+  },
+  "ent_topic_temporal": {
+    "$schema": "https://mef.rero.ch/schemas/concepts_mef/mef-concept-v0.0.1.json",
+    "idref": {
+      "$schema": "https://mef.rero.ch/schemas/concepts_idref/idref-concept-v0.0.1.json",
+      "authorized_access_point": "1945-....",
+      "bnf_type": "sujet Rameau",
+      "broader": [
+        {
+          "authorized_access_point": "1800-...."
+        }
+      ],
+      "classification": [
+        {
+          "classificationPortion": "900",
+          "name": "Histoire",
+          "type": "bf:ClassificationDdc"
+        }
+      ],
+      "identifiedBy": [
+        {
+          "source": "IDREF",
+          "type": "uri",
+          "value": "http://www.idref.fr/033472890"
+        },
+        {
+          "source": "BNF",
+          "type": "uri",
+          "value": "http://catalogue.bnf.fr/ark:/12148/cb12433520g"
+        }
+      ],
+      "md5": "834a06398eb0d971e6df7a0095deeaef",
+      "narrower": [
+        {
+          "authorized_access_point": "1945-1990"
+        },
+        {
+          "authorized_access_point": "1970-...."
+        }
+      ],
+      "note": [
+        {
+          "label": [
+            "Dict. encyclop\u00e9dique d'histoire / M. Mourre, 1996"
+          ],
+          "noteType": "dataSource"
+        },
+        {
+          "label": [
+            "Laval RVM (en ligne), 2012-10-16"
+          ],
+          "noteType": "dataNotFound"
+        },
+        {
+          "label": [
+            "2 septembre 1945 : fin de la Seconde guerre mondiale",
+            "S'emploie uniquement en subdivision chronologique [sans subd. g\u00e9ogr.] \u00e0 tous sujets noms communs et noms propres, \u00e0 l'exception des personnes et des sujets pour lesquels il existe un d\u00e9coupage chronologique sp\u00e9cifique, par ex. : Paris (France) -- 1944-"
+          ],
+          "noteType": "general"
+        }
+      ],
+      "pid": "033472890",
+      "related": [
+        {
+          "authorized_access_point": "20e si\u00e8cle"
+        },
+        {
+          "authorized_access_point": "Histoire universelle - 1945-...."
+        }
+      ],
+      "relation_pid": {
+        "type": "redirect_from",
+        "value": "033467404"
+      },
+      "type": "bf:Temporal",
+      "variant_access_point": [
+        "1945-.... (subdivision)"
+      ]
+    },
+    "pid": "16705461",
+    "sources": [
+      "idref"
+    ],
+    "type": "bf:Temporal"
+  },
+  "ent_place": {
+    "$schema": "https://mef.rero.ch/schemas/places_mef/mef-place-v0.0.1.json",
+    "idref": {
+      "$schema": "https://mef.rero.ch/schemas/places_idref/idref-place-v0.0.1.json",
+      "authorized_access_point": "Suisse",
+      "bnf_type": "sujet Rameau",
+      "broader": [
+        {
+          "authorized_access_point": "Europe centrale"
+        }
+      ],
+      "identifiedBy": [
+        {
+          "source": "IDREF",
+          "type": "uri",
+          "value": "http://www.idref.fr/027249654"
+        },
+        {
+          "source": "BNF",
+          "type": "uri",
+          "value": "http://catalogue.bnf.fr/ark:/12148/cb15241146v"
+        },
+        {
+          "source": "BNF",
+          "type": "uri",
+          "value": "http://catalogue.bnf.fr/ark:/12148/cb11933332n"
+        }
+      ],
+      "md5": "87df11402bcbdfd147ee23a612e5ed69",
+      "note": [
+        {
+          "label": [
+            "IFLA, Names of states, 1981. GLU, 1991",
+            "Laval RVM, 1997-02"
+          ],
+          "noteType": "dataSource"
+        },
+        {
+          "label": [
+            "Voir aussi la subdivision Et la Suisse aux personnes et collectivit\u00e9s"
+          ],
+          "noteType": "seeReference"
+        }
+      ],
+      "pid": "027249654",
+      "type": "bf:Place",
+      "variant_access_point": [
+        "Conf\u00e9d\u00e9ration helv\u00e9tique",
+        "Confederazione svizzera",
+        "Helvetia",
+        "Helv\u00e9tie",
+        "Schweiz",
+        "Schweizerische Eidgenossenschaft",
+        "Svizra",
+        "Svizzera"
+      ]
+    },
+    "pid": "16788252",
+    "sources": [
+      "idref"
+    ],
+    "type": "bf:Place"
+  },
+  "ent_pers_all": {
+    "$schema": "https://bib.rero.ch/schemas/remote_entities/remote_entity-v0.0.1.json",
     "type": "bf:Person",
     "gnd": {
       "$schema": "https://mef.rero.ch/schemas/agents_gnd/gnd-agent-v0.0.1.json",
@@ -1621,7 +1955,7 @@
       "pid": "029314100",
       "preferred_name": "Nebehay, Christian Michael"
     },
-    "pid": "cont_pers2",
+    "pid": "ent_pers_all",
     "rero": {
       "$schema": "https://mef.rero.ch/schemas/agents_rero/rero-agent-v0.0.1.json",
       "authorized_access_point": "Nebehay, Christian Michael",
@@ -1637,6 +1971,77 @@
       "idref"
     ],
     "viaf_pid": "108158722"
+  },
+  "ent_pers_rero": {
+    "$schema": "https://bib.rero.ch/schemas/remote_entities/remote_entity-v0.0.1.json",
+    "type": "bf:Person",
+    "pid": "ent_pers_rero",
+    "rero": {
+      "$schema": "https://mef.rero.ch/schemas/agents_rero/rero-agent-v0.0.1.json",
+      "authorized_access_point": "Nebehay, Christian Michael",
+      "bf:Agent": "bf:Person",
+      "identifier": "http://data.rero.ch/02-A003633163",
+      "md5": "2f217265e5fa5fc2a361e46fd3a07f8f",
+      "pid": "A003633163",
+      "preferred_name": "Nebehay, Christian Michael"
+    },
+    "sources": [
+      "rero"
+    ],
+    "viaf_pid": "108158722"
+  },
+  "locent_pers": {
+    "$schema": "https://bib.rero.ch/schemas/local_entities/local_entity-v0.0.1.json",
+    "pid": "locent_pers",
+    "name": "Loy, Georg",
+    "date_of_birth": "1881",
+    "date_of_death": "1968",
+    "type": "bf:Person"
+  },
+  "locent_pers2": {
+    "$schema": "https://bib.rero.ch/schemas/local_entities/local_entity-v0.0.1.json",
+    "pid": "locent_pers2",
+    "name": "William",
+    "date_of_birth": "1650",
+    "date_of_death": "1702",
+    "numeration": "III",
+    "qualifier": "King of England",
+    "type": "bf:Person"
+  },
+  "locent_org": {
+    "$schema": "https://bib.rero.ch/schemas/local_entities/local_entity-v0.0.1.json",
+    "pid": "locent_org",
+    "name": "Convegno internazionale di Italianistica",
+    "conference": false,
+    "type": "bf:Organisation"
+  },
+  "locent_org2": {
+    "$schema": "https://bib.rero.ch/schemas/local_entities/local_entity-v0.0.1.json",
+    "pid": "locent_org2",
+    "name": "Catholic Church",
+    "subordinate_units": [
+      "Concilium Plenarium Americae Latinae"
+    ],
+    "conference_numbering": "5th",
+    "conference_date": "1899",
+    "conference_place": "Rome, Italy",
+    "conference": false,
+    "type": "bf:Organisation"
+  },
+  "locent_work": {
+    "$schema": "https://bib.rero.ch/schemas/local_entities/local_entity-v0.0.1.json",
+    "pid": "locent_work",
+    "title": "Preludes",
+    "creator": "Chopin, Fre\u0301de\u0301ric (1810-1849)",
+    "type": "bf:Work"
+  },
+  "locent_genreForm": {
+    "$schema": "https://bib.rero.ch/schemas/local_entities/local_entity-v0.0.1.json",
+    "name": "Personal correspondence",
+    "source_catalog": "lcgft",
+    "genreForm": true,
+    "type": "bf:Topic",
+    "pid": "locent_genreForm"
   },
   "doc1": {
     "$schema": "https://bib.rero.ch/schemas/documents/document-v0.0.1.json",
@@ -1755,8 +2160,8 @@
     ],
     "contribution": [
       {
-        "agent": {
-          "preferred_name": "Nebehay, Christian Michael",
+        "entity": {
+          "authorized_access_point": "Nebehay, Christian Michael",
           "type": "bf:Person",
           "identifiedBy": {
             "type": "RERO",
@@ -1770,19 +2175,53 @@
     ],
     "subjects": [
       {
-        "type": "bf:Topic",
-        "term": "thriller"
+        "entity": {
+          "type": "bf:Topic",
+          "authorized_access_point": "thriller",
+          "subdivisions": [
+            {
+              "entity": {
+                "type": "bf:Topic",
+                "authorized_access_point": "gore"
+              }
+            }
+          ]
+        }
       },
       {
-        "type": "bf:Topic",
-        "term": "suspense"
+        "entity": {
+          "type": "bf:Topic",
+          "authorized_access_point": "suspense"
+        }
       },
       {
-        "preferred_name": "Nebehay, Christian Michael",
-        "type": "bf:Person",
-        "identifiedBy": {
-          "type": "RERO",
-          "value": "A003633163"
+        "entity": {
+          "authorized_access_point": "Nebehay, Christian Michael",
+          "type": "bf:Person",
+          "identifiedBy": {
+            "type": "RERO",
+            "value": "A003633163"
+          }
+        }
+      },
+      {
+        "entity": {
+          "authorized_access_point": "1945-....",
+          "type": "bf:Temporal",
+          "identifiedBy": {
+            "type": "IdRef",
+            "value": "033472890"
+          }
+        }
+      },
+      {
+        "entity": {
+          "authorized_access_point": "Suisse",
+          "type": "bf:Place",
+          "identifiedBy": {
+            "type": "IdRef",
+            "value": "027249654"
+          }
         }
       }
     ],
@@ -1934,8 +2373,7 @@
     ],
     "contribution": [
       {
-        "agent": {
-          "type": "bf:Person",
+        "entity": {
           "$ref": "https://mef.rero.ch/api/agents/rero/A017671081"
         },
         "role": [
@@ -2038,42 +2476,31 @@
     ],
     "contribution": [
       {
-        "agent": {
-          "preferred_name": "Vincent, Edward",
+        "entity": {
           "type": "bf:Person",
-          "date_of_birth": "1954",
-          "date_of_death": "2222",
-          "qualifier": "physicist",
-          "fuller_form_of_name": "fuller"
+          "authorized_access_point": "Vincent, Edward (fuller), 1954-2222, physicist"
         },
         "role": [
           "aut"
         ]
       },
       {
-        "agent": {
-          "preferred_name": "Vincent, Edward",
-          "type": "bf:Person",
-          "date_of_birth": "1954",
-          "date_of_death": "2222",
-          "qualifier": "physicist",
-          "numeration": "1"
+        "entity": {
+          "authorized_access_point": "Vincent, Edward (fuller), 1954-2222, physicist",
+          "type": "bf:Person"
         },
         "role": [
           "aut"
         ]
       },
       {
-        "agent": {
-          "preferred_name": "RERO",
+        "entity": {
+          "authorized_access_point": "Convegno internazionale di italianistica Craiova",
           "type": "bf:Organisation",
-          "subordinate_unit": [
-            "Martigny"
-          ],
-          "numbering": "1",
-          "conference_date": "2020-02-02",
-          "place": "Martigny",
-          "conference": false
+          "identifiedBy": {
+            "value": "1161956409",
+            "type": "GND"
+          }
         },
         "role": [
           "aut"
@@ -2366,8 +2793,7 @@
         "startDate": 2015,
         "place": [
           {
-            "country": "cc",
-            "type": "bf:Place"
+            "country": "cc"
           }
         ]
       }
@@ -2384,18 +2810,18 @@
     ],
     "contribution": [
       {
-        "agent": {
+        "entity": {
           "type": "bf:Person",
-          "preferred_name": "Liang, Xi, 1924-"
+          "authorized_access_point": "Liang, Xi, 1924-"
         },
         "role": [
           "aut"
         ]
       },
       {
-        "agent": {
+        "entity": {
           "type": "bf:Person",
-          "preferred_name": "Zeng, Lingliang"
+          "authorized_access_point": "Zeng, Lingliang"
         },
         "role": [
           "aut"
@@ -2485,8 +2911,7 @@
         "startDate": 1950,
         "place": [
           {
-            "country": "xx",
-            "type": "bf:Place"
+            "country": "xx"
           }
         ]
       }
@@ -2496,10 +2921,9 @@
     ],
     "contribution": [
       {
-        "agent": {
+        "entity": {
           "type": "bf:Organisation",
-          "preferred_name": "Instituto de Estudios Africanos (Madrid)",
-          "conference": false
+          "authorized_access_point": "Instituto de Estudios Africanos (Madrid)"
         },
         "role": [
           "aut"
@@ -2589,8 +3013,7 @@
         "startDate": 1950,
         "place": [
           {
-            "country": "xx",
-            "type": "bf:Place"
+            "country": "xx"
           }
         ]
       }
@@ -2600,10 +3023,9 @@
     ],
     "contribution": [
       {
-        "agent": {
+        "entity": {
           "type": "bf:Organisation",
-          "preferred_name": "Instituto de Estudios Africanos (Madrid)",
-          "conference": false
+          "authorized_access_point": "Instituto de Estudios Africanos (Madrid)"
         },
         "role": [
           "aut"
@@ -2642,9 +3064,8 @@
     ],
     "contribution": [
       {
-        "agent": {
-          "$ref": "https://mef.rero.ch/api/agents/idref/029314100",
-          "type": "bf:Person"
+        "entity": {
+          "$ref": "https://mef.rero.ch/api/agents/idref/029314100"
         },
         "role": [
           "ctb"
@@ -2715,8 +3136,7 @@
         "startDate": 1979,
         "place": [
           {
-            "country": "gw",
-            "type": "bf:Place"
+            "country": "gw"
           }
         ]
       }
@@ -2806,12 +3226,8 @@
     ],
     "contribution": [
       {
-        "agent": {
-          "date_of_birth": "1921",
-          "date_of_death": "1987",
-          "numeration": "XXII",
-          "preferred_name": "Yourcenar, Marguerite",
-          "qualifier": "autrice",
+        "entity": {
+          "authorized_access_point": "Yourcenar, Marguerite XXII, autrice, 1921-1987",
           "type": "bf:Person"
         },
         "role": [
@@ -2819,34 +3235,12 @@
         ]
       },
       {
-        "agent": {
-          "conference": false,
-          "preferred_name": "Universit\u00e9 de Gen\u00e8ve",
-          "subordinate_unit": [
-            "Facult\u00e9 des sciences"
-          ],
+        "entity": {
+          "authorized_access_point": "Universit\u00e9 de Gen\u00e8ve. Facult\u00e9 des sciences",
           "type": "bf:Organisation"
         },
         "role": [
           "aut"
-        ]
-      },
-      {
-        "agent": {
-          "$ref": "https://mef.rero.ch/api/agents/idref/027037061",
-          "type": "bf:Person"
-        },
-        "role": [
-          "cre"
-        ]
-      },
-      {
-        "agent": {
-          "$ref": "https://mef.rero.ch/api/agents/idref/028401743",
-          "type": "bf:Person"
-        },
-        "role": [
-          "ctb"
         ]
       }
     ],
@@ -2890,8 +3284,7 @@
         "endDate": 1944,
         "place": [
           {
-            "country": "be",
-            "type": "bf:Place"
+            "country": "be"
           }
         ],
         "statement": [
@@ -2967,15 +3360,15 @@
         },
         "numbering": [
           {
-            "issue": 5,
+            "issue": "5",
             "pages": "22-928",
-            "volume": 3,
+            "volume": "3",
             "year": "1988"
           },
           {
-            "issue": 8,
+            "issue": "8",
             "pages": "42",
-            "volume": 6,
+            "volume": "6",
             "year": "1998"
           }
         ]
@@ -3003,54 +3396,142 @@
     ],
     "subjects": [
       {
-        "type": "bf:Person",
-        "$ref": "https://mef.rero.ch/api/agents/gnd/041288890"
+        "entity": {
+          "type": "bf:Person",
+          "authorized_access_point": "Athenagoras (patriarche oecum\u00e9nique ; 1)",
+          "identifiedBy": {
+            "value": "A009963344",
+            "type": "RERO"
+          }
+        }
       },
       {
-        "type": "bf:Person",
-        "$ref": "https://mef.rero.ch/api/agents/idref/032106939"
+        "entity": {
+          "type": "bf:Place",
+          "authorized_access_point": "Europe occidentale",
+          "identifiedBy": {
+            "value": "A009975209",
+            "type": "RERO"
+          }
+        }
       },
       {
-        "type": "bf:Person",
-        "preferred_name": "Athenagoras (patriarche oecum\u00e9nique ; 1)",
-        "identifiedBy": {
-          "value": "A009963344",
-          "source": "rero",
-          "type": "bf:Local"
-        },
-        "source": "rero"
+        "entity": {
+          "type": "bf:Topic",
+          "authorized_access_point": "Bases de donn\u00e9es d\u00e9ductives",
+          "identifiedBy": {
+            "value": "A021039750",
+            "type": "RERO"
+          }
+        }
       },
       {
-        "type": "bf:Place",
-        "preferred_name": "Europe occidentale",
-        "identifiedBy": {
-          "value": "A009975209",
-          "source": "rero",
-          "type": "bf:Local"
-        },
-        "source": "rero"
-      },
-      {
-        "type": "bf:Topic",
-        "term": "Bases de donn\u00e9es",
-        "identifiedBy": {
-          "value": "A001234567",
-          "source": "rero",
-          "type": "bf:Local"
-        },
-        "source": "rero"
-      },
-      {
-        "creator": "Voltenauer, Marc",
-        "identifiedBy": {
-          "type": "RERO",
-          "value": "A001234567"
-        },
-        "source": "rero",
-        "title": "Bases de donn\u00e9es",
-        "type": "bf:Work"
+        "entity": {
+          "authorized_access_point": "Bases de donn\u00e9esi (Voltenauer, Marc)",
+          "type": "bf:Work",
+          "identifiedBy": {
+            "type": "RERO",
+            "value": "A001234567"
+          }
+        }
       }
     ]
+  },
+  "doc9": {
+    "$schema": "https://bib.rero.ch/schemas/documents/document-v0.0.1.json",
+    "pid": "doc2",
+    "type": [
+      {
+        "main_type": "docmaintype_book",
+        "subtype": "docsubtype_other_book"
+      }
+    ],
+    "issuance": {
+      "main_type": "rdami:1001",
+      "subtype": "materialUnit"
+    },
+    "language": [
+      {
+        "type": "bf:Language",
+        "value": "ara"
+      }
+    ],
+    "harvested": false,
+    "identifiedBy": [
+      {
+        "type": "bf:Local",
+        "source": "RERO",
+        "value": "R007153123"
+      },
+      {
+        "type": "bf:Isbn",
+        "qualifier": "broch\u00e9",
+        "value": "9786039012641"
+      },
+      {
+        "type": "bf:Local",
+        "source": "BNF",
+        "value": "FRBNF452959140000002"
+      },
+      {
+        "type": "uri",
+        "value": "http://catalogue.bnf.fr/ark:/12148/cb45295914f"
+      }
+    ],
+    "subjects": [
+      {
+        "entity": {
+          "$ref": "https://mef.rero.ch/api/concepts/idref/030752787"
+        }
+      }
+    ],
+    "title": [
+      {
+        "type": "bf:Title",
+        "mainTitle": [
+          {
+            "value": "al-Waj\u012bz f\u012b ni\u1e93\u0101m khidmat al-afr\u0101d al-s\u02bf\u016bd\u012b"
+          }
+        ]
+      }
+    ],
+    "provisionActivity": [
+      {
+        "type": "bf:Publication",
+        "statement": [
+          {
+            "country": "sz",
+            "label": [
+              {
+                "value": "al-Riy\u0101\u1e0d"
+              }
+            ],
+            "type": "bf:Place"
+          },
+          {
+            "label": [
+              {
+                "value": "Maktabat al-qan\u016bn wa al-iqti\u1e63\u0101d"
+              }
+            ],
+            "type": "bf:Agent"
+          },
+          {
+            "label": [
+              {
+                "value": "2011"
+              }
+            ],
+            "type": "Date"
+          }
+        ],
+        "startDate": 2011
+      }
+    ],
+    "extent": "560 p.",
+    "adminMetadata": {
+      "encodingLevel": "Minimal level"
+    }
   },
   "ebook1": {
     "pid": "ebook1",
@@ -3090,8 +3571,8 @@
     ],
     "contribution": [
       {
-        "agent": {
-          "preferred_name": "Peter James",
+        "entity": {
+          "authorized_access_point": "Peter James",
           "type": "bf:Person"
         },
         "role": [
@@ -3099,10 +3580,9 @@
         ]
       },
       {
-        "agent": {
-          "preferred_name": "Great Edition",
-          "type": "bf:Organisation",
-          "conference": false
+        "entity": {
+          "authorized_access_point": "Great Edition",
+          "type": "bf:Organisation"
         },
         "role": [
           "aut"
@@ -3155,12 +3635,16 @@
     ],
     "subjects": [
       {
-        "type": "bf:Topic",
-        "term": "thriller"
+        "entity": {
+          "type": "bf:Topic",
+          "authorized_access_point": "thriller"
+        }
       },
       {
-        "type": "bf:Topic",
-        "term": "suspense"
+        "entity": {
+          "type": "bf:Topic",
+          "authorized_access_point": "suspense"
+        }
       }
     ],
     "adminMetadata": {
@@ -3212,8 +3696,8 @@
     ],
     "contribution": [
       {
-        "agent": {
-          "preferred_name": "Christopher Sch\u00fctze",
+        "entity": {
+          "authorized_access_point": "Christopher Sch\u00fctze",
           "type": "bf:Person"
         },
         "role": [
@@ -3303,8 +3787,8 @@
     ],
     "contribution": [
       {
-        "agent": {
-          "preferred_name": "J.K. Rowling",
+        "entity": {
+          "authorized_access_point": "J.K. Rowling",
           "type": "bf:Person"
         },
         "role": [
@@ -3317,7 +3801,7 @@
         "type": "bf:Publication",
         "statement": [
           {
-            "country": "us",
+            "country": "xxu",
             "label": [
               {
                 "value": "USA"
@@ -3394,8 +3878,8 @@
     ],
     "contribution": [
       {
-        "agent": {
-          "preferred_name": "Peter James",
+        "entity": {
+          "authorized_access_point": "Peter James",
           "type": "bf:Person"
         },
         "role": [
@@ -3438,12 +3922,16 @@
     ],
     "subjects": [
       {
-        "type": "bf:Topic",
-        "term": "thriller"
+        "entity": {
+          "type": "bf:Topic",
+          "authorized_access_point": "thriller"
+        }
       },
       {
-        "type": "bf:Topic",
-        "term": "suspense"
+        "entity": {
+          "type": "bf:Topic",
+          "authorized_access_point": "suspense"
+        }
       }
     ],
     "note": [
@@ -3501,8 +3989,8 @@
     ],
     "contribution": [
       {
-        "agent": {
-          "preferred_name": "Peter James",
+        "entity": {
+          "authorized_access_point": "Peter James",
           "type": "bf:Person"
         },
         "role": [
@@ -3545,12 +4033,16 @@
     ],
     "subjects": [
       {
-        "type": "bf:Topic",
-        "term": "thriller"
+        "entity": {
+          "type": "bf:Topic",
+          "authorized_access_point": "thriller"
+        }
       },
       {
-        "type": "bf:Topic",
-        "term": "suspense"
+        "entity": {
+          "type": "bf:Topic",
+          "authorized_access_point": "suspense"
+        }
       }
     ],
     "note": [
@@ -3566,7 +4058,6 @@
   "item1": {
     "$schema": "https://bib.rero.ch/schemas/items/item-v0.0.1.json",
     "pid": "item1",
-    "barcode": "1234",
     "type": "standard",
     "document": {
       "$ref": "https://bib.rero.ch/api/documents/doc1"
@@ -3605,7 +4096,6 @@
   "item2": {
     "$schema": "https://bib.rero.ch/schemas/items/item-v0.0.1.json",
     "pid": "item2",
-    "barcode": "78431",
     "type": "standard",
     "document": {
       "$ref": "https://bib.rero.ch/api/documents/doc1"
@@ -3622,7 +4112,6 @@
   "item3": {
     "$schema": "https://bib.rero.ch/schemas/items/item-v0.0.1.json",
     "pid": "item3",
-    "barcode": "891011",
     "type": "standard",
     "document": {
       "$ref": "https://bib.rero.ch/api/documents/doc1"
@@ -3649,7 +4138,6 @@
   "item4": {
     "$schema": "https://bib.rero.ch/schemas/items/item-v0.0.1.json",
     "pid": "item4",
-    "barcode": "0123987123",
     "type": "standard",
     "document": {
       "$ref": "https://bib.rero.ch/api/documents/doc3"
@@ -3666,7 +4154,6 @@
   "item5": {
     "$schema": "https://bib.rero.ch/schemas/items/item-v0.0.1.json",
     "pid": "item5",
-    "barcode": "8712133",
     "type": "standard",
     "document": {
       "$ref": "https://bib.rero.ch/api/documents/doc1"
@@ -3683,7 +4170,6 @@
   "item6": {
     "$schema": "https://bib.rero.ch/schemas/items/item-v0.0.1.json",
     "pid": "item6",
-    "barcode": "87121336",
     "type": "standard",
     "document": {
       "$ref": "https://bib.rero.ch/api/documents/doc1"
@@ -3700,7 +4186,6 @@
   "item7": {
     "$schema": "https://bib.rero.ch/schemas/items/item-v0.0.1.json",
     "pid": "item7",
-    "barcode": "789123",
     "type": "standard",
     "document": {
       "$ref": "https://bib.rero.ch/api/documents/doc1"
@@ -3717,7 +4202,6 @@
   "item8": {
     "$schema": "https://bib.rero.ch/schemas/items/item-v0.0.1.json",
     "pid": "item8",
-    "barcode": "100200300",
     "type": "standard",
     "document": {
       "$ref": "https://bib.rero.ch/api/documents/doc1"
@@ -3734,7 +4218,6 @@
   "item9": {
     "$schema": "https://bib.rero.ch/schemas/items/item-v0.0.1.json",
     "pid": "item9",
-    "barcode": "91231",
     "type": "standard",
     "document": {
       "$ref": "https://bib.rero.ch/api/documents/doc1"
@@ -3751,7 +4234,6 @@
   "item10": {
     "$schema": "https://bib.rero.ch/schemas/items/item-v0.0.1.json",
     "pid": "item10",
-    "barcode": "123410",
     "type": "standard",
     "document": {
       "$ref": "https://bib.rero.ch/api/documents/doc1"
@@ -3777,7 +4259,6 @@
   "item11": {
     "$schema": "https://bib.rero.ch/schemas/items/item-v0.0.1.json",
     "pid": "item11",
-    "barcode": "1234567890",
     "type": "provisional",
     "document": {
       "$ref": "https://bib.rero.ch/api/documents/doc1"
@@ -3822,8 +4303,9 @@
     "username": "simonetta",
     "home_phone": "+41324993585",
     "roles": [
-      "system_librarian"
-    ]
+      "pro_full_permissions"
+    ],
+    "password": "Pw123456"
   },
   "ptrn2": {
     "$schema": "https://bib.rero.ch/schemas/patrons/patron-v0.0.1.json",
@@ -3843,8 +4325,15 @@
     "email": "mpedronni@gmail.com",
     "home_phone": "+41324993578",
     "roles": [
-      "librarian"
-    ]
+      "pro_read_only",
+      "pro_catalog_manager",
+      "pro_circulation_manager",
+      "pro_user_manager",
+      "pro_acquisition_manager",
+      "pro_library_administrator",
+      "pro_entity_manager"
+    ],
+    "password": "Pw123456"
   },
   "ptrn3": {
     "$schema": "https://bib.rero.ch/schemas/patrons/patron-v0.0.1.json",
@@ -3864,8 +4353,12 @@
     "email": "msaudan@gmail.com",
     "home_phone": "+41324993541",
     "roles": [
-      "librarian"
-    ]
+      "pro_read_only",
+      "pro_catalog_manager",
+      "pro_circulation_manager",
+      "pro_user_manager"
+    ],
+    "password": "Pw123456"
   },
   "ptrn4": {
     "$schema": "https://bib.rero.ch/schemas/patrons/patron-v0.0.1.json",
@@ -3885,8 +4378,13 @@
     "email": "elena_rodriguez@gmail.com",
     "home_phone": "+41324993515",
     "roles": [
-      "librarian"
-    ]
+      "pro_read_only",
+      "pro_catalog_manager",
+      "pro_circulation_manager",
+      "pro_user_manager",
+      "pro_statistic_manager"
+    ],
+    "password": "Pw123456"
   },
   "ptrn5": {
     "$schema": "https://bib.rero.ch/schemas/patrons/patron-v0.0.1.json",
@@ -3906,14 +4404,19 @@
     "email": "virgile_charbonnet@gmail.com",
     "home_phone": "+41324111515",
     "roles": [
-      "librarian"
-    ]
+      "pro_read_only",
+      "pro_catalog_manager",
+      "pro_circulation_manager",
+      "pro_user_manager"
+    ],
+    "password": "Pw123456"
   },
   "ptrn6": {
     "$schema": "https://bib.rero.ch/schemas/patrons/patron-v0.0.1.json",
     "pid": "ptrn6",
     "first_name": "Louis",
     "last_name": "Roduit",
+    "gender": "male",
     "street": "Avenue Leopold-Robert, 13",
     "postal_code": "1920",
     "city": "Martigny",
@@ -3956,13 +4459,15 @@
         "type": "staff_note",
         "content": "A kind person."
       }
-    ]
+    ],
+    "password": "Pw123456"
   },
   "ptrn7": {
     "$schema": "https://bib.rero.ch/schemas/patrons/patron-v0.0.1.json",
     "pid": "ptrn7",
     "first_name": "Louise",
     "last_name": "Moret",
+    "gender": "female",
     "street": "Avenue de la Gare, 13",
     "postal_code": "1920",
     "city": "Martigny",
@@ -3983,7 +4488,8 @@
       },
       "communication_channel": "email",
       "communication_language": "eng"
-    }
+    },
+    "password": "Pw123456"
   },
   "ptrn8": {
     "$schema": "https://bib.rero.ch/schemas/patrons/patron-v0.0.1.json",
@@ -4002,9 +4508,13 @@
       }
     ],
     "roles": [
-      "system_librarian",
-      "librarian"
-    ]
+      "pro_full_permissions",
+      "pro_read_only",
+      "pro_catalog_manager",
+      "pro_circulation_manager",
+      "pro_user_manager"
+    ],
+    "password": "Pw123456"
   },
   "ptrn9": {
     "$schema": "https://bib.rero.ch/schemas/patrons/patron-v0.0.1.json",
@@ -4023,8 +4533,13 @@
       }
     ],
     "roles": [
-      "librarian"
-    ]
+      "pro_read_only",
+      "pro_catalog_manager",
+      "pro_circulation_manager",
+      "pro_acquisition_manager",
+      "pro_user_manager"
+    ],
+    "password": "Pw123456"
   },
   "ptrn10": {
     "$schema": "https://bib.rero.ch/schemas/patrons/patron-v0.0.1.json",
@@ -4051,7 +4566,8 @@
       },
       "communication_channel": "email",
       "communication_language": "eng"
-    }
+    },
+    "password": "Pw123456"
   },
   "ptrn11": {
     "$schema": "https://bib.rero.ch/schemas/patrons/patron-v0.0.1.json",
@@ -4088,7 +4604,8 @@
       },
       "communication_channel": "email",
       "communication_language": "eng"
-    }
+    },
+    "password": "Pw123456"
   },
   "ptrn12": {
     "$schema": "https://bib.rero.ch/schemas/patrons/patron-v0.0.1.json",
@@ -4115,7 +4632,8 @@
       },
       "communication_channel": "email",
       "communication_language": "fre"
-    }
+    },
+    "password": "Pw123456"
   },
   "ptrn13": {
     "$schema": "https://bib.rero.ch/schemas/patrons/patron-v0.0.1.json",
@@ -4135,8 +4653,12 @@
     "email": "mbonvin@gmail.com",
     "home_phone": "+41324993599",
     "roles": [
-      "librarian"
-    ]
+      "pro_read_only",
+      "pro_catalog_manager",
+      "pro_circulation_manager",
+      "pro_user_manager"
+    ],
+    "password": "Pw123456"
   },
   "ptrn14": {
     "$schema": "https://bib.rero.ch/schemas/patrons/patron-v0.0.1.json",
@@ -4157,7 +4679,10 @@
     "keep_history": true,
     "roles": [
       "patron",
-      "librarian"
+      "pro_read_only",
+      "pro_catalog_manager",
+      "pro_circulation_manager",
+      "pro_user_manager"
     ],
     "patron": {
       "expiration_date": "2023-12-31",
@@ -4180,7 +4705,8 @@
       {
         "$ref": "https://bib.rero.ch/api/libraries/lib1"
       }
-    ]
+    ],
+    "password": "Pw123456"
   },
   "dummy_notif": {
     "$schema": "https://bib.rero.ch/schemas/notifications/notification-v0.0.1.json",
@@ -4440,10 +4966,56 @@
       }
     }
   },
+  "tmpl7": {
+    "$schema": "https://bib.rero.ch/schemas/templates/template-v0.0.1.json",
+    "pid": "tmpl7",
+    "name": "templ_doc_private_saxon",
+    "description": "Template for private documents created at saxon.",
+    "organisation": {
+      "$ref": "https://bib.rero.ch/api/organisations/org1"
+    },
+    "creator": {
+      "$ref": "https://bib.rero.ch/api/patrons/ptrn4"
+    },
+    "visibility": "private",
+    "template_type": "documents",
+    "data": {}
+  },
+  "tmpl8": {
+    "$schema": "https://bib.rero.ch/schemas/templates/template-v0.0.1.json",
+    "pid": "tmpl8",
+    "name": "templ_doc_public_saxon",
+    "description": "Template for public documents created at saxon.",
+    "organisation": {
+      "$ref": "https://bib.rero.ch/api/organisations/org1"
+    },
+    "creator": {
+      "$ref": "https://bib.rero.ch/api/patrons/ptrn4"
+    },
+    "visibility": "public",
+    "template_type": "documents",
+    "data": {}
+  },
+  "tmpl9": {
+    "$schema": "https://bib.rero.ch/schemas/templates/template-v0.0.1.json",
+    "pid": "tmpl9",
+    "name": "templ_doc_private_sion",
+    "description": "Template for private documents created at sion.",
+    "organisation": {
+      "$ref": "https://bib.rero.ch/api/organisations/org2"
+    },
+    "creator": {
+      "$ref": "https://bib.rero.ch/api/patrons/ptrn8"
+    },
+    "visibility": "private",
+    "template_type": "documents",
+    "data": {}
+  },
   "illr1": {
     "$schema": "https://bib.rero.ch/schemas/ill_requests/ill_request-v0.0.1.json",
     "pid": "illr1",
     "status": "pending",
+    "loan_status": "PENDING",
     "copy": false,
     "document": {
       "title": "Histoire d'\u00c9gypte",
@@ -4460,6 +5032,7 @@
     "$schema": "https://bib.rero.ch/schemas/ill_requests/ill_request-v0.0.1.json",
     "pid": "illr2",
     "status": "pending",
+    "loan_status": "PENDING",
     "copy": true,
     "document": {
       "title": "Python fr dummies."
@@ -4476,6 +5049,7 @@
     "$schema": "https://bib.rero.ch/schemas/ill_requests/ill_request-v0.0.1.json",
     "pid": "illr3",
     "status": "pending",
+    "loan_status": "PENDING",
     "copy": true,
     "document": {
       "title": "Python"
@@ -4610,14 +5184,56 @@
   },
   "user1": {
     "$schema": "https://bib.rero.ch/schemas/users/user-v0.0.1.json",
+    "username": "smith_john",
     "first_name": "John",
     "last_name": "Smith",
     "birth_date": "1974-03-21",
-    "username": "smith_john",
     "street": "1600 Donald Trump Avenue NW",
     "postal_code": "20500",
     "city": "Washington, D.C.",
     "home_phone": "+012024561414",
     "keep_history": true
+  },
+  "stats_cfg1": {
+    "$schema": "https://bib.rero.ch/schemas/stats_cfg/stat_cfg-v0.0.1.json",
+    "pid": "stats_cfg1",
+    "name": "Statistics configuration for organisation 1",
+    "description": "test",
+    "library": {
+      "$ref": "https://bib.rero.ch/api/libraries/lib1"
+    },
+    "frequency": "month",
+    "is_active": true,
+    "category": {
+      "type": "catalog",
+      "indicator": {
+        "type": "number_of_documents",
+        "distributions": [
+          "created_month",
+          "owning_library"
+        ]
+      }
+    }
+  },
+  "stats_cfg2": {
+    "$schema": "https://bib.rero.ch/schemas/stats_cfg/stat_cfg-v0.0.1.json",
+    "pid": "stats_cfg2",
+    "name": "Statistics configuration for organisation 2",
+    "description": "test",
+    "library": {
+      "$ref": "https://bib.rero.ch/api/libraries/lib4"
+    },
+    "frequency": "month",
+    "is_active": true,
+    "category": {
+      "type": "catalog",
+      "indicator": {
+        "type": "number_of_documents",
+        "distributions": [
+          "created_month",
+          "owning_library"
+        ]
+      }
+    }
   }
 }

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2022 RERO
-# Copyright (C) 2022 UCLouvain
+# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -18,18 +18,22 @@
 
 """RERO Document JSON serialization."""
 
+from datetime import datetime
+
 from flask import current_app, json, request, stream_with_context
 from werkzeug.local import LocalProxy
 
-from rero_ils.modules.documents.api import Document
-from rero_ils.modules.documents.utils import process_literal_contributions, \
-    title_format_text_head
+from rero_ils.modules.documents.utils import process_i18n_literal_fields
 from rero_ils.modules.documents.views import create_title_alternate_graphic, \
-    create_title_responsibilites, create_title_variants, subject_format
+    create_title_responsibilites, create_title_variants
 from rero_ils.modules.libraries.api import LibrariesSearch
 from rero_ils.modules.locations.api import LocationsSearch
 from rero_ils.modules.organisations.api import OrganisationsSearch
 from rero_ils.modules.serializers import JSONSerializer
+
+from ..dumpers import document_replace_refs_dumper
+from ..dumpers.indexer import IndexerDumper
+from ..extensions import TitleExtension
 
 GLOBAL_VIEW_CODE = LocalProxy(lambda: current_app.config.get(
     'RERO_ILS_SEARCH_GLOBAL_VIEW_CODE'))
@@ -51,41 +55,37 @@ class DocumentJSONSerializer(JSONSerializer):
     def preprocess_record(self, pid, record, links_factory=None, **kwargs):
         """Prepare a record and persistent identifier for serialization."""
         rec = record
-        titles = rec.get('title', [])
 
-        # build subjects text for display purpose
-        #   Subject formatting must be done before `replace_refs` otherwise the
-        #   referenced object couldn't be performed
-        # TODO :: Find a way to get language to use to render subject using
-        #         `Accepted-language` header.
-        language = None
-        for subject in record.get('subjects', []):
-            subject['_text'] = subject_format(subject, language)
-
+        # TODO: uses dumpers
         # build responsibility data for display purpose
         responsibility_statement = rec.get('responsibilityStatement', [])
-        responsibilities = \
-            create_title_responsibilites(responsibility_statement)
-        if responsibilities:
-            rec['ui_responsibilities'] = responsibilities
-        # build alternate graphic title data for display purpose
-        altgr_titles = create_title_alternate_graphic(titles)
-        if altgr_titles:
-            rec['ui_title_altgr'] = altgr_titles
-        altgr_titles_responsibilities = create_title_alternate_graphic(
-            titles,
+        if responsibilities := create_title_responsibilites(
             responsibility_statement
-        )
-        if altgr_titles_responsibilities:
+        ):
+            rec['ui_responsibilities'] = responsibilities
+        titles = rec.get('title', [])
+        if altgr_titles := create_title_alternate_graphic(titles):
+            rec['ui_title_altgr'] = altgr_titles
+        if altgr_titles_responsibilities := create_title_alternate_graphic(
+            titles, responsibility_statement
+        ):
             rec['ui_title_altgr_responsibilities'] = \
-                altgr_titles_responsibilities
+                                altgr_titles_responsibilities
 
-        variant_titles = create_title_variants(titles)
-        # build variant title data for display purpose
-        if variant_titles:
+        if variant_titles := create_title_variants(titles):
             rec['ui_title_variants'] = variant_titles
-        return super().preprocess_record(
+
+        data = super().preprocess_record(
             pid=pid, record=rec, links_factory=links_factory, kwargs=kwargs)
+        metadata = data['metadata']
+        resolve = request.args.get(
+            'resolve',
+            default=False,
+            type=lambda v: v.lower() in ['true', '1']
+        )
+        if request and resolve:
+            IndexerDumper()._process_host_document(None, metadata)
+        return data
 
     def _postprocess_search_hit(self, hit: dict) -> None:
         """Post-process each hit of a search result."""
@@ -93,11 +93,12 @@ class DocumentJSONSerializer(JSONSerializer):
         metadata = hit.get('metadata', {})
         pid = metadata.get('pid')
 
-        metadata['available'] = Document.is_available(pid, view_code)
         titles = metadata.get('title', [])
-        if text_title := title_format_text_head(titles, with_subtitle=False):
+        if text_title := TitleExtension.format_text(
+            titles, with_subtitle=False
+        ):
             metadata['ui_title_text'] = text_title
-        if text_title := title_format_text_head(
+        if text_title := TitleExtension.format_text(
             titles,
             responsabilities=metadata.get('responsibilityStatement', []),
             with_subtitle=False
@@ -118,11 +119,51 @@ class DocumentJSONSerializer(JSONSerializer):
         # format the results of the facet 'year' to be displayed
         # as range
         if aggregations.get('year'):
-            aggregations['year']['type'] = 'range'
-            aggregations['year']['config'] = {
-                'min': -9999,
-                'max': 9999,
-                'step': 1
+            def extract_year(key, default):
+                """Extract year from year aggregation.
+
+                :param: key: the dict key.
+                :param: default: the default year.
+                :return: the year in yyyy format.
+                """
+                return aggregations['year'][key].get('value', default)
+
+            # transform aggregation to send configuration
+            # for ng-core range widget.
+            # this allows you to fill in the fields on the frontend.
+            aggregations['year'] = {
+                'type': 'range',
+                'config': {
+                    'min': extract_year('year_min', -9999),
+                    'max': extract_year('year_max', 9999),
+                    'step': 1
+                }
+            }
+
+        if aggregations.get('acquisition'):
+            # format the results of facet 'acquisition' to be displayed
+            # as date range with min and max date (limit)
+            def extract_acquisition_date(key, default):
+                """Exact date from acquisition aggregation.
+
+                :param: key: the dict key.
+                :param: default: the default date.
+                :return: the date in yyyy-MM-dd format.
+                """
+                return aggregations['acquisition'][key].get(
+                    'value_as_string', aggregations['acquisition'][key].get(
+                        'value', default))
+
+            # transform aggregation to send configuration
+            # for ng-core date-range widget.
+            # this allows you to fill in the fields on the frontend.
+            aggregations['acquisition'] = {
+                'type': 'date-range',
+                'config': {
+                    'min': extract_acquisition_date('date_min', '1900-01-01'),
+                    'max': extract_acquisition_date(
+                        'date_max', datetime.now().strftime('%Y-%m-%d'))
+                }
             }
 
         if aggr_org := aggregations.get('organisation', {}).get('buckets', []):
@@ -203,11 +244,9 @@ class DocumentExportJSONSerializer(JSONSerializer):
         :param record: Record instance.
         :param links_factory: Factory function for record links.
         """
-        Document.post_process(record)
-        record = record.replace_refs()
-        if contributions := process_literal_contributions(
-                record.get('contribution', [])):
-            record['contribution'] = contributions
+        record = record.dumps(document_replace_refs_dumper)
+        if contributions := record.pop('contribution', []):
+            record['contribution'] = process_i18n_literal_fields(contributions)
         return json.dumps(record, **self._format_args())
 
     def serialize_search(self, pid_fetcher, search_result, links=None,

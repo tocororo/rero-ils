@@ -1,0 +1,65 @@
+{
+  "title": "Agent (textual)",
+  "type": "object",
+  "additionalProperties": false,
+  "propertiesOrder": [
+    "authorized_access_point",
+    "type",
+    "identifiedBy"
+  ],
+  "required": [
+    "type",
+    "authorized_access_point"
+  ],
+  "properties": {
+    "type": {
+      "title": "Type",
+      "type": "string",
+      "default": "bf:Person",
+      "enum": [
+        "bf:Person",
+        "bf:Organisation"
+      ],
+      "widget": {
+        "formlyConfig": {
+          "type": "selectWithSort",
+          "props": {
+            "options": [
+              {
+                "label": "bf:Person",
+                "value": "bf:Person"
+              },
+              {
+                "label": "bf:Organisation",
+                "value": "bf:Organisation"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "authorized_access_point": {
+      "title": "Access Point",
+      "type": "string",
+      "minLength": 1,
+      "widget": {
+        "formlyConfig": {
+          "props": {
+            "itemCssClass": "col-lg-6",
+            "placeholder": "Example: Musset, Alfred de, 1810-1857"
+          }
+        }
+      }
+    },
+    "identifiedBy": {
+      "$ref": "https://bib.rero.ch/schemas/common/identifier-v0.0.1.json#/identifier"
+    }
+  },
+  "widget": {
+    "formlyConfig": {
+      "props": {
+        "containerCssClass": "row"
+      }
+    }
+  }
+}

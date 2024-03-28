@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -17,7 +17,8 @@
 
 """Forms definitions about ILL request in public view."""
 
-from flask_babelex import gettext as _
+from flask_babel import gettext as _
+from flask_babel import lazy_gettext
 from flask_wtf import FlaskForm
 from wtforms import FormField, IntegerField, RadioField, SelectField, \
     StringField, TextAreaField, validators
@@ -117,7 +118,7 @@ class ILLRequestSourceForm(FlaskForm):
         render_kw={'placeholder': 'https://...'}
     )
 
-    def validate(self):
+    def validate(self, **kwargs):
         """Custom validation for this form."""
         if self.url.data:
             self.origin.validators = [
@@ -126,16 +127,16 @@ class ILLRequestSourceForm(FlaskForm):
         if self.origin.data:
             self.url.validators = [
                 validators.DataRequired(),
-                validators.URL()
+                validators.URL(require_tld=False)
             ]
-        return super().validate()
+        return super().validate(kwargs)
 
 
 class ILLRequestForm(FlaskForm):
     """Form to create an ILL request."""
 
     document = FormField(ILLRequestDocumentForm)
-    request_copy = RadioField(
+    copy = RadioField(
         label=_('Scope'),
         choices=[(0, _('Loan')), (1, _('Copy'))],
         default=0,
@@ -156,7 +157,7 @@ class ILLRequestForm(FlaskForm):
         label=_('Pickup location'),
         # Choices will be loaded dynamically because they should
         # be given inside app_context
-        choices=[('', _('Select…'))],
+        choices=[('', lazy_gettext('Select…'))],
         description=_('Select the location where this request will be '
                       'operated'),
         validators=[
@@ -164,13 +165,13 @@ class ILLRequestForm(FlaskForm):
         ]
     )
 
-    def validate(self):
+    def validate(self, **kwargs):
         """Add custom validation on the form."""
-        form_validate = super().validate()
+        form_validate = super().validate(kwargs)
 
-        # if 'request_copy' is set to True, then 'pages' is required field
+        # if 'copy' is set to True, then 'pages' is required field
         custom_validate = True
-        if self.request_copy.data == '1' and len(self.pages.data.strip()) == 0:
+        if self.copy.data == '1' and len(self.pages.data.strip()) == 0:
             custom_validate = False
             self.pages.errors.append(
                 _('As you request a document part, you need to specify '
@@ -194,6 +195,9 @@ class ILLRequestForm(FlaskForm):
                     'number': self.document.source.number.data,
                 }
             },
+            # the loan status is required by the jsonschema, it is always
+            # PENDING on ill request creation
+            'loan_status': "PENDING",
             'pickup_location': {
                 '$ref': get_ref_for_pid('locations', self.pickup_location.data)
             },
@@ -212,7 +216,7 @@ class ILLRequestForm(FlaskForm):
         # if we put 'copy' in the dict before the dict cleaning and if 'copy'
         # is set to 'No', then it will be removed by `remove_empties_from_dict`
         # So we need to add it after the cleaning
-        data['copy'] = self.request_copy.data == 1
+        data['copy'] = self.copy.data == '1'
 
         # if user select 'not specified' into the ILL request form, this value
         # must be removed from the dict.

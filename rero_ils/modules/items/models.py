@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -65,10 +65,10 @@ class ItemStatus:
 class ItemIssueStatus:
     """Enum class to list all possible status of an issue item."""
 
-    RECEIVED = 'received'
-    CLAIMED = 'claimed'
     DELETED = 'deleted'
+    EXPECTED = 'expected'
     LATE = 'late'
+    RECEIVED = 'received'
 
 
 class ItemCirculationAction:

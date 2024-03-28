@@ -20,14 +20,19 @@
 from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 
+import mock
 import pytest
 from invenio_circulation.search.api import LoansSearch
+from invenio_db import db
 from utils import create_patron, flush_index, \
-    item_record_to_a_specific_loan_state
+    item_record_to_a_specific_loan_state, patch_expiration_date
 
+from rero_ils.modules.cli.fixtures import load_role_policies, \
+    load_system_role_policies
 from rero_ils.modules.ill_requests.api import ILLRequest, ILLRequestsSearch
 from rero_ils.modules.items.api import ItemsSearch
 from rero_ils.modules.loans.api import Loan
+from rero_ils.modules.loans.logs.api import LoanOperationLog
 from rero_ils.modules.loans.models import LoanState
 from rero_ils.modules.notifications.api import NotificationsSearch
 from rero_ils.modules.notifications.models import NotificationType
@@ -35,17 +40,23 @@ from rero_ils.modules.notifications.utils import get_notification
 from rero_ils.modules.operation_logs.api import OperationLogsSearch
 from rero_ils.modules.patron_transactions.api import PatronTransactionsSearch
 from rero_ils.modules.patrons.models import CommunicationChannel
+from rero_ils.modules.users.models import UserRole
 from rero_ils.modules.utils import extracted_data_from_ref
 
 
 @pytest.fixture(scope="module")
-def roles(base_app, database):
+def roles(base_app, database, role_policies_data, system_role_policies_data):
     """Create user roles."""
     ds = base_app.extensions['invenio-accounts'].datastore
-    ds.create_role(name='patron')
-    ds.create_role(name='librarian')
-    ds.create_role(name='system_librarian')
+    for role_name in UserRole.ALL_ROLES:
+        ds.create_role(name=role_name)
     ds.commit()
+
+    # set the action role policies
+    load_role_policies(role_policies_data)
+    load_system_role_policies(system_role_policies_data)
+
+    db.session.commit()
 
 
 # ------------ Org: Martigny, Lib: Martigny, System Librarian ----------
@@ -220,13 +231,13 @@ def librarian_fully(
 @pytest.fixture(scope="module")
 def patron_martigny_data(data):
     """Load Martigny patron data."""
-    return deepcopy(data.get('ptrn6'))
+    return deepcopy(patch_expiration_date(data.get('ptrn6')))
 
 
 @pytest.fixture(scope="function")
 def patron_martigny_data_tmp(data):
     """Load Martigny patron data scope function."""
-    return deepcopy(data.get('ptrn6'))
+    return deepcopy(patch_expiration_date(data.get('ptrn6')))
 
 
 @pytest.fixture(scope="module")
@@ -244,7 +255,7 @@ def patron_martigny(
 @pytest.fixture(scope="module")
 def librarian_patron_martigny_data(data):
     """Load Martigny librarian patron data."""
-    return deepcopy(data.get('ptrn14'))
+    return deepcopy(patch_expiration_date(data.get('ptrn14')))
 
 
 @pytest.fixture(scope="module")
@@ -263,7 +274,7 @@ def librarian_patron_martigny(
 @pytest.fixture(scope="module")
 def patron2_martigny_data(data):
     """Load Martigny patron data."""
-    return deepcopy(data.get('ptrn7'))
+    return deepcopy(patch_expiration_date(data.get('ptrn7')))
 
 
 @pytest.fixture(scope="module")
@@ -282,7 +293,7 @@ def patron2_martigny(
 @pytest.fixture(scope="module")
 def patron3_martigny_blocked_data(data):
     """Load Martigny blocked patron data."""
-    return deepcopy(data.get('ptrn11'))
+    return deepcopy(patch_expiration_date(data.get('ptrn11')))
 
 
 @pytest.fixture(scope="module")
@@ -301,7 +312,7 @@ def patron3_martigny_blocked(
 @pytest.fixture(scope="module")
 def patron4_martigny_data(data):
     """Load Martigny patron data."""
-    return deepcopy(data.get('ptrn12'))
+    return deepcopy(patch_expiration_date((data.get('ptrn12'))))
 
 
 @pytest.fixture(scope="module")
@@ -362,13 +373,13 @@ def librarian_sion(
 @pytest.fixture(scope="module")
 def patron_sion_data(data):
     """Load Sion patron data."""
-    return deepcopy(data.get('ptrn10'))
+    return deepcopy(patch_expiration_date(data.get('ptrn10')))
 
 
 @pytest.fixture(scope="function")
 def patron_sion_data_tmp(data):
     """Load Sion patron data scope function."""
-    return deepcopy(data.get('ptrn10'))
+    return deepcopy(patch_expiration_date(data.get('ptrn10')))
 
 
 @pytest.fixture(scope="module")
@@ -394,7 +405,13 @@ def patron_sion_multiple(
     data = deepcopy(patron2_martigny_data)
     data['pid'] = 'ptrn13'
     data['patron']['barcode'] = ['42421313123']
-    data['roles'] = ['patron', 'librarian']
+    data['roles'] = [
+        'patron',
+        'pro_read_only',
+        'pro_catalog_manager',
+        'pro_circulation_manager',
+        'pro_user_manager'
+    ]
     pid = lib_sion.pid
     data['libraries'] = [{'$ref':  f'https://bib.rero.ch/api/libraries/{pid}'}]
     pid = patron_type_grown_sion.pid
@@ -415,6 +432,7 @@ def patron_sion_without_email1(
     del data['email']
     data['pid'] = 'ptrn10wthoutemail'
     data['username'] = 'withoutemail'
+    data['patron']['barcode'] = ['18936287']
     data['patron']['communication_channel'] = CommunicationChannel.MAIL
     yield create_patron(data)
 
@@ -431,6 +449,7 @@ def patron_sion_with_additional_email(
     del data['email']
     data['pid'] = 'ptrn10additionalemail'
     data['username'] = 'additionalemail'
+    data['patron']['barcode'] = ['additionalemail']
     data['patron']['additional_communication_email'] = \
         'additional+jules@gmail.com'
     yield create_patron(data)
@@ -610,18 +629,23 @@ def loan_validated_sion(
 
     loan = list(item2_lib_sion.get_loans_by_item_pid(
         item_pid=item2_lib_sion.pid))[0]
-    item2_lib_sion.validate_request(
-        pid=loan.pid,
-        patron_pid=patron_sion.pid,
-        transaction_location_pid=loc_public_sion.pid,
-        transaction_user_pid=librarian_sion.pid,
-        transaction_date=transaction_date,
-        pickup_location_pid=loc_public_sion.pid,
-        document_pid=item2_lib_sion.replace_refs()['document']['pid']
-    )
+    with mock.patch(
+        'rero_ils.modules.loans.logs.api.current_librarian',
+        librarian_sion
+    ):
+        item2_lib_sion.validate_request(
+            pid=loan.pid,
+            patron_pid=patron_sion.pid,
+            transaction_location_pid=loc_public_sion.pid,
+            transaction_user_pid=librarian_sion.pid,
+            transaction_date=transaction_date,
+            pickup_location_pid=loc_public_sion.pid,
+            document_pid=item2_lib_sion.replace_refs()['document']['pid']
+        )
     flush_index(ItemsSearch.Meta.index)
     flush_index(LoansSearch.Meta.index)
     flush_index(NotificationsSearch.Meta.index)
+    flush_index(LoanOperationLog.index_name)
     loan = list(item2_lib_sion.get_loans_by_item_pid(
         item_pid=item2_lib_sion.pid))[0]
     return loan
@@ -695,6 +719,7 @@ def loan_due_soon_martigny(
     )
     flush_index(ItemsSearch.Meta.index)
     flush_index(LoansSearch.Meta.index)
+    flush_index(LoanOperationLog.index_name)
     loan_pid = item.get_loan_pid_with_item_on_loan(item.pid)
     loan = Loan.get_record_by_pid(loan_pid)
 
@@ -1596,3 +1621,9 @@ def ill_request_sion(app, loc_public_sion, patron_sion,
 def user_data_tmp(data):
     """Load user data."""
     return deepcopy(data.get('user1'))
+
+
+@pytest.fixture(scope='function')
+def default_user_password():
+    """Default user password."""
+    return 'Pw123456'

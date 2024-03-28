@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2020 RERO
-# Copyright (C) 2020 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -23,11 +23,13 @@ from rero_ils.modules.patrons.api import current_patrons
 
 
 def get_pickup_location_options():
-    """Get all pickup location for all patron accounts."""
+    """Get all ill pickup location for all patron accounts."""
     for ptrn_pid in [ptrn.pid for ptrn in current_patrons]:
-        for pid in Location.get_pickup_location_pids(ptrn_pid):
+        for pid in Location.get_pickup_location_pids(ptrn_pid,
+                                                     is_ill_pickup=True):
             location = Location.get_record_by_pid(pid)
-            location_name = location.get('pickup_name', location.get('name'))
+            location_name = location.get(
+                'ill_pickup_name', location.get('name'))
             yield (location.pid, location_name)
 
 

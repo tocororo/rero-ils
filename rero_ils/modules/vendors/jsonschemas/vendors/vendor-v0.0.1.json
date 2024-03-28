@@ -10,8 +10,7 @@
     "communication_language",
     "currency",
     "vat_rate",
-    "default_contact",
-    "order_contact",
+    "contacts",
     "notes"
   ],
   "required": [
@@ -20,7 +19,8 @@
     "name",
     "currency",
     "vat_rate",
-    "organisation"
+    "organisation",
+    "communication_language"
   ],
   "properties": {
     "$schema": {
@@ -38,16 +38,20 @@
       "title": "Name",
       "type": "string",
       "minLength": 1,
-      "form": {
-        "focus": true,
-        "validation": {
-          "validators": {
-            "valueAlreadyExists": {
-              "term": "vendor_name"
+      "widget": {
+        "formlyConfig": {
+          "focus": true,
+          "props": {
+            "validation": {
+              "validators": {
+                "valueAlreadyExists": {
+                  "term": "name.raw"
+                }
+              },
+              "messages": {
+                "alreadyTakenMessage": "The vendor name is already taken."
+              }
             }
-          },
-          "messages": {
-            "alreadyTakenMessage": "The vendor name is already taken."
           }
         }
       }
@@ -58,10 +62,14 @@
       "format": "uri",
       "pattern": "^(ftps?|https?)://.*$",
       "minLength": 4,
-      "form": {
-        "validation": {
-          "messages": {
-            "patternMessage": "Should be a valid URL format."
+      "widget": {
+        "formlyConfig": {
+          "props": {
+            "validation": {
+              "messages": {
+                "patternMessage": "Should be a valid URL format."
+              }
+            }
           }
         }
       }
@@ -98,46 +106,50 @@
               "general_note"
             ],
             "default": "general_note",
-            "form": {
-              "type": "selectWithSort",
-              "options": [
-                {
-                  "label": "order_note",
-                  "value": "order_note"
-                },
-                {
-                  "label": "claim_note",
-                  "value": "claim_note"
-                },
-                {
-                  "label": "return_note",
-                  "value": "return_note"
-                },
-                {
-                  "label": "invoice_note",
-                  "value": "invoice_note"
-                },
-                {
-                  "label": "payment_note",
-                  "value": "payment_note"
-                },
-                {
-                  "label": "receipt_note",
-                  "value": "receipt_note"
-                },
-                {
-                  "label": "credit_note",
-                  "value": "credit_note"
-                },
-                {
-                  "label": "staff_note",
-                  "value": "staff_note"
-                },
-                {
-                  "label": "general_note",
-                  "value": "general_note"
+            "widget": {
+              "formlyConfig": {
+                "type": "selectWithSort",
+                "props": {
+                  "options": [
+                    {
+                      "label": "order_note",
+                      "value": "order_note"
+                    },
+                    {
+                      "label": "claim_note",
+                      "value": "claim_note"
+                    },
+                    {
+                      "label": "return_note",
+                      "value": "return_note"
+                    },
+                    {
+                      "label": "invoice_note",
+                      "value": "invoice_note"
+                    },
+                    {
+                      "label": "payment_note",
+                      "value": "payment_note"
+                    },
+                    {
+                      "label": "receipt_note",
+                      "value": "receipt_note"
+                    },
+                    {
+                      "label": "credit_note",
+                      "value": "credit_note"
+                    },
+                    {
+                      "label": "staff_note",
+                      "value": "staff_note"
+                    },
+                    {
+                      "label": "general_note",
+                      "value": "general_note"
+                    }
+                  ]
                 }
-              ]
+              }
             }
           },
           "content": {
@@ -145,31 +157,35 @@
             "title": "Content",
             "maxLength": 2000,
             "minLength": 1,
-            "form": {
-              "type": "textarea",
-              "templateOptions": {
-                "rows": 3
+            "widget": {
+              "formlyConfig": {
+                "type": "textarea",
+                "props": {
+                  "rows": 3
+                }
               }
             }
           }
         }
       },
-      "form": {
-        "templateOptions": {
+      "widget": {
+        "formlyConfig": {
           "wrappers": [
             "card"
-          ]
-        },
-        "validation": {
-          "validators": {
-            "uniqueValueKeysInObject": {
-              "keys": [
-                "type"
-              ]
+          ],
+          "props": {
+            "validation": {
+              "validators": {
+                "uniqueValueKeysInObject": {
+                  "keys": [
+                    "type"
+                  ]
+                }
+              },
+              "messages": {
+                "uniqueValueKeysInObjectMessage": "Only one note per type is allowed"
+              }
             }
-          },
-          "messages": {
-            "uniqueValueKeysInObjectMessage": "Only one note per type is allowed"
           }
         }
       }
@@ -184,156 +200,221 @@
         "ger",
         "spa"
       ],
-      "form": {
-        "type": "selectWithSort",
-        "options": [
-          {
-            "value": "fre",
-            "label": "lang_fre"
-          },
-          {
-            "value": "eng",
-            "label": "lang_eng"
-          },
-          {
-            "value": "ita",
-            "label": "lang_ita"
-          },
-          {
-            "value": "ger",
-            "label": "lang_ger"
-          },
-          {
-            "value": "spa",
-            "label": "lang_spa"
+      "widget": {
+        "formlyConfig": {
+          "type": "selectWithSort",
+          "props": {
+            "options": [
+              {
+                "value": "fre",
+                "label": "lang_fre"
+              },
+              {
+                "value": "eng",
+                "label": "lang_eng"
+              },
+              {
+                "value": "ita",
+                "label": "lang_ita"
+              },
+              {
+                "value": "ger",
+                "label": "lang_ger"
+              },
+              {
+                "value": "spa",
+                "label": "lang_spa"
+              }
+            ]
           }
-        ]
+        }
       }
     },
-    "default_contact": {
-      "title": "Default contact details",
-      "type": "object",
-      "propertiesOrder": [
-        "contact_person",
-        "street",
-        "postal_code",
-        "city",
-        "country",
-        "phone",
-        "email"
-      ],
-      "required": [
-        "city"
-      ],
-      "properties": {
-        "contact_person": {
-          "title": "Contact person",
-          "description": "Vendor contact person.",
-          "type": "string",
-          "minLength": 4
-        },
-        "street": {
-          "title": "Street",
-          "description": "Street and number of the address, separated by a coma.",
-          "type": "string",
-          "minLength": 4,
-          "form": {
-            "type": "textarea",
-            "templateOptions": {
-              "rows": 2
+    "contacts": {
+      "title": "Contacts",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "title": "Contact",
+        "type": "object",
+        "propertiesOrder": [
+          "type",
+          "contact_person",
+          "street",
+          "postal_code",
+          "city",
+          "country",
+          "phone",
+          "email"
+        ],
+        "required": [
+          "type",
+          "city"
+        ],
+        "properties": {
+          "type": {
+            "title": "Contact type",
+            "type": "string",
+            "default": "default",
+            "enum": [
+              "default",
+              "order",
+              "serial"
+            ],
+            "widget": {
+              "formlyConfig": {
+                "type": "selectWithSort",
+                "props": {
+                  "itemCssClass": "col-lg-12",
+                  "selectWithSortOptions": {
+                    "order": "label"
+                  },
+                  "options": [
+                    {
+                      "value": "default",
+                      "label": "Default contact "
+                    },
+                    {
+                      "value": "order",
+                      "label": "Order contact"
+                    },
+                    {
+                      "value": "serial",
+                      "label": "Serial contact"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "contact_person": {
+            "title": "Contact person",
+            "description": "Vendor contact person.",
+            "type": "string",
+            "minLength": 4,
+            "widget": {
+              "formlyConfig": {
+                "props": {
+                  "itemCssClass": "col-lg-12",
+                  "addonLeft": [
+                    "<i class=\"fa fa-user\"></i>"
+                  ]
+                }
+              }
+            }
+          },
+          "street": {
+            "title": "Street",
+            "description": "Street and number of the address, separated by a coma.",
+            "type": "string",
+            "minLength": 4,
+            "widget": {
+              "formlyConfig": {
+                "type": "textarea",
+                "props": {
+                  "itemCssClass": "col-lg-12",
+                  "rows": 2
+                }
+              }
+            }
+          },
+          "postal_code": {
+            "title": "Postal code",
+            "type": "string",
+            "minLength": 4,
+            "widget": {
+              "formlyConfig": {
+                "props": {
+                  "itemCssClass": "col-lg-4"
+                }
+              }
+            }
+          },
+          "city": {
+            "title": "City",
+            "type": "string",
+            "minLength": 2,
+            "widget": {
+              "formlyConfig": {
+                "props": {
+                  "itemCssClass": "col-lg-8"
+                }
+              }
+            }
+          },
+          "country": {
+            "title": "Country",
+            "type": "string",
+            "minLength": 2,
+            "widget": {
+              "formlyConfig": {
+                "props": {
+                  "itemCssClass": "col-lg-12",
+                  "addonLeft": [
+                    "<i class=\"fa fa-globe\"></i>"
+                  ]
+                }
+              }
+            }
+          },
+          "phone": {
+            "title": "Phone number",
+            "description": "Phone number with the international prefix, without spaces.",
+            "type": "string",
+            "widget": {
+              "formlyConfig": {
+                "props": {
+                  "itemCssClass": "col-lg-12",
+                  "addonLeft": [
+                    "<i class=\"fa fa-phone\"></i>"
+                  ]
+                }
+              }
+            }
+          },
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email",
+            "widget": {
+              "formlyConfig": {
+                "props": {
+                  "itemCssClass": "col-lg-12",
+                  "addonLeft": [
+                    "<i class=\"fa fa-at\"></i>"
+                  ]
+                }
+              }
             }
           }
         },
-        "postal_code": {
-          "title": "Postal code",
-          "type": "string",
-          "minLength": 4
-        },
-        "city": {
-          "title": "City",
-          "type": "string",
-          "minLength": 2
-        },
-        "country": {
-          "title": "Country",
-          "type": "string",
-          "minLength": 2
-        },
-        "phone": {
-          "title": "Phone number",
-          "description": "Phone number with the international prefix, without spaces.",
-          "type": "string"
-        },
-        "email": {
-          "title": "Email",
-          "type": "string",
-          "format": "email"
+        "widget": {
+          "formlyConfig": {
+            "props": {
+              "containerCssClass": "row"
+            }
+          }
         }
       },
-      "form": {
-        "templateOptions": {
+      "widget": {
+        "formlyConfig": {
           "wrappers": [
             "card"
-          ]
-        }
-      }
-    },
-    "order_contact": {
-      "title": "Order contact details",
-      "type": "object",
-      "propertiesOrder": [
-        "contact_person",
-        "street",
-        "postal_code",
-        "city",
-        "country",
-        "phone",
-        "email"
-      ],
-      "properties": {
-        "contact_person": {
-          "title": "Contact name",
-          "description": "Name of the vendor contact person.",
-          "type": "string",
-          "minLength": 4
-        },
-        "street": {
-          "title": "Street",
-          "description": "Street and number of the address, separated by a coma.",
-          "type": "string",
-          "minLength": 4
-        },
-        "postal_code": {
-          "title": "Postal code",
-          "type": "string",
-          "minLength": 4
-        },
-        "city": {
-          "title": "City",
-          "type": "string",
-          "minLength": 2
-        },
-        "country": {
-          "title": "Country",
-          "type": "string",
-          "minLength": 2
-        },
-        "phone": {
-          "title": "Phone number",
-          "description": "Phone number with the international prefix, without spaces.",
-          "type": "string"
-        },
-        "email": {
-          "title": "Email",
-          "type": "string",
-          "format": "email"
-        }
-      },
-      "form": {
-        "templateOptions": {
-          "wrappers": [
-            "card"
-          ]
+          ],
+          "props": {
+            "validation": {
+              "validators": {
+                "uniqueValueKeysInObject": {
+                  "keys": [
+                    "type"
+                  ]
+                }
+              },
+              "messages": {
+                "uniqueValueKeysInObjectMessage": "Only one contact per type is allowed"
+              }
+            }
+          }
         }
       }
     },

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -25,6 +26,7 @@ from flask import current_app
 from rero_ils.modules.circ_policies.api import CircPolicy
 from rero_ils.modules.items.api import Item
 from rero_ils.modules.libraries.api import Library
+from rero_ils.modules.libraries.exceptions import LibraryNeverOpen
 from rero_ils.modules.locations.api import Location
 from rero_ils.modules.patrons.api import Patron
 from rero_ils.modules.utils import get_ref_for_pid
@@ -38,16 +40,13 @@ def get_circ_policy(loan, checkout_location=False):
 
     :param loan: the loan to analyze
     :param checkout_location: if True, return the cipo related to the
-               `checkout_location_pid`, otherwise return the cipo related to
-               the `transaction_location_pid`.
-    :return the cipo related to the loan
+        `checkout_location_pid`, otherwise return the cipo related to the
+        `transaction_location_pid`.
+    :return the circulation policy related to the loan
     """
     item = Item.get_record_by_pid(loan.item_pid)
-    library_pid = None
-    if checkout_location:
-        library_pid = loan.checkout_library_pid
-    if not library_pid:
-        library_pid = loan.library_pid
+    library_pid = loan.checkout_library_pid if checkout_location else \
+        loan.library_pid
 
     patron = Patron.get_record_by_pid(loan.get('patron_pid'))
     patron_type_pid = patron.patron_type_pid
@@ -85,10 +84,14 @@ def get_default_loan_duration(loan, initial_loan):
     due_date_eve = now_in_library_timezone \
         + timedelta(days=policy.get('checkout_duration', 0)) \
         - timedelta(days=1)
-    next_open_date = library.next_open(date=due_date_eve)
+    try:
+        end_date = library.next_open(date=due_date_eve)
+    except LibraryNeverOpen:
+        # if the library has no open day, use standard loan duration from cipo
+        end_date = due_date_eve + timedelta(days=1)
     # all libraries are closed at 23h59
     # the next_open returns UTC.
-    end_date_in_library_timezone = next_open_date.astimezone(
+    end_date_in_library_timezone = end_date.astimezone(
         library.get_timezone()).replace(
             hour=23,
             minute=59,
@@ -151,13 +154,20 @@ def get_extension_params(loan=None, initial_loan=None, parameter_name=None):
 
 def extend_loan_data_is_valid(end_date, renewal_duration, library_pid):
     """Checks extend loan will be valid."""
+    renewal_duration = renewal_duration or 0
     end_date = ciso8601.parse_datetime(end_date)
-    current_date = datetime.now(timezone.utc)
     library = Library.get_record_by_pid(library_pid)
-    calculated_due_date = current_date + timedelta(
-        days=renewal_duration)
-    first_open_date = library.next_open(
-        date=calculated_due_date - timedelta(days=1))
+    try:
+        first_open_date = library.next_open(
+            date=datetime.now(timezone.utc)
+            + timedelta(days=renewal_duration)
+            - timedelta(days=1)
+        )
+    # if library has no open dates, use the default renewal duration
+    except LibraryNeverOpen:
+        first_open_date = datetime.now(timezone.utc)
+        + timedelta(days=renewal_duration)
+        - timedelta(days=1)
     return first_open_date.date() > end_date.date()
 
 
@@ -192,8 +202,7 @@ def can_be_requested(loan):
         return False
 
     # 2) Check if owning location allows request
-    location_pid = Item.get_record_by_pid(loan.item_pid).holding_location_pid
-    location = Location.get_record_by_pid(location_pid)
+    location = Item.get_record_by_pid(loan.item_pid).get_circulation_location()
     if not location or not location.get('allow_request'):
         return False
 

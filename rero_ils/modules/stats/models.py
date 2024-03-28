@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -39,3 +39,11 @@ class StatMetadata(db.Model, RecordMetadataBase):
     """Stat record metadata."""
 
     __tablename__ = 'stat_metadata'
+
+
+class StatType:
+    """Type of statistics record."""
+
+    BILLING = 'billing'
+    LIBRARIAN = 'librarian'
+    REPORT = 'report'

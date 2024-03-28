@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 # Copyright (C) 2020 UCLOUVAIN
 #
 # This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,9 @@
 from __future__ import absolute_import, print_function
 
 import re
+from datetime import datetime, timezone
 
+from dateutil.relativedelta import relativedelta
 from elasticsearch_dsl.query import Q
 from flask import current_app, request
 from invenio_i18n.ext import current_i18n
@@ -32,16 +34,18 @@ from .facets import default_facets_factory
 from .modules.items.models import TypeOfItem
 from .modules.organisations.api import Organisation
 from .modules.patrons.api import current_librarian, current_patrons
-from .modules.templates.api import TemplateVisibility
+from .modules.templates.models import TemplateVisibility
 from .utils import get_i18n_supported_languages
 
 _PUNCTUATION_REGEX = re.compile(r'[:,\?,\,,\.,;,!,=,-]+(\s+|$)')
 
 
-def and_term_filter(field, must=[], must_not=[]):
+def and_term_filter(field, **kwargs):
     """Create a term filter.
 
     :param field: Field name.
+    :param kwargs: additional sub-filters to apply on (allowed keys are 'must'
+        or 'must_not')
     :return: Function that returns a boolean AND query between term values.
     """
     def inner(values):
@@ -49,11 +53,50 @@ def and_term_filter(field, must=[], must_not=[]):
             'bool',
             must=[Q('term', **{field: value}) for value in values]
         )
-        for value in must:
+        for value in kwargs.get('must', []):
             _filter &= Q(**value)
-        for value in must_not:
+        for value in kwargs.get('must_not', []):
             _filter &= ~Q(**value)
         return _filter
+    return inner
+
+
+def and_i18n_term_filter(field, **kwargs):
+    """Create an i18n term filter.
+
+    :param field: Field name.
+    :param kwargs: additional sub-filters to apply on (allowed keys are 'must'
+        or 'must_not')
+    :return: Function that returns a boolean AND query between term values.
+    """
+    def inner(values):
+        language = request.args.get('lang', current_i18n.language)
+        if not language or language not in get_i18n_supported_languages():
+            language = current_app.config.get('BABEL_DEFAULT_LANGUAGE', 'en')
+        i18n_field = f'{field}_{language}'
+        must = [Q('term', **{i18n_field: value}) for value in values]
+        _filter = Q('bool', must=must)
+
+        for value in kwargs.get('must', []):
+            _filter &= Q(**value)
+        for value in kwargs.get('must_not', []):
+            _filter &= ~Q(**value)
+        return _filter
+    return inner
+
+
+def i18n_terms_filter(field):
+    """Create a term filter.
+
+    :param field: Field name.
+    :returns: Function that returns the Terms query.
+    """
+    def inner(values):
+        language = request.args.get('lang', current_i18n.language)
+        if not language or language not in get_i18n_supported_languages():
+            language = current_app.config.get('BABEL_DEFAULT_LANGUAGE', 'en')
+        i18n_field = f'{field}_{language}'
+        return Q('terms', **{i18n_field: values})
     return inner
 
 
@@ -68,25 +111,6 @@ def exclude_terms_filter(field):
     return inner
 
 
-def and_i18n_term_filter(field):
-    """Create a i18n term filter.
-
-    :param field: Field name.
-    :return: Function that returns a boolean AND query between term values.
-    """
-    def inner(values):
-        language = request.args.get("lang", current_i18n.language)
-        if not language or language not in get_i18n_supported_languages():
-            language = current_app.config.get('BABEL_DEFAULT_LANGUAGE', 'en')
-        i18n_field = '{field}_{language}'.format(
-            field=field,
-            language=language
-        )
-        must = [Q('term', **{i18n_field: value}) for value in values]
-        return Q('bool', must=must)
-    return inner
-
-
 def or_terms_filter_by_criteria(criteria):
     """Create filter for documents based on specific criteria.
 
@@ -96,8 +120,10 @@ def or_terms_filter_by_criteria(criteria):
     def inner(values):
         should = []
         if values and values[0] == 'true':
-            for key in criteria:
-                should.append(Q("terms", **{key: criteria[key]}))
+            should.extend(
+                Q('terms', **{key: criteria[key]})
+                for key in criteria
+            )
         return Q('bool', should=should)
     return inner
 
@@ -180,7 +206,7 @@ def search_factory_for_holdings_and_items(view, search):
     return search
 
 
-def contribution_view_search_factory(self, search, query_parser=None):
+def remote_entity_view_search_factory(self, search, query_parser=None):
     """Search factory with view code parameter."""
     view = request.args.get(
         'view', current_app.config.get('RERO_ILS_SEARCH_GLOBAL_VIEW_CODE'))
@@ -256,10 +282,17 @@ def ill_request_search_factory(self, search, query_parser=None):
         search = search.filter(
             'terms',
             patron__pid=[ptrn.pid for ptrn in current_patrons])
-    # exclude to_anonymize records
-    search = search.filter('bool', must_not=[Q('term', to_anonymize=True)])
 
-    return search, urlkwargs
+    months = current_app.config.get('RERO_ILS_ILL_HIDE_MONTHS', 6)
+    date_delta = datetime.now(timezone.utc) - relativedelta(months=months)
+    filters = Q(
+        'range',
+        _created={'lte': 'now', 'gte': date_delta}
+    )
+    filters |= Q('term', status='pending')
+
+    return search.filter(
+        filters).exclude(Q('term', to_anonymize=True)), urlkwargs
 
 
 def circulation_search_factory(self, search, query_parser=None):
@@ -301,7 +334,7 @@ def templates_search_factory(self, search, query_parser=None):
     """
     search, urlkwargs = search_factory(self, search)
     if current_librarian:
-        if current_librarian.is_system_librarian:
+        if current_librarian.has_full_permissions:
             search = search.filter(
                 'term', organisation__pid=current_librarian.organisation_pid)
         else:
@@ -377,6 +410,9 @@ def search_factory(self, search, query_parser=None):
     def _default_parser(qstr=None, query_boosting=None):
         """Default parser that uses the Q() from elasticsearch_dsl."""
         query_type = 'query_string'
+        # avoid elasticsearch errors when it can't convert a boolean or
+        # numerical values during the query
+        lenient = True
         default_operator = 'OR'
         if request.args.get('simple') == '1':
             query_type = 'simple_query_string'
@@ -386,17 +422,29 @@ def search_factory(self, search, query_parser=None):
             # TODO: remove this bad hack
             qstr = _PUNCTUATION_REGEX.sub(' ', qstr)
             qstr = re.sub(r'\s+', ' ', qstr).rstrip()
-            if not query_boosting:
-                return Q(query_type, query=qstr,
-                         default_operator=default_operator)
-            else:
-                return Q('bool', should=[
-                    Q(query_type, query=qstr, boost=2,
-                        fields=query_boosting,
-                        default_operator=default_operator),
-                    Q(query_type, query=qstr,
-                      default_operator=default_operator)
-                ])
+            return (
+                Q(
+                    query_type,
+                    lenient=lenient,
+                    query=qstr,
+                    boost=2,
+                    fields=query_boosting,
+                    default_operator=default_operator,
+                )
+                | Q(
+                    query_type,
+                    lenient=lenient,
+                    query=qstr,
+                    default_operator=default_operator,
+                )
+                if query_boosting
+                else Q(
+                    query_type,
+                    lenient=lenient,
+                    query=qstr,
+                    default_operator=default_operator,
+                )
+            )
         return Q()
 
     def _boosting_parser(query_boosting, search_index):
@@ -426,12 +474,13 @@ def search_factory(self, search, query_parser=None):
 
     try:
         search = search.query(query_parser(query_string, query_boosting))
-    except SyntaxError:
+    except SyntaxError as err:
+        query = request.values.get('q', '')
         current_app.logger.debug(
-            'Failed parsing query: {0}'.format(request.values.get('q', '')),
+            f'Failed parsing query: {query}',
             exc_info=True,
         )
-        raise InvalidQueryRESTError()
+        raise InvalidQueryRESTError() from err
 
     search, urlkwargs = default_facets_factory(search, search_index)
     search, sortkwargs = default_sorter_factory(search, search_index)

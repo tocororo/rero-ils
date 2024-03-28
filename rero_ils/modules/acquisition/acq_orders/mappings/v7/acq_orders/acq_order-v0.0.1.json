@@ -65,6 +65,11 @@
           "raw": {
             "type": "keyword",
             "ignore_above": 256
+          },
+          "sort": {
+            "type": "keyword",
+            "normalizer": "sort_normalizer",
+            "ignore_above": 256
           }
         }
       },
@@ -102,10 +107,16 @@
           "reference": {
             "type": "keyword"
           },
+          "pid": {
+            "type": "keyword"
+          },
           "receipt_date": {
             "type": "date"
           }
         }
+      },
+      "order_date": {
+        "type": "date"
       },
       "order_lines": {
         "properties": {

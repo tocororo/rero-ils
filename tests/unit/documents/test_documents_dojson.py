@@ -19,8 +19,6 @@
 
 from __future__ import absolute_import, print_function
 
-import os
-
 import mock
 from dojson.contrib.marc21.utils import create_record
 from utils import mock_response
@@ -28,9 +26,10 @@ from utils import mock_response
 from rero_ils.dojson.utils import not_repetitive
 from rero_ils.modules.documents.dojson.contrib.marc21tojson.rero import marc21
 from rero_ils.modules.documents.dojson.contrib.marc21tojson.rero.model import \
-    get_contribution_link
+    get_mef_link
 from rero_ils.modules.documents.views import create_publication_statement, \
     get_cover_art, get_other_accesses
+from rero_ils.modules.entities.models import EntityType
 
 
 def test_not_repetetive(capsys):
@@ -46,9 +45,7 @@ def test_not_repetetive(capsys):
     assert data == 'first'
     out, err = capsys.readouterr()
     assert out == \
-        'WARNING NOT REPETITIVE:\tpid1\trero1\tkey\tsub\t{data}\t\n'.format(
-            data=str(data_dict)
-        )
+        f'WARNING NOT REPETITIVE:\tpid1\trero1\tkey\tsub\t{str(data_dict)}\t\n'
     data = {'sub': 'only'}
     data = not_repetitive(
         bibid='pid1',
@@ -1203,8 +1200,8 @@ def test_marc21_to_title_245_with_parallel_title_and_246():
 # languages: 008 and 041 [$a, repetitive]
 def test_marc21_to_language():
     """Test dojson marc21languages."""
-
-    marc21xml = """
+    field_008 = '881005s1984    xxu|||||| ||||00|| |ara d'
+    marc21xml = f"""
     <record>
       <controlfield tag="008">{field_008}</controlfield>
       <datafield tag="041" ind1=" " ind2=" ">
@@ -1212,9 +1209,7 @@ def test_marc21_to_language():
         <subfield code="a">eng</subfield>
       </datafield>
     </record>
-    """.format(
-        field_008='881005s1984    xxu|||||| ||||00|| |ara d'
-    )
+    """
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
 
@@ -1228,8 +1223,8 @@ def test_marc21_to_language():
             'value': 'eng'
         }
     ]
-
-    marc21xml = """
+    field_008 = '881005s1984    xxu|||||| ||||00|| |ara d'
+    marc21xml = f"""
     <record>
       <controlfield tag="008">{field_008}</controlfield>
       <datafield tag="041" ind1=" " ind2=" ">
@@ -1239,9 +1234,7 @@ def test_marc21_to_language():
         <subfield code="a">fre</subfield>
       </datafield>
     </record>
-    """.format(
-        field_008='881005s1984    xxu|||||| ||||00|| |ara d'
-    )
+    """
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('language') == [
@@ -1257,17 +1250,15 @@ def test_marc21_to_language():
             'value': 'fre'
         }
     ]
-
-    marc21xml = """
+    field_008 = '881005s1984    xxu|||||| ||||00|| |ara d'
+    marc21xml = f"""
     <record>
       <datafield tag="041" ind1=" " ind2=" ">
       <subfield code="a">eng</subfield>
     </datafield>
     <controlfield tag="008">{field_008}</controlfield>
     </record>
-    """.format(
-        field_008='881005s1984    xxu|||||| ||||00|| |ara d'
-    )
+    """
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
 
@@ -1281,8 +1272,8 @@ def test_marc21_to_language():
           'value': 'eng'
         }
     ]
-
-    marc21xml = """
+    field_008 = '881005s1984    xxu|||||| ||||00|| |ara d'
+    marc21xml = f"""
     <record>
       <controlfield tag="008">{field_008}</controlfield>
       <datafield tag="041" ind1=" " ind2=" ">
@@ -1290,9 +1281,7 @@ def test_marc21_to_language():
         <subfield code="a">rus</subfield>
       </datafield>
     </record>
-    """.format(
-        field_008='881005s1984    xxu|||||| ||||00|| |ara d'
-    )
+    """
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('language') == [
@@ -1309,17 +1298,15 @@ def test_marc21_to_language():
             'value': 'rus'
         }
     ]
-
-    marc21xml = """
+    field_008 = '881005s1984    xxu|||||| ||||00|| |ara d'
+    marc21xml = f"""
     <record>
       <controlfield tag="008">{field_008}</controlfield>
       <datafield tag="546">
         <subfield code="a">LANGUAGE NOTE</subfield>
       </datafield>
     </record>
-    """.format(
-        field_008='881005s1984    xxu|||||| ||||00|| |ara d'
-    )
+    """
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('language') == [
@@ -1332,7 +1319,7 @@ def test_marc21_to_language():
 
 
 @mock.patch('requests.Session.get')
-def test_marc21_to_contribution(mock_get):
+def test_marc21_to_contribution(mock_get, mef_agents_url):
     """Test dojson marc21_to_contribution."""
     marc21xml = """
     <record>
@@ -1371,41 +1358,33 @@ def test_marc21_to_contribution(mock_get):
     contribution = data.get('contribution')
     assert contribution == [
         {
-            'agent': {
-                'type': 'bf:Person',
-                'preferred_name': 'Jean-Paul',
-                'numeration': 'II',
-                'date_of_birth': '1954',
-                'qualifier': 'Pape'
+            'entity': {
+                'authorized_access_point': 'Jean-Paul II, Pape, 1954',
+                'type': 'bf:Person'
             },
             'role': ['aut']
         },
         {
-            'agent': {
-                'type': 'bf:Person',
-                'preferred_name': 'Dumont, Jean',
-                'date_of_birth': '1921',
-                'date_of_death': '2014',
-                'qualifier': 'Historien'
+            'entity': {
+                'authorized_access_point':
+                    'Dumont, Jean, 1921-2014, Historien',
+                'type': 'bf:Person'
             },
             'role': ['edt']
         },
         {
-            'agent': {
+            'entity': {
                 'type': 'bf:Organisation',
-                'preferred_name': 'RERO',
-                'conference': False
+                'authorized_access_point': 'RERO'
             },
             'role': ['ctb']
         },
         {
-            'agent': {
-                'type': 'bf:Organisation',
-                'preferred_name': 'Biennale de céramique contemporaine',
-                'conference_date': '2003',
-                'numbering': '17',
-                'place': 'Châteauroux',
-                'conference': True
+            'entity': {
+                'authorized_access_point':
+                    'Biennale de céramique contemporaine (17 : 2003 : '
+                    'Châteauroux)',
+                'type': 'bf:Organisation'
             },
             'role': ['aut']
         }
@@ -1428,9 +1407,8 @@ def test_marc21_to_contribution(mock_get):
     data = marc21.do(marc21json)
     contribution = data.get('contribution')
     assert contribution == [{
-        'agent': {
-            'type': 'bf:Person',
-            '$ref': 'https://mef.rero.ch/api/agents/idref/XXXXXXXX'
+        'entity': {
+            '$ref': f'{mef_agents_url}/idref/XXXXXXXX'
         },
         'role': ['cre']
     }]
@@ -1448,8 +1426,8 @@ def test_marc21_to_contribution(mock_get):
     data = marc21.do(marc21json)
     contribution = data.get('contribution')
     assert contribution == [{
-        'agent': {
-            'preferred_name': 'Jean-Paul',
+        'entity': {
+            'authorized_access_point': 'Jean-Paul',
             'type': 'bf:Person',
             'identifiedBy': {
                 'type': 'IdRef',
@@ -1548,8 +1526,7 @@ def test_marc21_provisionActivity_without_264():
     assert data.get('provisionActivity') == [{
         'type': 'bf:Publication',
         'place': [{
-            'country': 'sz',
-            'type': 'bf:Place'
+            'country': 'sz'
         }],
         'startDate': 2006,
         'endDate': 2010
@@ -1577,8 +1554,7 @@ def test_marc21_provisionActivity_without_264_with_752():
         'type': 'bf:Publication',
         'place': [{
             'country': 'sz',
-            'type': 'bf:Place',
-            'identifyBy': {
+            'identifiedBy': {
                     'type': 'IdRef',
                     'value': '027401421'
                 }
@@ -1602,8 +1578,7 @@ def test_marc21_provisionActivity_with_original_date():
     assert data.get('provisionActivity') == [{
         'type': 'bf:Publication',
         'place': [{
-            'country': 'sz',
-            'type': 'bf:Place'
+            'country': 'sz'
         }],
         'startDate': 1997,
         'original_date': 1849,
@@ -1654,8 +1629,7 @@ def test_marc21_to_provision_activity_canton():
             'type': 'bf:Publication',
             'place': [{
                 'canton': 'be',
-                'country': 'sz',
-                'type': 'bf:Place'
+                'country': 'sz'
             }],
             'statement': [
                 {
@@ -1727,8 +1701,202 @@ def test_marc21_to_provision_activity_canton():
             'type': 'bf:Publication',
             'place': [{
                 'canton': 'vd',
-                'country': 'sz',
-                'type': 'bf:Place'
+                'country': 'sz'
+            }],
+            'startDate': 1998
+        }
+    ]
+
+
+def test_marc21_to_provision_activity_obsolete_countries():
+    """Test dojson publication statement.
+    - convert country to correct code if encountering an obsolete code.
+    """
+
+    marc21xml = """
+      <record>
+        <controlfield tag=
+          "008">060831s1998    cn ||| |  ||||00|  |fre d</controlfield>
+        <datafield tag="044" ind1=" " ind2=" ">
+          <subfield code="a">cn</subfield>
+        </datafield>
+      </record>
+     """
+    marc21json = create_record(marc21xml)
+    data = marc21.do(marc21json)
+    assert data.get('provisionActivity') == [
+        {
+            'type': 'bf:Publication',
+            'place': [{
+                'country': 'xxc'
+            }],
+            'startDate': 1998
+        }
+    ]
+
+    marc21xml = """
+      <record>
+        <controlfield tag=
+          "008">060831s1998    err ||| |  ||||00|  |fre d</controlfield>
+        <datafield tag="044" ind1=" " ind2=" ">
+          <subfield code="a">err</subfield>
+        </datafield>
+      </record>
+     """
+    marc21json = create_record(marc21xml)
+    data = marc21.do(marc21json)
+    assert data.get('provisionActivity') == [
+        {
+            'type': 'bf:Publication',
+            'place': [{
+                'country': 'er',
+            }],
+            'startDate': 1998
+        }
+    ]
+
+    marc21xml = """
+      <record>
+        <controlfield tag=
+          "008">060831s1998    lir ||| |  ||||00|  |fre d</controlfield>
+        <datafield tag="044" ind1=" " ind2=" ">
+          <subfield code="a">lir</subfield>
+        </datafield>
+      </record>
+     """
+    marc21json = create_record(marc21xml)
+    data = marc21.do(marc21json)
+    assert data.get('provisionActivity') == [
+        {
+            'type': 'bf:Publication',
+            'place': [{
+                'country': 'li',
+            }],
+            'startDate': 1998
+        }
+    ]
+
+    marc21xml = """
+      <record>
+        <controlfield tag=
+          "008">060831s1998    lvr ||| |  ||||00|  |fre d</controlfield>
+        <datafield tag="044" ind1=" " ind2=" ">
+          <subfield code="a">lvr</subfield>
+        </datafield>
+      </record>
+     """
+    marc21json = create_record(marc21xml)
+    data = marc21.do(marc21json)
+    assert data.get('provisionActivity') == [
+        {
+            'type': 'bf:Publication',
+            'place': [{
+                'country': 'lv',
+            }],
+            'startDate': 1998
+        }
+    ]
+
+    marc21xml = """
+      <record>
+        <controlfield tag=
+          "008">060831s1998    uk ||| |  ||||00|  |fre d</controlfield>
+        <datafield tag="044" ind1=" " ind2=" ">
+          <subfield code="a">uk</subfield>
+        </datafield>
+      </record>
+     """
+    marc21json = create_record(marc21xml)
+    data = marc21.do(marc21json)
+    assert data.get('provisionActivity') == [
+        {
+            'type': 'bf:Publication',
+            'place': [{
+                'country': 'xxk',
+            }],
+            'startDate': 1998
+        }
+    ]
+
+    marc21xml = """
+      <record>
+        <controlfield tag=
+          "008">060831s1998    unr ||| |  ||||00|  |fre d</controlfield>
+        <datafield tag="044" ind1=" " ind2=" ">
+          <subfield code="a">unr</subfield>
+        </datafield>
+      </record>
+     """
+    marc21json = create_record(marc21xml)
+    data = marc21.do(marc21json)
+    assert data.get('provisionActivity') == [
+        {
+            'type': 'bf:Publication',
+            'place': [{
+                'country': 'un',
+            }],
+            'startDate': 1998
+        }
+    ]
+
+    marc21xml = """
+      <record>
+        <controlfield tag=
+          "008">060831s1998    us ||| |  ||||00|  |fre d</controlfield>
+        <datafield tag="044" ind1=" " ind2=" ">
+          <subfield code="a">us</subfield>
+        </datafield>
+      </record>
+     """
+    marc21json = create_record(marc21xml)
+    data = marc21.do(marc21json)
+    assert data.get('provisionActivity') == [
+        {
+            'type': 'bf:Publication',
+            'place': [{
+                'country': 'xxu',
+            }],
+            'startDate': 1998
+        }
+    ]
+
+    marc21xml = """
+      <record>
+        <controlfield tag=
+          "008">060831s1998    ur ||| |  ||||00|  |fre d</controlfield>
+        <datafield tag="044" ind1=" " ind2=" ">
+          <subfield code="a">ur</subfield>
+        </datafield>
+      </record>
+     """
+    marc21json = create_record(marc21xml)
+    data = marc21.do(marc21json)
+    assert data.get('provisionActivity') == [
+        {
+            'type': 'bf:Publication',
+            'place': [{
+                'country': 'xxr',
+            }],
+            'startDate': 1998
+        }
+    ]
+
+    marc21xml = """
+      <record>
+        <controlfield tag=
+          "008">060831s1998    ys ||| |  ||||00|  |fre d</controlfield>
+        <datafield tag="044" ind1=" " ind2=" ">
+          <subfield code="a">ys</subfield>
+        </datafield>
+      </record>
+     """
+    marc21json = create_record(marc21xml)
+    data = marc21.do(marc21json)
+    assert data.get('provisionActivity') == [
+        {
+            'type': 'bf:Publication',
+            'place': [{
+                'country': 'ye',
             }],
             'startDate': 1998
         }
@@ -1758,8 +1926,7 @@ def test_marc21_to_provision_activity_1_place_2_agents():
         {
             'type': 'bf:Publication',
             'place': [{
-                'country': 'fr',
-                'type': 'bf:Place'
+                'country': 'fr'
             }],
             'statement': [
                 {
@@ -1814,8 +1981,7 @@ def test_marc21_to_provision_activity_1_place_2_agents_with_one_752():
             'type': 'bf:Publication',
             'place': [{
                 'country': 'fr',
-                'type': 'bf:Place',
-                'identifyBy': {
+                'identifiedBy': {
                     'type': 'IdRef',
                     'value': '027401421'
                 }
@@ -1878,15 +2044,13 @@ def test_marc21_to_provision_activity_1_place_2_agents_with_two_752():
             'type': 'bf:Publication',
             'place': [{
                     'country': 'fr',
-                    'type': 'bf:Place',
-                    'identifyBy': {
+                    'identifiedBy': {
                         'type': 'IdRef',
                         'value': '027401421'
                     }
                 }, {
                     'country': 'xx',
-                    'type': 'bf:Place',
-                    'identifyBy': {
+                    'identifiedBy': {
                         'type': 'RERO',
                         'value': 'A000000001'
                     }
@@ -1937,8 +2101,7 @@ def test_marc21_to_provision_activity_unknown_place_2_agents():
         {
             'type': 'bf:Publication',
             'place': [{
-                'country': 'be',
-                'type': 'bf:Place'
+                'country': 'be'
             }],
             'statement': [
                 {
@@ -1992,8 +2155,7 @@ def test_marc21_to_provision_activity_3_places_dann_2_agents():
         {
             'type': 'bf:Publication',
             'place': [{
-                 'country': 'gw',
-                 'type': 'bf:Place'
+                 'country': 'gw'
             }],
             'statement': [
                 {
@@ -2048,8 +2210,7 @@ def test_marc21_to_provision_activity_2_places_1_agent():
         {
             'type': 'bf:Publication',
             'place': [{
-                'country': 'sz',
-                'type': 'bf:Place'
+                'country': 'sz'
             }],
             'statement': [
                 {
@@ -2103,8 +2264,7 @@ def test_marc21_to_provision_activity_1_place_1_agent_reprint_date():
         {
             'type': 'bf:Publication',
             'place': [{
-                'country': 'xxu',
-                'type': 'bf:Place'
+                'country': 'xxu'
             }],
             'statement': [
                 {
@@ -2148,8 +2308,7 @@ def test_marc21_to_provision_activity_1_place_1_agent_uncertain_date():
         {
             'type': 'bf:Publication',
             'place': [{
-                'country': 'fr',
-                'type': 'bf:Place'
+                'country': 'fr'
             }],
             'statement': [
                 {
@@ -2212,8 +2371,7 @@ def test_marc21_to_provision_activity_1_place_1_agent_chi_hani():
         {
             'type': 'bf:Publication',
             'place': [{
-                'country': 'cc',
-                'type': 'bf:Place'
+                'country': 'cc'
             }],
             'statement': [
                 {
@@ -2277,8 +2435,7 @@ def test_marc21_to_provision_activity_1_place_1_agent_chi_hani():
     assert data.get('provisionActivity') == [{
         'type': 'bf:Publication',
         'place': [{
-            'country': 'cc',
-            'type': 'bf:Place'
+            'country': 'cc'
         }],
         'statement': [
             {
@@ -2554,8 +2711,7 @@ def test_marc21_to_provision_activity_1_place_1_agent_ara_arab():
         {
             'type': 'bf:Publication',
             'place': [{
-                'country': 'ua',
-                'type': 'bf:Place'
+                'country': 'ua'
             }],
             'statement': [
                 {
@@ -2638,8 +2794,7 @@ def test_marc21_to_provision_activity_2_places_2_agents_rus_cyrl():
         {
             'type': 'bf:Publication',
             'place': [{
-                'country': 'ru',
-                'type': 'bf:Place'
+                'country': 'ru'
             }],
             'statement': [
                 {
@@ -2716,8 +2871,7 @@ def test_marc21_to_provision_activity_exceptions(capsys):
         {
             'type': 'bf:Publication',
             'place': [{
-                'country': 'ru',
-                'type': 'bf:Place'
+                'country': 'ru'
             }],
             'statement': [
                 {
@@ -3503,13 +3657,19 @@ def test_marc21_to_subjects_from_980_2_factum():
     data = marc21.do(marc21json)
     assert data.get('classification') is None
     assert data.get('subjects') == [{
-            'type': 'bf:Person',
-            'preferred_name': 'Conti, Louis de Bourbon, prince de',
-            'source': 'Factum',
+            'entity': {
+                'type': 'bf:Person',
+                'authorized_access_point':
+                    'Conti, Louis de Bourbon, prince de',
+                'source': 'Factum',
+            }
         }, {
-            'type': 'bf:Person',
-            'preferred_name': 'Lesdiguières, Marie-Françoise de Gondi',
-            'source': 'Factum',
+            'entity': {
+                'type': 'bf:Person',
+                'authorized_access_point':
+                    'Lesdiguières, Marie-Françoise de Gondi',
+                'source': 'Factum',
+            }
         }
     ]
 
@@ -3885,8 +4045,8 @@ def test_marc21_to_part_of():
                 },
                 {
                     'year': '2020',
-                    'volume': 1,
-                    'issue': 2,
+                    'volume': "1",
+                    'issue': "2",
                     'pages': '300'
                 }]
         }]
@@ -3906,8 +4066,8 @@ def test_marc21_to_part_of():
             'document': {'$ref': 'https://bib.rero.ch/api/documents/123456'},
             'numbering': [
                 {
-                    'volume': 1,
-                    'issue': 2,
+                    'volume': "1",
+                    'issue': "2",
                     'pages': '300'
                 }]
         }]
@@ -3946,8 +4106,8 @@ def test_marc21_to_part_of():
                     'pages': '411'
                 },
                 {
-                    'volume': 1,
-                    'issue': 2
+                    'volume': "1",
+                    'issue': "2"
                 }]
         }]
 
@@ -3980,7 +4140,7 @@ def test_marc21_to_part_of():
     assert data.get('partOf') == [{
             'document': {'$ref': 'https://bib.rero.ch/api/documents/123456'},
             'numbering': [{
-                    'volume': 256
+                    'volume': "256"
                 }]
         }]
 
@@ -4163,7 +4323,7 @@ def test_marc21_to_part_of_without_link():
         }
     ]
     assert data.get('work_access_point') == [{
-        'agent': {
+        'creator': {
             'preferred_name': 'Jacq, Christian',
             'type': 'bf:Person'
         },
@@ -4311,7 +4471,7 @@ def test_marc21_to_part_of_with_multiple_800():
     assert data.get('partOf') == [{
             'document': {'$ref': 'https://bib.rero.ch/api/documents/780067'},
             'numbering': [{
-                    'volume': 3
+                    'volume': "3"
                 }]
         }]
     # the seriesStatement is generated form 490 and not from the 800
@@ -4325,13 +4485,13 @@ def test_marc21_to_part_of_with_multiple_800():
       }
     ]
     assert data.get('work_access_point') == [{
-        'agent': {
+        'creator': {
             'preferred_name': 'Mirallés, Ana',
             'type': 'bf:Person'
         },
         'title': 'A la recherche de la Licorne'
     }, {
-        'agent': {
+        'creator': {
             'preferred_name': 'Ruiz, Emilio',
             'type': 'bf:Person'
         },
@@ -4742,7 +4902,7 @@ def test_marc21_to_acquisition_terms():
 
 
 @mock.patch('requests.Session.get')
-def test_marc21_to_subjects(mock_get):
+def test_marc21_to_subjects(mock_get, mef_agents_url):
     """Test dojson subjects from 6xx (L49, L50)."""
     # field 600 without $t with ref
     marc21xml = """
@@ -4764,8 +4924,9 @@ def test_marc21_to_subjects(mock_get):
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('subjects') == [{
-          'type': 'bf:Person',
-          '$ref': 'https://mef.rero.ch/api/agents/idref/XXXXXXXX'
+        'entity': {
+            '$ref': f'{mef_agents_url}/idref/XXXXXXXX'
+        }
     }]
 
     # field 600 without $t
@@ -4783,12 +4944,16 @@ def test_marc21_to_subjects(mock_get):
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('subjects') == [{
-          'type': 'bf:Person',
-          'preferred_name': 'Athenagoras (patriarche oecuménique ; 1)',
-          'identifiedBy': {
-              'value': 'A009963344',
-              'type': 'RERO'
-          }
+        'entity': {
+            'type': 'bf:Person',
+            'authorized_access_point':
+                'Athenagoras (patriarche oecuménique ; 1)',
+            'source': 'rero',
+            'identifiedBy': {
+                'value': 'A009963344',
+                'type': 'RERO'
+            }
+        }
     }]
 
     # field 611 without $t
@@ -4805,13 +4970,15 @@ def test_marc21_to_subjects(mock_get):
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('subjects') == [{
-          'type': 'bf:Organisation',
-          'conference': True,
-          'preferred_name': 'Belalp Hexe (Blatten)',
-          'identifiedBy': {
-              'value': 'A017827554',
-              'type': 'RERO'
-          }
+        'entity': {
+            'type': 'bf:Organisation',
+            'authorized_access_point': 'Belalp Hexe (Blatten)',
+            'source': 'rero',
+            'identifiedBy': {
+                'value': 'A017827554',
+                'type': 'RERO'
+            }
+        }
     }]
 
     # field 600 with $t
@@ -4828,13 +4995,15 @@ def test_marc21_to_subjects(mock_get):
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('subjects') == [{
-          'type': 'bf:Work',
-          'creator': 'Giraudoux, Jean',
-          'title': 'Electre',
-          'identifiedBy': {
-              'value': '027538303',
-              'type': 'IdRef'
-          }
+        'entity': {
+            'type': 'bf:Work',
+            'authorized_access_point': 'Giraudoux, Jean. Electre',
+            'source': 'rero',
+            'identifiedBy': {
+                'value': '027538303',
+                'type': 'IdRef'
+            }
+        }
     }]
 
     # field 611 with $t
@@ -4851,13 +5020,15 @@ def test_marc21_to_subjects(mock_get):
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('subjects') == [{
-          'type': 'bf:Work',
-          'creator': 'Concile de Vatican 2',
-          'title': 'Influence reçue',
-          'identifiedBy': {
-              'value': 'A010067471',
-              'type': 'RERO'
-          }
+        'entity': {
+            'type': 'bf:Work',
+            'source': 'rero',
+            'authorized_access_point': 'Concile de Vatican 2. Influence reçue',
+            'identifiedBy': {
+                'value': 'A010067471',
+                'type': 'RERO'
+            }
+        }
     }]
 
     # field 650 topic
@@ -4873,12 +5044,15 @@ def test_marc21_to_subjects(mock_get):
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('subjects') == [{
-          'type': 'bf:Topic',
-          'term': 'Vie',
-          'identifiedBy': {
-              'value': 'A021002965',
-              'type': 'RERO'
-          }
+        'entity': {
+            'type': 'bf:Topic',
+            'authorized_access_point': 'Vie',
+            'source': 'rero',
+            'identifiedBy': {
+                'value': 'A021002965',
+                'type': 'RERO'
+            }
+        }
     }]
 
     # field 650 temporal
@@ -4894,12 +5068,15 @@ def test_marc21_to_subjects(mock_get):
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('subjects') == [{
-          'type': 'bf:Temporal',
-          'term': '1961',
-          'identifiedBy': {
-              'value': 'G021002965',
-              'type': 'RERO'
-          }
+        'entity': {
+            'type': 'bf:Temporal',
+            'authorized_access_point': '1961',
+            'source': 'rero',
+            'identifiedBy': {
+                'value': 'G021002965',
+                'type': 'RERO'
+            }
+        }
     }]
 
     # field 651
@@ -4915,12 +5092,15 @@ def test_marc21_to_subjects(mock_get):
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('subjects') == [{
-          'type': 'bf:Place',
-          'preferred_name': 'Europe occidentale',
-          'identifiedBy': {
-              'value': 'A009975209',
-              'type': 'RERO'
-          }
+        'entity': {
+            'type': 'bf:Place',
+            'authorized_access_point': 'Europe occidentale',
+            'source': 'rero',
+            'identifiedBy': {
+                'value': 'A009975209',
+                'type': 'RERO'
+            }
+        }
     }]
 
     # field 655 with $0
@@ -4936,12 +5116,15 @@ def test_marc21_to_subjects(mock_get):
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('genreForm') == [{
+        'entity': {
           'type': 'bf:Topic',
-          'term': 'Bases de données',
+          'authorized_access_point': 'Bases de données',
+          'source': 'rero',
           'identifiedBy': {
               'value': 'A001234567',
               'type': 'RERO'
           }
+        }
     }]
 
     # field 655 without $0
@@ -4962,12 +5145,11 @@ def test_marc21_to_subjects(mock_get):
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('genreForm') == [{
-        'type': 'bf:Topic',
-        'term': 'Bases de données',
-        'genreForm_subdivisions': ['genre1', 'genre2'],
-        'temporal_subdivisions': ['temporal1', 'temporal2'],
-        'topic_subdivisions': ['topic1'],
-        'place_subdivisions': ['place1'],
+        'entity': {
+            'type': 'bf:Topic',
+            'authorized_access_point': 'Bases de données',
+            'source': 'rero'
+        }
     }]
 
 
@@ -4986,8 +5168,11 @@ def test_marc21_to_subjects_imported():
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('subjects_imported') == [{
-          'type': 'bf:Topic',
-          'term': 'Pollution - Government policy - Germany (West)'
+        'entity': {
+            'type': 'bf:Topic',
+            'authorized_access_point':
+                'Pollution - Government policy - Germany (West)'
+        }
     }]
 
     # field 919 with $2 chrero and $v
@@ -5005,9 +5190,12 @@ def test_marc21_to_subjects_imported():
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('subjects_imported') == [{
-          'type': 'bf:Topic',
-          'term': 'Zermatt (Suisse, VS) - 19e s. (fin) - [carte postale]',
-          'source': 'chrero'
+        'entity': {
+            'type': 'bf:Topic',
+            'authorized_access_point':
+                'Zermatt (Suisse, VS) - 19e s. (fin) - [carte postale]',
+            'source': 'chrero'
+        }
     }]
 
     # field 919 with $2 chrero and without $v
@@ -5026,7 +5214,7 @@ def test_marc21_to_subjects_imported():
     assert data == {
         'provisionActivity': [{
             'note': 'Date not available and automatically set to 2050',
-            'place': [{'country': 'xx', 'type': 'bf:Place'}],
+            'place': [{'country': 'xx'}],
             'startDate': 2050,
             'type': 'bf:Publication'
         }]
@@ -5048,7 +5236,7 @@ def test_marc21_to_subjects_imported():
     assert data == {
         'provisionActivity': [{
             'note': 'Date not available and automatically set to 2050',
-            'place': [{'country': 'xx', 'type': 'bf:Place'}],
+            'place': [{'country': 'xx'}],
             'startDate': 2050,
             'type': 'bf:Publication'
         }]
@@ -5060,6 +5248,7 @@ def test_marc21_to_subjects_imported():
       <datafield tag="919" ind1=" " ind2=" ">
         <subfield code="a">Sekundarstufe</subfield>
         <subfield code="0">(DE-588)4077347-4</subfield>
+        <subfield code="0">(DE-101)040773477</subfield>
         <subfield code="2">gnd</subfield>
       </datafield>
     </record>
@@ -5067,9 +5256,11 @@ def test_marc21_to_subjects_imported():
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('subjects_imported') == [{
-          'type': 'bf:Topic',
-          'term': 'Sekundarstufe',
-          'source': 'gnd'
+        'entity': {
+            'type': 'bf:Topic',
+            'authorized_access_point': 'Sekundarstufe',
+            'source': 'gnd'
+        }
     }]
 
     # field 650 _0
@@ -5083,10 +5274,11 @@ def test_marc21_to_subjects_imported():
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('subjects_imported') == [{
-          'type': 'bf:Organisation',
-          'conference': False,
-          'preferred_name': 'Conference of European Churches',
-          'source': 'LCSH'
+        'entity': {
+            'type': 'bf:Organisation',
+            'authorized_access_point': 'Conference of European Churches',
+            'source': 'LCSH'
+        }
     }]
 
     # field 650 _2
@@ -5100,9 +5292,11 @@ def test_marc21_to_subjects_imported():
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('subjects_imported') == [{
-          'type': 'bf:Topic',
-          'term': 'Philosophy, Medical',
-          'source': 'MeSH'
+        'entity': {
+            'type': 'bf:Topic',
+            'authorized_access_point': 'Philosophy, Medical',
+            'source': 'MeSH'
+        }
     }]
 
     # field 650 with $2 rerovoc
@@ -5117,9 +5311,11 @@ def test_marc21_to_subjects_imported():
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('subjects_imported') == [{
-          'type': 'bf:Topic',
-          'term': 'société (milieu humain)',
-          'source': 'rerovoc'
+        'entity': {
+            'type': 'bf:Topic',
+            'authorized_access_point': 'société (milieu humain)',
+            'source': 'rerovoc'
+        }
     }]
 
     # field 650 with $2 rerovoc
@@ -5135,14 +5331,22 @@ def test_marc21_to_subjects_imported():
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('subjects_imported') == [{
-        'type': 'bf:Organisation',
-        'preferred_name': 'Catholic Church',
-        'source': 'LCSH',
-        'conference': False,
-        'topic_subdivisions': [
-            'Relations',
-            'Eastern churches'
-        ]
+        'entity': {
+            'type': 'bf:Organisation',
+            'authorized_access_point': 'Catholic Church',
+            'source': 'LCSH',
+            'subdivisions': [{
+                'entity': {
+                    'type': 'bf:Topic',
+                    'authorized_access_point': 'Relations'
+                }
+            }, {
+                'entity': {
+                    'type': 'bf:Topic',
+                    'authorized_access_point': 'Eastern churches'
+                }
+            }]
+        }
     }]
 
 
@@ -5162,9 +5366,11 @@ def test_marc21_to_genreForm_imported():
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('genreForm_imported') == [{
-          'type': 'bf:Topic',
-          'term': 'Erlebnisbericht',
-          'source': 'gnd-content'
+        'entity': {
+            'type': 'bf:Topic',
+            'authorized_access_point': 'Erlebnisbericht',
+            'source': 'gnd-content'
+        }
     }]
 
     # field 919 with $2 chrero and $v
@@ -5182,9 +5388,12 @@ def test_marc21_to_genreForm_imported():
     marc21json = create_record(marc21xml)
     data = marc21.do(marc21json)
     assert data.get('genreForm_imported') == [{
-          'type': 'bf:Topic',
-          'term': 'Zermatt (Suisse, VS) - 19e s. (fin) - [carte postale]',
-          'source': 'gnd-content'
+        'entity': {
+            'type': 'bf:Topic',
+            'authorized_access_point':
+                'Zermatt (Suisse, VS) - 19e s. (fin) - [carte postale]',
+            'source': 'gnd-content'
+        }
     }]
 
 
@@ -5226,8 +5435,8 @@ def test_marc21_to_identified_by_from_035():
     ]
 
 
-@mock.patch('requests.get')
-def test_marc21_to_electronicLocator_from_856(mock_cover_get):
+@mock.patch('requests.Session.get')
+def test_marc21_to_electronicLocator_from_856(mock_cover_get, app):
     """Test dojson electronicLocator from 856."""
 
     marc21xml = """
@@ -5254,7 +5463,7 @@ def test_marc21_to_electronicLocator_from_856(mock_cover_get):
         {
             'url': 'http://reader.digitale-s.de/r/d/XXX.html',
             'type': 'versionOfResource',
-            'content': 'fullText',
+            'content': 'full text',
             'public_note': 'Vol. 1'
         }
     ]
@@ -5376,42 +5585,44 @@ def test_marc21_to_identified_by_from_930():
 
 
 @mock.patch('requests.Session.get')
-def test_get_contribution_link(mock_get, capsys):
+def test_get_mef_link(mock_get, capsys, app):
     """Test get mef contribution link"""
-    os.environ['RERO_ILS_MEF_HOST'] = 'mef.xxx.rero.ch'
 
     mock_get.return_value = mock_response(json_data={
         'pid': 'test',
         'idref': {'pid': '003945843'}
     })
-    mef_url = get_contribution_link(
+    mef_url = get_mef_link(
         bibid='1',
         reroid='1',
-        id='(IdRef)003945843',
+        entity_type=EntityType.PERSON,
+        ids=['(IdRef)003945843'],
         key='100..'
     )
-    assert mef_url == 'https://mef.xxx.rero.ch/api/agents/idref/003945843'
+    assert mef_url == 'https://mef.rero.ch/api/agents/idref/003945843'
 
     mock_get.return_value = mock_response(status=404)
-    mef_url = get_contribution_link(
+    mef_url = get_mef_link(
         bibid='1',
         reroid='1',
-        id='(IdRef)123456789',
+        entity_type=EntityType.PERSON,
+        ids=['(IdRef)123456789'],
         key='100..'
     )
     assert not mef_url
     out, err = capsys.readouterr()
     assert out == (
         'WARNING GET MEF CONTRIBUTION:\t1\t1\t100..\t(IdRef)123456789\t'
-        'https://mef.xxx.rero.ch/api/agents/mef/latest/'
+        'https://mef.rero.ch/api/agents/mef/latest/'
         'idref:123456789\t404\t0\t\n'
     )
 
     mock_get.return_value = mock_response(status=400)
-    mef_url = get_contribution_link(
+    mef_url = get_mef_link(
         bibid='1',
         reroid='1',
-        id='X123456789',
+        entity_type=EntityType.PERSON,
+        ids=['X123456789'],
         key='100..'
     )
     assert not mef_url

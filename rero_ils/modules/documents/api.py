@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
-# Copyright (C) 2020 UCLouvain
+# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -19,14 +19,12 @@
 """API for manipulating documents."""
 
 
-from copy import deepcopy
 from functools import partial
 
 from elasticsearch.exceptions import NotFoundError
 from elasticsearch_dsl import Q
 from flask import current_app
 from invenio_circulation.search.api import search_by_pid
-from invenio_records.api import _records_state
 from invenio_search import current_search_client
 from jsonschema.exceptions import ValidationError
 
@@ -35,8 +33,9 @@ from rero_ils.modules.acquisition.acq_order_lines.api import \
 from rero_ils.modules.api import IlsRecord, IlsRecordsIndexer, IlsRecordsSearch
 from rero_ils.modules.commons.identifiers import IdentifierFactory, \
     IdentifierType
-from rero_ils.modules.documents.extensions import AddMEFPidExtension
 from rero_ils.modules.fetchers import id_fetcher
+from rero_ils.modules.local_fields.extensions import \
+    DeleteRelatedLocalFieldExtension
 from rero_ils.modules.minters import id_minter
 from rero_ils.modules.operation_logs.extensions import \
     OperationLogObserverExtension
@@ -44,9 +43,10 @@ from rero_ils.modules.organisations.api import Organisation
 from rero_ils.modules.providers import Provider
 from rero_ils.modules.utils import sorted_pids
 
-from .models import DocumentIdentifier, DocumentMetadata, DocumentSubjectType
-from .utils import edition_format_text, publication_statement_text, \
-    series_statement_format_text, title_format_text_head
+from .dumpers import document_indexer_dumper, document_replace_refs_dumper
+from .extensions import AddMEFPidExtension, EditionStatementExtension, \
+    ProvisionActivitiesExtension, SeriesStatementExtension, TitleExtension
+from .models import DocumentIdentifier, DocumentMetadata
 
 # provider
 DocumentProvider = type(
@@ -73,6 +73,40 @@ class DocumentsSearch(IlsRecordsSearch):
 
         default_filter = None
 
+    def by_entity(self, entity, subjects=True, imported_subjects=True,
+                  genre_forms=True):
+        """Build a search to get hits related to an entity.
+
+        :param entity: the entity record to search.
+        :param subjects: search on `subject` field.
+        :param imported_subjects: search on `imported_subject` field.
+        :param genre_forms: search on `genre_forms` field.
+        :returns: An ElasticSearch query to get hits related the entity.
+        :rtype: `elasticsearch_dsl.Search`
+        """
+        field = f'contribution.entity.pids.{entity.resource_type}'
+        filters = Q('term', **{field: entity.pid})
+        if subjects:
+            field = f'subjects.entity.pids.{entity.resource_type}'
+            filters |= Q('term', **{field: entity.pid})
+        if imported_subjects:
+            field = f'subjects_imported.pids.{entity.resource_type}'
+            filters |= Q('term', **{field: entity.pid})
+        if genre_forms:
+            field = f'genreForm.entity.pids.{entity.resource_type}'
+            filters |= Q('term', **{field: entity.pid})
+        return self.filter(filters)
+
+    def by_library_pid(self, library_pid):
+        """Build a search to get hits related to a library pid.
+
+        :param library_pid: string - the library pid to filter with
+        :returns: An ElasticSearch query to get hits related the entity.
+        :rtype: `elasticsearch_dsl.Search`
+        """
+        return self.filter(
+            'term', holdings__organisation__library_pid=library_pid)
+
 
 class Document(IlsRecord):
     """Document class."""
@@ -81,10 +115,17 @@ class Document(IlsRecord):
     fetcher = document_id_fetcher
     provider = DocumentProvider
     model_cls = DocumentMetadata
+    # disable legacy replace refs
+    enable_jsonref = False
 
     _extensions = [
         OperationLogObserverExtension(),
-        AddMEFPidExtension()
+        AddMEFPidExtension('subjects', 'contribution', 'genreForm'),
+        ProvisionActivitiesExtension(),
+        SeriesStatementExtension(),
+        EditionStatementExtension(),
+        TitleExtension(),
+        DeleteRelatedLocalFieldExtension()
     ]
 
     def _validate(self, **kwargs):
@@ -106,8 +147,7 @@ class Document(IlsRecord):
             ) or True
             if validation_message is True:
                 # also test partOf
-                part_of = self.get('partOf', [])
-                if part_of:
+                if part_of := self.get('partOf', []):
                     # make a list of refs for easier testing
                     part_of_documents = [doc['document'] for doc in part_of]
                     validation_message = pids_exists_in_data(
@@ -121,28 +161,125 @@ class Document(IlsRecord):
         return json
 
     @classmethod
-    def is_available(cls, pid, view_code, raise_exception=False):
-        """Get availability for document."""
-        from ..holdings.api import Holding
-        holding_pids = []
+    def get_n_available_holdings(cls, pid, org_pid=None):
+        """Get the number of available and electronic holdings.
+
+        :param pid: str - the document pid.
+        :param org_pid: str - the organisation pid.
+        :returns: int, int - the number of available and electronic holdings.
+        """
+        from rero_ils.modules.holdings.api import HoldingsSearch
+
+        # create the holding search query
+        holding_query = HoldingsSearch().available_query()
+
+        # filter by the current document
+        filters = Q('term', document__pid=pid)
+
+        # filter by organisation
+        if org_pid:
+            filters &= Q('term', organisation__pid=org_pid)
+        holding_query = holding_query.filter(filters)
+
+        # get the number of electronic holdings
+        n_electronic_holdings = holding_query\
+            .filter('term', holdings_type='electronic')
+
+        return holding_query.count(), n_electronic_holdings.count()
+
+    @classmethod
+    def get_available_item_pids(cls, pid, org_pid=None):
+        """Get the list of the available item pids.
+
+        :param pid: str - the document pid.
+        :param org_pid: str - the organisation pid.
+        :returns: [str] - the list of the available item pids.
+        """
+        from rero_ils.modules.items.api import ItemsSearch
+
+        # create the item query
+        items_query = ItemsSearch().available_query()
+
+        # filter by the current document
+        filters = Q('term', document__pid=pid)
+
+        # filter by organisation
+        if org_pid:
+            filters &= Q('term', organisation__pid=org_pid)
+
+        return [
+            hit.pid for hit in items_query.filter(filters).source('pid').scan()
+        ]
+
+    @classmethod
+    def get_item_pids_with_active_loan(cls, pid, org_pid=None):
+        """Get the list of items pids that have active loans.
+
+        :param pid: str - the document pid.
+        :param org_pid: str - the organisation pid.
+        :returns: [str] - the list of the item pids having active loans.
+        """
+        from rero_ils.modules.loans.api import LoansSearch
+
+        loan_query = LoansSearch().unavailable_query()
+
+        # filter by the current document
+        filters = Q('term', document_pid=pid)
+
+        # filter by organisation
+        if org_pid:
+            filters &= Q('term', organisation__pid=org_pid)
+
+        loan_query = loan_query.filter(filters)
+
+        return [
+            hit.item_pid.value for hit in loan_query.source('item_pid').scan()
+        ]
+
+    @classmethod
+    def is_available(cls, pid, view_code=None):
+        """Get availability for document.
+
+        Note: if the logic has to be changed here please check also for items
+        and holdings availability.
+
+        :param pid: str - document pid value.
+        :param view_code: str - the view code.
+        """
+        # get the organisation pid corresponding to the view code
+        org_pid = None
         if view_code != current_app.config.get(
                 'RERO_ILS_SEARCH_GLOBAL_VIEW_CODE'):
-            view_id = Organisation.get_record_by_viewcode(view_code)['pid']
-            holding_pids = Holding.get_holdings_pid_by_document_pid_by_org(
-                    pid, view_id)
-        else:
-            holding_pids = Holding.get_holdings_pid_by_document_pid(pid)
-        for holding_pid in holding_pids:
-            if holding := Holding.get_record_by_pid(holding_pid):
-                if holding.available:
-                    return True
-            else:
-                msg = f'No holding: {holding_pid} in DB ' \
-                      f'for document: {pid}'
-                current_app.logger.error(msg)
-                if raise_exception:
-                    raise ValueError(msg)
-        return False
+            org_pid = Organisation.get_record_by_viewcode(view_code)['pid']
+
+        # -------------- Holdings --------------------
+        # get the number of available and electronic holdings
+        n_available_holdings, n_electronic_holdings = \
+            cls.get_n_available_holdings(pid, org_pid)
+
+        # available if an electronic holding exists
+        if n_electronic_holdings:
+            return True
+
+        # unavailable if no holdings exists
+        if not n_available_holdings:
+            return False
+
+        # -------------- Items --------------------
+        # get the available item pids
+        available_item_pids = cls.get_available_item_pids(pid, org_pid)
+
+        # unavailable if no items exists
+        if not available_item_pids:
+            return False
+
+        # --------------- Loans -------------------
+        # get item pids that have active loans
+        unavailable_item_pids = \
+            cls.get_item_pids_with_active_loan(pid, org_pid)
+
+        # available if at least one item don't have active loan
+        return bool(set(available_item_pids) - set(unavailable_item_pids))
 
     @property
     def harvested(self):
@@ -161,10 +298,10 @@ class Document(IlsRecord):
         :param get_pids: if True list of linked pids
                          if False count of linked records
         """
-        links = {}
         from ..holdings.api import HoldingsSearch
         from ..items.api import ItemsSearch
         from ..loans.models import LoanState
+        from ..local_fields.api import LocalFieldsSearch
         hold_query = HoldingsSearch().filter('term', document__pid=self.pid)
         item_query = ItemsSearch().filter('term', document__pid=self.pid)
         loan_query = search_by_pid(
@@ -173,6 +310,8 @@ class Document(IlsRecord):
         )
         acq_order_lines_query = AcqOrderLinesSearch() \
             .filter('term', document__pid=self.pid)
+        local_fields_query = LocalFieldsSearch()\
+            .get_local_fields(self.provider.pid_type, self.pid)
         relation_types = {
             'partOf': 'partOf.document.pid',
             'supplement': 'supplement.pid',
@@ -192,6 +331,7 @@ class Document(IlsRecord):
             items = sorted_pids(item_query)
             loans = sorted_pids(loan_query)
             acq_order_lines = sorted_pids(acq_order_lines_query)
+            local_fields = sorted_pids(local_fields_query)
             documents = {}
             for relation, relation_es in relation_types.items():
                 doc_query = DocumentsSearch() \
@@ -203,78 +343,53 @@ class Document(IlsRecord):
             items = item_query.count()
             loans = loan_query.count()
             acq_order_lines = acq_order_lines_query.count()
+            local_fields = local_fields_query.count()
             documents = 0
             for relation_es in relation_types.values():
                 doc_query = DocumentsSearch() \
                     .filter({'term': {relation_es: self.pid}})
                 documents += doc_query.count()
-        if holdings:
-            links['holdings'] = holdings
-        if items:
-            links['items'] = items
-        if loans:
-            links['loans'] = loans
-        if acq_order_lines:
-            links['acq_order_lines'] = acq_order_lines
-        if documents:
-            links['documents'] = documents
-        return links
+
+        links = {
+            'holdings': holdings,
+            'items': items,
+            'loans': loans,
+            'acq_order_lines': acq_order_lines,
+            'documents': documents,
+            'local_fields': local_fields
+        }
+        return {k: v for k, v in links.items() if v}
 
     def reasons_not_to_delete(self):
         """Get reasons not to delete record."""
         cannot_delete = {}
-        if links := self.get_links_to_me():
+        links = self.get_links_to_me()
+        # related LocalFields isn't a reason to block suppression
+        links.pop('local_fields', None)
+        if links:
             cannot_delete['links'] = links
         if self.harvested:
             cannot_delete['others'] = dict(harvested=True)
         return cannot_delete
 
-    @classmethod
-    def post_process(cls, dump):
-        """Post process data after a dump.
-
-        :param dump: a dictionary of a resulting Record dumps
-        :return: a modified dictionary
-        """
-        provision_activities = dump.get('provisionActivity', [])
-        for provision_activity in provision_activities:
-            pub_state_text = publication_statement_text(provision_activity)
-            if pub_state_text:
-                provision_activity['_text'] = pub_state_text
-        series = dump.get('seriesStatement', [])
-        for series_element in series:
-            series_element["_text"] = series_statement_format_text(
-                series_element
-            )
-        editions = dump.get('editionStatement', [])
-        for edition in editions:
-            edition['_text'] = edition_format_text(edition)
-        titles = dump.get('title', [])
-        bf_titles = list(filter(lambda t: t['type'] == 'bf:Title', titles))
-        for title in bf_titles:
-            title['_text'] = title_format_text_head(titles, with_subtitle=True)
-        return dump
-
-    def dumps(self, **kwargs):
-        """Return pure Python dictionary with record metadata."""
-        return Document.post_process(super().dumps(**kwargs))
-
     def index_contributions(self, bulk=False):
         """Index all attached contributions."""
-        from ..contributions.api import Contribution, ContributionsIndexer
+        from rero_ils.modules.entities.remote_entities.api import \
+            RemoteEntitiesIndexer, RemoteEntity
+
         from ..tasks import process_bulk_queue
         contributions_ids = []
         for contribution in self.get('contribution', []):
-            ref = contribution['agent'].get('$ref')
-            if not ref and (cont_pid := contribution['agent'].get('pid')):
+            ref = contribution['entity'].get('$ref')
+            if not ref and (cont_pid := contribution['entity'].get('pid')):
                 if bulk:
-                    uid = Contribution.get_id_by_pid(cont_pid)
+                    uid = RemoteEntity.get_id_by_pid(cont_pid)
                     contributions_ids.append(uid)
                 else:
-                    contrib = Contribution.get_record_by_pid(cont_pid)
+                    contrib = RemoteEntity.get_record_by_pid(cont_pid)
                     contrib.reindex()
         if contributions_ids:
-            ContributionsIndexer().bulk_index(contributions_ids)
+            RemoteEntitiesIndexer().bulk_index(contributions_ids)
             process_bulk_queue.apply_async()
 
     @classmethod
@@ -304,67 +419,6 @@ class Document(IlsRecord):
             .source('pid').scan()
         for es_document in es_documents:
             yield es_document.pid
-
-    def _expand_contributions(self, data):
-        """Replace the $ref for contributions.
-
-        :params data - dict: the contributions document data.
-        :returns: the modified contributions document data.
-        :rtype: dict
-        """
-        from ..contributions.api import Contribution
-        new_contributions = []
-        for contribution in data.get('contribution', []):
-            if not contribution['agent'].get('$ref'):
-                new_contributions.append(contribution)
-            if mef_pid := contribution['agent'].get('pid'):
-                if agent := Contribution.get_record_by_pid(mef_pid):
-                    _type, _ = Contribution.get_type_and_pid_from_ref(
-                        contribution['agent']['$ref'])
-                    contribution['agent'] = agent.dumps_for_document()
-                    contribution['agent']['primary_source'] = _type
-                    new_contributions.append(contribution)
-            elif contribution['agent'].get('$ref'):
-                current_app.logger.error(
-                    f'Unable to resolve contribution $ref '
-                    f'{contribution["agent"].get("$ref")}'
-                    f' for document {data.get("pid")}')
-        if new_contributions:
-            data['contribution'] = new_contributions
-        return data
-
-    def _expand_subjects(self, data):
-        """Replace the $ref for subjects.
-
-        :params data - dict: the subjects document data.
-        :returns: the modified subject document data.
-        :rtype: dict
-        """
-        from ..contributions.api import Contribution
-        for subjects in ['subjects', 'subjects_imported']:
-            for subject in data.get(subjects, []):
-                subject_ref = subject.get('$ref')
-                subject_type = subject.get('type')
-                mef_pid = subject.get('pid')
-                if subject_ref and subject_type in [
-                    DocumentSubjectType.PERSON,
-                    DocumentSubjectType.ORGANISATION
-                ]:
-                    contrib_data = Contribution.get_record_by_pid(mef_pid)
-                    del subject['$ref']
-                    subject.update(contrib_data)
-        return data
-
-    def replace_refs(self):
-        """Replace $ref with real data."""
-        data = deepcopy(self)
-        data = self._expand_contributions(data)
-        data = self._expand_subjects(data)
-
-        if self.enable_jsonref:
-            return _records_state.replace_refs(data)
-        else:
-            self
 
     def get_identifiers(self, filters=None, with_alternatives=False):
         """Get the document identifier object filtered by identifier types.
@@ -414,10 +468,12 @@ class Document(IlsRecord):
         for electronic_locator in electronic_locators:
             e_content = electronic_locator.get('content')
             e_type = electronic_locator.get('type')
-            if e_content == 'coverImage' and e_type == 'relatedResource':
-                # don't add the same url
-                if electronic_locator.get('url') == url:
-                    return self, False
+            if (
+                e_content == 'coverImage'
+                and e_type == 'relatedResource'
+                and electronic_locator.get('url') == url
+            ):
+                return self, False
         electronic_locators.append({
             'content': 'coverImage',
             'type': 'relatedResource',
@@ -428,11 +484,23 @@ class Document(IlsRecord):
             data=self, commit=True, dbcommit=dbcommit, reindex=reindex)
         return self, True
 
+    def resolve(self):
+        """Resolve references data.
+
+        Uses the dumper to do the job.
+        Mainly used by the `resolve=1` URL parameter.
+
+        :returns: a fresh copy of the resolved data.
+        """
+        return self.dumps(document_replace_refs_dumper)
+
 
 class DocumentsIndexer(IlsRecordsIndexer):
     """Indexing documents in Elasticsearch."""
 
     record_cls = Document
+    # data dumper for indexing
+    record_dumper = document_indexer_dumper
 
     @classmethod
     def _es_document(cls, record):

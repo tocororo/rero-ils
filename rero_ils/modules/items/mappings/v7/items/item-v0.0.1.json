@@ -40,13 +40,30 @@
         "search_analyzer": "standard"
       },
       "call_number": {
-        "type": "text"
+        "type": "text",
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          }
+        }
       },
       "second_call_number": {
-        "type": "text"
+        "type": "text",
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          }
+        }
       },
       "enumerationAndChronology": {
-        "type": "keyword"
+        "type": "keyword",
+        "fields": {
+          "sort": {
+            "type": "icu_collation_keyword",
+            "index": false,
+            "numeric": true
+          }
+        }
       },
       "location": {
         "properties": {
@@ -170,6 +187,9 @@
       "status": {
         "type": "keyword"
       },
+      "current_pending_requests": {
+        "type": "integer"
+      },
       "type": {
         "type": "keyword"
       },
@@ -179,6 +199,9 @@
             "type": "date"
           },
           "expected_date": {
+            "type": "date"
+          },
+          "sort_date": {
             "type": "date"
           },
           "regular": {
@@ -193,8 +216,16 @@
           "status_date": {
             "type": "date"
           },
-          "claims_count": {
-            "type": "integer"
+          "claims": {
+            "type": "object",
+            "properties": {
+              "counter": {
+                "type": "integer"
+              },
+              "dates": {
+                "type": "date"
+              }
+            }
           }
         }
       },

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -20,6 +20,7 @@
 
 from __future__ import absolute_import, print_function
 
+from copy import deepcopy
 from functools import wraps
 
 from elasticsearch import exceptions
@@ -36,7 +37,7 @@ from rero_ils.modules.documents.views import record_library_pickup_locations
 from rero_ils.modules.errors import NoCirculationActionIsPermitted, \
     RegularReceiveNotAllowed
 from rero_ils.modules.items.api import Item
-from rero_ils.modules.items.models import ItemStatus
+from rero_ils.modules.items.models import ItemIssueStatus, ItemStatus
 from rero_ils.modules.items.views.api_views import \
     check_authentication_for_request, check_logged_user_authentication
 from rero_ils.modules.libraries.api import Library
@@ -67,12 +68,12 @@ def jsonify_error(func):
             raise error
         except (TemplateSyntaxError, UndefinedError) as error:
             return jsonify(
-                {'status': 'error: {error}'.format(error=error)}), 400
+                {'status': f'error: {error}'}), 400
         except Exception as error:
             current_app.logger.error(str(error))
             db.session.rollback()
             return jsonify(
-                {'status': 'error: {error}'.format(error=error)}), 500
+                {'status': f'error: {error}'}), 500
     return decorated_view
 
 
@@ -140,8 +141,12 @@ def receive_regular_issue(holding_pid):
         abort(401)
     item = data.get('item', {})
     try:
-        issue = holding.receive_regular_issue(
-            item=item, dbcommit=True, reindex=True)
+        issue = holding.create_regular_issue(
+            status=ItemIssueStatus.RECEIVED,
+            item=item,
+            dbcommit=True,
+            reindex=True
+        )
     except RegularReceiveNotAllowed:
         # receive allowed only on holding of type serials and regular frequency
         abort(400)
@@ -158,7 +163,7 @@ def do_holding_jsonify_action(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
         try:
-            data = flask_request.get_json()
+            data = deepcopy(flask_request.get_json())
             description = data.pop('description')
         except KeyError:
             # The description parameter is missing.
@@ -188,9 +193,9 @@ def do_holding_jsonify_action(func):
             return jsonify({
                 'action_applied': action_applied
             })
-        except NoCirculationActionIsPermitted:
+        except NoCirculationActionIsPermitted as error:
             # The circulation specs do not allow updates on some loan states.
-            return jsonify({'status': 'error: Forbidden'}), 403
+            return jsonify({'status': f'error: {str(error)}'}), 403
         except MissingRequiredParameterError as error:
             # Return error 400 when there is a missing required parameter
             abort(400, str(error))
@@ -204,7 +209,7 @@ def do_holding_jsonify_action(func):
         except Exception as error:
             # TODO: need to know what type of exception and document there.
             # raise error
-            current_app.logger.error(str(error))
+            current_app.logger.error(f'{func.__name__}: {str(error)}')
             return jsonify({'status': f'error: {error}'}), 400
     return decorated_view
 
@@ -269,7 +274,7 @@ def can_request(holding_pid):
     patron_barcode = flask_request.args.get('patron_barcode')
     if patron_barcode:
         kwargs['patron'] = Patron.get_patron_by_barcode(
-            patron_barcode, holding.organisation_pid)
+            barcode=patron_barcode, org_pid=holding.organisation_pid)
         if not kwargs['patron']:
             abort(404, 'Patron not found')
 
@@ -307,3 +312,13 @@ def get_pickup_locations(holding_pid):
     return jsonify({
        'locations': locations
     })
+
+
+@api_blueprint.route('/<pid>/availability', methods=['GET'])
+def holding_availability(pid):
+    """HTTP GET request for holding availability."""
+    if holding := Holding.get_record_by_pid(pid):
+        return jsonify({
+            'available': holding.is_available()
+        })
+    abort(404)

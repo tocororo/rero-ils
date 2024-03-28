@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2020 RERO
-# Copyright (C) 2020 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -60,7 +60,7 @@ def add_action_parameters_and_flush_indexes(function):
 
         loan, kwargs = item.complete_action_missing_params(
                 item=item, checkin_loan=checkin_loan, **kwargs)
-        Loan.check_required_params(loan, function.__name__, **kwargs)
+        Loan.check_required_params(function.__name__, **kwargs)
         item, action_applied = function(item, loan, *args, **kwargs)
         item.change_status_commit_and_reindex()
         return item, action_applied

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2022 RERO
-# Copyright (C) 2022 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -18,22 +18,37 @@
 
 """Permissions for Acquisition invoice."""
 
-from rero_ils.modules.permissions import AcquisitionPermission
+from invenio_access import action_factory
+
+from rero_ils.modules.permissions import AllowedByAction, \
+    AllowedByActionRestrictByManageableLibrary, DisallowedIfRollovered, \
+    RecordPermissionPolicy
 
 from .api import AcquisitionInvoice
 
+# Actions to control acquisition invoices resource policies
+search_action = action_factory('acin-search')
+read_action = action_factory('acin-read')
+create_action = action_factory('acin-create')
+update_action = action_factory('acin-update')
+delete_action = action_factory('acin-delete')
+access_action = action_factory('acin-access')
 
-class AcqInvoicePermission(AcquisitionPermission):
-    """Acquisition invoice permissions."""
 
-    @classmethod
-    def _rolled_over(cls, record):
-        """Check if record attached to rolled over budget.
+class AcqInvoicePermissionPolicy(RecordPermissionPolicy):
+    """Acquisition invoice Permission Policy used by the CRUD operations."""
 
-        :param record: Record to check.
-        :return: True if action can be done.
-        """
-        # ensure class type for sent record
-        if not isinstance(record, AcquisitionInvoice):
-            record = AcquisitionInvoice(record)
-        return record.is_active
+    can_search = [AllowedByAction(search_action)]
+    can_read = [AllowedByActionRestrictByManageableLibrary(read_action)]
+    can_create = [
+        AllowedByActionRestrictByManageableLibrary(create_action),
+        DisallowedIfRollovered(AcquisitionInvoice)
+    ]
+    can_update = [
+        AllowedByActionRestrictByManageableLibrary(update_action),
+        DisallowedIfRollovered(AcquisitionInvoice)
+    ]
+    can_delete = [
+        AllowedByActionRestrictByManageableLibrary(delete_action),
+        DisallowedIfRollovered(AcquisitionInvoice)
+    ]

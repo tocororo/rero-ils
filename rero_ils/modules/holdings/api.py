@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
-# Copyright (C) 2020 UCLouvain
+# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -27,29 +27,33 @@ from functools import partial
 from dateutil.relativedelta import relativedelta
 from elasticsearch_dsl import Q
 from flask import current_app
-from flask_babelex import gettext as _
+from flask_babel import gettext as _
 from invenio_records_rest.utils import obj_or_import_string
 from jinja2 import Environment
 
+from rero_ils.filter import format_date_filter
+from rero_ils.modules.api import IlsRecord, IlsRecordError, \
+    IlsRecordsIndexer, IlsRecordsSearch
+from rero_ils.modules.documents.api import Document
+from rero_ils.modules.errors import MissingRequiredParameterError, \
+    RegularReceiveNotAllowed
+from rero_ils.modules.fetchers import id_fetcher
+from rero_ils.modules.items.api import Item, ItemsSearch
 from rero_ils.modules.items.models import ItemIssueStatus
+from rero_ils.modules.local_fields.api import LocalFieldsSearch
+from rero_ils.modules.local_fields.extensions import \
+    DeleteRelatedLocalFieldExtension
+from rero_ils.modules.locations.api import Location
+from rero_ils.modules.minters import id_minter
+from rero_ils.modules.operation_logs.extensions import \
+    OperationLogObserverExtension
+from rero_ils.modules.organisations.api import Organisation
+from rero_ils.modules.providers import Provider
+from rero_ils.modules.record_extensions import OrgLibRecordExtension
+from rero_ils.modules.utils import extracted_data_from_ref, get_ref_for_pid, \
+    get_schema_for_resource, sorted_pids
 
 from .models import HoldingIdentifier, HoldingMetadata, HoldingTypes
-from ..api import IlsRecord, IlsRecordError, IlsRecordsIndexer, \
-    IlsRecordsSearch
-from ..documents.api import Document
-from ..errors import MissingRequiredParameterError, RegularReceiveNotAllowed
-from ..fetchers import id_fetcher
-from ..items.api import Item, ItemsSearch
-from ..locations.api import Location
-from ..minters import id_minter
-from ..operation_logs.extensions import OperationLogObserverExtension
-from ..organisations.api import Organisation
-from ..providers import Provider
-from ..record_extensions import OrgLibRecordExtension
-from ..utils import extracted_data_from_ref, get_ref_for_pid, \
-    get_schema_for_resource, sorted_pids
-from ..vendors.api import Vendor
-from ...filter import format_date_filter
 
 # holing provider
 HoldingProvider = type(
@@ -80,13 +84,22 @@ class HoldingsSearch(IlsRecordsSearch):
 
         default_filter = None
 
+    def available_query(self):
+        """Base query for holding availability.
+
+        :returns: a filtered Elasticsearch query.
+        """
+        # should not masked
+        return self.exclude('term', _masked=True)
+
 
 class Holding(IlsRecord):
     """Holding class."""
 
     _extensions = [
         OrgLibRecordExtension(),
-        OperationLogObserverExtension()
+        OperationLogObserverExtension(),
+        DeleteRelatedLocalFieldExtension(),
     ]
 
     minter = holding_id_minter
@@ -145,7 +158,7 @@ class Holding(IlsRecord):
             self.get('document').get('$ref'))
         document = Document.get_record_by_pid(document_pid)
         if not document:
-            return _('Document does not exist {pid}.'.format(pid=document_pid))
+            return _(f'Document does not exist {document_pid}.')
 
         if self.is_serial:
             patterns = self.get('patterns', {})
@@ -154,10 +167,6 @@ class Holding(IlsRecord):
                     and not patterns.get('next_expected_date'):
                 return _(
                     'Must have next expected date for regular frequencies.')
-        if document.harvested ^ self.is_electronic:
-            msg = _('Electronic Holding is not attached to the correct \
-                    document type. document: {pid}')
-            return _(msg.format(pid=document_pid))
         # the enumeration and chronology optional fields are only allowed for
         # serial or electronic holdings
         if not self.is_serial ^ self.is_electronic:
@@ -170,8 +179,7 @@ class Holding(IlsRecord):
             ]
             for field in fields:
                 if self.get(field):
-                    msg = _('{field} is allowed only for serial holdings')
-                    return _(msg.format(field=field))
+                    return _(f'{field} is allowed only for serial holdings')
         # No multiple notes with same type
         note_types = [note.get('type') for note in self.get('notes', [])]
         if len(note_types) != len(set(note_types)):
@@ -213,48 +221,39 @@ class Holding(IlsRecord):
         return extracted_data_from_ref(self.get('document'))
 
     @property
+    def document(self):
+        """Shortcut for document record related to this holding."""
+        return extracted_data_from_ref(self.get('document'), data='record')
+
+    @property
     def circulation_category_pid(self):
         """Shortcut for circulation_category pid of the holding."""
         return extracted_data_from_ref(self.get('circulation_category'))
 
     @property
     def location_pid(self):
-        """Shortcut for location pid of the holding."""
+        """Shortcut for location pid related to the holdings."""
         return extracted_data_from_ref(self.get('location'))
 
     @property
+    def location(self):
+        """Shortcut for location resource related to the holdings."""
+        return extracted_data_from_ref(self.get('location'), data='record')
+
+    @property
     def library_pid(self):
-        """Shortcut for library of the holding location."""
-        return Location.get_record_by_pid(self.location_pid).library_pid
+        """Shortcut for library related to the holdings location."""
+        return self.location.library_pid
+
+    @property
+    def library(self):
+        """Shortcut for library resource related to this holding."""
+        return self.location.library
 
     @property
     def organisation_pid(self):
         """Get organisation pid for holding."""
         return Location.get_record_by_pid(self.location_pid).organisation_pid
-
-    @property
-    def available(self):
-        """Get availability for holding."""
-        if self.is_electronic:
-            return True
-        if self.get('_masked', False):
-            return False
-        return self._exists_available_child()
-
-    @property
-    def max_number_of_claims(self):
-        """Shortcut to return the max_number_of_claims."""
-        return self.get('patterns', {}).get('max_number_of_claims')
-
-    @property
-    def days_before_first_claim(self):
-        """Shortcut to return the days_before_first_claim."""
-        return self.get('patterns', {}).get('days_before_first_claim')
-
-    @property
-    def days_before_next_claim(self):
-        """Shortcut to return the days_before_next_claim."""
-        return self.get('patterns', {}).get('days_before_next_claim')
 
     @property
     def vendor_pid(self):
@@ -265,8 +264,83 @@ class Holding(IlsRecord):
     @property
     def vendor(self):
         """Shortcut to return the vendor record."""
-        if self.vendor_pid:
-            return Vendor.get_record_by_pid(self.vendor_pid)
+        if self.get('vendor'):
+            return extracted_data_from_ref(self.get('vendor'), data='record')
+
+    def get_available_item_pids(self):
+        """Get the list of the available item pids.
+
+        :returns: [str] - the list of the available item pids.
+        """
+        from rero_ils.modules.items.api import ItemsSearch
+        items_query = ItemsSearch().available_query()
+        filters = Q('term', holding__pid=self.pid)
+        return [
+            hit.pid for hit in items_query.filter(filters).source('pid').scan()
+        ]
+
+    def get_item_pids_with_active_loan(self, item_pids):
+        """Get the list of items pids that have active loans.
+
+        :param item_pids: [str] - the list of the item pids.
+        :returns: the list of the item pids having active loans.
+        """
+        from rero_ils.modules.loans.api import LoansSearch
+
+        loan_query = LoansSearch().unavailable_query()
+
+        # the loans corresponding to the given item pids
+        loan_query = loan_query.filter(Q('terms', item_pid__value=item_pids))
+
+        return [
+            hit.item_pid.value for hit in loan_query.source('item_pid').scan()
+        ]
+
+    def is_available(self):
+        """Get availability for the current holding.
+
+        Note: if the logic has to be changed here please check also for items
+        and documents availability.
+        """
+        # -------------- Holdings --------------------
+        # unavailable if masked
+        if self.get('_masked', False):
+            return False
+
+        # available if the holding is electronic
+        if self.is_electronic:
+            return True
+
+        # -------------- Items --------------------
+        # get available item pids
+        available_item_pids = self.get_available_item_pids()
+
+        # unavailable if no item exists
+        if not available_item_pids:
+            return False
+
+        # --------------- Loans -------------------
+        # get item pids that have active loans
+        unavailable_item_pids = \
+            self.get_item_pids_with_active_loan(available_item_pids)
+
+        # available if at least one item don't have active loan
+        return bool(set(available_item_pids) - set(unavailable_item_pids))
+
+    @property
+    def max_number_of_claims(self):
+        """Shortcut to return the max_number_of_claims."""
+        return self.get('patterns', {}).get('max_number_of_claims', 0)
+
+    @property
+    def days_before_first_claim(self):
+        """Shortcut to return the days_before_first_claim."""
+        return self.get('patterns', {}).get('days_before_first_claim', 0)
+
+    @property
+    def days_before_next_claim(self):
+        """Shortcut to return the days_before_next_claim."""
+        return self.get('patterns', {}).get('days_before_next_claim', 0)
 
     @property
     def notes(self):
@@ -286,14 +360,6 @@ class Holding(IlsRecord):
         notes = [note.get('content') for note in self.notes
                  if note.get('type') == note_type]
         return next(iter(notes), None)
-
-    def _exists_available_child(self):
-        """Check if at least one child of this holding is available."""
-        for pid in Item.get_items_pid_by_holding_pid(self.pid):
-            item = Item.get_record_by_pid(pid)
-            if item.available:
-                return True
-        return False
 
     @property
     def get_items_count_by_holding_pid(self):
@@ -344,40 +410,33 @@ class Holding(IlsRecord):
 
     def get_items_filter_by_viewcode(self, viewcode):
         """Return items filter by view code."""
-        items = []
-        holdings_items = [
+        items = [
             Item.get_record_by_pid(item_pid)
             for item_pid in Item.get_items_pid_by_holding_pid(self.get('pid'))
         ]
         if (viewcode != current_app.
                 config.get('RERO_ILS_SEARCH_GLOBAL_VIEW_CODE')):
             org_pid = Organisation.get_record_by_viewcode(viewcode)['pid']
-            for item in holdings_items:
-                if item.organisation_pid == org_pid:
-                    items.append(item)
-            return items
-        return holdings_items
+            return [item for item in items if item.organisation_pid == org_pid]
+        return items
 
     @property
     def get_items(self):
         """Return standard items and received issues for a holding record."""
         for item_pid in Item.get_items_pid_by_holding_pid(self.pid):
-            item = Item.get_record_by_pid(item_pid)
-            if item:
+            if item := Item.get_record_by_pid(item_pid):
                 if not item.issue_status or \
                         item.issue_status == ItemIssueStatus.RECEIVED:
                     # inherit holdings first call#
                     # for issues with no 1st call#.
-                    issue_call_number = item.issue_inherited_first_call_number
-                    if issue_call_number:
-                        item['call_number'] = issue_call_number
+                    if call_number := item.issue_inherited_first_call_number:
+                        item['call_number'] = call_number
                     yield item
 
     def get_all_items(self):
         """Return all items a holding record."""
         for item_pid in Item.get_items_pid_by_holding_pid(self.pid):
-            item = Item.get_record_by_pid(item_pid)
-            yield item
+            yield Item.get_record_by_pid(item_pid)
 
     def get_links_to_me(self, get_pids=False):
         """Record links.
@@ -385,16 +444,20 @@ class Holding(IlsRecord):
         :param get_pids: if True list of linked pids
                          if False count of linked records
         """
-        links = {}
-        query = ItemsSearch().filter('term', holding__pid=self.pid)
+        items_query = ItemsSearch().filter('term', holding__pid=self.pid)
+        local_fields_query = LocalFieldsSearch().get_local_fields(
+            self.provider.pid_type, self.pid)
         if get_pids:
-            items = sorted_pids(query)
+            items = sorted_pids(items_query)
+            local_fields = sorted_pids(local_fields_query)
         else:
-            items = query.count()
-        # get number of attached items
-        if items:
-            links['items'] = items
-        return links
+            items = items_query.count()
+            local_fields = local_fields_query.count()
+        links = {
+            'items': items,
+            'local_fields': local_fields
+        }
+        return {k: v for k, v in links.items() if v}
 
     def reasons_not_to_delete(self):
         """Get reasons not to delete record."""
@@ -407,10 +470,12 @@ class Holding(IlsRecord):
             if not_deleteable_items:
                 count = len(not_deleteable_items)
                 cannot_delete['others'] = {
-                    _('has {count} items with loan attached'.format(
-                        count=count)): count}
+                    _(f'has {count} items with loan attached'): count
+                }
         else:
             links = self.get_links_to_me()
+            # local_fields isn't a reason to block holding suppression
+            links.pop('local_fields', None)
             if links:
                 cannot_delete['links'] = links
         return cannot_delete
@@ -434,9 +499,9 @@ class Holding(IlsRecord):
                 patron.patron_type_pid,
                 self.circulation_category_pid
             )
-            text = '{0} {1} days'.format(
-                _(cipo.get('name')), cipo.get('checkout_duration'))
-            return text
+            name = _(cipo.get("name"))
+            checkout_duration = cipo.get("checkout_duration")
+            return f'{name} {checkout_duration} days'
         else:
             return ItemType.get_record_by_pid(
                 self.circulation_category_pid).get('name')
@@ -609,29 +674,26 @@ class Holding(IlsRecord):
         :param expected_date: The issue expected_date to prepare.
         :return: The prepared issue data.
         """
-        issue_data = {
-            'issue': issue,
-            'expected_date':  expected_date
-        }
-        return issue_data
+        return {'issue': issue, 'expected_date': expected_date}
 
     def _prepare_issue_record(
-            self, item=None, issue_display=None, expected_date=None):
+            self, status, item=None, issue_display=None, expected_date=None):
         """Prepare the issue record before creating the item."""
         data = {
             'issue': {
-                'status': ItemIssueStatus.RECEIVED,
+                'status': status,
                 'status_date': datetime.now(timezone.utc).isoformat(),
-                'received_date': datetime.now().strftime('%Y-%m-%d'),
                 'expected_date': expected_date,
                 'regular': True
             },
             'enumerationAndChronology': issue_display,
             'status': 'on_shelf'
         }
+        if status == ItemIssueStatus.RECEIVED:
+            data['issue'][
+                'received_date'] = datetime.now().strftime('%Y-%m-%d')
         if item:
-            issue = item.pop('issue', None)
-            if issue:
+            if issue := item.pop('issue', None):
                 data['issue'].update(issue)
             data.update(item)
         # ensure that we have the right item fields such as location,
@@ -649,9 +711,10 @@ class Holding(IlsRecord):
         data.update(forced_data)
         return data
 
-    def receive_regular_issue(self, item=None, dbcommit=False, reindex=False):
+    def create_regular_issue(self, status, item=None, dbcommit=False,
+                             reindex=False):
         """Receive the next expected regular issue for the holdings record."""
-        # receive is allowed only on holdings of type serials and regular
+        # receive is allowed only on holdings of type serials with a regular
         # frequency
         if self.holdings_type != HoldingTypes.SERIAL \
            or self.get('patterns', {}).get('frequency') == 'rdafr:1016':
@@ -660,8 +723,11 @@ class Holding(IlsRecord):
         issue_display, expected_date = self._get_next_issue_display_text(
                     self.get('patterns'))
         data = self._prepare_issue_record(
-            item=item, issue_display=issue_display,
-            expected_date=expected_date)
+            status=status,
+            item=item,
+            issue_display=issue_display,
+            expected_date=expected_date
+        )
         return Item.create(data=data, dbcommit=dbcommit, reindex=reindex)
 
 
@@ -732,8 +798,7 @@ def create_holding(
     """
     if not (document_pid and location_pid and item_type_pid):
         raise MissingRequiredParameterError(
-            "One of the parameters 'document_pid' "
-            "or 'location_pid' or 'item_type_pid' is required."
+            "'document_pid', 'location_pid' and 'item_type_pid' are required."
         )
     data = {
         '$schema': get_schema_for_resource('hold'),
@@ -772,9 +837,9 @@ def create_holding(
         data['patterns'] = patterns
     return Holding.create(
         data,
-        dbcommit=True,
-        reindex=True,
-        delete_pid=True
+        dbcommit=False,
+        reindex=False,
+        delete_pid=False
     )
 
 

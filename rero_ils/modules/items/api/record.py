@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -16,36 +16,46 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """API for manipulating item records."""
+from contextlib import suppress
 from datetime import datetime, timezone
 
 import pytz
 from elasticsearch_dsl.query import Q
-from flask_babelex import gettext as _
+from flask_babel import gettext as _
 
+from rero_ils.modules.api import IlsRecord
+from rero_ils.modules.holdings.models import HoldingTypes
+from rero_ils.modules.item_types.api import ItemType
+from rero_ils.modules.local_fields.extensions import \
+    DeleteRelatedLocalFieldExtension
+from rero_ils.modules.operation_logs.extensions import \
+    UntrackedFieldsOperationLogObserverExtension
+from rero_ils.modules.organisations.api import Organisation
+from rero_ils.modules.record_extensions import OrgLibRecordExtension
+from rero_ils.modules.utils import date_string_to_utc, \
+    extracted_data_from_ref, generate_item_barcode, get_ref_for_pid, \
+    trim_item_barcode_for_record
+
+from ..extensions import IssueSortDateExtension, IssueStatusExtension
 from ..models import TypeOfItem
 from ..utils import item_pid_to_object
-from ...api import IlsRecord
-from ...holdings.models import HoldingTypes
-from ...item_types.api import ItemType
-from ...locations.api import Location
-from ...operation_logs.extensions import \
-    UntrackedFieldsOperationLogObserverExtension
-from ...organisations.api import Organisation
-from ...record_extensions import OrgLibRecordExtension
-from ...utils import date_string_to_utc, extracted_data_from_ref, \
-    generate_item_barcode, get_ref_for_pid, trim_item_barcode_for_record
 
 
 class ItemRecord(IlsRecord):
     """Item record class."""
 
     _extensions = [
+        IssueSortDateExtension(),
+        IssueStatusExtension(),
         OrgLibRecordExtension(),
-        UntrackedFieldsOperationLogObserverExtension(['status'])
+        UntrackedFieldsOperationLogObserverExtension(['status']),
+        DeleteRelatedLocalFieldExtension()
     ]
 
     def extended_validation(self, **kwargs):
         """Add additional record validation.
+
+        Ensures that barcode field is unique.
 
         Ensures that item of type issue is created only on
         holdings of type serials.
@@ -57,7 +67,8 @@ class ItemRecord(IlsRecord):
 
         Ensures that only one note of each type is present.
 
-        :return: False if
+        :return: Error message if
+            - barcode already exists
             - holdings type is not journal and item type is issue.
             - item type is journal and field issue exists.
             - item type is standard and field issue does not exists.
@@ -66,17 +77,27 @@ class ItemRecord(IlsRecord):
             - temporary_item_type isn't in the future (if specified)
 
         """
+        from . import ItemsSearch
+        if barcode := self.get('barcode'):
+            if (
+                ItemsSearch()
+                .exclude('term', pid=self.pid)
+                .filter('term', barcode=barcode)
+                .source('pid')
+                .count()
+            ):
+                return _(f'Barcode {barcode} is already taken.')
+
         from ...holdings.api import Holding
         holding_pid = extracted_data_from_ref(self.get('holding').get('$ref'))
         holding = Holding.get_record_by_pid(holding_pid)
         if not holding:
-            return _('Holding does not exist: {pid}.'.format(pid=holding_pid))
-        is_serial = holding.holdings_type == 'serial'
-        issue = self.get('issue', {})
-        if issue and self.get('type') == 'standard':
+            return _(f'Holding does not exist: {holding_pid}')
+
+        if self.get('issue') and self.get('type') == TypeOfItem.STANDARD:
             return _('Standard item can not have a issue field.')
-        if self.get('type') == 'issue':
-            if not issue:
+        if self.get('type') == TypeOfItem.ISSUE:
+            if not self.get('issue', {}):
                 return _('Issue item must have an issue field.')
             if not self.get('enumerationAndChronology'):
                 return _('enumerationAndChronology field is required '
@@ -86,8 +107,7 @@ class ItemRecord(IlsRecord):
             return _('Can not have multiple notes of the same type.')
 
         # check temporary item type data
-        tmp_itty = self.get('temporary_item_type')
-        if tmp_itty:
+        if tmp_itty := self.get('temporary_item_type'):
             if tmp_itty['$ref'] == self['item_type']['$ref']:
                 return _('Temporary circulation category cannot be the same '
                          'than default circulation category.')
@@ -288,20 +308,35 @@ class ItemRecord(IlsRecord):
     @property
     def holding_pid(self):
         """Shortcut for item holding pid."""
-        if self.get('holding'):
-            return extracted_data_from_ref(self.get('holding'))
+        return extracted_data_from_ref(self.get('holding'))
+
+    @property
+    def holding(self):
+        """Shortcut for item holding."""
+        return extracted_data_from_ref(self.get('holding'), data='record')
+
+    @property
+    def holding_location_pid(self):
+        """Shortcut for holding location pid of an item."""
+        if holding := self.holding:
+            return holding.location_pid
+
+    @property
+    def holding_library_pid(self):
+        """Shortcut for holding library pid of an item."""
+        if holding := self.holding:
+            return holding.library_pid
 
     @property
     def document_pid(self):
         """Shortcut for item document pid."""
-        if self.get('document'):
-            return extracted_data_from_ref(self.get('document'))
+        return extracted_data_from_ref(self['document'])
 
     @classmethod
     def get_document_pid_by_item_pid(cls, item_pid):
         """Returns document pid from item pid."""
         item = cls.get_record_by_pid(item_pid)
-        return extracted_data_from_ref(item.get('document'))
+        return extracted_data_from_ref(item['document'])
 
     @classmethod
     def get_document_pid_by_item_pid_object(cls, item_pid):
@@ -313,11 +348,16 @@ class ItemRecord(IlsRecord):
         :rtype: str
         """
         item = cls.get_record_by_pid(item_pid.get('value'))
-        return extracted_data_from_ref(item.get('document'))
+        return extracted_data_from_ref(item['document'])
 
     @classmethod
     def get_items_pid_by_document_pid(cls, document_pid):
-        """Returns item pisd from document pid."""
+        """Returns item pids related to a document pid.
+
+        :param document_pid: the parent document pid.
+        :return a generator of related item pid.
+        :rtype generator<str>
+        """
         from . import ItemsSearch
         results = ItemsSearch()\
             .filter('term', document__pid=document_pid)\
@@ -326,26 +366,26 @@ class ItemRecord(IlsRecord):
             yield item_pid_to_object(item.pid)
 
     @classmethod
-    def get_item_by_barcode(cls, barcode, organisation_pid):
+    def get_item_by_barcode(cls, barcode, organisation_pid=None):
         """Get item by barcode.
 
         :param barcode: the item barcode.
         :param organisation_pid: the organisation pid. As barcode could be
-                                 shared between items from multiple
-                                 organisations we need to filter result by
-                                 organisation.pid
+            shared between items from multiple organisations we need to filter
+            result by organisation.pid
         :return The item corresponding to the barcode if exists or None.
+        :rtype `rero_ils.modules.items.api.api.Item`
         """
         from . import ItemsSearch
+        filters = Q('term', barcode=barcode)
+        if organisation_pid:
+            filters &= Q('term', organisation__pid=organisation_pid)
         results = ItemsSearch()\
-            .filter('term', barcode=barcode)\
-            .filter('term', organisation__pid=organisation_pid)\
+            .filter(filters)\
             .source(includes='pid')\
             .scan()
-        try:
+        with suppress(StopIteration):
             return cls.get_record_by_pid(next(results).pid)
-        except StopIteration:
-            return None
 
     def get_organisation(self):
         """Shortcut to the organisation of the item location."""
@@ -357,8 +397,21 @@ class ItemRecord(IlsRecord):
 
     def get_location(self):
         """Shortcut to the location of the item."""
-        location_pid = extracted_data_from_ref(self.get('location'))
-        return Location.get_record_by_pid(location_pid)
+        return extracted_data_from_ref(self['location'], data='record')
+
+    def get_circulation_location(self):
+        """Get the location to used for circulation operation."""
+        # By default, the location used for circulation operations is the main
+        # item location except if this item has a `temporary_location` and this
+        # location isn't yet over.
+        if tmp_location := self.get('temporary_location'):
+            if end_date := tmp_location.get('end_date'):
+                now_date = pytz.utc.localize(datetime.now())
+                end_date = date_string_to_utc(end_date)
+                if now_date > end_date:
+                    return self.get_location()
+            return extracted_data_from_ref(tmp_location['$ref'], data='record')
+        return self.get_location()
 
     @property
     def status(self):
@@ -379,12 +432,9 @@ class ItemRecord(IlsRecord):
     @property
     def temporary_item_type_pid(self):
         """Shortcut for temporary item type pid."""
-        tmp_item_type = self.get('temporary_item_type', {})
-        if tmp_item_type:
-            end_date = tmp_item_type.get('end_date')
-            # check if the temporary item_type.end_date is over. If yes, return
-            # None
-            if end_date:
+        if tmp_item_type := self.get('temporary_item_type', {}):
+            # if the temporary_item_type end_date is over : return none
+            if end_date := tmp_item_type.get('end_date'):
                 now_date = pytz.utc.localize(datetime.now())
                 end_date = date_string_to_utc(end_date)
                 if now_date > end_date:
@@ -416,24 +466,9 @@ class ItemRecord(IlsRecord):
     def holding_circulation_category_pid(self):
         """Shortcut for holding circulation category pid of an item."""
         from ...holdings.api import Holding
-        circulation_category_pid = None
         if self.holding_pid:
-            circulation_category_pid = \
-                Holding.get_record_by_pid(
-                    self.holding_pid).circulation_category_pid
-        return circulation_category_pid
-
-    @property
-    def issue_inherited_first_call_number(self):
-        """Get issue inherited first call number.
-
-        For item of type issue, when the issue first call number is missing,
-        it returns the parent holdings first call number if exists.
-        """
-        from ...holdings.api import Holding
-        if self.get('type') == 'issue' and not self.get('call_number'):
             return Holding.get_record_by_pid(
-                self.holding_pid).get('call_number')
+                    self.holding_pid).circulation_category_pid
 
     @property
     def call_numbers(self):
@@ -453,9 +488,8 @@ class ItemRecord(IlsRecord):
             for key in ['call_number', 'second_call_number']:
                 if self.get(key):
                     data.append(self.get(key))
-                else:
-                    if holding.get(key):
-                        data.append(holding.get(key))
+                elif holding.get(key):
+                    data.append(holding.get(key))
         return [call_number for call_number in data if call_number]
 
     @property
@@ -465,27 +499,22 @@ class ItemRecord(IlsRecord):
             return extracted_data_from_ref(self.get('location'))
 
     @property
-    def holding_location_pid(self):
-        """Shortcut for holding location pid of an item."""
-        from ...holdings.api import Holding
-        location_pid = None
-        if self.holding_pid:
-            location_pid = Holding.get_record_by_pid(
-                self.holding_pid).location_pid
-        return location_pid
+    def location(self):
+        """Shortcut to get item related location resource."""
+        if self.get('location'):
+            return extracted_data_from_ref(self.get('location'), data='record')
 
     @property
     def library_pid(self):
         """Shortcut for item library pid."""
-        location = Location.get_record_by_pid(self.location_pid)
-        return extracted_data_from_ref(location.get('library'))
+        if location := self.location:
+            return location.library_pid
 
     @property
-    def holding_library_pid(self):
-        """Shortcut for holding library pid of an item."""
-        if self.holding_location_pid:
-            location = Location.get_record_by_pid(self.holding_location_pid)
-            return extracted_data_from_ref(location.get('library'))
+    def library(self):
+        """Shortcut for item library resource."""
+        if location := self.location:
+            return location.library
 
     @property
     def organisation_pid(self):
@@ -536,8 +565,7 @@ class ItemRecord(IlsRecord):
 
         :return True if Item is a new acquisition, False otherwise
         """
-        acquisition_date = self.get('acquisition_date')
-        if acquisition_date:
+        if acquisition_date := self.get('acquisition_date'):
             return datetime.strptime(
                 acquisition_date, '%Y-%m-%d') < datetime.now()
         return False
@@ -551,6 +579,5 @@ class ItemRecord(IlsRecord):
         """
         from . import ItemsSearch
         query = ItemsSearch().filter('term', holding__pid=holding_pid)
-        results = query.filter('bool', must_not=[Q('term', _masked=True)]) \
+        return query.filter('bool', must_not=[Q('term', _masked=True)]) \
             .source(['pid']).count()
-        return results

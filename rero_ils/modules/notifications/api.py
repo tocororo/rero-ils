@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
-# Copyright (C) 2020 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -21,14 +21,15 @@
 from __future__ import absolute_import, print_function
 
 from abc import ABC, abstractmethod
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import partial
 
 from flask import current_app
 
 from .extensions import NotificationSubclassExtension
+from .logs.api import NotificationOperationLog
 from .models import NotificationIdentifier, NotificationMetadata, \
-    NotificationStatus
+    NotificationStatus, NotificationType
 from ..api import IlsRecord, IlsRecordsIndexer, IlsRecordsSearch
 from ..fetchers import id_fetcher
 from ..minters import id_minter
@@ -64,12 +65,41 @@ class NotificationsSearch(IlsRecordsSearch):
 
         default_filter = None
 
+    def _get_claims_query(self, item_pid):
+        """Get the query to retrieve claim notifications about an issue.
+
+        :param item_pid: the item pid related to the claim notification.
+        :returns: a ElasticSearch query object.
+        """
+        return self \
+            .filter('term', context__item__pid=item_pid) \
+            .filter('term', notification_type=NotificationType.CLAIM_ISSUE)
+
+    def get_claims(self, item_pid):
+        """Get the claims notifications about an issue item.
+
+        :param item_pid: the item pid related to the claim notification.
+        :returns: a generator of claim Notification object
+        :rtype: generator<Notification> | integer
+        """
+        for hit in self._get_claims_query(item_pid).scan():
+            yield Notification.get_record(hit.meta.id)
+
+    def get_claims_count(self, item_pid):
+        """Get the number of claims notifications about an issue item.
+
+        :param item_pid: the item pid related to the claim notification.
+        :returns: the number of claim notification
+        :rtype: int
+        """
+        return self._get_claims_query(item_pid).count()
+
 
 class Notification(IlsRecord, ABC):
     """Notifications class.
 
     A Notification is an abstract class representing a message to be sent to a
-    recipient. All the notification workflow depends of the notification type.
+    recipient. All the notification workflow depends on the notification type.
     The recipient, the dispatcher method, notification aggregation... all
     these settings or behaviors must be specified into a concrete
     ``Notification`` subclass.
@@ -115,6 +145,7 @@ class Notification(IlsRecord, ABC):
             notification=record, dbcommit=dbcommit, reindex=reindex,
             delete_pid=delete_pid
         )
+        NotificationOperationLog.create(record)
         return record
 
     # ABSTRACT METHODS ========================================================
@@ -135,9 +166,9 @@ class Notification(IlsRecord, ABC):
     def aggregation_key(self):
         """Get the key used to aggregate multiple notifications.
 
-        Depending of the notification type, notifications could be aggregated
+        Depending on the notification type, notifications could be aggregated
         into a single message (4 recall notification for the same patron should
-        be send into the same message).
+        be sent into the same message).
 
         :return the key to use to aggregate several notifications.
         """
@@ -169,10 +200,10 @@ class Notification(IlsRecord, ABC):
     def get_communication_channel(self):
         """Get the communication channel to use for this notification.
 
-        The communication channel to use depends of each notification type. It
-        could depends of the recipient, the template to use, ...
+        The communication channel to use depends on each notification type. It
+        could depend on the recipient, the template to use, ...
 
-        :return the `NotificationChannel` to use to send the notification.
+        :returns: the `NotificationChannel` to use to send the notification.
         """
         raise NotImplementedError()
 
@@ -180,7 +211,7 @@ class Notification(IlsRecord, ABC):
     def get_language_to_use(self):
         """Get the language to use for dispatching the notification.
 
-        :return return the language iso code (alpha3) to use.
+        :returns: the language iso code (alpha3) to use.
         """
         raise NotImplementedError()
 
@@ -193,7 +224,7 @@ class Notification(IlsRecord, ABC):
         the list of email addresses where to send the notification to.
 
         :param address_type: the type of address to get (to, cc, reply_to, ...)
-        :return return email addresses list where send the notification to.
+        :returns: return email addresses list where send the notification to.
         """
         raise NotImplementedError()
 
@@ -203,8 +234,9 @@ class Notification(IlsRecord, ABC):
         """Get the context to use to render the corresponding template.
 
         :param notifications: an array of ``Notification`` to parse to extract
-                              the required data to build the template.
-        :return: a ``dict`` containing all required data to build the template.
+            the required data to build the template.
+        :returns: a ``dict`` containing all required data to build the
+            template.
         """
         raise NotImplementedError()
 
@@ -227,9 +259,24 @@ class Notification(IlsRecord, ABC):
             .filter('term', notification__pid=self.pid)\
             .source(False).scan()
         for result in results:
-            yield PatronTransaction.get_record_by_id(result.meta.id)
+            yield PatronTransaction.get_record(result.meta.id)
 
-    # CLASS METHODS ===========================================================
+    def update_effective_recipients(self, recipients):
+        """Update the notification to set effective recipients.
+
+        :param recipients: a list of tuple ; first element is the recipient
+            type, second element is the recipient address.
+        :return the updated notification.
+        """
+        recipients = recipients or []
+        for type_, address in recipients:
+            self.setdefault('effective_recipients', []).append({
+                'type': type_,
+                'address': address
+            })
+        return self.update(
+            data=self.dumps(), commit=True, dbcommit=True, reindex=True)
+
     def update_process_date(self, sent=False, status=NotificationStatus.DONE):
         """Update the notification to set process date.
 
@@ -237,7 +284,7 @@ class Notification(IlsRecord, ABC):
         :param status: the new notification status.
         :return the updated notification.
         """
-        self['process_date'] = datetime.utcnow().isoformat()
+        self['process_date'] = datetime.now(timezone.utc).isoformat()
         self['notification_sent'] = sent
         self['status'] = status
         return self.update(

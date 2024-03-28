@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
-# Copyright (C) 2020 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -21,12 +21,14 @@ from datetime import datetime, timezone
 from functools import partial
 
 from elasticsearch.exceptions import NotFoundError
+from elasticsearch_dsl import Q
 from invenio_search import current_search_client
 
 from rero_ils.modules.api import IlsRecordError, IlsRecordsIndexer, \
     IlsRecordsSearch
 from rero_ils.modules.documents.api import DocumentsSearch
 from rero_ils.modules.fetchers import id_fetcher
+from rero_ils.modules.item_types.api import ItemTypesSearch
 from rero_ils.modules.minters import id_minter
 from rero_ils.modules.organisations.api import Organisation
 from rero_ils.modules.patrons.api import current_librarian
@@ -35,7 +37,7 @@ from rero_ils.modules.utils import extracted_data_from_ref
 
 from .circulation import ItemCirculation
 from .issue import ItemIssue
-from ..models import ItemIdentifier, ItemMetadata
+from ..models import ItemIdentifier, ItemMetadata, ItemStatus
 
 # provider
 ItemProvider = type(
@@ -61,6 +63,38 @@ class ItemsSearch(IlsRecordsSearch):
         facets = {}
 
         default_filter = None
+
+    def available_query(self):
+        """Base elasticsearch query to compute availability.
+
+        :returns: elasticsearch query.
+        """
+        must_not_filters = [
+            # should not be masked
+            Q('term', _masked=True),
+            # should not be in_transit (even without loan)
+            Q('term', status=ItemStatus.IN_TRANSIT),
+            # if issue the status should be received
+            Q('exists', field='issue') & ~Q('term', issue__status='received')
+        ]
+
+        if not_available_item_types := [
+            hit.pid
+            for hit in ItemTypesSearch()
+            .source('pid')
+            .filter('term', negative_availability=True)
+            .scan()
+        ]:
+            # negative availability item type and not temporary item types
+            has_items_filters = \
+                    Q('terms', item_type__pid=not_available_item_types)
+            has_items_filters &= ~Q('exists', field='temporary_item_type')
+            # temporary item types with negative availability
+            has_items_filters |= Q(
+                'terms', temporary_item_type__pid=not_available_item_types)
+            # add to the must not filters
+            must_not_filters.append(has_items_filters)
+        return self.filter(Q('bool', must_not=must_not_filters))
 
 
 class Item(ItemCirculation, ItemIssue):
@@ -94,6 +128,8 @@ class Item(ItemCirculation, ItemIssue):
         """Get reasons not to delete record."""
         cannot_delete = {}
         links = self.get_links_to_me()
+        # local_fields aren't a reason to block suppression
+        links.pop('local_fields', None)
         if links:
             cannot_delete['links'] = links
         return cannot_delete
@@ -196,7 +232,7 @@ class Item(ItemCirculation, ItemIssue):
             'pid').scan()]
         hits = itty + locs
         for id, field_type in hits:
-            yield Item.get_record_by_id(id), field_type
+            yield Item.get_record(id), field_type
 
 
 class ItemsIndexer(IlsRecordsIndexer):

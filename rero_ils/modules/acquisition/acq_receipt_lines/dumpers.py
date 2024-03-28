@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
-# Copyright (C) 2021 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -21,7 +21,7 @@
 from invenio_records.dumpers import Dumper as InvenioRecordsDumper
 
 from rero_ils.modules.commons.identifiers import IdentifierType
-from rero_ils.modules.documents.utils import title_format_text_head
+from rero_ils.modules.documents.extensions import TitleExtension
 
 
 class AcqReceiptLineESDumper(InvenioRecordsDumper):
@@ -44,9 +44,12 @@ class AcqReceiptLineESDumper(InvenioRecordsDumper):
         if notes := record.get('notes', []):
             data['notes'] = [note['content'] for note in notes]
 
+        order_line = record.order_line
+        # Add acq_account information's: pid
+        data['acq_account'] = {'pid': order_line.account_pid}
         # Add document information's: pid, formatted title and ISBN identifiers
         # (remove None values from document metadata)
-        document = record.order_line.document
+        document = order_line.document
         identifiers = document.get_identifiers(
             filters=[IdentifierType.ISBN],
             with_alternatives=True
@@ -54,7 +57,7 @@ class AcqReceiptLineESDumper(InvenioRecordsDumper):
         identifiers = [identifier.normalize() for identifier in identifiers]
         data['document'] = {
             'pid': document.pid,
-            'title': title_format_text_head(document.get('title', [])),
+            'title': TitleExtension.format_text(document.get('title', [])),
             'identifiers': identifiers
         }
         data['document'] = {k: v for k, v in data['document'].items() if v}

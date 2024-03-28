@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
-# Copyright (C) 2021 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -18,22 +18,25 @@
 
 """Import from extern resources."""
 
+
 from __future__ import absolute_import, print_function
 
 import pickle
+import traceback
 from datetime import timedelta
 from operator import itemgetter
 
 import requests
 from dojson.contrib.marc21.utils import create_record
-from flask import abort, current_app, jsonify, url_for
+from dojson.utils import GroupableOrderedDict
+from flask import current_app, jsonify, url_for
 from lxml import etree
 from redis import Redis
 from six import BytesIO
 
-from ..documents.dojson.contrib.marc21tojson import marc21_dnb, marc21_kul, \
-    marc21_loc, marc21_slsp, marc21_ugent
-from ..documents.dojson.contrib.unimarctojson import unimarc
+from rero_ils.modules.documents.dojson.contrib.marc21tojson import \
+    marc21_dnb, marc21_kul, marc21_loc, marc21_slsp, marc21_ugent
+from rero_ils.modules.documents.dojson.contrib.unimarctojson import unimarc
 
 
 class Import(object):
@@ -45,7 +48,10 @@ class Import(object):
     search = {}
     to_json_processor = None
     status_code = 444
-    max = 50
+    status_msg = ''
+    max_results = 50
+    timeout_connect = 5
+    timeout_request = 60
 
     def __init__(self):
         """Init Import class."""
@@ -100,7 +106,7 @@ class Import(object):
         """
         url_api = self.url_api.format(
             url=self.url,
-            max=1,
+            max_results=1,
             what=id,
             relation='all',
             where=self.search.get('recordid')
@@ -173,10 +179,14 @@ class Import(object):
             date = provision_activity.get('startDate')
             self.calculate_aggregations_add('year', date, id)
 
-        contribution = record.get('contribution', [])
-        for agent in contribution:
-            name = agent.get('agent', {}).get('preferred_name')
-            self.calculate_aggregations_add('author', name, id)
+        for agent in record.get('contribution', []):
+            if authorized_access_point := agent.get(
+                    'entity', {}).get('authorized_access_point'):
+                name = authorized_access_point
+            elif text := agent.get('entity', {}).get('_text'):
+                name = text
+            if name:
+                self.calculate_aggregations_add('author', name, id)
 
         languages = record.get('language', [])
         for language in languages:
@@ -212,8 +222,7 @@ class Import(object):
                     'doc_count_error_upper_bound': 0,
                     'sum_other_doc_count': 0
                 }
-                subs = value.get('sub')
-                if subs:
+                if subs := value.get('sub'):
                     sub_buckets = []
                     for sub_key, sub_value in subs.items():
                         sub_buckets.append({
@@ -281,9 +290,9 @@ class Import(object):
         """
         ids = []
         buckets = results.get('aggregations').get(agg, {}).get('buckets', [])
-        bucket = list(
-            filter(lambda bucket: bucket['key'] == str(key), buckets))
-        if bucket:
+        if bucket := list(
+            filter(lambda bucket: bucket['key'] == str(key), buckets)
+        ):
             sub_buckets = bucket[0].get(sub_agg, {}).get('buckets', [])
             sub_bucket = list(
                 filter(
@@ -294,121 +303,188 @@ class Import(object):
             ids = sub_bucket[0]['ids']
         return ids
 
-    def search_records(self, what, relation, where='anywhere', max=0,
+    def _create_sru_url(self, what, relation, where, max_results):
+        """Create SRU URL.
+
+        :param what: what to search
+        :param relation: relation for search
+        :param where: in witch index to search (uses self.search)
+        :param max_results: maximum records to search
+        :returns: SRU search URL
+        """
+        where_search = self.search.get(where)
+        if isinstance(where_search, list):
+            url_api = self.url_api.format(
+                url=self.url,
+                max_results=max_results,
+                what=what,
+                relation=relation,
+                where=where_search[0]
+            )
+            for key in where_search[1:]:
+                url_api = f'{url_api} OR {key} {relation} "{what}"'
+        else:
+            url_api = self.url_api.format(
+                url=self.url,
+                max_results=max_results,
+                what=what,
+                relation=relation,
+                where=where_search
+            )
+        return url_api
+
+    def clean_marc(self, json_data):
+        """Clean JSON data from unwanted tags."""
+        new_json_data = {}
+        new_order = []
+        if leader := json_data.get('leader'):
+            new_json_data = {'leader': leader}
+            new_order.append('leader')
+        for key in sorted(json_data.keys()):
+            # Don't use 9XX tag's
+            if (
+                key[0] != '9' and
+                key != 'leader' and
+                key != '__order__' and
+                key[:3].isdigit()
+            ):
+                new_json_data[key] = json_data[key]
+        new_order.extend(
+            key
+            for key in list(json_data['__order__'])
+            if (
+                key[0] != '9' and
+                key != 'leader' and
+                key[:3].isdigit()
+            )
+        )
+        new_json_data['__order__'] = new_order
+        return GroupableOrderedDict(new_json_data)
+
+    def search_records(self, what, relation, where='anywhere', max_results=0,
                        no_cache=False):
         """Get the records.
 
         :param what: what term to search
         :param relation: relation for what and where
         :param where: in witch index to search
-        :param max: maximum records to search
+        :param max_results: maximum records to search
         :param no_cache: do not use cache if true
         """
-        if max == 0:
-            max = self.max
+        def _split_stream(stream):
+            """Yield record elements from given XML stream."""
+            try:
+                for _, element in etree.iterparse(
+                        stream,
+                        tag='{http://www.loc.gov/zing/srw/}'
+                            'record'):
+                    yield element
+            except Exception:
+                current_app.logger.error(
+                    f'Import: {self.name} '
+                    'error: XML SPLIT '
+                    f'url: {url_api}'
+                )
+                return []
+
+        if max_results == 0:
+            max_results = self.max_results
         if self.name == 'LOC' and relation == "all":
             relation = "="
         self.init_results()
+        url_api = 'Not yet set'
         if not what:
             return self.results, 200
         try:
-            cache_key = f'{self.name}_{what}_{relation}_{where}_{max}'
+            cache_key = f'{self.name}_{what}_{relation}_{where}_{max_results}'
             cache = self.cache.get(cache_key)
             if cache and not no_cache:
                 cache_data = pickle.loads(cache)
                 self.results['hits'] = cache_data['hits']
                 self.data = cache_data['data']
+                self.status_code = 200
             else:
-                url_api = self.url_api.format(
-                    url=self.url,
-                    max=max,
+                url_api = self._create_sru_url(
                     what=what,
                     relation=relation,
-                    where=self.search.get(where)
+                    where=where,
+                    max_results=max_results
                 )
-                response = requests.get(url_api)
-                if not response.ok:
-                    self.status_code = 502
-                    response = {
-                        'metadata': {},
-                        'errors': {
-                            'code': self.status_code,
-                            'title': f'{self.name}: Bad status code!',
-                            'detail': f'Status code: {response.status_code}'
+                response = requests.get(
+                    url_api,
+                    timeout=(self.timeout_connect, self.timeout_request)
+                )
+                self.status_code = response.status_code
+                self.status_msg = 'Request error.'
+                response.raise_for_status()
+
+                for xml_record in _split_stream(BytesIO(response.content)):
+                    # convert xml in marc json
+                    json_data = self.clean_marc(create_record(xml_record))
+                    # Some BNF records are empty hmm...
+                    if not json_data.values():
+                        continue
+
+                    # convert marc json to local json format
+                    record = self.to_json_processor(json_data)
+
+                    id_ = self.get_id(json_data)
+                    if record and id_:
+                        data = {
+                            'id': id_,
+                            'links': {
+                                'self': self.get_link(id_),
+                                'marc21': self.get_marc21_link(id_)
+                            },
+                            'metadata': record,
+                            'source': self.name
                         }
+                        self.data.append(json_data)
+                        self.results['hits']['hits'].append(data)
+                        self.results['hits']['remote_total'] = int(
+                            etree.parse(BytesIO(response.content))
+                            .find('{*}numberOfRecords').text
+                        )
+                # save to cache if we have hits
+                if self.results['hits']['hits']:
+                    cache_data = {
+                        'hits': self.results['hits'],
+                        'data': self.data
                     }
-                    current_app.logger.error(
-                        '{title}: {detail}'.format(
-                            title=response.get('title'),
-                            detail=response.get('detail')))
-
-                else:
-                    def _split_stream(stream):
-                        """Yield record elements from given stream."""
-                        for _, element in etree.iterparse(
-                                stream,
-                                tag='{http://www.loc.gov/zing/srw/}'
-                                    'record'):
-                            yield element
-                    xml_records = _split_stream(BytesIO(response.content))
-
-                    for xml_record in xml_records:
-                        # convert xml in marc json
-                        json_data = create_record(xml_record)
-                        # Some BNF records are empty hmm...
-                        if not json_data.values():
-                            continue
-
-                        # convert marc json to local json format
-                        record = self.to_json_processor(json_data)
-
-                        id = self.get_id(json_data)
-                        if record:
-                            data = {
-                                'id': id,
-                                'links': {
-                                    'self': self.get_link(id),
-                                    'marc21': self.get_marc21_link(id)
-                                },
-                                'metadata': record,
-                                'source': self.name
-                            }
-                            self.data.append(json_data)
-                            self.results['hits']['hits'].append(data)
-                    self.results['hits']['remote_total'] = int(etree.parse(
-                            BytesIO(response.content))
-                            .find('{*}numberOfRecords').text)
-            self.results['hits']['total']['value'] = \
-                len(self.results['hits']['hits'])
-            if self.results['hits']['total']['value'] == 0:
-                self.status_code = 404
-                self.results['errors'] = {
-                    'code': self.status_code,
-                    'title': f'{self.name}: Not found: '
-                             f'{where} {relation} {what}'
-                    }
-            else:
-                cache_data = {
-                    'hits': self.results['hits'],
-                    'data': self.data
-                }
-                self.cache.setex(
-                    cache_key,
-                    timedelta(minutes=self.cache_expire),
-                    value=pickle.dumps(cache_data)
-                )
-                self.create_aggregations(self.results)
-                self.status_code = 200
-
-        # other errors
+                    self.cache.setex(
+                        cache_key,
+                        timedelta(minutes=self.cache_expire),
+                        value=pickle.dumps(cache_data)
+                    )
+            self.results['hits']['total']['value'] = len(
+                self.results['hits']['hits'])
+            self.create_aggregations(self.results)
+        except requests.exceptions.ConnectionError as error:
+            self.status_code = 433
+            self.status_msg = str(error)
+        except requests.exceptions.HTTPError as error:
+            current_app.logger.error(f'{type(error)} {error}')
+            self.status_code = error.response.status_code
+            self.status_msg = str(error)
+            current_app.logger.error(f'HTTPError: {traceback.format_exc()}')
         except Exception as error:
+            self.status_code = 500
+            self.status_msg = str(error)
+            current_app.logger.error(f'Exception: {traceback.format_exc()}')
+        if self.status_code > 400:
+            # TODO: enable error logging only for 500
+            # if self.status_code == 500:
             current_app.logger.error(
-                '{title}: {detail}'.format(
-                    title=f'{self.name} Error!',
-                    detail=f'Error: {error}'
-                )
+                f'Import: {self.name} '
+                f'code: {self.status_code} '
+                f'error: {self.status_msg} '
+                f'url: {url_api}'
             )
-            abort(500, description=f'Error: {error}')
+            self.results['errors'] = {
+                'code': self.status_code,
+                'message': self.status_msg,
+                'url': url_api
+            }
         return self.results, self.status_code
 
 
@@ -416,10 +492,10 @@ class BnfImport(Import):
     """Import class for BNF."""
 
     name = 'BNF'
-    url = 'http://catalogue.bnf.fr'
+    url = 'https://catalogue.bnf.fr'
     url_api = '{url}/api/SRU?'\
               'version=1.2&operation=searchRetrieve'\
-              '&recordSchema=unimarcxchange-anl&maximumRecords={max}'\
+              '&recordSchema=unimarcxchange-anl&maximumRecords={max_results}'\
               '&startRecord=1&query={where} {relation} "{what}"'
 
     # https://www.bnf.fr/sites/default/files/2019-04/tableau_criteres_sru.pdf
@@ -459,7 +535,7 @@ class LoCImport(Import):
     url = 'http://lx2.loc.gov:210'
     url_api = '{url}/lcdb?'\
               'version=1.2&operation=searchRetrieve'\
-              '&recordSchema=marcxml&maximumRecords={max}'\
+              '&recordSchema=marcxml&maximumRecords={max_results}'\
               '&startRecord=1&query={where} {relation} "{what}"'
 
     # http://www.loc.gov/standards/sru/resources/lcServers.html
@@ -484,7 +560,8 @@ class LoCImport(Import):
         :param id: json document
         :return: id of the record
         """
-        return json_data.get('010__').get('a').strip()
+        if json_data.get('010__'):
+            return json_data.get('010__').get('a').strip()
 
     def get_marc21_link(self, id):
         """Get direct link to marc21 record.
@@ -508,7 +585,7 @@ class DNBImport(Import):
     url = 'https://services.dnb.de'
     url_api = '{url}/sru/dnb?'\
               'version=1.1&operation=searchRetrieve'\
-              '&recordSchema=MARC21-xml&maximumRecords={max}'\
+              '&recordSchema=MARC21-xml&maximumRecords={max_results}'\
               '&startRecord=1&query={where} {relation} "{what}"'
 
     # https://www.dnb.de/EN/Professionell/Metadatendienste/Datenbezug/SRU/sru_node.html
@@ -541,6 +618,46 @@ class DNBImport(Import):
         return url_for('api_imports.import_dnb_record', **args)
 
 
+class SUDOCImport(Import):
+    """Import class for SUDOC."""
+
+    name = 'SUDOC'
+    url = 'https://www.sudoc.abes.fr'
+    url_api = '{url}/cbs/sru/?'\
+              'version=1.1&operation=searchRetrieve'\
+              '&recordSchema=unimarc&maximumRecords={max_results}'\
+              '&startRecord=1&query={where} {relation} "{what}"'
+
+    # https://abes.fr/wp-content/uploads/2023/05/guide-utilisation-service-sru-catalogue-sudoc.pdf
+    search = {
+        'ean': 'isb',
+        'anywhere': ['tou', 'num', 'ppn'],
+        'author': 'dc.creator',
+        'title': 'dc.title',
+        'doctype': 'tdo',
+        'recordid': 'ppn',
+        'isbn': 'isb',
+        'issn': 'isn',
+        'date': 'dc.date'
+    }
+
+    to_json_processor = unimarc.do
+
+    def get_marc21_link(self, id):
+        """Get direct link to marc21 record.
+
+        :param id: id to use for the link
+        :return: url for id
+        """
+        args = {
+            'id': id,
+            '_external': True,
+            current_app.config.get(
+                'REST_MIMETYPE_QUERY_ARG_NAME', 'format'): 'marc'
+        }
+        return url_for('api_imports.import_sudoc_record', **args)
+
+
 class SLSPImport(Import):
     """Import class for SLSP."""
 
@@ -548,7 +665,7 @@ class SLSPImport(Import):
     url = 'https://swisscovery.slsp.ch'
     url_api = '{url}/view/sru/41SLSP_NETWORK?'\
               'version=1.2&operation=searchRetrieve'\
-              '&recordSchema=marcxml&maximumRecords={max}'\
+              '&recordSchema=marcxml&maximumRecords={max_results}'\
               '&startRecord=1&query={where} {relation} "{what}"'
 
     # https://slsp.ch/fr/metadata
@@ -557,7 +674,7 @@ class SLSPImport(Import):
         'anywhere': 'alma.all_for_ui',
         'author': 'alma.author',
         'title': 'alma.title',
-        'recordid': 'alma.all_for_ui',
+        'recordid': 'alma.mms_id',
         'isbn': 'alma.isbn',
         'issn': 'alma.issn',
         'date': 'alma.date'
@@ -587,7 +704,7 @@ class UGentImport(Import):
     url = 'https://lib.ugent.be/sru'
     url_api = '{url}?'\
               'version=1.1&operation=searchRetrieve'\
-              '&recordSchema=marcxml&maximumRecords={max}'\
+              '&recordSchema=marcxml&maximumRecords={max_results}'\
               '&startRecord=1&query={where} {relation} "{what}"'
 
     # https://lib.ugent.be/sru
@@ -640,7 +757,7 @@ class KULImport(Import):
     url = 'https://eu.alma.exlibrisgroup.com'
     url_api = '{url}/view/sru/32KUL_LIBIS_NETWORK?'\
               'version=1.2&operation=searchRetrieve'\
-              '&recordSchema=marcxml&maximumRecords={max}'\
+              '&recordSchema=marcxml&maximumRecords={max_results}'\
               '&startRecord=1&query={where} {relation} "{what}"'
 
     # https://developers.exlibrisgroup.com/alma/integrations/sru/
@@ -648,7 +765,7 @@ class KULImport(Import):
         'anywhere': 'alma.all_for_ui',
         'author': 'alma.creator',
         'title': 'alma.title',
-        'recordid': 'alma.all_for_ui',
+        'recordid': 'alma.mms_id',
         'isbn': 'alma.isbn',
         'issn': 'alma.issn',
         'date': 'alma.date'
@@ -669,3 +786,41 @@ class KULImport(Import):
                 'REST_MIMETYPE_QUERY_ARG_NAME', 'format'): 'marc'
         }
         return url_for('api_imports.import_kul_record', **args)
+
+
+class RenouvaudImport(Import):
+    """Import class for Renouvaud."""
+
+    name = 'Renouvaud'
+    url = 'https://renouvaud.primo.exlibrisgroup.com'
+    url_api = '{url}/view/sru/41BCULAUSA_NETWORK?'\
+              'version=1.2&operation=searchRetrieve'\
+              '&recordSchema=marcxml&maximumRecords={max_results}'\
+              '&startRecord=1&query={where} {relation} "{what}"'
+    # https://slsp.ch/fr/metadata
+    # https://developers.exlibrisgroup.com/alma/integrations/sru/
+    search = {
+        'anywhere': 'alma.all_for_ui',
+        'author': 'alma.author',
+        'title': 'alma.title',
+        'recordid': 'alma.mms_id',
+        'isbn': 'alma.isbn',
+        'issn': 'alma.issn',
+        'date': 'alma.date'
+    }
+
+    to_json_processor = marc21_slsp.do
+
+    def get_marc21_link(self, id):
+        """Get direct link to marc21 record.
+
+        :param id: id to use for the link
+        :return: url for id
+        """
+        args = {
+            'id': id,
+            '_external': True,
+            current_app.config.get(
+                'REST_MIMETYPE_QUERY_ARG_NAME', 'format'): 'marc'
+        }
+        return url_for('api_imports.import_renouvaud_record', **args)

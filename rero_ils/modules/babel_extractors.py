@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -20,7 +20,7 @@
 import re
 
 import six
-from flask_babelex import gettext as _
+from flask_babel import gettext as _
 
 KEY_VAL_REGEX = re.compile(r'"(.*?)"\s*:\s*"(.*?)"')
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -40,6 +40,7 @@ class NotificationSubclassExtension(RecordExtension):
         from .subclasses.availability import \
             AvailabilityCirculationNotification
         from .subclasses.booking import BookingCirculationNotification
+        from .subclasses.claim_issue import ClaimSerialIssueNotification
         from .subclasses.recall import RecallCirculationNotification
         from .subclasses.reminder import ReminderCirculationNotification
         from .subclasses.request import RequestCirculationNotification
@@ -54,6 +55,7 @@ class NotificationSubclassExtension(RecordExtension):
             NotificationType.REQUEST: RequestCirculationNotification,
             NotificationType.TRANSIT_NOTICE: TransitCirculationNotification,
             NotificationType.ACQUISITION_ORDER: AcquisitionOrderNotification,
+            NotificationType.CLAIM_ISSUE: ClaimSerialIssueNotification
         }
         try:
             return mapping[record.type]

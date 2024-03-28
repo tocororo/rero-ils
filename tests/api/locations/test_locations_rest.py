@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2023 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -38,15 +38,19 @@ def test_location_pickup_locations(locations, patron_martigny,
     # At the beginning, if we load all locations from fixtures, there are 4
     # pickup locations (loc1, loc3, loc5, loc7)
     pickup_locations = Location.get_pickup_location_pids()
-    assert set(pickup_locations) == set(['loc1', 'loc3', 'loc5', 'loc7'])
+    assert set(pickup_locations) == {'loc1', 'loc3', 'loc5', 'loc7'}
 
     # check pickup restrictions by patron_pid
     pickup_locations = Location.get_pickup_location_pids(
         patron_pid=patron_martigny.pid)
-    assert set(pickup_locations) == set(['loc1', 'loc3', 'loc5'])
+    assert set(pickup_locations) == {'loc1', 'loc3', 'loc5'}
     pickup_locations = Location.get_pickup_location_pids(
         patron_pid=patron_sion.pid)
-    assert set(pickup_locations) == set(['loc7'])
+    assert set(pickup_locations) == {'loc7'}
+
+    # check ill pickup
+    pickup_locations = Location.get_pickup_location_pids(is_ill_pickup=True)
+    assert set(pickup_locations) == {'loc1', 'loc3', 'loc5'}
 
     # check pickup restrictions by item_barcode
     #   * update `loc1` to restrict_pickup_to 'loc3' and 'loc6'
@@ -63,7 +67,7 @@ def test_location_pickup_locations(locations, patron_martigny,
     flush_index(LocationsSearch.Meta.index)
     pickup_locations = Location.get_pickup_location_pids(
         item_pid=item2_lib_martigny.pid)
-    assert set(pickup_locations) == set(['loc3'])
+    assert set(pickup_locations) == {'loc3'}
 
     pickup_locations = Location.get_pickup_location_pids(
         patron_pid=patron_sion.pid,
@@ -87,49 +91,25 @@ def test_location_pickup_locations(locations, patron_martigny,
     flush_index(LocationsSearch.Meta.index)
 
 
-def test_locations_permissions(client, loc_public_martigny, json_header):
-    """Test record retrieval."""
-    item_url = url_for('invenio_records_rest.loc_item', pid_value='loc1')
-
-    res = client.get(item_url)
-    assert res.status_code == 401
-
-    res, _ = postdata(
-        client,
-        'invenio_records_rest.loc_list',
-        {}
-    )
-    assert res.status_code == 401
-
-    res = client.put(
-        item_url,
-        data={},
-        headers=json_header
-    )
-
-    res = client.delete(item_url)
-    assert res.status_code == 401
-
-
 @mock.patch('invenio_records_rest.views.verify_record_permission',
             mock.MagicMock(return_value=VerifyRecordPermissionPatch))
-def test_locations_get(client, loc_public_martigny):
+def test_locations_get(
+    client, loc_public_martigny, lib_martigny, org_martigny
+):
     """Test record retrieval."""
     location = loc_public_martigny
     item_url = url_for('invenio_records_rest.loc_item', pid_value=location.pid)
     list_url = url_for(
-        'invenio_records_rest.loc_list', q='pid:' + location.pid)
+        'invenio_records_rest.loc_list', q=f'pid:{location.pid}')
     item_url_with_resolve = url_for(
         'invenio_records_rest.loc_item',
         pid_value=location.pid,
-        resolve=1,
-        sources=1
+        resolve=1
     )
 
     res = client.get(item_url)
     assert res.status_code == 200
-
-    assert res.headers['ETag'] == '"{}"'.format(location.revision_id)
+    assert res.headers['ETag'] == f'"{location.revision_id}"'
 
     data = get_json(res)
     assert location.dumps() == data['metadata']
@@ -147,16 +127,17 @@ def test_locations_get(client, loc_public_martigny):
     # check resolve
     res = client.get(item_url_with_resolve)
     assert res.status_code == 200
-    data = get_json(res)
-    assert location.replace_refs().dumps() == data['metadata']
+    resolved_data = res.json['metadata']
+    assert '$ref' not in resolved_data['library'] and \
+        lib_martigny.pid == resolved_data['library']['pid'] and \
+        'lib' in resolved_data['library']['type']
 
     res = client.get(list_url)
     assert res.status_code == 200
-    data = get_json(res)
-    result = data['hits']['hits'][0]['metadata']
+    hit = res.json['hits']['hits'][0]['metadata']
     # organisation has been added during the indexing
-    del (result['organisation'])
-    assert result == location.replace_refs()
+    assert {'pid': org_martigny.pid, 'type': 'org'} == hit.pop('organisation')
+    assert hit == resolved_data
 
 
 @mock.patch('invenio_records_rest.views.verify_record_permission',
@@ -194,7 +175,6 @@ def test_locations_post_put_delete(client, lib_martigny,
         headers=json_header
     )
     assert res.status_code == 200
-    # assert res.headers['ETag'] != '"{}"'.format(librarie.revision_id)
 
     # Check that the returned record matches the given data
     data = get_json(res)
@@ -249,48 +229,6 @@ def test_filtered_locations_get(client, librarian_martigny,
     assert data['hits']['total']['value'] == 4
 
 
-def test_location_secure_api(client, json_header, loc_public_martigny,
-                             loc_public_fully, librarian_martigny,
-                             librarian_sion,
-                             system_librarian_martigny,
-                             system_librarian_sion):
-    """Test location secure api access."""
-    # Martigny
-    login_user_via_session(client, librarian_martigny.user)
-    record_url = url_for('invenio_records_rest.loc_item',
-                         pid_value=loc_public_martigny.pid)
-
-    res = client.get(record_url)
-    # a librarian is authorized to access any location of its library
-    assert res.status_code == 200
-
-    record_url = url_for('invenio_records_rest.loc_item',
-                         pid_value=loc_public_fully.pid)
-
-    res = client.get(record_url)
-    # a librarian is authorized to access any location of its organisation
-    assert res.status_code == 200
-
-    login_user_via_session(client, system_librarian_martigny.user)
-    res = client.get(record_url)
-    # a sys_librarian is authorized to access any location of its organisation
-    assert res.status_code == 200
-
-    # Sion
-    login_user_via_session(client, librarian_sion.user)
-    record_url = url_for('invenio_records_rest.loc_item',
-                         pid_value=loc_public_martigny.pid)
-
-    res = client.get(record_url)
-    # librarian is authorized to access any location of other organisation
-    assert res.status_code == 200
-
-    login_user_via_session(client, system_librarian_sion.user)
-    res = client.get(record_url)
-    # a sys_librarian is authorized to access any location of other org
-    assert res.status_code == 200
-
-
 def test_location_secure_api_create(client, lib_fully, lib_martigny,
                                     librarian_martigny,
                                     librarian_sion,
@@ -318,157 +256,17 @@ def test_location_secure_api_create(client, lib_fully, lib_martigny,
         'message': 'Validation error: Pickup location name field is required..'
     }
 
-    # Martigny
-    del loc_public_martigny_data['pid']
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        loc_public_martigny_data
-    )
-    # librarian is authorized to create a location in its library.
-    assert res.status_code == 201
 
-    del loc_public_fully_data['pid']
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        loc_public_fully_data
-    )
-    # librarian is not authorized to create a location in other libraries.
-    assert res.status_code == 403
-
-    login_user_via_session(client, system_librarian_martigny.user)
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        loc_public_fully_data
-    )
-    # sys_librarian is authorized to create any location in its org.
-    assert res.status_code == 201
-
-    # Sion
-    login_user_via_session(client, librarian_sion.user)
-
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        loc_public_martigny_data
-    )
-    # librarian is not authorized to create a location at other org.
-    assert res.status_code == 403
-
-    login_user_via_session(client, system_librarian_sion.user)
-    res, _ = postdata(
-        client,
-        post_entrypoint,
-        loc_public_martigny_data
-    )
-    # sys_librarian is authorized to create a location in other org.
-    assert res.status_code == 403
-
-
-def test_location_secure_api_update(client, loc_restricted_saxon,
-                                    loc_public_fully, loc_public_martigny,
-                                    librarian_martigny,
-                                    librarian_sion,
-                                    json_header,
-                                    system_librarian_martigny,
-                                    system_librarian_sion):
-    """Test location secure api update."""
-    # Martigny
+def test_location_serializers(
+    client, locations, librarian_martigny, rero_json_header
+):
+    """Test location serializers."""
     login_user_via_session(client, librarian_martigny.user)
-    record_url = url_for('invenio_records_rest.loc_item',
-                         pid_value=loc_public_martigny.pid)
-
-    loc_public_martigny['name'] = 'New Name'
-    res = client.put(
-        record_url,
-        data=json.dumps(loc_public_martigny),
-        headers=json_header
+    list_url = url_for('invenio_records_rest.loc_list')
+    response = client.get(list_url, headers=rero_json_header)
+    assert response.status_code == 200
+    assert all(
+        hit['metadata']['library'].get('code')
+        and hit['metadata']['library'].get('name')
+        for hit in response.json['hits']['hits']
     )
-    # librarian is authorized to update a location in its library.
-    assert res.status_code == 200
-
-    record_url = url_for('invenio_records_rest.loc_item',
-                         pid_value=loc_restricted_saxon.pid)
-
-    loc_restricted_saxon['name'] = 'New Name'
-    res = client.put(
-        record_url,
-        data=json.dumps(loc_restricted_saxon),
-        headers=json_header
-    )
-    # librarian is not authorized to update a location of another library.
-    assert res.status_code == 403
-
-    login_user_via_session(client, system_librarian_martigny.user)
-    res = client.put(
-        record_url,
-        data=json.dumps(loc_restricted_saxon),
-        headers=json_header
-    )
-    # sys_librarian is authorized to update any location of its org.
-    assert res.status_code == 200
-
-    # Sion
-    login_user_via_session(client, librarian_sion.user)
-
-    res = client.put(
-        record_url,
-        data=json.dumps(loc_restricted_saxon),
-        headers=json_header
-    )
-    # librarian is not authorized to update any location of another org.
-    assert res.status_code == 403
-
-    login_user_via_session(client, system_librarian_sion.user)
-    res = client.put(
-        record_url,
-        data=json.dumps(loc_restricted_saxon),
-        headers=json_header
-    )
-    assert res.status_code == 403
-
-
-def test_location_secure_api_delete(client, loc_restricted_saxon,
-                                    loc_restricted_martigny,
-                                    loc_public_martigny,
-                                    librarian_martigny,
-                                    librarian_sion,
-                                    system_librarian_martigny,
-                                    system_librarian_sion):
-    """Test location secure api delete."""
-
-    login_user_via_session(client, librarian_martigny.user)
-    record_url = url_for('invenio_records_rest.loc_item',
-                         pid_value=loc_restricted_martigny.pid)
-
-    res = client.delete(record_url)
-    # librarian is authorized to delete any location of its library.
-    assert res.status_code == 204
-
-    record_url = url_for('invenio_records_rest.loc_item',
-                         pid_value=loc_restricted_saxon.pid)
-
-    res = client.delete(record_url)
-    # librarian is not authorized to delete any location of other libraries.
-    assert res.status_code == 403
-
-    login_user_via_session(client, system_librarian_martigny.user)
-    res = client.delete(record_url)
-    # librarian is authorized to delete any location of its org.
-    assert res.status_code == 204
-
-    # Sion
-    login_user_via_session(client, librarian_sion.user)
-
-    record_url = url_for('invenio_records_rest.loc_item',
-                         pid_value=loc_public_martigny.pid)
-    res = client.delete(record_url)
-    # librarian is not authorized to delete any location of other org.
-    assert res.status_code == 403
-
-    login_user_via_session(client, system_librarian_sion.user)
-    res = client.delete(record_url)
-    # sys_ibrarian is not authorized to delete any location of other org.
-    assert res.status_code == 403

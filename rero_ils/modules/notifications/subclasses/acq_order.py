@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
-# Copyright (C) 2021 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -20,11 +20,9 @@
 
 from __future__ import absolute_import, print_function
 
-from abc import ABC, abstractmethod
-
+from flask import current_app
 from werkzeug.utils import cached_property
 
-from rero_ils.modules.acquisition.acq_orders.api import AcqOrder
 from rero_ils.modules.acquisition.acq_orders.dumpers import \
     AcqOrderNotificationDumper
 from rero_ils.modules.libraries.api import Library
@@ -34,7 +32,7 @@ from rero_ils.modules.notifications.models import NotificationChannel, \
 from rero_ils.modules.utils import extracted_data_from_ref
 
 
-class AcquisitionOrderNotification(Notification, ABC):
+class AcquisitionOrderNotification(Notification):
     """Acquisition order notifications class.
 
     An acquisition order notification is a message send to the vendor to order
@@ -60,10 +58,10 @@ class AcquisitionOrderNotification(Notification, ABC):
 
         # validate that at least one email of type `to` exist and one email of
         # type `reply_to` is given in the ist of emails.
-        recipient_types = set([
+        recipient_types = {
             recipient.get('type')
             for recipient in self.get('context', {}).get('recipients', [])
-        ])
+        }
         if RecipientType.TO not in recipient_types \
            or RecipientType.REPLY_TO not in recipient_types:
             return 'Recipient type `to` and `reply_to` are required'
@@ -75,7 +73,7 @@ class AcquisitionOrderNotification(Notification, ABC):
     def organisation_pid(self):
         """Get organisation pid for this notification.
 
-        The acquisition order notification inhirts its organistion links from
+        The acquisition order notification inherits its organisation links from
         its parent (order) record.
         """
         return self.order.organisation_pid
@@ -90,7 +88,7 @@ class AcquisitionOrderNotification(Notification, ABC):
         return str(self.id)
 
     def can_be_cancelled(self):
-        """Check if a notification can be canceled.
+        """Check if a notification can be cancelled.
 
         As notification process can be asynchronous, in some case, when the
         notification is processed, it's not anymore required to be sent.
@@ -112,13 +110,16 @@ class AcquisitionOrderNotification(Notification, ABC):
 
     def get_language_to_use(self):
         """Get the language to use for dispatching the notification."""
-        # By default the language to use to build the notification is defined
+        # By default, the language to use to build the notification is defined
         # in the vendor setting. Override this method if needed in the future.
-        return self.order.vendor.get('communication_language')
+        return self.order.vendor.get(
+            'communication_language',
+            current_app.config.get('RERO_ILS_APP_DEFAULT_LANGUAGE', 'eng')
+        )
 
     def get_template_path(self):
         """Get the template to use to render the notification."""
-        # By default the template path to use reflects the notification type.
+        # By default, the template path to use reflects the notification type.
         # Override this method if necessary
         return \
             f'rero_ils/vendor_order_mail/{self.get_language_to_use()}.tpl.txt'
@@ -131,7 +132,7 @@ class AcquisitionOrderNotification(Notification, ABC):
         the list of email addresses where to send the notification to.
 
         :param address_type: the recipient address type.
-        :return return email addresses list where send the notification to.
+        :returns: email addresses list where send the notification to.
         """
         return [
             recipient.get('address')
@@ -140,18 +141,17 @@ class AcquisitionOrderNotification(Notification, ABC):
         ]
 
     @classmethod
-    @abstractmethod
     def get_notification_context(cls, notifications=None):
         """Get the context to use to render the corresponding template.
 
         :param notifications: an array of ``Notification`` to parse to extract
-                              the required data to build the template.
-        :return: a ``dict`` containing all required data to build the template.
+            the required data to build the template.
+        :returns: a ``dict`` containing all required data to build the
+            template.
         """
-        context = {}
         notifications = notifications or []
         if not notifications:
-            return context
+            return {}
 
         notification = notifications[0]
         order = notification.order
@@ -168,7 +168,7 @@ class AcquisitionOrderNotification(Notification, ABC):
     @cached_property
     def order(self):
         """Shortcut for acquisition order related to the notification."""
-        return AcqOrder.get_record_by_pid(self.acq_order_pid)
+        return extracted_data_from_ref(self['context']['order'], data='record')
 
     @property
     def library_pid(self):

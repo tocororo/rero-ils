@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
-# Copyright (C) 2021 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -40,7 +40,7 @@ class InternalCirculationNotification(CirculationNotification, ABC):
     """
 
     def can_be_cancelled(self):
-        """Check if a notification can be canceled.
+        """Check if a notification can be cancelled.
 
         We need to call the loan to check all notification candidates and
         check if the corresponding notification type is into candidates.
@@ -69,7 +69,7 @@ class InternalCirculationNotification(CirculationNotification, ABC):
     @property
     def aggregation_key(self):
         """Get the aggregation key for this notification."""
-        # Internal notifications must be send to a library. No need to
+        # Internal notifications must be sent to a library. No need to
         # take care of the requested patron for these notifications.
         parts = [
             self.get_template_path(),
@@ -90,6 +90,5 @@ class InternalCirculationNotification(CirculationNotification, ABC):
         """Get notification recipient email addresses."""
         # Internal notification will be sent to the library, not to the
         # patron related to the loan.
-        recipient = self.library.get_email(self.type)
-        if recipient:
+        if recipient := self.library.get_email(self.type):
             return [recipient]

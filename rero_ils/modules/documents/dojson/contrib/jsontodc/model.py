@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -18,11 +18,12 @@
 """RERO-ILS Dublin Core model definition."""
 
 from dojson import Overdo, utils
-from flask_babelex import gettext as _
+from flask_babel import gettext as _
 
-from rero_ils.modules.contributions.utils import \
-    get_contribution_localized_value
-from rero_ils.modules.documents.utils import title_format_text_head
+from rero_ils.modules.documents.extensions import TitleExtension
+from rero_ils.modules.entities.models import EntityType
+from rero_ils.modules.entities.remote_entities.utils import \
+    get_entity_localized_value
 
 
 class DublinCoreOverdo(Overdo):
@@ -55,7 +56,7 @@ class DublinCoreOverdo(Overdo):
         titles = blob.get('title', [])
         bf_titles = list(filter(lambda t: t['type'] == 'bf:Title', titles))
 
-        text = title_format_text_head(
+        text = TitleExtension.format_text(
             titles=bf_titles,
             responsabilities=blob.get('responsibilityStatement', []),
             with_subtitle=True
@@ -84,14 +85,14 @@ CREATOR_ROLES = [
 @utils.ignore_value
 def json_to_contributors(self, key, value):
     """Get creators and contributors data."""
-    authorized_access_point = get_contribution_localized_value(
-        contribution=value.get('agent', {}),
+    authorized_access_point = get_entity_localized_value(
+        entity=value.get('entity', {}),
         key='authorized_access_point',
         language=dublincore.language
     )
     result = authorized_access_point
     if result is None:
-        result = value.get('agent', {}).get('preferred_name')
+        result = value.get('entity', {}).get('authorized_access_point')
 
     if result:
         if value.get('role') in CREATOR_ROLES:
@@ -211,11 +212,11 @@ def json_to_relations(self, key, value):
 def json_to_subject(self, key, value):
     """Get subject data."""
     result = ''
-    subject_type = value.get('type')
-    if subject_type in ['bf:Person', 'bf:Organisation', 'bf:Place']:
+    _type = value.get('type')
+    if _type in [EntityType.PERSON, EntityType.ORGANISATION, EntityType.PLACE]:
         # TODO: set the language
-        authorized_access_point = get_contribution_localized_value(
-            contribution=value,
+        authorized_access_point = get_entity_localized_value(
+            entity=value,
             key='authorized_access_point',
             language=dublincore.language
         )
@@ -223,13 +224,13 @@ def json_to_subject(self, key, value):
             result = authorized_access_point
         else:
             result = value.get('preferred_name')
-    elif subject_type == 'bf:Work':
+    elif _type == EntityType.WORK:
         work = []
         creator = value.get('creator')
         if creator:
             work.append(creator)
         work.append(value.get('title'))
         result = '. - '.join(work)
-    elif subject_type in ['bf:Topic', 'bf:Temporal']:
+    elif _type in [EntityType.TOPIC, EntityType.TEMPORAL]:
         result = value.get('term')
     return result or None

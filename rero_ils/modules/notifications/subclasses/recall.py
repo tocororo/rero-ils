@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
-# Copyright (C) 2021 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -22,7 +22,7 @@ from __future__ import absolute_import, print_function
 
 import ciso8601
 
-from rero_ils.modules.documents.dumpers import DocumentGenericDumper
+from rero_ils.modules.documents.dumpers import document_title_dumper
 from rero_ils.modules.items.models import ItemStatus
 from rero_ils.modules.libraries.dumpers import \
     LibraryCirculationNotificationDumper
@@ -40,7 +40,7 @@ class RecallCirculationNotification(CirculationNotification):
     """
 
     def can_be_cancelled(self):
-        """Check if a notification can be canceled.
+        """Check if a notification can be cancelled.
 
         A RECALL notification can be cancelled if the related item
         isn't ON_LOAN anymore.
@@ -77,22 +77,22 @@ class RecallCirculationNotification(CirculationNotification):
         include_address = notifications[0].get_communication_channel == \
             NotificationChannel.MAIL
         # Dump basic informations
-        context.update({
+        context |= {
             'include_patron_address': include_address,
             'patron': patron.dumps(dumper=PatronNotificationDumper()),
             'library': library.dumps(
                 dumper=LibraryCirculationNotificationDumper()),
             'loans': []
-        })
+        }
         # Add metadata for any ``notification.loan`` of the notifications list
-        doc_dumper = DocumentGenericDumper()
         for notification in notifications:
             end_date = notification.loan.get('end_date')
             if end_date:
                 end_date = ciso8601.parse_datetime(end_date)
                 end_date = end_date.strftime("%d.%m.%Y")
             context['loans'].append({
-                'document': notification.document.dumps(dumper=doc_dumper),
+                'document': notification.document.dumps(
+                    dumper=document_title_dumper),
                 'end_date': end_date
             })
         return context

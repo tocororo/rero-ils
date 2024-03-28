@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2023 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -25,9 +25,9 @@ import re
 
 from flask import Blueprint, abort, current_app, jsonify, render_template
 from flask import request as flask_request
-from flask_babelex import format_currency
-from flask_babelex import gettext as _
-from flask_babelex import lazy_gettext
+from flask_babel import format_currency
+from flask_babel import lazy_gettext
+from flask_babel import lazy_gettext as _
 from flask_breadcrumbs import register_breadcrumb
 from flask_login import current_user, login_required
 from flask_menu import register_menu
@@ -35,22 +35,26 @@ from flask_security import utils as security_utils
 from invenio_i18n.ext import current_i18n
 from invenio_oauth2server.decorators import require_api_auth
 
-from .api import Patron, PatronsSearch, current_librarian, current_patrons
-from .permissions import get_allowed_roles_management
-from .utils import user_has_patron
-from ..decorators import check_logged_as_librarian, check_logged_as_patron, \
-    check_logged_user_authentication
-from ..items.utils import item_pid_to_object
-from ..loans.api import get_loans_stats_by_patron_pid, get_overdue_loans
-from ..loans.utils import sum_for_fees
-from ..locations.api import Location
-from ..organisations.dumpers import OrganisationLoggedUserDumper
-from ..patron_transactions.utils import \
+from rero_ils.modules.decorators import check_logged_as_librarian, \
+    check_logged_as_patron, check_logged_user_authentication
+from rero_ils.modules.ill_requests.api import ILLRequestsSearch
+from rero_ils.modules.items.utils import item_pid_to_object
+from rero_ils.modules.loans.api import get_loans_stats_by_patron_pid, \
+    get_overdue_loans
+from rero_ils.modules.loans.utils import sum_for_fees
+from rero_ils.modules.locations.api import Location
+from rero_ils.modules.organisations.dumpers import OrganisationLoggedUserDumper
+from rero_ils.modules.patron_transactions.utils import \
     get_transactions_total_amount_for_patron
-from ..patron_types.api import PatronType, PatronTypesSearch
-from ..users.api import User
-from ..utils import extracted_data_from_ref, get_base_url
-from ...utils import remove_empties_from_dict
+from rero_ils.modules.patron_types.api import PatronType, PatronTypesSearch
+from rero_ils.modules.patrons.api import Patron, PatronsSearch, \
+    current_librarian, current_patrons
+from rero_ils.modules.patrons.permissions import get_allowed_roles_management
+from rero_ils.modules.patrons.utils import user_has_patron
+from rero_ils.modules.permissions import expose_actions_need_for_user
+from rero_ils.modules.users.api import User
+from rero_ils.modules.utils import extracted_data_from_ref, get_base_url
+from rero_ils.utils import remove_empties_from_dict
 
 api_blueprint = Blueprint(
     'api_patrons',
@@ -79,12 +83,15 @@ def patron_circulation_informations(patron_pid):
     )
     engaged_amount = get_transactions_total_amount_for_patron(
         patron.pid, status='open')
+    statistics = get_loans_stats_by_patron_pid(patron_pid)
+    statistics['ill_requests'] = ILLRequestsSearch() \
+        .get_ill_requests_total_for_patron(patron_pid)
     return jsonify({
         'fees': {
           'engaged': engaged_amount,
           'preview': preview_amount
         },
-        'statistics': get_loans_stats_by_patron_pid(patron_pid),
+        'statistics': statistics,
         'messages': patron.get_circulation_messages()
     })
 
@@ -116,30 +123,23 @@ blueprint = Blueprint(
 
 @blueprint.route('/patrons/logged_user', methods=['GET'])
 def logged_user():
-    """Current logged user informations in JSON."""
+    """Current logged user information in JSON."""
+    config = current_app.config
     data = {
+        'permissions': expose_actions_need_for_user(),
         'settings': {
             'language': current_i18n.locale.language,
-            'globalView': current_app.config.get(
-                'RERO_ILS_SEARCH_GLOBAL_VIEW_CODE'),
+            'globalView': config.get('RERO_ILS_SEARCH_GLOBAL_VIEW_CODE'),
             'baseUrl': get_base_url(),
-            'contributionAgentTypes': current_app.config.get(
-                'RERO_ILS_CONTRIBUTIONS_AGENT_TYPES', {}),
-            'contributionsLabelOrder': current_app.config.get(
-                'RERO_ILS_CONTRIBUTIONS_LABEL_ORDER', {}),
-            'contributionSources': current_app.config.get(
-                'RERO_ILS_CONTRIBUTIONS_SOURCES', []
-            ),
-            'operationLogs': current_app.config.get(
-                'RERO_ILS_ENABLE_OPERATION_LOG', []
-            ),
-            'librarianRoles': current_app.config.get(
-                'RERO_ILS_LIBRARIAN_ROLES', []
-            ),
+            'agentLabelOrder': config.get('RERO_ILS_AGENTS_LABEL_ORDER', {}),
+            'agentSources': config.get('RERO_ILS_AGENTS_SOURCES', []),
+            'operationLogs': config.get('RERO_ILS_ENABLE_OPERATION_LOG', []),
+            'documentAdvancedSearch': config.get(
+                'RERO_ILS_APP_DOCUMENT_ADVANCED_SEARCH', False),
             'userProfile': {
-                'readOnly': current_app.config.get(
+                'readOnly': config.get(
                     'RERO_PUBLIC_USERPROFILES_READONLY', False),
-                'readOnlyFields': current_app.config.get(
+                'readOnlyFields': config.get(
                     'RERO_PUBLIC_USERPROFILES_READONLY_FIELDS', []),
             }
         }
@@ -147,18 +147,18 @@ def logged_user():
     if not current_user.is_authenticated:
         return jsonify(data)
 
-    user = User.get_by_id(current_user.id).dumps_metadata()
+    user = User.get_record(current_user.id).dumps_metadata()
     user['id'] = current_user.id
     data = {**data, **user, 'patrons': []}
     for patron in Patron.get_patrons_by_user(current_user):
         patron.pop('$schema', None)
         patron.pop('user_id', None)
         patron.pop('notes', None)
-        patron['organisation'] = patron.get_organisation().dumps(
+        patron['organisation'] = patron.organisation.dumps(
             dumper=OrganisationLoggedUserDumper())
         patron['libraries'] = [
-            {'pid': extracted_data_from_ref(library)}
-            for library in patron.get('libraries', [])
+            {'pid': pid}
+            for pid in patron.manageable_library_pids
         ]
         data['patrons'].append(patron)
 
@@ -232,7 +232,7 @@ def get_messages(patron_pid):
     """Get messages for the current user."""
     patron = Patron.get_record_by_pid(patron_pid)
     messages = patron.get_circulation_messages(True)
-    if patron.get_pending_subscriptions():
+    if patron.pending_subscriptions:
         messages.append({
             'type': 'warning',
             'content': _('You have a pending subscription fee.')
@@ -339,30 +339,38 @@ def info():
         # TODO: make this non rero specific using a configuration
         return institution['code'] if institution['code'] != 'nj' else 'rbnj'
 
+    user = User.get_record(current_user.id).dumps_metadata()
+
     # Process for all patrons
     patrons = copy.deepcopy(current_patrons)
     for patron in patrons:
-        patron['institution'] = patron.get_organisation()
+        patron['institution'] = patron.organisation
         patron['patron']['type'] = PatronType.get_record_by_pid(
             extracted_data_from_ref(patron['patron']['type']['$ref']))
 
-    # Stores the main patron
-    patron = get_main_patron(patrons)
-
+    # Birthdate
     data = {}
+    birthdate = current_user.user_profile.get('birth_date')
+    if 'birthdate' in token_scopes and birthdate:
+        data['birthdate'] = birthdate
+    # Full name
+    name_parts = [
+        current_user.user_profile.get('last_name', '').strip(),
+        current_user.user_profile.get('first_name', '').strip()
+    ]
+    fullname = ', '.join(filter(None, name_parts))
+    if 'fullname' in token_scopes and fullname:
+        data['fullname'] = fullname
 
+    # No patrons found for user
+    if not patrons:
+        return jsonify(data)
+
+    # Get the main patron
+    patron = get_main_patron(patrons)
     # Barcode
     if patron.get('patron', {}).get('barcode'):
         data['barcode'] = patron['patron']['barcode'][0]
-
-    # Full name
-    if 'fullname' in token_scopes:
-        data['fullname'] = patron.formatted_name
-
-    # Birthdate
-    if 'birthdate' in token_scopes:
-        data['birthdate'] = current_user.profile.birth_date.isoformat()
-
     # Patron types
     if 'patron_types' in token_scopes:
         patron_types = []
@@ -385,3 +393,27 @@ def info():
             data['patron_types'] = patron_types
 
     return jsonify(data)
+
+
+@blueprint.add_app_template_global
+def patron_message():
+    """Get patron message."""
+    if not current_patrons:
+        return
+    data = {
+        'show_info': False,
+        'data': {}
+    }
+    for patron in current_patrons:
+        if (patron.is_blocked or patron.is_expired):
+            data['show_info'] = True
+        organisation = patron.organisation
+        data['data'][organisation['code']] = {
+            'name': organisation['name'],
+            'blocked': {
+                'is_blocked': patron.is_blocked,
+                'message': patron.get_blocked_message(public=True)
+            },
+            'is_expired': patron.is_expired
+        }
+    return data

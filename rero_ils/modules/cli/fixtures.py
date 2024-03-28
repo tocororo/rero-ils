@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
-# Copyright (C) 2020 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -30,6 +30,8 @@ from uuid import uuid4
 import click
 from flask import current_app
 from flask.cli import with_appcontext
+from invenio_access import current_access
+from invenio_access.models import ActionRoles, ActionSystemRoles, Role
 from invenio_db import db
 from invenio_jsonschemas.proxies import current_jsonschemas
 from invenio_pidstore.models import PersistentIdentifier, PIDStatus
@@ -73,6 +75,59 @@ fixtures.add_command(dump_operation_logs)
 fixtures.add_command(destroy_operation_logs)
 
 
+def load_role_policies(data):
+    """Set the action roles policies.
+
+    :param data: dictionary configuration
+    :return: True if success
+    """
+    for action_name, role_names in data.items():
+        action = current_access.actions.get(action_name)
+        for role_name in role_names:
+            role = Role.query.filter(Role.name == role_name).first()
+            db.session.add(ActionRoles.allow(action, role=role))
+    db.session.commit()
+    return True
+
+
+def load_system_role_policies(data):
+    """Set the action system_role policies.
+
+    :param data: dictionary configuration
+    :return: True if success.
+    """
+    for action_name, system_roles in data.items():
+        action = current_access.actions.get(action_name)
+        for name in system_roles:
+            db.session.add(ActionSystemRoles.allow(action, role_name=name))
+    db.session.commit()
+    return True
+
+
+@fixtures.command('import_role_policies')
+@with_appcontext
+@click.argument('infile', type=click.File('r'), default=sys.stdin)
+def import_role_policies(infile):
+    """Import the action roles policies.
+
+    :param infile: Json file
+    """
+    if load_role_policies(json.load(infile)):
+        click.secho('Success', fg='green')
+
+
+@fixtures.command('import_system_role_policies')
+@with_appcontext
+@click.argument('infile', type=click.File('r'), default=sys.stdin)
+def import_system_role_policies(infile):
+    """Import the action system roles policies.
+
+    :param infile: Json file
+    """
+    if load_system_role_policies(json.load(infile)):
+        click.secho('Success', fg='green')
+
+
 @fixtures.command('create')
 @click.option('-u', '--create_or_update', 'create_or_update', is_flag=True,
               default=False)
@@ -80,7 +135,8 @@ fixtures.add_command(destroy_operation_logs)
 @click.option('-r', '--reindex', 'reindex', is_flag=True, default=False)
 @click.option('-c', '--dbcommit', 'dbcommit', is_flag=True, default=False)
 @click.option('-C', '--commit', 'commit', default=100000)
-@click.option('-v', '--verbose', 'verbose', is_flag=True, default=True)
+@click.option('-v', '--verbose/--no-verbose', 'verbose',
+              is_flag=True, default=True)
 @click.option('-d', '--debug', 'debug', is_flag=True, default=False)
 @click.option('-s', '--schema', 'schema', default=None)
 @click.option('-t', '--pid_type', 'pid_type', default=None)

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2022 RERO
-# Copyright (C) 2022 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -17,23 +17,37 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """Permissions for Acquisition order line."""
+from invenio_access import action_factory
 
-from rero_ils.modules.permissions import AcquisitionPermission
+from rero_ils.modules.permissions import AllowedByAction, \
+    AllowedByActionRestrictByManageableLibrary, DisallowedIfRollovered, \
+    RecordPermissionPolicy
 
 from .api import AcqOrderLine
 
+# Actions to control acquisition order lines resource policies
+search_action = action_factory('acol-search')
+read_action = action_factory('acol-read')
+create_action = action_factory('acol-create')
+update_action = action_factory('acol-update')
+delete_action = action_factory('acol-delete')
+access_action = action_factory('acol-access')
 
-class AcqOrderLinePermission(AcquisitionPermission):
-    """Acquisition order line permissions."""
 
-    @classmethod
-    def _rolled_over(cls, record):
-        """Check if record attached to rolled over budget.
+class AcqOrderLinePermissionPolicy(RecordPermissionPolicy):
+    """Acquisition order line permission policy used by the CRUD operations."""
 
-        :param record: Record to check.
-        :return: True if action can be done.
-        """
-        # ensure class type for sent record
-        if not isinstance(record, AcqOrderLine):
-            record = AcqOrderLine(record)
-        return record.is_active
+    can_search = [AllowedByAction(search_action)]
+    can_read = [AllowedByActionRestrictByManageableLibrary(read_action)]
+    can_create = [
+        AllowedByActionRestrictByManageableLibrary(create_action),
+        DisallowedIfRollovered(AcqOrderLine)
+    ]
+    can_update = [
+        AllowedByActionRestrictByManageableLibrary(update_action),
+        DisallowedIfRollovered(AcqOrderLine)
+    ]
+    can_delete = [
+        AllowedByActionRestrictByManageableLibrary(delete_action),
+        DisallowedIfRollovered(AcqOrderLine)
+    ]

@@ -1,0 +1,70 @@
+{
+  "title": "Link to a subject",
+  "type": "object",
+  "additionalProperties": false,
+  "propertiesOrder": [
+    "$ref"
+  ],
+  "required": [
+    "$ref"
+  ],
+  "properties": {
+    "$ref": {
+      "title": "Subject",
+      "type": "string",
+      "pattern": "^(https://mef.rero.ch/api/(agents|concepts|places)/(gnd|idref|rero)/.*|https://bib.rero.ch/api/local_entities/.*?)$",
+      "widget": {
+        "formlyConfig": {
+          "type": "entityTypeahead",
+          "wrappers": [
+            "form-field-horizontal"
+          ],
+          "props": {
+            "filters": {
+              "default": "bf:Topic",
+              "options": [
+                {
+                  "label": "Topic",
+                  "value": "bf:Topic"
+                },
+                {
+                  "label": "Person",
+                  "value": "bf:Person"
+                },
+                {
+                  "label": "bf:Organisation",
+                  "value": "bf:Organisation"
+                },
+                {
+                  "label": "Place",
+                  "value": "bf:Place"
+                },
+                {
+                  "label": "Temporal",
+                  "value": "bf:Temporal"
+                },
+                {
+                  "label": "Work",
+                  "value": "bf:Work"
+                }
+              ]
+            },
+            "itemCssClass": "col-12"
+          }
+        }
+      }
+    },
+    "pid": {
+      "title": "MEF ID",
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "widget": {
+    "formlyConfig": {
+      "props": {
+        "containerCssClass": "row"
+      }
+    }
+  }
+}

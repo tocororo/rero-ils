@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -18,7 +18,7 @@
 """Acquisition Receipt line record extensions."""
 from datetime import datetime
 
-from flask_babelex import gettext as _
+from flask_babel import gettext as _
 from invenio_records.extensions import RecordExtension
 from jsonschema import ValidationError
 from sqlalchemy.orm.exc import NoResultFound
@@ -53,7 +53,7 @@ class AcqReceiptLineValidationExtension(RecordExtension):
 
         original_quantity = 0
         try:
-            original_record = record.__class__.get_record_by_id(record.id)
+            original_record = record.__class__.get_record(record.id)
             original_quantity = original_record.quantity
         except NoResultFound:
             # it's probably because the record isn't yet into DB (but `id`

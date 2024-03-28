@@ -71,7 +71,7 @@ def test_selfcheck_login(librarian_martigny, selfcheck_librarian_martigny):
     assert response.get('authenticated')
 
 
-def test_authorize_patron(selfcheck_patron_martigny):
+def test_authorize_patron(selfcheck_patron_martigny, default_user_password):
     """Test authorize patron."""
 
     # try to authorize with wrong password
@@ -86,11 +86,11 @@ def test_authorize_patron(selfcheck_patron_martigny):
     # authorize patron with email
     response = authorize_patron(
         selfcheck_patron_martigny.get('patron', {}).get('barcode')[0],
-        selfcheck_patron_martigny.dumps().get('birth_date'))
+        default_user_password)
     assert response
 
     # authorize patron without email (using username for authentication)
-    user = User.get_by_id(selfcheck_patron_martigny.user.id)
+    user = User.get_record(selfcheck_patron_martigny.user.id)
     user_metadata = user.dumps_metadata()
     email = user_metadata.pop('email', None)
     user.update(user_metadata)
@@ -98,11 +98,11 @@ def test_authorize_patron(selfcheck_patron_martigny):
         selfcheck_patron_martigny.pid)
     response = authorize_patron(
         selfcheck_patron_martigny.get('patron', {}).get('barcode')[0],
-        selfcheck_patron_martigny.dumps().get('birth_date'))
+        default_user_password)
     assert response
 
     # reset user data
-    user = User.get_by_id(selfcheck_patron_martigny.user.id)
+    user = User.get_record(selfcheck_patron_martigny.user.id)
     user_metadata = user.dumps_metadata()
     user_metadata['email'] = email
     user.update(user_metadata)

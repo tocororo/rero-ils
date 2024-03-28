@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -27,6 +27,10 @@ class OperationLogsJSONSerializer(JSONSerializer, CachedDataSerializerMixin):
 
     def _postprocess_search_hit(self, hit: dict) -> None:
         """Post-process each hit of a search result."""
+        # add library name if the library entry exists.
+        if library := hit.get('metadata', {}).get('library'):
+            library['name'] = self.get_resource(
+                LibrariesSearch(), library.get('value'))['name']
         if 'loan' in (metadata := hit.get('metadata', {})):
             # enrich `transaction_location` and `pickup_location` fields with
             # related library information

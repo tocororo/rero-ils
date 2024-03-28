@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
-# Copyright (C) 2021 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -24,9 +24,9 @@ from rero_ils.modules.acquisition.acq_accounts.dumpers import \
     AcqAccountGenericDumper
 from rero_ils.modules.acquisition.acq_order_lines.models import \
     AcqOrderLineNoteType
+from rero_ils.modules.acquisition.dumpers import document_acquisition_dumper
 from rero_ils.modules.commons.identifiers import IdentifierType
-from rero_ils.modules.documents.dumpers import DocumentAcquisitionDumper
-from rero_ils.modules.documents.utils import title_format_text_head
+from rero_ils.modules.documents.extensions import TitleExtension
 
 
 class AcqOrderLineESDumper(InvenioRecordsDumper):
@@ -69,7 +69,7 @@ class AcqOrderLineESDumper(InvenioRecordsDumper):
 
         data['document'] = {
             'pid': document.pid,
-            'title': title_format_text_head(document.get('title', [])),
+            'title': TitleExtension.format_text(document.get('title', [])),
             'identifiers': identifiers
         }
         data['document'] = {k: v for k, v in data['document'].items() if v}
@@ -92,7 +92,7 @@ class AcqOrderLineNotificationDumper(InvenioRecordsDumper):
             'note': record.get_note(AcqOrderLineNoteType.VENDOR),
             'account': record.account.dumps(dumper=AcqAccountGenericDumper()),
             'document': record.document.dumps(
-                dumper=DocumentAcquisitionDumper())
+                dumper=document_acquisition_dumper)
         })
         data = {k: v for k, v in data.items() if v}
         return data

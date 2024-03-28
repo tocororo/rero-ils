@@ -1,0 +1,856 @@
+{
+  "acac-access": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acac-transfer": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acac-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acac-read": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acac-create": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acac-update": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acac-delete": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acin-access": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acin-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acin-read": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acin-create": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acin-update": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acin-delete": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acol-access": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acol-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acol-read": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acol-create": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acol-update": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acol-delete": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acor-access": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acor-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acor-read": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acor-create": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acor-update": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acor-delete": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acre-access": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acre-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acre-read": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acre-create": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acre-update": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acre-delete": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acrl-access": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acrl-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acrl-read": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acrl-create": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acrl-update": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "acrl-delete": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "budg-access": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "budg-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "budg-read": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "cipo-access": [
+    "pro_library_administrator",
+    "pro_full_permissions"
+  ],
+  "cipo-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "cipo-read": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "cipo-create": [
+    "pro_full_permissions"
+  ],
+  "cipo-update": [
+    "pro_full_permissions"
+  ],
+  "cipo-delete": [
+    "pro_full_permissions"
+  ],
+  "coll-access": [
+    "pro_full_permissions",
+    "pro_circulation_manager",
+    "pro_library_administrator",
+    "pro_catalog_manager"
+  ],
+  "coll-create": [
+    "pro_full_permissions",
+    "pro_circulation_manager",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "coll-update": [
+    "pro_full_permissions",
+    "pro_circulation_manager",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "coll-delete": [
+    "pro_full_permissions",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "doc-create": [
+    "document_importer",
+    "pro_full_permissions",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "doc-update": [
+    "document_importer",
+    "pro_full_permissions",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "doc-delete": [
+    "document_importer",
+    "pro_full_permissions",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "hold-create": [
+    "pro_full_permissions",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "hold-update": [
+    "pro_full_permissions",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "hold-delete": [
+    "pro_full_permissions",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "item-create": [
+    "pro_full_permissions",
+    "pro_circulation_manager",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "item-update": [
+    "pro_full_permissions",
+    "pro_circulation_manager",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "item-delete": [
+    "pro_full_permissions",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "illr-access": [
+    "pro_full_permissions",
+    "pro_library_administrator",
+    "pro_circulation_manager"
+  ],
+  "illr-search": [
+    "patron",
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "illr-read": [
+    "patron",
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "illr-create": [
+    "patron",
+    "pro_full_permissions",
+    "pro_circulation_manager",
+    "pro_library_administrator"
+  ],
+  "illr-update": [
+    "pro_full_permissions",
+    "pro_circulation_manager",
+    "pro_library_administrator"
+  ],
+  "itty-access": [
+    "pro_library_administrator",
+    "pro_full_permissions"
+  ],
+  "itty-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "itty-read": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "itty-create": [
+    "pro_full_permissions"
+  ],
+  "itty-update": [
+    "pro_full_permissions"
+  ],
+  "itty-delete": [
+    "pro_full_permissions"
+  ],
+  "lib-access": [
+    "pro_full_permissions",
+    "pro_library_administrator"
+  ],
+  "lib-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "lib-read": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "lib-create": [
+    "pro_full_permissions",
+    "pro_library_administrator"
+  ],
+  "lib-update": [
+    "pro_full_permissions",
+    "pro_library_administrator"
+  ],
+  "lib-delete": [
+    "pro_full_permissions",
+    "pro_library_administrator"
+  ],
+  "loan-access": [
+    "pro_full_permissions",
+    "pro_library_administrator",
+    "pro_circulation_manager"
+  ],
+  "loan-search": [
+    "patron",
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "loan-read": [
+    "patron",
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "loc-access": [
+    "pro_full_permissions",
+    "pro_library_administrator"
+  ],
+  "loc-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "loc-read": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "loc-create": [
+    "pro_full_permissions",
+    "pro_library_administrator"
+  ],
+  "loc-update": [
+    "pro_full_permissions",
+    "pro_library_administrator"
+  ],
+  "loc-delete": [
+    "pro_full_permissions",
+    "pro_library_administrator"
+  ],
+  "lofi-access": [
+    "pro_full_permissions",
+    "pro_library_administrator",
+    "pro_catalog_manager"
+  ],
+  "lofi-create": [
+    "pro_full_permissions",
+    "pro_circulation_manager",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "lofi-update": [
+    "pro_full_permissions",
+    "pro_circulation_manager",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "lofi-delete": [
+    "pro_full_permissions",
+    "pro_circulation_manager",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "notif-access": [
+    "pro_full_permissions",
+    "pro_library_administrator"
+  ],
+  "notif-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "notif-update": [
+    "pro_full_permissions",
+    "pro_library_administrator"
+  ],
+  "notif-create": [
+    "pro_full_permissions",
+    "pro_library_administrator"
+  ],
+  "notif-delete": [
+    "pro_full_permissions",
+    "pro_library_administrator"
+  ],
+  "oplg-access": [
+    "pro_full_permissions",
+    "pro_library_administrator",
+    "pro_catalog_manager",
+    "pro_circulation_manager"
+  ],
+  "oplg-read": [
+    "pro_full_permissions",
+    "pro_read_only"
+  ],
+  "org-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "org-read": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "org-update": [
+    "pro_full_permissions"
+  ],
+  "pttr-access": [
+    "pro_full_permissions",
+    "pro_library_administrator",
+    "pro_circulation_manager"
+  ],
+  "pttr-update": [
+    "pro_full_permissions",
+    "pro_library_administrator",
+    "pro_user_manager",
+    "pro_circulation_manager"
+  ],
+  "pttr-create": [
+    "pro_full_permissions",
+    "pro_library_administrator",
+    "pro_user_manager",
+    "pro_circulation_manager"
+  ],
+  "pttr-delete": [
+    "pro_full_permissions",
+    "pro_library_administrator",
+    "pro_user_manager",
+    "pro_circulation_manager"
+  ],
+  "ptrn-access": [
+    "pro_full_permissions",
+    "pro_library_administrator",
+    "pro_user_manager"
+  ],
+  "ptrn-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "ptrn-read": [
+    "patron",
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "ptrn-create": [
+    "pro_user_manager",
+    "pro_library_administrator",
+    "pro_full_permissions"
+  ],
+  "ptrn-update": [
+    "pro_user_manager",
+    "pro_library_administrator",
+    "pro_full_permissions"
+  ],
+  "ptrn-delete": [
+    "pro_user_manager",
+    "pro_library_administrator",
+    "pro_full_permissions"
+  ],
+  "ptty-access": [
+    "pro_library_administrator",
+    "pro_full_permissions"
+  ],
+  "ptty-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "ptty-read": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "ptty-create": [
+    "pro_full_permissions"
+  ],
+  "ptty-update": [
+    "pro_full_permissions"
+  ],
+  "ptty-delete": [
+    "pro_full_permissions"
+  ],
+  "ptre-access": [
+    "pro_full_permissions",
+    "pro_library_administrator",
+    "pro_circulation_manager"
+  ],
+  "ptre-update": [
+    "pro_full_permissions",
+    "pro_library_administrator",
+    "pro_user_manager",
+    "pro_circulation_manager"
+  ],
+  "ptre-create": [
+    "pro_full_permissions",
+    "pro_library_administrator",
+    "pro_user_manager",
+    "pro_circulation_manager"
+  ],
+  "ptre-delete": [
+    "pro_full_permissions",
+    "pro_library_administrator",
+    "pro_user_manager",
+    "pro_circulation_manager"
+  ],
+  "stat-access": [
+    "pro_full_permissions",
+    "pro_statistic_manager",
+    "pro_library_administrator"
+  ],
+  "stat-search": [
+    "pro_full_permissions",
+    "pro_statistic_manager",
+    "pro_library_administrator"
+  ],
+  "stat-read": [
+    "pro_full_permissions",
+    "pro_statistic_manager",
+    "pro_library_administrator"
+  ],
+  "stat_cfg-access": [
+    "pro_full_permissions",
+    "pro_statistic_manager",
+    "pro_library_administrator"
+  ],
+  "stat_cfg-search": [
+    "pro_full_permissions",
+    "pro_statistic_manager",
+    "pro_library_administrator"
+  ],
+  "stat_cfg-read": [
+    "pro_full_permissions",
+    "pro_statistic_manager",
+    "pro_library_administrator"
+  ],
+  "stat_cfg-create": [
+    "pro_full_permissions",
+    "pro_statistic_manager",
+    "pro_library_administrator"
+  ],
+  "stat_cfg-update": [
+    "pro_full_permissions",
+    "pro_statistic_manager",
+    "pro_library_administrator"
+  ],
+  "stat_cfg-delete": [
+    "pro_full_permissions",
+    "pro_statistic_manager",
+    "pro_library_administrator"
+  ],
+  "tmpl-access": [
+    "pro_full_permissions",
+    "pro_library_administrator",
+    "pro_user_manager",
+    "pro_catalog_manager"
+  ],
+  "tmpl-search": [
+    "pro_read_only",
+    "pro_full_permissions",
+    "pro_catalog_manager",
+    "pro_user_manager",
+    "pro_library_administrator"
+  ],
+  "tmpl-read": [
+    "pro_read_only",
+    "pro_full_permissions",
+    "pro_catalog_manager",
+    "pro_user_manager",
+    "pro_library_administrator"
+  ],
+  "tmpl-update": [
+    "pro_full_permissions",
+    "pro_catalog_manager",
+    "pro_user_manager",
+    "pro_library_administrator"
+  ],
+  "tmpl-create": [
+    "pro_full_permissions",
+    "pro_catalog_manager",
+    "pro_user_manager",
+    "pro_library_administrator"
+  ],
+  "tmpl-delete": [
+    "pro_full_permissions",
+    "pro_catalog_manager",
+    "pro_user_manager",
+    "pro_library_administrator"
+  ],
+  "vndr-access": [
+    "pro_full_permissions",
+    "pro_library_administrator",
+    "pro_catalog_manager",
+    "pro_acquisition_manager"
+  ],
+  "vndr-search": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "vndr-read": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "vndr-update": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "vndr-create": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "vndr-delete": [
+    "pro_full_permissions",
+    "pro_acquisition_manager",
+    "pro_library_administrator"
+  ],
+  "late-issue-management": [
+    "pro_full_permissions",
+    "pro_catalog_manager",
+    "pro_library_administrator"
+  ],
+  "admin-ui-access": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator",
+    "pro_entity_manager"
+  ],
+  "access-circulation": [
+    "pro_circulation_manager",
+    "pro_library_administrator",
+    "pro_full_permissions"
+  ],
+  "can-use-debug-mode": [
+    "pro_full_permissions",
+    "pro_library_administrator"
+  ],
+  "permission-management": [
+    "admin",
+    "pro_full_permissions"
+  ],
+  "locent-access": [
+    "pro_full_permissions",
+    "pro_read_only",
+    "pro_catalog_manager",
+    "pro_circulation_manager",
+    "pro_user_manager",
+    "pro_acquisition_manager",
+    "pro_library_administrator",
+    "pro_entity_manager"
+  ],
+  "locent-update": [
+    "pro_full_permissions",
+    "pro_entity_manager",
+    "pro_library_administrator"
+  ],
+  "locent-create": [
+    "pro_full_permissions",
+    "pro_entity_manager",
+    "pro_library_administrator"
+  ],
+  "locent-delete": [
+    "pro_full_permissions",
+    "pro_entity_manager",
+    "pro_library_administrator"
+  ]
+}

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
-# Copyright (C) 2020 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -26,14 +26,14 @@ from .utils import set_timestamp
 
 
 @shared_task(ignore_result=True)
-def process_bulk_queue(version_type=None, queue=None, es_bulk_kwargs=None,
+def process_bulk_queue(version_type=None, queue=None, search_bulk_kwargs=None,
                        stats_only=True):
     """Process bulk indexing queue.
 
     :param str version_type: Elasticsearch version type.
-    :param Queue queue: Queue tu use.
+    :param Queue queue: Queue to use.
     :param str routing_key: Routing key to use.
-    :param dict es_bulk_kwargs: Passed to
+    :param dict search_bulk_kwargs: Passed to
         :func:`elasticsearch:elasticsearch.helpers.bulk`.
     :param boolean stats_only: if `True` only report number of
             successful/failed operations instead of just number of
@@ -52,7 +52,7 @@ def process_bulk_queue(version_type=None, queue=None, es_bulk_kwargs=None,
         routing_key=queue
     )
     return indexer.process_bulk_queue(
-        es_bulk_kwargs=es_bulk_kwargs, stats_only=stats_only)
+        search_bulk_kwargs=search_bulk_kwargs, stats_only=stats_only)
 
 
 @shared_task(ignore_result=True)
@@ -76,4 +76,5 @@ def delete_record(record_uuid):
 @shared_task(ignore_result=True)
 def scheduler_timestamp():
     """Writes a time stamp to current cache."""
-    set_timestamp('scheduler')
+    time = set_timestamp('scheduler')
+    return {'scheduler': time}

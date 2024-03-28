@@ -19,13 +19,12 @@
 
 import mock
 from flask import url_for
-from utils import VerifyRecordPermissionPatch, flush_index, get_csv, \
-    get_json, item_record_to_a_specific_loan_state, login_user
+from utils import VerifyRecordPermissionPatch, flush_index, get_json, \
+    item_record_to_a_specific_loan_state, login_user
 
 from rero_ils.modules.loans.models import LoanState
 from rero_ils.modules.locations.api import LocationsSearch
 from rero_ils.modules.operation_logs.api import OperationLogsSearch
-from rero_ils.modules.utils import get_ref_for_pid
 
 
 def test_operation_logs_serializers(
@@ -39,7 +38,6 @@ def test_operation_logs_serializers(
     lib_martigny_data
 ):
     """Test serializers for operation logs."""
-    login_user(client, patron_martigny)
     params = {
         'patron_pid': patron_martigny.pid,
         'transaction_location_pid': loc_public_martigny.pid,
@@ -52,6 +50,7 @@ def test_operation_logs_serializers(
     # Force update ES index
     flush_index(OperationLogsSearch.Meta.index)
     list_url = url_for('invenio_records_rest.oplg_list')
+    login_user(client, patron_martigny)
     response = client.get(list_url, headers=rero_json_header)
     assert response.status_code == 200
     data = get_json(response)
@@ -121,108 +120,6 @@ def test_document_and_holdings_serializers(
     assert record.get('circulation_category', {}).get('name')
 
 
-def test_items_serializers(
-    client,
-    item_lib_martigny,  # on shelf
-    document,
-    item_lib_fully,  # on loan
-    csv_header,
-    json_header,
-    rero_json_header,
-    patron_martigny,
-    librarian_martigny,
-    librarian_sion,
-    loan_pending_martigny,
-    coll_martigny_1,
-    loc_public_martigny
-):
-    """Test record retrieval."""
-    login_user(client, librarian_martigny)
-
-    item = item_lib_martigny
-    loc_ref = get_ref_for_pid('locations', loc_public_martigny.pid)
-    item.setdefault('temporary_location', {})['$ref'] = loc_ref
-    item.update(item, dbcommit=True, reindex=True)
-
-    item_url = url_for(
-        'invenio_records_rest.item_item', pid_value=item_lib_fully.pid)
-    response = client.get(item_url, headers=json_header)
-    assert response.status_code == 200
-    data = get_json(response)
-    assert data['metadata'].get('item_type', {}).get('$ref')
-
-    item_url = url_for(
-        'invenio_records_rest.item_item', pid_value=item_lib_martigny.pid)
-    response = client.get(item_url, headers=json_header)
-    assert response.status_code == 200
-    data = get_json(response)
-    assert data['metadata'].get('item_type', {}).get('$ref')
-
-    item_url = url_for(
-        'invenio_records_rest.item_item',
-        pid_value=item_lib_fully.pid, resolve=1)
-    response = client.get(item_url, headers=json_header)
-    data = get_json(response)
-    assert data['metadata'].get('item_type', {}).get('pid')
-    # test if all key exist into response with a value
-    for key in ['created', 'updated', 'id', 'links', 'metadata']:
-        assert key in data
-        assert data[key]
-
-    list_url = url_for('invenio_records_rest.item_list')
-    response = client.get(list_url, headers=rero_json_header)
-    assert response.status_code == 200
-
-    list_url = url_for('api_item.inventory_search')
-    response = client.get(list_url, headers=csv_header)
-    assert response.status_code == 200
-    data = get_csv(response)
-    assert data
-    fields = [
-        'item_pid', 'item_create_date', 'document_pid', 'document_title',
-        'document_creator', 'document_main_type', 'document_sub_type',
-        'document_masked', 'document_isbn', 'document_issn',
-        'document_series_statement', 'document_edition_statement',
-        'document_publication_year', 'document_publisher',
-        'document_local_field_1', 'document_local_field_2',
-        'document_local_field_3', 'document_local_field_4',
-        'document_local_field_5', 'document_local_field_6',
-        'document_local_field_7', 'document_local_field_8',
-        'document_local_field_9', 'document_local_field_10',
-        'item_acquisition_date', 'item_barcode', 'item_call_number',
-        'item_second_call_number', 'item_legacy_checkout_count',
-        'item_type', 'item_library_name', 'item_location_name',
-        'item_pac_code', 'item_holding_pid', 'item_price', 'item_status',
-        'item_item_type', 'item_general_note', 'item_staff_note',
-        'item_checkin_note', 'item_checkout_note', 'item_acquisition_note',
-        'item_binding_note', 'item_condition_note', 'item_patrimonial_note',
-        'item_provenance_note', 'temporary_item_type',
-        'temporary_item_type_expiry_date', 'item_masked',
-        'item_enumerationAndChronology', 'item_local_field_1',
-        'item_local_field_2', 'item_local_field_3', 'item_local_field_4',
-        'item_local_field_5', 'item_local_field_6', 'item_local_field_7',
-        'item_local_field_8', 'item_local_field_9', 'item_local_field_10',
-        'issue_status', 'issue_status_date', 'issue_claims_count',
-        'issue_expected_date', 'issue_regular', 'item_checkouts_count',
-        'item_renewals_count', 'last_transaction_date', 'last_checkout_date'
-    ]
-    for field in fields:
-        assert field in data
-
-    # test provisionActivity without type bf:Publication
-    document['provisionActivity'][0]['type'] = 'bf:Manufacture'
-    document.update(document, True, True, True)
-
-    list_url = url_for('api_item.inventory_search')
-    response = client.get(list_url, headers=csv_header)
-    assert response.status_code == 200
-    data = get_csv(response)
-    assert data
-
-    document['provisionActivity'][0]['type'] = 'bf:Publication'
-    document.update(document, True, True, True)
-
-
 def test_loans_serializers(
     client,
     rero_json_header,
@@ -235,7 +132,6 @@ def test_loans_serializers(
     circulation_policies
 ):
     """Test serializers for loans."""
-    login_user(client, patron_martigny)
     # create somes loans on same item with different state
     params = {
         'patron_pid': patron_martigny.pid,
@@ -265,6 +161,7 @@ def test_loans_serializers(
         params=params, copy_item=True)
 
     list_url = url_for('invenio_records_rest.loanid_list')
+    login_user(client, patron_martigny)
     response = client.get(list_url, headers=rero_json_header)
     assert response.status_code == 200
     data = get_json(response)

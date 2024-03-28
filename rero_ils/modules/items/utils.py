@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -16,11 +16,14 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """Item utils."""
+from datetime import datetime, timedelta, timezone
 
-
-from rero_ils.modules.items.models import ItemStatus, TypeOfItem
+from rero_ils.modules.items.models import ItemIssueStatus, ItemStatus, \
+    TypeOfItem
 from rero_ils.modules.locations.api import LocationsSearch
+from rero_ils.modules.notifications.models import RecipientType
 from rero_ils.modules.patron_transactions.api import PatronTransactionsSearch
+from rero_ils.modules.patrons.api import current_librarian
 
 
 def item_pid_to_object(item_pid):
@@ -71,7 +74,7 @@ def same_location_validator(item_pid, input_location_pid):
     return lib_from_loc == lib_from_item
 
 
-def exists_available_item(items=[]):
+def exists_available_item(items=None):
     """Check if at least one item of the list are available.
 
     Caution: `items` param couldn't be a generator otherwise the
@@ -80,17 +83,18 @@ def exists_available_item(items=[]):
     :return True if one item is available; false otherwise.
     """
     from rero_ils.modules.items.api import Item
+    items = items or []
     for item in items:
         if isinstance(item, str):  # `item` seems to be an item pid
             item = Item.get_record_by_pid(item)
         if not isinstance(item, Item):
             raise ValueError('All items should be Item resource.')
-        if item.available:
+        if item.is_available():
             return True
     return False
 
 
-def get_provisional_items_pids_candidate_to_delete():
+def get_provisional_items_candidate_to_delete():
     """Returns checked-in provisional items pids.
 
     Returns list of candidate provisional items pids to delete, based on the
@@ -98,7 +102,7 @@ def get_provisional_items_pids_candidate_to_delete():
     items with active loans. in addition, remove items with active fees.
     :return an item pid generator.
     """
-    from rero_ils.modules.items.api import ItemsSearch
+    from rero_ils.modules.items.api import Item, ItemsSearch
 
     # query ES index for open fees
     query_fees = PatronTransactionsSearch()\
@@ -112,6 +116,65 @@ def get_provisional_items_pids_candidate_to_delete():
         .filter('term', type=TypeOfItem.PROVISIONAL) \
         .filter('terms', status=[ItemStatus.ON_SHELF]) \
         .exclude('terms', pid=item_pids_with_fees)\
-        .source('pid')
+        .source(False)
     for hit in query.scan():
-        yield hit.pid
+        yield Item.get_record(hit.meta.id)
+
+
+def update_late_expected_issue(dbcommit=False, reindex=False):
+    """Update status of issues with a passed `expected_date` to late status.
+
+    :param reindex: reindex record by record.
+    :param dbcommit: commit record to database.
+    :return: the number of updated issues.
+    """
+    from rero_ils.modules.items.api import Item, ItemsSearch
+
+    yesterday = datetime.now(timezone.utc) - timedelta(days=1)
+    yesterday = yesterday.strftime('%Y-%m-%d')
+    query = ItemsSearch() \
+        .filter('term', type=TypeOfItem.ISSUE) \
+        .filter('term', issue__status=ItemIssueStatus.EXPECTED) \
+        .filter('range', issue__expected_date={'lte': yesterday}) \
+        .source(False)
+    counter = 0
+    for counter, hit in enumerate(query.scan(), 1):
+        item = Item.get_record(hit.meta.id)
+        item.issue_status = ItemIssueStatus.LATE
+        item.update(item, dbcommit=dbcommit, reindex=reindex)
+    return counter
+
+
+def get_recipient_suggestions(issue):
+    """Get the recipient email suggestions for an issue.
+
+    :param issue: the issue item to analyze.
+    :return: the list of suggested emails.
+    :rtype list<{type: list<str>, address: str}>
+    """
+    # Build suggestions email :
+    #   1) related vendor issue (default TO recipient type)
+    #   2) related library serial acquisition settings information
+    #   3) current logged user
+    suggestions = {}
+    if (vendor := issue.vendor) and (email := vendor.serial_email):
+        suggestions.setdefault(email, set()).update([RecipientType.TO])
+    if settings := (issue.library or {}).get('serial_acquisition_settings'):
+        if email := settings.get('shipping_informations', {}).get('email'):
+            suggestions.setdefault(email, set())\
+                .update([RecipientType.CC, RecipientType.REPLY_TO])
+        if email := settings.get('billing_informations', {}).get('email'):
+            suggestions.setdefault(email, set())
+    if email := current_librarian.user.email:
+        suggestions.setdefault(email, set())
+
+    # sometimes, the recipient types could be an empty set. In this case, we
+    # don't need to return this key --> clean the build suggestions dict and
+    # return a recipient suggestion array.
+    cleaned_suggestions = []
+    for recipient_address, recipient_types in suggestions.items():
+        suggestion = {'address': recipient_address}
+        if recipient_types:
+            suggestion['type'] = list(recipient_types)
+        cleaned_suggestions.append(suggestion)
+    return cleaned_suggestions

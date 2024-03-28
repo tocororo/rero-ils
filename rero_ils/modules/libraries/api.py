@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
-# Copyright (C) 2020 UCLouvain
+# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-"""API for manipulating libraries."""
+"""API for manipulating `Library` resources."""
 
 from datetime import datetime, timedelta
 from functools import partial
@@ -24,16 +24,21 @@ from functools import partial
 import pytz
 from dateutil import parser
 from dateutil.rrule import FREQNAMES, rrule
+from elasticsearch_dsl import Q
+from flask_babel import gettext as _
 
 from rero_ils.modules.api import IlsRecord, IlsRecordsIndexer, IlsRecordsSearch
 from rero_ils.modules.fetchers import id_fetcher
 from rero_ils.modules.locations.api import LocationsSearch
 from rero_ils.modules.minters import id_minter
 from rero_ils.modules.providers import Provider
+from rero_ils.modules.stats_cfg.api import StatsConfigurationSearch
+from rero_ils.modules.users.models import UserRole
 from rero_ils.modules.utils import date_string_to_utc, \
     extracted_data_from_ref, sorted_pids, strtotime
 
 from .exceptions import LibraryNeverOpen
+from .extensions import LibraryCalendarChangesExtension
 from .models import LibraryAddressType, LibraryIdentifier, LibraryMetadata
 
 # provider
@@ -61,6 +66,15 @@ class LibrariesSearch(IlsRecordsSearch):
 
         default_filter = None
 
+    def by_organisation_pid(self, organisation_pid):
+        """Build a search to get hits related to an organisation pid.
+
+        :param organisation_pid: string - the organisation pid to filter with
+        :returns: An ElasticSearch query to get hits related the entity.
+        :rtype: `elasticsearch_dsl.Search`
+        """
+        return self.filter('term', organisation__pid=organisation_pid)
+
 
 class Library(IlsRecord):
     """Library class."""
@@ -74,6 +88,21 @@ class Library(IlsRecord):
             'org': 'organisation'
         }
     }
+
+    _extensions = [
+        LibraryCalendarChangesExtension(['opening_hours', 'exception_dates'])
+    ]
+
+    def extended_validation(self, **kwargs):
+        """Add additional record validation.
+
+        :return: reason for validation failure, otherwise True
+        """
+        for exception_date in self.get('exception_dates', []):
+            if exception_date['is_open'] and not exception_date.get('times'):
+                return _('Opening times must be specified for an open '
+                         'exception date.')
+        return True
 
     @property
     def online_location(self):
@@ -167,15 +196,21 @@ class Library(IlsRecord):
         return times_open
 
     def _has_is_open(self):
-        """Test if library has opening days."""
+        """Test if library has opening days in the future."""
         if opening_hours := self.get('opening_hours'):
             for opening_hour in opening_hours:
                 if opening_hour['is_open']:
                     return True
-        if exception_dates := self.get('exception_dates'):
-            for exception_date in exception_dates:
-                if exception_date['is_open']:
-                    return True
+        current_timestamp = datetime.now(pytz.utc)
+        for exception_date in filter(
+            lambda d: d['is_open'],
+            self.get('exception_dates', [])
+        ):
+            start_date = date_string_to_utc(exception_date['start_date'])
+            # avoid next_open infinite loop if an open exception date is
+            # in the past
+            if start_date > current_timestamp:
+                return True
         return False
 
     def _get_exceptions_matching_date(self, date_to_check, day_only=False):
@@ -225,22 +260,23 @@ class Library(IlsRecord):
         is_open = False
         rule_hours = []
 
-        # First of all, change date to be aware and with timezone.
+        # First, change date to be aware and with timezone.
         if isinstance(date, str):
             date = date_string_to_utc(date)
         if isinstance(date, datetime) and date.tzinfo is None:
             date = date.replace(tzinfo=pytz.utc)
 
         # STEP 1 :: check about regular rules
-        #   Each library could defined if a specific weekday is open or closed.
+        #   Each library could define if a specific weekday is open or closed.
         #   Check into this weekday array if the day is open/closed. If the
         #   searched weekday isn't defined the default value is closed
         #
         #   If the find rule defined open time periods, check if date_to_check
-        #   is into this periods (depending of `day_only` method argument).
-        day_name = date.strftime("%A").lower()
+        #   is into one of these periods (depending on `day_only` method
+        #   argument).
+        day_name = date.strftime('%A').lower()
         regular_rule = [
-            rule for rule in self['opening_hours']
+            rule for rule in self.get('opening_hours', [])
             if rule['day'] == day_name
         ]
         if regular_rule:
@@ -250,14 +286,14 @@ class Library(IlsRecord):
         if is_open and not day_only:
             is_open = self._is_betweentimes(date.time(), rule_hours)
 
-        # STEP 2 :: test each exceptions
-        #   Each library can defined a set of exception dates. These exceptions
+        # STEP 2 :: test each exception
+        #   Each library can define a set of exception dates. These exceptions
         #   could be repeatable for a specific interval. Check is some
         #   exceptions are relevant related to date_to_check and if these
-        #   exception changed the behavior of regular rules.
+        #   exceptions changed the behavior of regular rules.
         #
-        #   Each exception can defined open time periods, check if
-        #   date_to_check is into this periods (depending of `day_only`
+        #   Each exception can define open time periods, check if
+        #   date_to_check is into one of these periods (depending on `day_only`
         #   method argument)
         for exception in self._get_exceptions_matching_date(date, day_only):
             if is_open != exception['is_open']:
@@ -279,7 +315,9 @@ class Library(IlsRecord):
         """Get next open day."""
         date = date or datetime.now(pytz.utc)
         if not self._has_is_open():
-            raise LibraryNeverOpen
+            raise LibraryNeverOpen(
+                f'No open days found for library (pid: {self.pid})'
+                )
         if isinstance(date, str):
             date = parser.parse(date)
         add_day = -1 if previous else 1
@@ -341,27 +379,36 @@ class Library(IlsRecord):
             AcqReceiptsSearch
         from rero_ils.modules.patrons.api import PatronsSearch
         links = {}
+        stat_cfg_query = StatsConfigurationSearch()\
+            .filter(
+                Q('term', library__pid=self.pid) |
+                Q('term', filter_by_libraries__pid=self.pid)
+            )
         location_query = LocationsSearch() \
             .filter('term', library__pid=self.pid)
         patron_query = PatronsSearch() \
             .filter('term', libraries__pid=self.pid) \
-            .filter('term', roles='librarian')
+            .filter('terms', roles=UserRole.PROFESSIONAL_ROLES)
         receipt_query = AcqReceiptsSearch() \
             .filter('term', library__pid=self.pid)
         if get_pids:
             locations = sorted_pids(location_query)
             librarians = sorted_pids(patron_query)
             receipts = sorted_pids(receipt_query)
+            stats_cfg = sorted_pids(stat_cfg_query)
         else:
             locations = location_query.count()
             librarians = patron_query.count()
             receipts = receipt_query.count()
+            stats_cfg = stat_cfg_query.count()
         if locations:
             links['locations'] = locations
         if librarians:
             links['patrons'] = librarians
         if receipts:
             links['acq_receipts'] = receipts
+        if stats_cfg:
+            links['stats_cfg'] = stats_cfg
         return links
 
     def reasons_not_to_delete(self):

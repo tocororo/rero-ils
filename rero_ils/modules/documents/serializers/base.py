@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2022 RERO
-# Copyright (C) 2022 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -24,10 +24,10 @@ from flask import current_app
 
 from rero_ils.modules.commons.identifiers import IdentifierFactory, \
     IdentifierStatus, IdentifierType
+from rero_ils.modules.entities.models import EntityType
 from rero_ils.modules.utils import get_base_url
 
 from ..api import DocumentsSearch
-from ..commons.subjects import SubjectFactory
 
 CREATOR_ROLES = [
     'aut', 'cmp', 'cre', 'dub', 'pht', 'ape', 'aqt', 'arc', 'art', 'aus',
@@ -122,11 +122,11 @@ class BaseDocumentFormatterMixin(ABC):
 
         def _extract_contribution_callback(contribution) -> str:
             """Extract value for the given contribution."""
-            agent = contribution.get('agent', {})
+            agent = contribution.get('entity', {})
             role = contribution.get('role', [])
             if any(r in role for r in CREATOR_ROLES):
                 return self._get_localized_contribution(agent) \
-                       or agent.get('preferred_name')
+                       or agent.get('authorized_access_point')
 
         return [contribution
                 for contribution in map(_extract_contribution_callback,
@@ -139,7 +139,7 @@ class BaseDocumentFormatterMixin(ABC):
 
         def _extract_contribution_callback(contribution) -> str:
             """Extract value for the given contribution."""
-            agent = contribution.get('agent', {})
+            agent = contribution.get('entity', {})
             role = contribution.get('role', [])
             if all(r not in role for r in CREATOR_ROLES):
                 return self._get_localized_contribution(agent) \
@@ -189,7 +189,7 @@ class BaseDocumentFormatterMixin(ABC):
             for statement in provision.get('statement', [])
             for data in statement.get('label', [])
             if provision['type'] == 'bf:Publication'
-            and statement['type'] == 'bf:Place'
+            and statement['type'] == EntityType.PLACE
         ]
 
     def _get_languages(self):
@@ -204,7 +204,7 @@ class BaseDocumentFormatterMixin(ABC):
             for statement in provision.get('statement', [])
             for data in statement.get('label', [])
             if provision['type'] == 'bf:Publication'
-            and statement['type'] == 'bf:Agent'
+            and statement['type'] == EntityType.AGENT
         ]
 
     def _get_identifiers(self, types, states=None):
@@ -261,11 +261,7 @@ class BaseDocumentFormatterMixin(ABC):
 
     def _get_subjects(self):
         """Return keywords."""
-        return [
-            SubjectFactory.create_subject(subject).render(
-                language=self._language)
-            for subject in self.record.get('subjects', [])
-        ]
+        return self.record.get('subjects', [])
 
     def _get_editions(self):
         """Return editions."""

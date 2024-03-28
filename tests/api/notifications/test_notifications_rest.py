@@ -72,39 +72,21 @@ def test_delayed_notifications(
     assert loan.is_notified(notification_type=NotificationType.AVAILABILITY)
     assert loan.is_notified(notification_type=NotificationType.AT_DESK)
 
+    # Ensure than `effective_recipients` is filled
+    #   The notification should be sent to library AT_DESK email setting.
+    notification = Notification.get_record(notification.id)
+    effective_recipients = [
+        recipient['address']
+        for recipient in notification.get('effective_recipients')
+    ]
+    assert effective_recipients == \
+           [lib_martigny.get_email(NotificationType.AT_DESK)]
+
     # One notification will be sent : AVAILABILITY (sent to patron).
     # Get the last message from mailbox and check it.
     availability_msg = mailbox[-1]
     assert availability_msg.reply_to == lib_martigny.get('email')
     mailbox.clear()
-
-
-def test_notifications_permissions(
-        client, notification_availability_martigny, json_header):
-    """Test notification permissions."""
-
-    notif = notification_availability_martigny
-    pid = notif.get('pid')
-    item_url = url_for('invenio_records_rest.notif_item', pid_value=pid)
-
-    res = client.get(item_url)
-    assert res.status_code == 401
-
-    res, _ = postdata(
-        client,
-        'invenio_records_rest.notif_list',
-        {}
-    )
-    assert res.status_code == 401
-
-    res = client.put(
-        item_url,
-        data={},
-        headers=json_header
-    )
-
-    res = client.delete(item_url)
-    assert res.status_code == 401
 
 
 def test_filtered_notifications_get(
@@ -144,11 +126,8 @@ def test_notification_secure_api(client, json_header,
 
     # test notification creation
     notif = deepcopy(dummy_notification)
-    notif_data = {
-        'loan_url': 'https://bib.rero.ch/api/loans/',
-        'pid': loan_validated_martigny.get('pid')
-    }
-    loan_ref = '{loan_url}{pid}'.format(**notif_data)
+    loan_pid = loan_validated_martigny.get('pid')
+    loan_ref = f'https://bib.rero.ch/api/loans/{loan_pid}'
     notif['context']['loan'] = {"$ref": loan_ref}
     res, _ = postdata(
         client,
@@ -229,7 +208,7 @@ def test_notifications_get(
     res = client.get(item_url)
     assert res.status_code == 200
 
-    assert res.headers['ETag'] == '"{}"'.format(record.revision_id)
+    assert res.headers['ETag'] == f'"{record.revision_id}"'
 
     data = get_json(res)
     assert record.dumps() == data['metadata']
@@ -344,11 +323,11 @@ def test_notifications_post_put_delete(
     notif.delete(dbcommit=True, delindex=True)
 
 
-def test_recall_notification(client, patron_sion, lib_sion,
-                             json_header, patron2_martigny,
-                             item_lib_sion, librarian_sion,
-                             circulation_policies, loc_public_sion,
-                             mailbox):
+def test_recall_notification(
+    client, patron_sion, lib_sion, json_header, patron2_martigny,
+    patron_martigny, item_lib_sion, librarian_sion, circulation_policies,
+    loc_public_sion, mailbox
+):
     """Test recall notification."""
     mailbox.clear()
     login_user_via_session(client, librarian_sion.user)
@@ -412,7 +391,7 @@ def test_recall_notification(client, patron_sion, lib_sion,
     )
     assert res.status_code == 200
 
-    # no new notification is send for the second time
+    # no new notification is sent for the second time
     res, _ = postdata(
         client,
         'api_item.librarian_request',
@@ -444,6 +423,65 @@ def test_recall_notification(client, patron_sion, lib_sion,
     mailbox.clear()
     for notification_type in NotificationType.ALL_NOTIFICATIONS:
         process_notifications(notification_type)
+
+
+def test_recall2_notifications(
+    client, librarian_martigny, item_lib_martigny, patron_martigny,
+    patron2_martigny, loc_public_martigny, circulation_policies, mailbox
+):
+    mailbox.clear()
+    login_user_via_session(client, librarian_martigny.user)
+    # - Create request for User#X
+    # - Create request for User#Y
+    # - Validate the User#X request
+    # - Checkout the requested item for User#X
+    # - Check a recall notification has been sent to User#X
+    item, actions = item_lib_martigny.request(
+        patron_pid=patron_martigny.pid,
+        transaction_location_pid=loc_public_martigny.pid,
+        transaction_user_pid=librarian_martigny.pid
+    )
+    loan_request1 = Loan.get_record_by_pid(actions['request']['pid'])
+    item, actions = item_lib_martigny.request(
+        patron_pid=patron2_martigny.pid,
+        transaction_location_pid=loc_public_martigny.pid,
+        transaction_user_pid=librarian_martigny.pid
+    )
+    loan_request2 = Loan.get_record_by_pid(actions['request']['pid'])
+    assert loan_request1.pid != loan_request2.pid
+
+    item_lib_martigny.validate_request(
+        transaction_location_pid=loc_public_martigny.pid,
+        transaction_user_pid=librarian_martigny.pid,
+        pid=loan_request1.pid
+    )
+
+    # Checkout the first request, as another request already exists then a
+    # recall notification should be sent.
+    mailbox.clear()
+    item_lib_martigny.checkout(
+        transaction_location_pid=loc_public_martigny.pid,
+        transaction_user_pid=librarian_martigny.pid,
+        pid=loan_request1.pid
+    )
+    process_notifications(NotificationType.RECALL)
+    flush_index(NotificationsSearch.Meta.index)
+    assert not loan_request1.is_notified(
+        notification_type=NotificationType.RECALL, counter=1)
+    assert len(mailbox) == 1
+
+    # RESET
+    #  - cancel loan_request2,
+    #  - checkin loan_request1
+    item_lib_martigny.cancel_item_request(
+        loan_request2.pid,
+        transaction_user_pid=patron2_martigny.pid,
+        transaction_location_pid=loc_public_martigny.pid
+    )
+    item_lib_martigny.checkin(
+        transaction_location_pid=loc_public_martigny.pid,
+        transaction_user_pid=librarian_martigny.pid
+    )
 
 
 def test_recall_notification_with_disabled_config(
@@ -743,11 +781,11 @@ def test_request_notifications_temp_item_type(
 ):
     """Test request notifications with item type with negative availability."""
     mailbox.clear()
-    login_user_via_session(client, librarian_martigny.user)
     item_lib_martigny['temporary_item_type'] = {
-        '$ref': get_ref_for_pid('itty', item_type_missing_martigny.pid)
+       '$ref': get_ref_for_pid('itty', item_type_missing_martigny.pid)
     }
     item_lib_martigny.update(item_lib_martigny, dbcommit=True, reindex=True)
+    login_user_via_session(client, librarian_martigny.user)
 
     res, data = postdata(
         client,
@@ -1158,6 +1196,7 @@ def test_booking_notifications(client, patron_martigny, patron_sion,
     }
     item_lib_martigny.cancel_item_request(
         request_loan_pid,
+        transaction_user_pid=librarian_martigny.pid,
         transaction_location_pid=loc_public_martigny.pid)
     item_lib_martigny.receive(**params)
 

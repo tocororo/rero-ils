@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
-# Copyright (C) 2021 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -24,11 +24,14 @@ Author:  Rob Sanderson (azaroth@liv.ac.uk)
 Version: 2.0    (CQL 1.2)
 With thanks to Adam Dickmeiss and Mike Taylor for their valuable input.
 """
+from copy import deepcopy
 from io import StringIO
 from shlex import shlex
 
 from lxml import etree
 from lxml.builder import ElementMaker
+
+from ..utils import strip_chars
 
 SERVER_CHOISE_RELATION = '='
 SERVER_CHOISE_INDEX = 'cql.serverchoice'
@@ -95,7 +98,7 @@ ES_INDEX_MAPPINGS = {
     # 'dc.format': '',
     # 'dc.rights': '',
     # 'dc.source': '',
-    'dc.subject': 'subject.preferred_name',
+    'dc.subject': 'subject.entity.authorized_access_point',
     'dc.organisation': 'holdings.organisation.organisation_pid',
     'dc.library': 'holdings.organisation.library_pid',
     'dc.location': 'holdings.location.pid'
@@ -980,6 +983,8 @@ class CQLParser:
 
 def parse(query):
     """Return a searchClause/triple object from CQL string."""
+    query = strip_chars(query)
+    query_orig = deepcopy(query)
     query_io_string = StringIO(query)
     lexer = CQLshlex(query_io_string, query)
     parser = CQLParser(lexer)
@@ -989,7 +994,7 @@ def parse(query):
         diag.code = 10
         current_token = repr(parser.current_token)
         diag.details = f'Unprocessed tokens remain: {current_token}'
-        diag.query = query
+        diag.query = query_orig
         raise diag
     del lexer
     del parser

@@ -1,0 +1,232 @@
+[
+  {
+    "pid": "1",
+    "name": "library 1, no distributions",
+    "description": "Statistics configuration with no distributions",
+    "category": {
+      "type": "catalog",
+      "indicator": {
+        "type": "number_of_documents"
+      }
+    },
+    "library": {
+      "$ref": "https://bib.rero.ch/api/libraries/1"
+    },
+    "frequency": "month",
+    "is_active": true
+  },
+  {
+    "pid": "2",
+    "name": "library 1, circulation, number of checkouts, time range month",
+    "description": "Statistics configuration with 1 distribution",
+    "category": {
+      "type": "circulation",
+      "indicator": {
+        "type": "number_of_checkouts",
+        "distributions": [
+          "transaction_month"
+        ]
+      }
+    },
+    "library": {
+      "$ref": "https://bib.rero.ch/api/libraries/1"
+    },
+    "frequency": "month",
+    "is_active": true
+  },
+  {
+    "pid": "3",
+    "name": "library 2, number of checkouts, library",
+    "description": "Statistics configuration with 1 distribution",
+    "category": {
+      "type": "circulation",
+      "indicator": {
+        "type": "number_of_checkouts",
+        "distributions": [
+          "owning_library"
+        ]
+      }
+    },
+    "library": {
+      "$ref": "https://bib.rero.ch/api/libraries/2"
+    },
+    "frequency": "month",
+    "is_active": true
+  },
+  {
+    "pid": "4",
+    "name": "library 2, 2 distributions",
+    "description": "Statistics configuration with 2 distributions",
+    "category": {
+      "type": "circulation",
+      "indicator": {
+        "type": "number_of_checkins",
+        "distributions": [
+          "document_type",
+          "transaction_channel"
+        ]
+      }
+    },
+    "library": {
+      "$ref": "https://bib.rero.ch/api/libraries/2"
+    },
+    "frequency": "month",
+    "is_active": true
+  },
+  {
+    "pid": "5",
+    "name": "library 3, 2 distributions, period 1 year",
+    "description": "Statistics configuration with 2 distributions",
+    "category": {
+      "type": "circulation",
+      "indicator": {
+        "type": "number_of_checkins",
+        "distributions": [
+          "document_type",
+          "transaction_channel"
+        ],
+        "period": "year"
+      }
+    },
+    "library": {
+      "$ref": "https://bib.rero.ch/api/libraries/4"
+    },
+    "frequency": "month",
+    "is_active": true
+  },
+  {
+    "pid": "6",
+    "name": "library 3, 2 distributions, status disabled",
+    "description": "Statistics configuration with 2 distributions",
+    "category": {
+      "type": "circulation",
+      "indicator": {
+        "type": "number_of_checkins",
+        "distributions": [
+          "document_type",
+          "transaction_channel"
+        ]
+      }
+    },
+    "library": {
+      "$ref": "https://bib.rero.ch/api/libraries/4"
+    },
+    "frequency": "month",
+    "is_active": false
+  },
+  {
+    "pid": "7",
+    "name": "library 5, no distributions",
+    "description": "Statistics configuration with no distributions",
+    "category": {
+      "type": "catalog",
+      "indicator": {
+        "type": "number_of_documents"
+      }
+    },
+    "library": {
+      "$ref": "https://bib.rero.ch/api/libraries/5"
+    },
+    "frequency": "month",
+    "is_active": true
+  },
+  {
+    "pid": "8",
+    "name": "library 5, 1 distribution",
+    "description": "Statistics configuration with 1 distribution",
+    "category": {
+      "type": "circulation",
+      "indicator": {
+        "type": "number_of_checkouts",
+        "distributions": [
+          "transaction_month"
+        ]
+      }
+    },
+    "library": {
+      "$ref": "https://bib.rero.ch/api/libraries/5"
+    },
+    "frequency": "month",
+    "is_active": true
+  },
+  {
+    "pid": "9",
+    "name": "library 5, 1 distribution",
+    "description": "Statistics configuration with 1 distribution",
+    "category": {
+      "type": "circulation",
+      "indicator": {
+        "type": "number_of_checkouts",
+        "distributions": [
+          "owning_library"
+        ]
+      }
+    },
+    "library": {
+      "$ref": "https://bib.rero.ch/api/libraries/5"
+    },
+    "frequency": "month",
+    "is_active": true
+  },
+  {
+    "pid": "10",
+    "name": "library 5, 2 distributions",
+    "description": "Statistics configuration with 2 distributions",
+    "category": {
+      "type": "circulation",
+      "indicator": {
+        "type": "number_of_checkins",
+        "distributions": [
+          "document_type",
+          "transaction_channel"
+        ]
+      }
+    },
+    "library": {
+      "$ref": "https://bib.rero.ch/api/libraries/5"
+    },
+    "frequency": "month",
+    "is_active": true
+  },
+  {
+    "pid": "11",
+    "name": "library 5, 2 distributions, period 1 year",
+    "description": "Statistics configuration with 2 distributions",
+    "category": {
+      "type": "circulation",
+      "indicator": {
+        "type": "number_of_checkins",
+        "distributions": [
+          "document_type",
+          "transaction_channel"
+        ],
+        "period": "year"
+      }
+    },
+    "library": {
+      "$ref": "https://bib.rero.ch/api/libraries/5"
+    },
+    "frequency": "month",
+    "is_active": true
+  },
+  {
+    "pid": "12",
+    "name": "library 5, 2 distributions, status disabled",
+    "description": "Statistics configuration with 1 distribution",
+    "category": {
+      "type": "circulation",
+      "indicator": {
+        "type": "number_of_checkins",
+        "distributions": [
+          "document_type",
+          "transaction_channel"
+        ]
+      }
+    },
+    "library": {
+      "$ref": "https://bib.rero.ch/api/libraries/5"
+    },
+    "frequency": "month",
+    "is_active": false
+  }
+]

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -23,10 +23,9 @@ from invenio_records_rest.serializers.json import JSONSerializer
 from jsonref import JsonRef
 from marshmallow import fields
 
-from rero_ils.modules.documents.api import Document
 from rero_ils.modules.documents.dojson.contrib.marc21tojson.rero import marc21
-from rero_ils.modules.documents.utils import process_literal_contributions, \
-    title_format_text_head
+from rero_ils.modules.documents.extensions import TitleExtension
+from rero_ils.modules.documents.utils import process_i18n_literal_fields
 
 
 class ImportSchemaJSONV1(RecordSchemaJSONV1):
@@ -66,6 +65,8 @@ class ImportsSearchSerializer(JSONSerializer):
             ),
             aggregations=search_result.get('aggregations', dict()),
         )
+        if errors := search_result.get('errors'):
+            results['errors'] = errors
         # TODO: If we have multiple types for a document we have to Correct
         # the document type buckets here.
         return json.dumps(results, **self._format_args())
@@ -96,6 +97,12 @@ class ImportsSearchSerializer(JSONSerializer):
 class UIImportsSearchSerializer(ImportsSearchSerializer):
     """Serializing records as JSON with additional data."""
 
+    entity_mapping = {
+       'authorized_access_point': 'authorized_access_point',
+       'identifiedBy': 'identifiedBy',
+       'bf:Agent': 'type'
+    }
+
     def post_process(self, metadata):
         """Post process the data.
 
@@ -104,32 +111,38 @@ class UIImportsSearchSerializer(ImportsSearchSerializer):
         :param metadata: dictionary version of a record
         :return: the modified dictionary
         """
-        metadata = Document.post_process(metadata)
+        # TODO: See it this is ok.
+        from rero_ils.modules.documents.api import Document
+        metadata = Document(data=metadata).dumps()
 
         titles = metadata.get('title', [])
-        text_title = title_format_text_head(titles, with_subtitle=False)
+        text_title = TitleExtension.format_text(titles, with_subtitle=False)
         if text_title:
             metadata['ui_title_text'] = text_title
         responsibility = metadata.get('responsibilityStatement', [])
-        text_title = title_format_text_head(titles, responsibility,
-                                            with_subtitle=False)
+        text_title = TitleExtension.format_text(
+            titles, responsibility, with_subtitle=False)
         if text_title:
             metadata['ui_title_text_responsibility'] = text_title
-        contributions = metadata.get('contribution', [])
-        new_contributions = []
-        for contribution in contributions:
-            agent = contribution['agent']
-            agent_type = agent['type']
-            agent_data = JsonRef.replace_refs(
-                agent, loader=None).get('metadata')
-            if agent_data:
-                agent_data.pop('$schema', None)
-                agent = agent_data
-                agent['type'] = agent_type
-            new_contributions.append({'agent': agent})
-        if new_contributions:
-            metadata['contribution'] = \
-                process_literal_contributions(new_contributions)
+        for entity_type in ['contribution', 'subjects', 'genreForm']:
+            entities = metadata.get(entity_type, [])
+            new_entities = []
+            for entity in entities:
+                ent = entity['entity']
+                # convert a MEF link into a local entity
+                if entity_data := JsonRef.replace_refs(ent, loader=None).get(
+                    'metadata'
+                ):
+                    ent = {
+                        local_value: entity_data[local_key]
+                        for local_key, local_value
+                        in self.entity_mapping.items()
+                        if entity_data.get(local_key)
+                    }
+                new_entities.append({'entity': ent})
+            if new_entities:
+                metadata[entity_type] = \
+                            process_i18n_literal_fields(new_entities)
         return metadata
 
 
@@ -148,7 +161,7 @@ class ImportsMarcSearchSerializer(JSONSerializer):
             for key, value in ordered_dict.items():
                 if key != '__order__':
                     if len(key) == 5:
-                        key = '{tag} {ind}'.format(tag=key[:3], ind=key[3:])
+                        key = f'{key[:3]} {key[3:]}'
                     if isinstance(value, dict):
                         res.append([key, sort_ordered_dict(value)])
                     else:

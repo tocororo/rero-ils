@@ -19,10 +19,9 @@
 import csv
 import json
 from copy import deepcopy
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import jsonref
-import requests
 import xmltodict
 from flask import url_for
 from invenio_accounts.testutils import login_user_via_session, \
@@ -31,7 +30,7 @@ from invenio_circulation.api import get_loan_for_item
 from invenio_db import db
 from invenio_oauth2server.models import Client, Token
 from invenio_search import current_search
-from mock import Mock
+from mock import MagicMock, Mock
 from pkg_resources import resource_string
 from six import StringIO
 from six.moves.urllib.parse import parse_qs, urlparse
@@ -49,8 +48,8 @@ from rero_ils.modules.loans.models import LoanAction, LoanState
 from rero_ils.modules.locations.api import Location
 from rero_ils.modules.organisations.api import Organisation
 from rero_ils.modules.patron_types.api import PatronType
-from rero_ils.modules.patrons.api import Patron, PatronsSearch, \
-    create_patron_from_data
+from rero_ils.modules.patrons.api import Patron, PatronsSearch
+from rero_ils.modules.patrons.utils import create_patron_from_data
 from rero_ils.modules.selfcheck.models import SelfcheckTerminal
 
 
@@ -60,15 +59,29 @@ class VerifyRecordPermissionPatch(object):
     status_code = 200
 
 
+def check_permission(permission_policy, actions, record):
+    """Check permission.
+
+    :param permission_policy: Permission policy used to do check.
+    :param actions: dictionnary contains actions to check.
+    :param record: Record against which to check permission.
+    """
+    for action_name, action_result in actions.items():
+        result = permission_policy(action_name, record=record).can()
+        assert \
+            result == action_result, \
+            f'{action_name} :: return {result} but should {action_result}'
+
+
 def login_user(client, user):
     """Sign in user."""
     login_user_via_session(client, user=user.user)
 
 
-def login_user_for_view(client, user):
+def login_user_for_view(client, user, default_user_password):
     """Sign in user for view."""
     invenio_user = user.user
-    invenio_user.password_plaintext = user.dumps().get('birth_date')
+    invenio_user.password_plaintext = default_user_password
     login_user_via_view(client, user=invenio_user)
 
 
@@ -133,8 +146,7 @@ def to_relative_url(url):
     """
     parsed = urlparse(url)
     return parsed.path + '?' + '&'.join([
-        '{0}={1}'.format(param, val[0]) for
-        param, val in parse_qs(parsed.query).items()
+        f'{param}={val[0]}' for param, val in parse_qs(parsed.query).items()
     ])
 
 
@@ -183,9 +195,10 @@ def loaded_resources_report():
     return report
 
 
-def mock_response(status=200, content="CONTENT", json_data=None,
+def mock_response(status=200, content="CONTENT", headers=None, json_data=None,
                   raise_for_status=None):
     """Mock a request response."""
+    headers = headers or {'Content-Type': 'text/plain'}
     mock_resp = Mock()
     # mock raise_for_status call w/optional error
     mock_resp.raise_for_status = Mock()
@@ -194,11 +207,14 @@ def mock_response(status=200, content="CONTENT", json_data=None,
     # set status code and content
     mock_resp.status_code = status
     mock_resp.content = content
+    mock_resp.headers = headers
     mock_resp.text = content
     # add json data if provided
     if json_data:
-        mock_resp.json = Mock(return_value=json_data)
+        mock_resp.headers['Content-Type'] = 'application/json'
+        mock_resp.json = MagicMock(return_value=json_data)
         mock_resp.text = json.dumps(json_data)
+        mock_resp.content = json.dumps(json_data)
     return mock_resp
 
 
@@ -228,68 +244,40 @@ def check_timezone_date(timezone, date, expected=None):
     assert tocheck_date.hour == hour, error_msg
 
 
-def mocked_requests_get(*args, **kwargs):
+def jsonloader(uri, **kwargs):
     """This method will be used by the mock to replace requests.get."""
-    class MockResponse:
-        """Mock response class.
-
-        This class will get a json schema directly from the source file.
-        Examples:
-        https://bib.rero.ch/schemas/documents/document-v0.0.1.json ->
-            rero_ils.modules.documents.jsonschemas.document-v0.0.1.json
-        https://bib.rero.ch/schemas/common/languages-v0.0.1.json ->
-            rero_ils.jsonschemas.common.languages-v0.0.1.json
-        """
-
-        def __init__(self, json_data, status_code):
-            self.json_data = json_data
-            self.status_code = status_code
-
-        def json(self):
-            return self.json_data
-
-    ref_split = args[0].split('/')
+    ref_split = uri.split('/')
+    # TODO: find a better way to determine name and path.
     if ref_split[-2] == 'common':
         path = 'rero_ils.jsonschemas'
-        name = 'common/{name}'.format(
-            name=ref_split[-1]
-        )
+        name = f'common/{ref_split[-1]}'
     else:
-        path = 'rero_ils.modules.{type}.jsonschemas'.format(
-            type=ref_split[-2]
-        )
-        name = '{type}/{name}'.format(
-            type=ref_split[-2],
-            name=ref_split[-1]
-        )
+        if ref_split[-2] in ['remote_entities', 'local_entities']:
+            path = f'rero_ils.modules.entities.{ref_split[-2]}.jsonschemas'
+        else:
+            path = f'rero_ils.modules.{ref_split[-2]}.jsonschemas'
+        name = f'{ref_split[-2]}/{ref_split[-1]}'
 
     schema_in_bytes = resource_string(path, name)
-    if not schema_in_bytes:
-        return MockResponse({}, 404)
     schema = json.loads(schema_in_bytes.decode('utf8'))
-    if not schema:
-        return MockResponse({}, 404)
 
-    return MockResponse(schema, 200)
+    return schema
 
 
-def get_schema(monkeypatch, schema_in_bytes):
+def get_schema(schema_in_bytes):
     """Get json schema and replace $refs.
 
     For the resolving of the $ref we have to catch the request.get and
     get the referenced json schema directly from the resource.
 
-    :param monkeypatch: https://docs.pytest.org/en/stable/monkeypatch.html
     :schema_in_bytes: schema in bytes.
     :returns: resolved json schema.
     """
-    # apply the monkeypatch for requests.get to mocked_requests_get
-    monkeypatch.setattr(requests, "get", mocked_requests_get)
+    schema = jsonref.loads(schema_in_bytes.decode('utf8'), loader=jsonloader)
 
-    schema = jsonref.loads(schema_in_bytes.decode('utf8'))
     # Replace all remaining $refs
-    while schema != jsonref.loads(jsonref.dumps(schema)):
-        schema = jsonref.loads(jsonref.dumps(schema))
+    while schema != jsonref.loads(jsonref.dumps(schema), loader=jsonloader):
+        schema = jsonref.loads(jsonref.dumps(schema), loader=jsonloader)
     return schema
 
 
@@ -379,11 +367,7 @@ def create_patron(data):
     :param data: - A dict containing a mix of user and patron data.
     :returns: - A freshly created Patron instance.
     """
-    ptrn = create_patron_from_data(
-        data=data,
-        delete_pid=False,
-        dbcommit=True,
-        reindex=True)
+    ptrn = create_patron_from_data(data=data)
     flush_index(PatronsSearch.Meta.index)
     return ptrn
 
@@ -423,3 +407,23 @@ def create_selfcheck_terminal(data):
     selfcheck_terminal = SelfcheckTerminal(**data)
     db.session.add(selfcheck_terminal)
     return selfcheck_terminal
+
+
+def patch_expiration_date(data):
+    """Patch expiration date for patrons."""
+    if data.get('patron', {}).get('expiration_date'):
+        # expiration date in one year
+        data['patron']['expiration_date'] = \
+            (datetime.now() + timedelta(days=365)).strftime('%Y-%m-%d')
+    return data
+
+
+def clean_text(data):
+    """Delete all _text from data."""
+    if isinstance(data, list):
+        data = [clean_text(val) for val in data]
+    elif isinstance(data, dict):
+        if '_text' in data:
+            del data['_text']
+        data = {key: clean_text(val) for key, val in data.items()}
+    return data

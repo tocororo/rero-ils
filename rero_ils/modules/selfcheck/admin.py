@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
-# Copyright (C) 2021 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -20,14 +20,15 @@
 
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form.fields import DateTimeField
-from flask_babelex import gettext as _
+from flask_babel import gettext as _
 from werkzeug.local import LocalProxy
 from wtforms.fields import SelectField
 from wtforms.validators import DataRequired
 
+from rero_ils.modules.locations.api import LocationsSearch
+from rero_ils.modules.organisations.api import Organisation
+
 from .models import SelfcheckTerminal
-from ..locations.api import search_location_by_pid, search_locations_by_pid
-from ..organisations.api import Organisation
 
 
 class SelfcheckTerminalView(ModelView):
@@ -84,7 +85,7 @@ class SelfcheckTerminalView(ModelView):
             True if model was created, False if model was updated
         """
         location_pid = form.location_pid.data
-        location = search_location_by_pid(location_pid)
+        location = LocationsSearch().get_record_by_pid(location_pid)
         model.organisation_pid = location.organisation['pid']
         model.library_pid = location.library['pid']
 
@@ -93,18 +94,18 @@ def locations_form_options():
     """Get locations form options."""
     location_opts = []
     for org in Organisation.get_all():
-        search = search_locations_by_pid(organisation_pid=org.pid,
-                                         sort_by_field='code',
-                                         preserve_order=True)
-        search = search.exclude('term', is_online=True)
-        for location in search.scan():
+        query = LocationsSearch() \
+            .filter('term', organisation__pid=org.pid) \
+            .exclude('term', is_online=True) \
+            .sort({'code': {'order': 'asc'}}) \
+            .params(preserve_order=True)
+        for location in query.scan():
+            org_name = org.get('name'),
+            loc_code = location.code,
+            loc_name = location.name
             location_opts.append({
                 'location_pid': location.pid,
-                'location_name': '{org} - {loc_code} ({loc_name})'.format(
-                    org=org.get('name'),
-                    loc_code=location.code,
-                    loc_name=location.name
-                )
+                'location_name': f'{org_name} - {loc_code} ({loc_name})'
             })
     return location_opts
 

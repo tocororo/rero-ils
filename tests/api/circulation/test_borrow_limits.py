@@ -254,6 +254,7 @@ def test_overdue_limit(
 
     tmp_item_data = deepcopy(item_lib_martigny_data)
     del tmp_item_data['pid']
+    del tmp_item_data['barcode']
     tmp_item_data['library']['$ref'] = get_ref_for_pid('lib', lib_saxon.pid)
     tmp_item_data['location']['$ref'] = \
         get_ref_for_pid('loc', loc_public_saxon.pid)
@@ -442,11 +443,11 @@ def test_unpaid_subscription(
     patron_type = patron_type.update(patron_type, dbcommit=True, reindex=True)
 
     # STEP#1 :: Create an unpaid subscription for patron
-    assert not patron.get_pending_subscriptions()
+    assert not patron.pending_subscriptions
     subscription_start = datetime.now()
     subscription_end = subscription_start + timedelta(days=365)
     patron.add_subscription(patron_type, subscription_start, subscription_end)
-    subscriptions = patron.get_pending_subscriptions()
+    subscriptions = patron.pending_subscriptions
     assert len(subscriptions) == 1
     subscription = subscriptions[0]
 
@@ -472,7 +473,7 @@ def test_unpaid_subscription(
         'operator': {'$ref': get_ref_for_pid(Patron, librarian_martigny.pid)}
     }
     PatronTransactionEvent.create(data, dbcommit=True, reindex=True)
-    assert not patron.get_pending_subscriptions()
+    assert not patron.pending_subscriptions
 
     res, data = postdata(client, 'api_item.checkout', dict(
         item_pid=item.pid,

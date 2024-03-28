@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -26,8 +27,8 @@ from invenio_accounts.testutils import login_user_via_session
 from invenio_db import db
 from utils import flush_index, get_json
 
-from rero_ils.modules.contributions.api import Contribution, \
-    ContributionsSearch
+from rero_ils.modules.entities.remote_entities.api import \
+    RemoteEntitiesSearch, RemoteEntity
 from rero_ils.modules.utils import get_timestamp, set_timestamp
 
 
@@ -47,7 +48,8 @@ def test_monitoring_es_db_counts(client):
             'budg': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'budgets'},
             'cipo': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'circ_policies'},
             'coll': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'collections'},
-            'cont': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'contributions'},
+            'rement': {'db': 0, 'db-es': 0, 'es': 0,
+                       'index': 'remote_entities'},
             'doc': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'documents'},
             'hold': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'holdings'},
             'illr': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'ill_requests'},
@@ -56,6 +58,8 @@ def test_monitoring_es_db_counts(client):
             'lib': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'libraries'},
             'loanid': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'loans'},
             'loc': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'locations'},
+            'locent': {'db': 0, 'db-es': 0, 'es': 0,
+                       'index': 'local_entities'},
             'lofi': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'local_fields'},
             'notif': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'notifications'},
             'oplg': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'operation_logs'},
@@ -66,50 +70,50 @@ def test_monitoring_es_db_counts(client):
             'pttr': {'db': 0, 'db-es': 0, 'es': 0,
                      'index': 'patron_transactions'},
             'ptty': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'patron_types'},
+            'stacfg': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'stats_cfg'},
             'stat': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'stats'},
             'tmpl': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'templates'},
+            'ent': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'entities'},
             'vndr': {'db': 0, 'db-es': 0, 'es': 0, 'index': 'vendors'},
         }
     }
 
 
-def test_monitoring_check_es_db_counts(app, client, contribution_person_data,
+def test_monitoring_check_es_db_counts(app, client, entity_person_data,
                                        system_librarian_martigny):
     """Test monitoring check_es_db_counts."""
     res = client.get(url_for('api_monitoring.check_es_db_counts', delay=0))
     assert res.status_code == 200
     assert get_json(res) == {'data': {'status': 'green'}}
 
-    pers = Contribution.create(
-        data=contribution_person_data,
+    pers = RemoteEntity.create(
+        data=entity_person_data,
         delete_pid=False,
         dbcommit=True,
         reindex=False)
-    flush_index(ContributionsSearch.Meta.index)
+    flush_index(RemoteEntitiesSearch.Meta.index)
     res = client.get(url_for('api_monitoring.check_es_db_counts', delay=0))
     assert res.status_code == 200
     assert get_json(res) == {
         'data': {'status': 'red'},
         'errors': [{
-            'code': 'DB_ES_COUNTER_MISSMATCH',
-            'details': 'There are 1 items from cont missing in ES.',
-            'id': 'DB_ES_COUNTER_MISSMATCH',
+            'code': 'DB_ES_COUNTER_MISMATCH',
+            'details': 'There are 1 items from rement missing in ES.',
+            'id': 'DB_ES_COUNTER_MISMATCH',
             'links': {
                 'about': 'http://localhost/monitoring/check_es_db_counts',
-                'cont': 'http://localhost/monitoring/missing_pids/cont'
+                'rement': 'http://localhost/monitoring/missing_pids/rement'
             },
             'title': "DB items counts don't match ES items count."
         }]
     }
 
     # this view is only accessible by monitoring
-    res = client.get(url_for('api_monitoring.missing_pids', doc_type='cont'))
+    res = client.get(url_for('api_monitoring.missing_pids', doc_type='rement'))
     assert res.status_code == 401
 
     login_user_via_session(client, system_librarian_martigny.user)
-    res = client.get(
-        url_for('api_monitoring.missing_pids', doc_type='cont')
-    )
+    res = client.get(url_for('api_monitoring.missing_pids', doc_type='rement'))
     assert res.status_code == 403
 
     # give user superuser admin rights
@@ -120,15 +124,13 @@ def test_monitoring_check_es_db_counts(app, client, contribution_person_data,
         )
     )
     db.session.commit()
-    res = client.get(
-        url_for('api_monitoring.missing_pids', doc_type='cont', delay=0)
-    )
+    res = client.get(url_for(
+        'api_monitoring.missing_pids', doc_type='rement', delay=0))
     assert res.status_code == 200
-
     assert get_json(res) == {
         'data': {
             'DB': [],
-            'ES': ['http://localhost/contributions/cont_pers'],
+            'ES': ['http://localhost/remote_entities/ent_pers'],
             'ES duplicate': []
         }
     }
@@ -137,7 +139,10 @@ def test_monitoring_check_es_db_counts(app, client, contribution_person_data,
 def test_timestamps(app, client):
     """Test timestamps."""
     time_stamp = set_timestamp('test', msg='test msg')
-    assert get_timestamp('test') == {'time': time_stamp, 'msg': 'test msg'}
+    assert get_timestamp('test') == {
+        'time': time_stamp,
+        'msg': 'test msg'
+    }
     res = client.get(url_for('api_monitoring.timestamps'))
     assert res.status_code == 401
 
@@ -158,6 +163,7 @@ def test_timestamps(app, client):
         'data': {
             'test': {
                 'msg': 'test msg',
+                'name': 'test',
                 'unixtime': time.mktime(time_stamp.timetuple()),
                 'utctime': time_stamp.strftime("%Y-%m-%d %H:%M:%S")
             }

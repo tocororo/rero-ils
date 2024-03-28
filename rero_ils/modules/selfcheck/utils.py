@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2022 RERO
-# Copyright (C) 2022 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -78,20 +78,16 @@ def format_patron_address(patron):
     :param patron: patron instance.
     :return: Formated address like 'street postal code city' for patron.
     """
-    address = patron.get('second_address')
-    if address:
-        formated_address = '{street}, {postal_code} {city}'.format(
-            street=address.get('street'),
-            postal_code=address.get('postal_code'),
-            city=address.get('city')
-        )
+    if address := patron.get('second_address'):
+        street = address.get('street'),
+        postal_code = address.get('postal_code')
+        city = address.get('city')
     else:
-        profile = patron.user.profile
-        formated_address = '{street}, {postal_code} {city}'.format(
-            street=profile.street.strip(),
-            postal_code=profile.postal_code.strip(),
-            city=profile.city.strip()
-        )
+        profile = patron.user.user_profile
+        street = profile['street'].strip()
+        postal_code = profile['postal_code'].strip()
+        city = profile['city'].strip()
+    formated_address = f'{street}, {postal_code} {city}'
     # Should never append, but can be imported from an old system
     return formated_address.replace(r'\n', ' ').replace(r'\r', ' ')\
         .replace('\n', ' ').replace('\r', ' ')

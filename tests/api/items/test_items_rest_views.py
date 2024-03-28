@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -16,18 +17,19 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """Tests REST API items."""
-import json
-
+from elasticsearch_dsl.search import Response
 from flask import url_for
 from invenio_accounts.testutils import login_user_via_session
+from mock import mock
 from utils import get_json, postdata
 
 from rero_ils.modules.items.api import Item
+from rero_ils.modules.operation_logs.api import OperationLogsSearch
 
 
 def test_item_dumps(client, item_lib_martigny, org_martigny,
                     librarian_martigny):
-    """Test item dumps and elastic search version."""
+    """Test item dumps and Elasticsearch version."""
     item_dumps = Item(item_lib_martigny.dumps()).replace_refs()
 
     assert item_dumps.get('organisation').get('pid') == org_martigny.pid
@@ -40,168 +42,8 @@ def test_item_dumps(client, item_lib_martigny, org_martigny,
     assert res.status_code == 200
 
     item_es = Item(get_json(res).get('metadata'))
-    assert item_es.available
+    assert item_es.is_available()
     assert item_es.organisation_pid == org_martigny.pid
-
-
-def test_item_secure_api(client, json_header, item_lib_martigny,
-                         librarian_martigny, librarian_sion,
-                         loc_public_saxon):
-    """Test item secure api access."""
-    # Martigny
-    login_user_via_session(client, librarian_martigny.user)
-    record_url = url_for('invenio_records_rest.item_item',
-                         pid_value=item_lib_martigny.pid)
-    res = client.get(record_url)
-    assert res.status_code == 200
-
-    # Sion
-    login_user_via_session(client, librarian_sion.user)
-    record_url = url_for('invenio_records_rest.item_item',
-                         pid_value=item_lib_martigny.pid)
-
-    res = client.get(record_url)
-    assert res.status_code == 200
-
-
-def test_item_secure_api_create(client, json_header, item_lib_martigny,
-                                librarian_martigny,
-                                librarian_sion,
-                                item_lib_martigny_data,
-                                item_lib_saxon_data,
-                                system_librarian_martigny):
-    """Test item secure api create."""
-    # Martigny
-    login_user_via_session(client, librarian_martigny.user)
-    post_url = 'invenio_records_rest.item_list'
-
-    del item_lib_martigny_data['pid']
-    res, _ = postdata(
-        client,
-        post_url,
-        item_lib_martigny_data
-    )
-    # librarian can create items on its affiliated library
-    assert res.status_code == 201
-
-    del item_lib_saxon_data['pid']
-    res, _ = postdata(
-        client,
-        post_url,
-        item_lib_saxon_data
-    )
-    # librarian can not create items for another library
-    assert res.status_code == 403
-
-    login_user_via_session(client, system_librarian_martigny.user)
-    res, _ = postdata(
-        client,
-        post_url,
-        item_lib_saxon_data
-    )
-    # sys_librarian can create items for any library
-    assert res.status_code == 201
-
-    # Sion
-    login_user_via_session(client, librarian_sion.user)
-
-    res, _ = postdata(
-        client,
-        post_url,
-        item_lib_martigny_data
-    )
-    # librarian can not create items in another organisation
-    assert res.status_code == 403
-
-
-def test_item_secure_api_update(client, json_header, item_lib_saxon,
-                                librarian_martigny,
-                                librarian_sion,
-                                item_lib_martigny,
-                                system_librarian_martigny
-                                ):
-    """Test item secure api update."""
-    # Martigny
-    login_user_via_session(client, librarian_martigny.user)
-    record_url = url_for('invenio_records_rest.item_item',
-                         pid_value=item_lib_martigny.pid)
-
-    item_lib_martigny['call_number'] = 'call_number'
-    res = client.put(
-        record_url,
-        data=json.dumps(item_lib_martigny),
-        headers=json_header
-    )
-    # librarian can update items of its affiliated library
-    assert res.status_code == 200
-
-    record_url = url_for('invenio_records_rest.item_item',
-                         pid_value=item_lib_saxon.pid)
-
-    item_lib_saxon['call_number'] = 'call_number'
-    res = client.put(
-        record_url,
-        data=json.dumps(item_lib_saxon),
-        headers=json_header
-    )
-    # librarian can not update items of other libraries
-    assert res.status_code == 403
-
-    login_user_via_session(client, system_librarian_martigny.user)
-    res = client.put(
-        record_url,
-        data=json.dumps(item_lib_saxon),
-        headers=json_header
-    )
-    # sys_librarian can update items of other libraries in same organisation.
-    assert res.status_code == 200
-
-    # Sion
-    login_user_via_session(client, librarian_sion.user)
-
-    res = client.put(
-        record_url,
-        data=json.dumps(item_lib_saxon),
-        headers=json_header
-    )
-    # librarian can not update items of other libraries in other organisation.
-    assert res.status_code == 403
-
-
-def test_item_secure_api_delete(client, item_lib_saxon,
-                                librarian_martigny,
-                                librarian_sion,
-                                item_lib_martigny,
-                                json_header,
-                                system_librarian_martigny):
-    """Test item secure api delete."""
-    # Martigny
-    login_user_via_session(client, librarian_martigny.user)
-    record_url = url_for('invenio_records_rest.item_item',
-                         pid_value=item_lib_martigny.pid)
-
-    res = client.delete(record_url)
-    # librarian can delete items of its affiliated library
-    assert res.status_code == 204
-
-    record_url = url_for('invenio_records_rest.item_item',
-                         pid_value=item_lib_saxon.pid)
-
-    res = client.delete(record_url)
-    # librarian can not delete items of other libraries
-    assert res.status_code == 403
-
-    # Sion
-    login_user_via_session(client, librarian_sion.user)
-
-    res = client.delete(record_url)
-    # librarian can not delete items of other organisations
-    assert res.status_code == 403
-
-    login_user_via_session(client, system_librarian_martigny.user)
-    res = client.delete(record_url)
-    # sys_librarian can delete items in other libraries in same org.
-    assert res.status_code == 204
 
 
 def test_patron_checkouts_order(client, librarian_martigny,
@@ -268,3 +110,88 @@ def test_patron_checkouts_order(client, librarian_martigny,
     assert res.status_code == 500
     data = get_json(res)
     assert 'RequestError(400' in data['status']
+
+
+def test_item_stats(
+    app, client, librarian_martigny, item_lib_martigny
+):
+    """Test item stats."""
+    # A mock on the answer has been created, because it is not possible
+    # to freeze on the date, because the string "now-1y" passed to
+    # the configuration of the "year" facet is calculated
+    # on the Elasticsearch instance.
+    es_response = Response(OperationLogsSearch(), {
+        'aggregations': {
+            'trigger': {
+                'buckets': [{
+                    'doc_count': 1,
+                    'key': 'checkout',
+                    'year': {
+                        'doc_count': 1,
+                        'meta': {}
+                    }
+                }, {
+                    'doc_count': 2,
+                    'key': 'extend',
+                    'year': {
+                        'doc_count': 1,
+                        'meta': {}
+                    }
+                }, {
+                    'doc_count': 2,
+                    'key': 'checkin',
+                    'year': {
+                        'doc_count': 1,
+                        'meta': {}
+                    }
+                }]
+            }
+        }
+    })
+
+    es_response_checkin = Response(OperationLogsSearch(), {
+        'aggregations': {
+            'trigger': {
+                'buckets': [{
+                    'doc_count': 2,
+                    'key': 'checkin',
+                    'year': {
+                        'doc_count': 1,
+                        'meta': {}
+                    }
+                }]
+            }
+        }
+    })
+
+    login_user_via_session(client, librarian_martigny.user)
+    with mock.patch.object(
+        OperationLogsSearch,
+        'execute',
+        mock.MagicMock(return_value=es_response)
+    ):
+        # We sum the Legacy_count field in the checkout field
+        res = client.get(url_for('api_item.stats', item_pid='item1'))
+        assert res.json == \
+            {
+                'total': {'checkout': 5, 'extend': 2, 'checkin': 2},
+                'total_year': {'checkout': 1, 'extend': 1, 'checkin': 1}}
+
+    with mock.patch.object(
+        OperationLogsSearch,
+        'execute',
+        mock.MagicMock(return_value=es_response_checkin)
+    ):
+        # item found
+        # We add the legacy_checkout_count field to the checkout field
+        res = client.get(url_for('api_item.stats', item_pid='item1'))
+        assert res.json == \
+            {
+                'total': {'checkout': 4, 'checkin': 2},
+                'total_year': {'checkin': 1}}
+        # No item found
+        res = client.get(url_for('api_item.stats', item_pid='foot'))
+        assert res.json == \
+            {
+                'total': {'checkin': 2},
+                'total_year': {'checkin': 1}}

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2022 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -29,9 +29,10 @@ from rero_ils.modules.local_fields.api import LocalField
 from rero_ils.modules.operation_logs.api import OperationLogsSearch
 
 from ..models import ItemCirculationAction, ItemNoteTypes
+from ...notifications.api import NotificationsSearch
 
 
-class Collecter():
+class Collector():
     """collect data for csv."""
 
     # define chunk size
@@ -66,7 +67,7 @@ class Collecter():
         """Chunk search results.
 
         :param results: search results.
-        :return list of chuncked item pids and search records
+        :return list of chunked item pids and search records
         """
         records, pids = [], []
         for result in results:
@@ -87,14 +88,20 @@ class Collecter():
         """
 
         def _build_doc(data):
-            document_data = {
-                'document_title': next(
-                    filter(
-                        lambda x: x.get('type')
-                        == 'bf:Title', data.get('title'))
-                ).get('_text'),
-                'document_masked': 'No'
-            }
+            document_data = {}
+            # document title
+            document_titles = filter(
+                lambda t: t.get('type') == 'bf:Title',
+                data.get('title', {})
+            )
+            if title := next(document_titles):
+                document_data['document_title'] = title.get('_text')
+
+            # document masked
+            bool_values = ('No', 'Yes')
+            is_masked = data.get('masked', False)
+            document_data['document_masked'] = bool_values[is_masked]
+
             # process contributions
             creator = []
             for contribution in data.get('contribution', []):
@@ -102,59 +109,56 @@ class Collecter():
                         for role in cls.role_filter):
                     authorized_access_point = \
                         f'authorized_access_point_{language}'
-                    if authorized_access_point in contribution.get('agent'):
+                    if authorized_access_point in contribution.get('entity'):
                         creator.append(
-                            contribution['agent'][
+                            contribution['entity'][
                                 authorized_access_point]
                         )
             document_data['document_creator'] = ' ; '.join(creator)
-            document_main_type = []
-            document_sub_type = []
+
+            # document type/subtypes
+            doc_types = []
+            doc_subtypes = []
             for document_type in data.get('type'):
-                # data = document_type.to_dict()
-                document_main_type.append(
-                    document_type.get('main_type'))
-                document_sub_type.append(
-                    document_type.get('subtype', ''))
-            document_data['document_main_type'] = ', '.join(
-                document_main_type)
-            document_data['document_sub_type'] = ', '.join(
-                document_sub_type)
-            # masked
-            document_data['document_masked'] = \
-                'Yes' if data.get('_masked') else 'No'
-            # isbn:
-            document_data['document_isbn'] = cls.separator.join(
-                data.get('isbn', []))
-            # issn:
-            document_data['document_issn'] = cls.separator.join(
-                data.get('issn', []))
+                doc_types.append(document_type.get('main_type'))
+                doc_subtypes.append(document_type.get('subtype'))
+            if doc_types := filter(None, doc_types):
+                document_data['document_main_type'] = ', '.join(doc_types)
+            if doc_subtypes := filter(None, doc_subtypes):
+                document_data['document_sub_type'] = ', '.join(doc_subtypes)
+
+            # identifiers
+            document_data |= {
+                'document_isbn': cls.separator.join(data.get('isbn', [])),
+                'document_issn': cls.separator.join(data.get('issn', []))
+            }
+
             # document_series_statement
             document_data['document_series_statement'] = cls.separator.join(
                 data['value']
                 for serie in data.get('seriesStatement', [])
                 for data in serie.get('_text', [])
             )
+
             # document_edition_statement
             document_data['document_edition_statement'] = cls.separator.join(
                 edition.get('value')
-                for edition_statement in
-                data.get('editionStatement', [])
+                for edition_statement in data.get('editionStatement', [])
                 for edition in edition_statement.get('_text', [])
             )
-            # process provision activity
 
-            # we only use the first provision activity of type
-            # bf:publication
-            if any(
-                (provision_activity := prov).get('type' == 'bf:Publication')
-                for prov in data.get('provisionActivity', [])
-            ):
+            # provision activity
+            #   we only use the first provision activity of type
+            #   `bf:publication`
+            publications = [
+                prov for prov in data.get('provisionActivity', [])
+                if prov.get('type') == 'bf:Publication'
+            ]
+            if provision_activity := next(iter(publications), None):
                 start_date = provision_activity.get('startDate', '')
                 end_date = provision_activity.get('endDate')
                 document_data['document_publication_year'] = \
-                    f'{start_date} - {end_date}' \
-                    if end_date else start_date
+                    f'{start_date} - {end_date}' if end_date else start_date
 
                 document_data['document_publisher'] = cls.separator.join(
                     data['value']
@@ -195,7 +199,8 @@ class Collecter():
                 'temporary_item_type', {}).get('pid'),
             'item_masked': 'No',
             'item_status': hit.get('status'),
-            'issue': hit.get('issue', {})
+            'issue': hit.get('issue', {}),
+            'current_pending_requests': hit.get('current_pending_requests', 0)
         }
         fields = [
             ('pid', 'item_pid'),
@@ -250,8 +255,8 @@ class Collecter():
             csv_data['issue_status_date'] = \
                 ciso8601.parse_datetime(
                     issue.get('status_date')).date()
-        csv_data['issue_claims_count'] = \
-            issue.get('claims_count', 0)
+        csv_data['issue_claims_count'] = NotificationsSearch()\
+            .get_claims_count(csv_data['item_pid'])
         csv_data['issue_expected_date'] = \
             issue.get('expected_date')
         csv_data['issue_regular'] = issue.get('regular')
@@ -269,9 +274,7 @@ class Collecter():
         except Exception as err:
             current_app.logger.error(
                 'ERROR in csv serializer: '
-                '{message} on document: {pid}'.format(
-                    message=str(err),
-                    pid=csv_data.get('document_pid'))
+                f'{message} on document: {csv_data.get("document_pid")}'
             )
 
     @classmethod
@@ -284,12 +287,12 @@ class Collecter():
             """Append local fields data.
 
             :param csv_data: data dictionary.
-            :param resource_type: resoruce_type.
+            :param resource_type: resource_type.
             :param resource_pid: resource_pid.
             """
             lf_type = 'document' if resource_type == 'doc' else resource_type
             org_pid = csv_data['item_org_pid']
-            local_fields = LocalField.get_local_fields_by_resource(
+            local_fields = LocalField.get_local_fields_by_id(
                     resource_type, resource_pid, organisation_pid=org_pid)
             for field, num in itertools.product(local_fields, range(1, 11)):
                 field_name = f'{lf_type}_local_field_{num}'

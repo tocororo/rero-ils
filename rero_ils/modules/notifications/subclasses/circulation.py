@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
-# Copyright (C) 2021 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -78,7 +78,7 @@ class CirculationNotification(Notification, ABC):
         return hashlib.md5(str(parts).encode()).hexdigest()
 
     def can_be_cancelled(self):
-        """Check if a notification can be canceled.
+        """Check if a notification can be cancelled.
 
         As notification process can be asynchronous, in some case, when the
         notification is processed, it's not anymore required to be sent.
@@ -101,14 +101,14 @@ class CirculationNotification(Notification, ABC):
 
     def get_language_to_use(self):
         """Get the language to use for dispatching the notification."""
-        # By default the language to use to build the notification is defined
+        # By default, the language to use to build the notification is defined
         # in the patron setting. Override this method if the patron isn't the
         # recipient of this notification.
         return self.patron.get('patron', {}).get('communication_language')
 
     def get_template_path(self):
         """Get the template to use to render the notification."""
-        # By default the template path to use reflects the notification type.
+        # By default, the template path to use reflects the notification type.
         # Override this method if necessary
         return f'email/{self.type}/{self.get_language_to_use()}.txt'
 
@@ -118,10 +118,7 @@ class CirculationNotification(Notification, ABC):
             RecipientType.TO: self.get_recipients_to,
             RecipientType.REPLY_TO: self.get_recipients_reply_to
         }
-        try:
-            return mapping[address_type]()
-        except KeyError:
-            raise NotImplementedError()
+        return mapping[address_type]() if address_type in mapping else []
 
     def get_recipients_reply_to(self):
         """Get the notification email address for 'REPLY_TO' recipient type."""

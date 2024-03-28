@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -21,7 +21,7 @@ from __future__ import absolute_import, print_function
 
 from flask import Blueprint, current_app, flash, redirect, render_template, \
     request, url_for
-from flask_babelex import gettext as _
+from flask_babel import lazy_gettext as _
 
 from rero_ils.modules.documents.api import Document
 from rero_ils.modules.documents.views import create_title_text
@@ -56,7 +56,12 @@ def ill_request_form(viewcode):
     # pickup locations selection are based on app context then the choices
     # can't be "calculated" on the form creation (context free).
     form.pickup_location.choices = [
-        *form.pickup_location.choices, *list(get_pickup_location_options())]
+        *form.pickup_location.choices, *list(sorted(
+            get_pickup_location_options(), key=lambda pickup: pickup[1]))]
+
+    # Extraction of the pids organizations from the connected patron
+    org_pids = ','.join(
+        [patron.organisation_pid for patron in current_patrons])
 
     # Populate data only if we are on the global view
     # and that the function is allowed in the configuration
@@ -88,10 +93,15 @@ def ill_request_form(viewcode):
             _('The request has been transmitted to your library.'),
             'success'
         )
-        return redirect(url_for('patrons.profile', viewcode=viewcode))
+        return redirect(url_for(
+            'patrons.profile',
+            viewcode=viewcode,
+            org_pids=org_pids))
 
     return render_template('rero_ils/ill_request_form.html',
-                           form=form, viewcode=viewcode)
+                           form=form,
+                           viewcode=viewcode,
+                           org_pids=org_pids)
 
 
 def _populate_document_data_form(doc_pid, form):

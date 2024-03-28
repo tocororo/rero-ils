@@ -85,52 +85,49 @@ def test_languages(document_schema, document_data_tmp):
         validate(document_data_tmp, document_schema)
 
 
-def test_contribution(document_schema, document_data_tmp):
+def test_contribution(mef_agents_url, document_schema, document_data_tmp):
     """Test contribution for jsonschemas."""
     document_data_tmp['contribution'] = [{
-        'agent': {
+        'entity': {
             'type': 'bf:Person',
-            'preferred_name': 'Dumont, Jean',
-            'date_of_birth': '1954',
-            'qualifier': 'Développeur'
+            'authorized_access_point': 'dumont, Jean (1954)'
         },
         'role': ['aut']
     }, {
-        'agent': {
+        'entity': {
             'type': 'bf:Organisation',
-            'preferred_name': 'RERO',
-            'conference': False
+            'authorized_access_point': 'RERO'
         },
         'role': ['aut']
     }, {
-        'agent': {
-            'type': 'bf:Person',
-            '$ref': 'https://mef.rero.ch/api/agents/gnd/XXXXXXX'
+        'entity': {
+            '$ref': f'{mef_agents_url}/gnd/XXXXXXX'
         },
         'role': ['aut']
     }, {
-        'agent': {
-            'type': 'bf:Person',
-            '$ref': 'https://mef.rero.ch/api/agents/gnd/XXXXXXX'
+        'entity': {
+            '$ref': f'{mef_agents_url}/gnd/XXXXXXX'
         },
         'role': ['aut']
     }]
     validate(document_data_tmp, document_schema)
 
     with pytest.raises(ValidationError):
-        document_data_tmp['contribution'][0]['agent']['type'] = [2]
+        document_data_tmp['contribution'][0]['entity']['type'] = [2]
         validate(document_data_tmp, document_schema)
 
     with pytest.raises(ValidationError):
-        document_data_tmp['contribution'][0]['agent']['preferred_name'] = [2]
+        document_data_tmp[
+            'contribution'][0]['entity']['authorized_access_point'] = [2]
         validate(document_data_tmp, document_schema)
 
     with pytest.raises(ValidationError):
-        document_data_tmp['contribution'][1]['agent']['type'] = [2]
+        document_data_tmp['contribution'][1]['entity']['type'] = [2]
         validate(document_data_tmp, document_schema)
 
     with pytest.raises(ValidationError):
-        document_data_tmp['contribution'][1]['agent']['preferred_name'] = [2]
+        document_data_tmp[
+            'contribution'][1]['entity']['authorized_access_point'] = [2]
         validate(document_data_tmp, document_schema)
 
 
@@ -178,8 +175,7 @@ def test_provisionActivity(document_schema, document_data_tmp):
         'type': 'bf:Publication',
         'place': [
             {
-                'country': 'fr',
-                'type': 'bf:Place'
+                'country': 'fr'
             }
         ],
         'statement': [
@@ -380,19 +376,19 @@ def test_identifiedby(document_schema, document_data_tmp):
 
 def test_subjects(document_schema, document_data_tmp):
     """Test subjects for jsonschemas."""
-    document_data_tmp['subjects'] = [
-        {
+    document_data_tmp['subjects'] = [{
+        'entity': {
             'type': "bf:Topic",
-            'term': 'ILS'
-        },
-        {
+            'authorized_access_point': 'ILS'
+        }}, {
+        'entity': {
             'type': "bf:Topic",
-            'term': 'informatique'
-        },
-        {
+            'authorized_access_point': 'informatique'
+        }}, {
+        'entity': {
             'type': "bf:Topic",
-            'term': 'bibliothèque'
-        }
+            'authorized_access_point': 'bibliothèque'
+        }}
     ]
 
     validate(document_data_tmp, document_schema)

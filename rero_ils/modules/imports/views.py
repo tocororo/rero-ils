@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2021 RERO
-# Copyright (C) 2021 UCLouvain
+# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -76,7 +76,7 @@ class ImportsListResource(ContentNegotiatedMethodView):
         )
 
     def get(self, **kwargs):
-        """Implement the GET /test."""
+        """Implement the GET."""
         no_cache = True if flask_request.args.get('no_cache') else False
         query = flask_request.args.get('q')
         try:
@@ -90,14 +90,13 @@ class ImportsListResource(ContentNegotiatedMethodView):
             what = query
         size = flask_request.args.get('size', self.import_size)
         do_import = self.import_class()
-        do_import.search_records(
+        results, status_code = do_import.search_records(
             what=what,
             relation=relation,
             where=where,
-            max=size,
+            max_results=size,
             no_cache=no_cache
         )
-        results = do_import.results
         filter_year = flask_request.args.get('year')
         if filter_year:
             ids = do_import.get_ids_for_aggregation(
@@ -140,7 +139,10 @@ class ImportsListResource(ContentNegotiatedMethodView):
                 key=filter_language
             )
             results = do_import.filter_records(results, ids)
-        return None, results
+        # return None, results
+        response = self.make_response(pid_fetcher=None, search_result=results)
+        response.status_code = status_code
+        return response
 
 
 class ImportsResource(ContentNegotiatedMethodView):
@@ -183,7 +185,7 @@ class ImportsResource(ContentNegotiatedMethodView):
             what=id,
             relation='all',
             where='recordid',
-            max=size,
+            max_results=size,
             no_cache=no_cache
         )
         if not do_import.data:

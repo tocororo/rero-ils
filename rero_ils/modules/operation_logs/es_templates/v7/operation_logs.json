@@ -19,6 +19,12 @@
           },
           "value": {
             "type": "keyword"
+          },
+          "organisation_pid": {
+            "type": "keyword"
+          },
+          "library_pid": {
+            "type": "keyword"
           }
         }
       },
@@ -40,6 +46,25 @@
       },
       "operation": {
         "type": "keyword"
+      },
+      "notification": {
+        "properties": {
+          "pid": {
+            "type": "keyword"
+          },
+          "type": {
+            "type": "keyword"
+          },
+          "date": {
+            "type": "date"
+          },
+          "sender_library_pid": {
+            "type": "keyword"
+          },
+          "recipients": {
+            "type": "text"
+          }
+        }
       },
       "ill_request": {
         "properties": {
@@ -75,6 +100,9 @@
         "type": "object",
         "properties": {
           "pid": {
+            "type": "keyword"
+          },
+          "trigger": {
             "type": "keyword"
           },
           "override_flag": {
@@ -167,7 +195,12 @@
                     "type": "keyword"
                   },
                   "location_name": {
-                    "type": "text"
+                    "type": "text",
+                    "fields": {
+                      "raw": {
+                        "type": "keyword"
+                      }
+                    }
                   }
                 }
               },

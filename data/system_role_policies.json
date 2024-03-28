@@ -1,0 +1,65 @@
+{
+  "coll-search": [
+    "any_user"
+  ],
+  "coll-read": [
+    "any_user"
+  ],
+  "doc-access": [
+    "any_user"
+  ],
+  "doc-search": [
+    "any_user"
+  ],
+  "doc-read": [
+    "any_user"
+  ],
+  "hold-access": [
+    "any_user"
+  ],
+  "hold-search": [
+    "any_user"
+  ],
+  "hold-read": [
+    "any_user"
+  ],
+  "item-access": [
+    "any_user"
+  ],
+  "item-search": [
+    "any_user"
+  ],
+  "item-read": [
+    "any_user"
+  ],
+  "lofi-search": [
+    "any_user"
+  ],
+  "lofi-read": [
+    "any_user"
+  ],
+  "notif-read": [
+    "authenticated_user"
+  ],
+  "oplg-search": [
+    "authenticated_user"
+  ],
+  "pttr-search": [
+    "authenticated_user"
+  ],
+  "pttr-read": [
+    "authenticated_user"
+  ],
+  "ptre-search": [
+    "authenticated_user"
+  ],
+  "ptre-read": [
+    "authenticated_user"
+  ],
+  "locent-search": [
+    "any_user"
+  ],
+  "locent-read": [
+    "any_user"
+  ]
+}

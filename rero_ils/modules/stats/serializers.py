@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019 RERO
+# Copyright (C) 2019-2022 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -22,7 +22,7 @@ from flask import current_app
 from invenio_records_rest.serializers.csv import CSVSerializer, Line
 from invenio_records_rest.serializers.response import add_link_header
 
-from ..patrons.api import Patron
+from .models import StatType
 
 
 class StatCSVSerializer(CSVSerializer):
@@ -50,7 +50,7 @@ class StatCSVSerializer(CSVSerializer):
         assert len(records) == 1
         record = records[0]
 
-        if record['metadata'].get('type') == Patron.ROLE_LIBRARIAN:
+        if record['metadata'].get('type') == StatType.LIBRARIAN:
             # statistics of type librarian
             headers = [key.capitalize().replace('_', ' ')
                        for key in self.ordered_keys]
@@ -77,7 +77,7 @@ class StatCSVSerializer(CSVSerializer):
                 value = StatCSVSerializer.sort_dict_by_key(value)[1]
                 writer.writerow(value)
                 yield line.read()
-        else:
+        elif record['metadata'].get('type') == StatType.BILLING:
             # statistics of type billing
             headers = set(('library name', 'library id'))
             for value in record['metadata']['values']:
@@ -105,6 +105,13 @@ class StatCSVSerializer(CSVSerializer):
                         for k, m in value[v].items():
                             dict_to_text += f'{k} :{m}\r\n'
                         value[v] = dict_to_text
+                writer.writerow(value)
+                yield line.read()
+        elif record['metadata'].get('type') == StatType.REPORT:
+            values = record['metadata']['values'][0]['results']
+            for value in values:
+                line = Line()
+                writer = csv.writer(line)
                 writer.writerow(value)
                 yield line.read()
 

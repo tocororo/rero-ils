@@ -9,6 +9,7 @@
       "oneOf": [
         {
           "title": "bf:Classification",
+          "type": "object",
           "additionalProperties": false,
           "propertiesOrder": [
             "type",
@@ -20,7 +21,6 @@
             "type",
             "classificationPortion"
           ],
-          "type": "object",
           "properties": {
             "type": {
               "title": "Type",
@@ -29,8 +29,8 @@
               "readOnly": true,
               "default": "bf:Classification",
               "const": "bf:Classification",
-              "form": {
-                "templateOptions": {
+              "widget": {
+                "formlyConfig": {
                   "wrappers": [
                     "hide"
                   ]
@@ -50,6 +50,7 @@
         },
         {
           "title": "bf:ClassificationLcc",
+          "type": "object",
           "additionalProperties": false,
           "propertiesOrder": [
             "type",
@@ -61,7 +62,6 @@
             "type",
             "classificationPortion"
           ],
-          "type": "object",
           "properties": {
             "type": {
               "title": "Type",
@@ -70,8 +70,8 @@
               "readOnly": true,
               "default": "bf:ClassificationLcc",
               "const": "bf:ClassificationLcc",
-              "form": {
-                "templateOptions": {
+              "widget": {
+                "formlyConfig": {
                   "wrappers": [
                     "hide"
                   ]
@@ -91,6 +91,7 @@
         },
         {
           "title": "bf:ClassificationNlm",
+          "type": "object",
           "additionalProperties": false,
           "propertiesOrder": [
             "type",
@@ -102,7 +103,6 @@
             "type",
             "classificationPortion"
           ],
-          "type": "object",
           "properties": {
             "type": {
               "title": "Type",
@@ -111,8 +111,8 @@
               "readOnly": true,
               "default": "bf:ClassificationNlm",
               "const": "bf:ClassificationNlm",
-              "form": {
-                "templateOptions": {
+              "widget": {
+                "formlyConfig": {
                   "wrappers": [
                     "hide"
                   ]
@@ -132,6 +132,7 @@
         },
         {
           "title": "bf:ClassificationUdc",
+          "type": "object",
           "additionalProperties": false,
           "propertiesOrder": [
             "type",
@@ -144,7 +145,6 @@
             "type",
             "classificationPortion"
           ],
-          "type": "object",
           "properties": {
             "type": {
               "title": "Type",
@@ -153,8 +153,8 @@
               "readOnly": true,
               "default": "bf:ClassificationUdc",
               "const": "bf:ClassificationUdc",
-              "form": {
-                "templateOptions": {
+              "widget": {
+                "formlyConfig": {
                   "wrappers": [
                     "hide"
                   ]
@@ -177,6 +177,7 @@
         },
         {
           "title": "bf:ClassificationDdc",
+          "type": "object",
           "additionalProperties": false,
           "propertiesOrder": [
             "type",
@@ -189,7 +190,6 @@
             "type",
             "classificationPortion"
           ],
-          "type": "object",
           "properties": {
             "type": {
               "title": "Type",
@@ -198,8 +198,8 @@
               "readOnly": true,
               "default": "bf:ClassificationDdc",
               "const": "bf:ClassificationDdc",
-              "form": {
-                "templateOptions": {
+              "widget": {
+                "formlyConfig": {
                   "wrappers": [
                     "hide"
                   ]
@@ -222,6 +222,7 @@
         },
         {
           "title": "classification_brunetparguez",
+          "type": "object",
           "additionalProperties": false,
           "propertiesOrder": [
             "type",
@@ -233,7 +234,6 @@
             "type",
             "classificationPortion"
           ],
-          "type": "object",
           "properties": {
             "type": {
               "title": "Type",
@@ -242,8 +242,8 @@
               "readOnly": true,
               "default": "classification_brunetparguez",
               "const": "classification_brunetparguez",
-              "form": {
-                "templateOptions": {
+              "widget": {
+                "formlyConfig": {
                   "wrappers": [
                     "hide"
                   ]
@@ -263,6 +263,7 @@
         },
         {
           "title": "classification_droit",
+          "type": "object",
           "additionalProperties": false,
           "propertiesOrder": [
             "type",
@@ -274,7 +275,6 @@
             "type",
             "classificationPortion"
           ],
-          "type": "object",
           "properties": {
             "type": {
               "title": "Type",
@@ -283,8 +283,8 @@
               "readOnly": true,
               "default": "classification_droit",
               "const": "classification_droit",
-              "form": {
-                "templateOptions": {
+              "widget": {
+                "formlyConfig": {
                   "wrappers": [
                     "hide"
                   ]
@@ -324,8 +324,8 @@
               "readOnly": true,
               "default": "classification_musicale_instruments",
               "const": "classification_musicale_instruments",
-              "form": {
-                "templateOptions": {
+              "widget": {
+                "formlyConfig": {
                   "wrappers": [
                     "hide"
                   ]
@@ -337,27 +337,28 @@
               "description": "Short alphanumeric string that serves as an identifier for a class.",
               "type": "string",
               "minLength": 2,
-              "form": {
-                "placeholder": "Example: 001.012"
+              "widget": {
+                "formlyConfig": {
+                  "props": {
+                    "placeholder": "Example: 001.012"
+                  }
+                }
               }
             },
             "subdivision": {
-              "title": "Subdivisions",
-              "minItems": 1,
-              "type": "array",
-              "items": {
-                "title": "Subdivision",
-                "type": "string",
-                "minLength": 2
-              }
+              "$ref": "#/definitions/subdivision"
             },
             "edition": {
               "title": "Edition",
               "description": "Used for imported records only. Edition of the classification, identified by a number, a date, or another textual designation.",
               "type": "string",
               "minLength": 2,
-              "form": {
-                "placeholder": "Example: Abridged edition, 22"
+              "widget": {
+                "formlyConfig": {
+                  "props": {
+                    "placeholder": "Example: Abridged edition, 22"
+                  }
+                }
               }
             },
             "assigner": {
@@ -370,6 +371,7 @@
         },
         {
           "title": "classification_musicale_genres",
+          "type": "object",
           "additionalProperties": false,
           "propertiesOrder": [
             "type",
@@ -381,7 +383,6 @@
             "type",
             "classificationPortion"
           ],
-          "type": "object",
           "properties": {
             "type": {
               "title": "Type",
@@ -390,8 +391,8 @@
               "readOnly": true,
               "default": "classification_musicale_genres",
               "const": "classification_musicale_genres",
-              "form": {
-                "templateOptions": {
+              "widget": {
+                "formlyConfig": {
                   "wrappers": [
                     "hide"
                   ]
@@ -411,8 +412,12 @@
         }
       ]
     },
-    "form": {
-      "hide": true
+    "widget": {
+      "formlyConfig": {
+        "props": {
+          "hide": true
+        }
+      }
     }
   },
   "definitions": {
@@ -421,8 +426,12 @@
       "description": "Short alphanumeric string that serves as an identifier for a class.",
       "type": "string",
       "minLength": 1,
-      "form": {
-        "placeholder": "Example: 001.012"
+      "widget": {
+        "formlyConfig": {
+          "props": {
+            "placeholder": "Example: 001.012"
+          }
+        }
       }
     },
     "subdivision": {
@@ -440,8 +449,12 @@
       "description": "Used for imported records only. Edition of the classification, identified by a number, a date, or another textual designation.",
       "type": "string",
       "minLength": 1,
-      "form": {
-        "placeholder": "Example: Abridged edition, 22"
+      "widget": {
+        "formlyConfig": {
+          "props": {
+            "placeholder": "Example: Abridged edition, 22"
+          }
+        }
       }
     },
     "assigner": {

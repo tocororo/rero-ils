@@ -16,12 +16,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import mock
-from flask import url_for
+from flask import current_app, url_for
+from flask_principal import AnonymousIdentity, identity_changed
+from flask_security import login_user
 from invenio_accounts.testutils import login_user_via_session
-from utils import get_json
+from utils import check_permission, get_json
 
-from rero_ils.modules.organisations.permissions import OrganisationPermission
+from rero_ils.modules.organisations.permissions import \
+    OrganisationPermissionPolicy
 
 
 def test_organisation_permissions_api(client, patron_martigny,
@@ -76,41 +78,70 @@ def test_organisation_permissions_api(client, patron_martigny,
 def test_organisation_permissions(patron_martigny,
                                   librarian_martigny,
                                   system_librarian_martigny,
-                                  org_martigny_data, org_martigny):
+                                  org_martigny, org_sion):
     """Test organisation permissions class."""
 
+    permission_policy = OrganisationPermissionPolicy
+
     # Anonymous user
-    assert not OrganisationPermission.list(None, {})
-    assert not OrganisationPermission.read(None, {})
-    assert not OrganisationPermission.create(None, {})
-    assert not OrganisationPermission.update(None, {})
-    assert not OrganisationPermission.delete(None, {})
+    identity_changed.send(
+        current_app._get_current_object(), identity=AnonymousIdentity()
+    )
+    check_permission(permission_policy, {
+        'search': False,
+        'read': False,
+        'create': False,
+        'update': False,
+        'delete': False
+    }, {})
 
-    # As non Librarian
-    assert not OrganisationPermission.list(None, org_martigny_data)
-    assert not OrganisationPermission.read(None, org_martigny_data)
-    assert not OrganisationPermission.create(None, org_martigny_data)
-    assert not OrganisationPermission.update(None, org_martigny_data)
-    assert not OrganisationPermission.delete(None, org_martigny_data)
+    # Patron
+    #    A simple patron can't operate any operation about Organisation
+    login_user(patron_martigny.user)
+    check_permission(permission_policy, {
+        'search': False,
+        'read': False,
+        'create': False,
+        'update': False,
+        'delete': False
+    }, org_martigny)
 
-    # As Librarian
-    with mock.patch(
-        'rero_ils.modules.organisations.permissions.current_librarian',
-        librarian_martigny
-    ):
-        assert OrganisationPermission.list(None, org_martigny_data)
-        assert OrganisationPermission.read(None, org_martigny_data)
-        assert not OrganisationPermission.create(None, org_martigny_data)
-        assert not OrganisationPermission.update(None, org_martigny_data)
-        assert not OrganisationPermission.delete(None, org_martigny_data)
+    # Librarian
+    #     - search : any Organisation despite organisation owner
+    #     - read : only Organisation for its own organisation
+    #     - create/update/delete: disallowed
+    login_user(librarian_martigny.user)
+    check_permission(permission_policy, {'search': True}, None)
+    check_permission(permission_policy, {'create': False}, {})
+    check_permission(permission_policy, {
+        'read': True,
+        'create': False,
+        'update': False,
+        'delete': False
+    }, org_martigny)
+    check_permission(permission_policy, {
+        'read': False,
+        'create': False,
+        'update': False,
+        'delete': False
+    }, org_sion)
 
-    # As SystemLibrarian
-    with mock.patch(
-        'rero_ils.modules.organisations.permissions.current_librarian',
-        system_librarian_martigny
-    ):
-        assert OrganisationPermission.list(None, org_martigny_data)
-        assert OrganisationPermission.read(None, org_martigny_data)
-        assert not OrganisationPermission.create(None, org_martigny_data)
-        assert OrganisationPermission.update(None, org_martigny_data)
-        assert not OrganisationPermission.delete(None, org_martigny_data)
+    # SystemLibrarian
+    #     - search : any Organisation despite organisation owner
+    #     - read/update : only Organisation for its own organisation
+    #     - create/delete : always disallowed (only CLI command)
+    login_user(system_librarian_martigny.user)
+    check_permission(permission_policy, {'search': True}, None)
+    check_permission(permission_policy, {'create': False}, {})
+    check_permission(permission_policy, {
+        'read': True,
+        'create': False,
+        'update': True,
+        'delete': False
+    }, org_martigny)
+    check_permission(permission_policy, {
+        'read': False,
+        'create': False,
+        'update': False,
+        'delete': False
+    }, org_sion)
