@@ -52,13 +52,13 @@ services:
       - "80"
       - "443"
   cache:
-    image: redis
+    image: docker.uclv.cu/redis
     restart: "unless-stopped"
     read_only: true
     ports:
       - "6379:6379"
   db:
-    image: postgres:12
+    image: docker.uclv.cu/postgres:12
     restart: "unless-stopped"
     environment:
       - "POSTGRES_USER=rero-ils"
@@ -67,24 +67,29 @@ services:
     ports:
       - "5432:5432"
   mq:
-    image: rabbitmq:3-management
+    image: docker.uclv.cu/freezippo/rabbitmq-3-management
     restart: "unless-stopped"
     ports:
       - "15672:15672"
       - "5672:5672"
   es:
     build: ./docker/elasticsearch/
-    image: elasticsearch-icu-7.10.2
+    image: elasticsearch-icu-7.17.1
+#    elasticsearch-icu-7.17.1
+#    docker.uclv.cu/elasticsearch:7.17.1
+#    elasticsearch-icu-7.10.2
     restart: "unless-stopped"
     environment:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "discovery.type=single-node"
       - "indices.query.bool.max_clause_count=3000"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+      - "https_proxy=http://rafael.martinez:Rme.2021@proxy.upr.edu.cu:8080/"
+      - "http_proxy=http://rafael.martinez:Rme.2021@proxy.upr.edu.cu:8080/"
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
     mem_limit: 1g
     ports:
       - "9200:9200"

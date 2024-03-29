@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-FROM haproxy:1.8
+FROM docker.uclv.cu/haproxy:1.8
 RUN mkdir -p /usr/local/var/lib/haproxy/
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 COPY haproxy_cert.pem /usr/local/etc/cert.pem
