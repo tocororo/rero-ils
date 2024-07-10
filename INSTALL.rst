@@ -95,7 +95,7 @@ Next, create database tables, search indexes and message queues:
 
 .. code-block:: console
 
-    $ poetry run poe setup
+        $ poetry run poe setup
 
 Running
 -------
