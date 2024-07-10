@@ -31,12 +31,80 @@
   "mappings": {
     "date_detection": false,
     "numeric_detection": false,
+    "_source": {
+      "excludes": [
+        "files.text"
+      ]
+    },
     "properties": {
       "$schema": {
         "type": "keyword"
       },
       "pid": {
         "type": "keyword"
+      },
+      "organisation_pid": {
+        "type": "keyword"
+      },
+      "library_pid": {
+        "type": "keyword"
+      },
+      "location_pid": {
+        "type": "keyword"
+      },
+      "files": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": false,
+            "copy_to": "fulltext"
+          },
+          "file_name": {
+            "type": "keyword"
+          },
+          "rec_id": {
+            "type": "keyword"
+          },
+          "organisation_pid": {
+            "type": "keyword",
+            "copy_to": "organisation_pid"
+          },
+          "library_pid": {
+            "type": "keyword",
+            "copy_to": "library_pid"
+          },
+          "collections": {
+            "type": "text",
+            "fields": {
+              "raw": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "fulltext": {
+        "type": "text",
+        "fields": {
+          "eng": {
+            "type": "text",
+            "analyzer": "english"
+          },
+          "fre": {
+            "type": "text",
+            "analyzer": "french"
+          },
+          "ger": {
+            "type": "text",
+            "analyzer": "german"
+          },
+          "ita": {
+            "type": "text",
+            "analyzer": "italian"
+          }
+        }
       },
       "title": {
         "type": "object",
@@ -1067,7 +1135,8 @@
             "type": "object",
             "properties": {
               "pid": {
-                "type": "keyword"
+                "type": "keyword",
+                "copy_to": "location_pid"
               }
             }
           },
@@ -1086,10 +1155,12 @@
             "type": "object",
             "properties": {
               "organisation_pid": {
-                "type": "keyword"
+                "type": "keyword",
+                "copy_to": "organisation_pid"
               },
               "library_pid": {
-                "type": "keyword"
+                "type": "keyword",
+                "copy_to": "library_pid"
               }
             }
           },
@@ -2114,6 +2185,9 @@
         }
       },
       "status": {
+        "type": "keyword"
+      },
+      "fiction_statement": {
         "type": "keyword"
       },
       "harvested": {

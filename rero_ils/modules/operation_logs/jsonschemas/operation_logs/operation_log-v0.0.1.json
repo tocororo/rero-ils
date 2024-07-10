@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "title": "Operation log",
   "description": "Operation log keeps the operation history of a resource.",
@@ -38,7 +38,9 @@
           "enum": [
             "doc",
             "hold",
+            "recid",
             "item",
+            "file",
             "loan",
             "illr",
             "notif",
@@ -223,6 +225,40 @@
         }
       }
     },
+    "file": {
+      "recid": {
+        "title": "File Record Pid",
+        "type": "string",
+        "minLength": 1
+      },
+      "document": {
+        "title": "Document",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pid",
+          "type",
+          "title"
+        ],
+        "properties": {
+          "pid": {
+            "title": "Document PID",
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "title": "Type",
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "title": "Title",
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
     "loan": {
       "title": "Loan",
       "description": "Loan specific data",
@@ -262,6 +298,10 @@
           "description": "Allow a transaction which is normally not possible.",
           "type": "boolean",
           "default": false
+        },
+        "auto_extend": {
+          "type": "boolean",
+          "title": "Defines if the latest renewal was automatic or manual."
         },
         "transaction_channel": {
           "title": "Transaction channel",

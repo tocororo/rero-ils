@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2024 RERO
 # Copyright (C) 2020 UCLOUVAIN
 #
 # This program is free software: you can redistribute it and/or modify
@@ -25,10 +25,14 @@ from datetime import datetime, timezone
 
 from dateutil.relativedelta import relativedelta
 from elasticsearch_dsl.query import Q
-from flask import current_app, request
+from flask import current_app
+from flask import request
+from flask import request as flask_request
 from invenio_i18n.ext import current_i18n
 from invenio_records_rest.errors import InvalidQueryRESTError
 from werkzeug.datastructures import ImmutableMultiDict, MultiDict
+
+from rero_ils.modules.ill_requests.models import ILLRequestStatus
 
 from .facets import default_facets_factory
 from .modules.items.models import TypeOfItem
@@ -120,11 +124,30 @@ def or_terms_filter_by_criteria(criteria):
     def inner(values):
         should = []
         if values and values[0] == 'true':
-            should.extend(
-                Q('terms', **{key: criteria[key]})
-                for key in criteria
-            )
+            for field, value in criteria.items():
+                if field == '_exists_':
+                    should.append(Q('exists', field=value))
+                else:
+                    should.append(Q('terms', **{field: value}))
         return Q('bool', should=should)
+    return inner
+
+
+def bool_filter(field, **kwargs):
+    """Create a bool filter.
+
+    :param field: Field name.
+    :param kwargs: additional sub-filters to apply on (allowed keys are 'must'
+        or 'must_not')
+    :return: Function that returns a boolean query.
+    """
+    def inner(values):
+        _filter = Q('term', **{field: bool(int(values[0]))})
+        for value in kwargs.get('must', []):
+            _filter &= Q(**value)
+        for value in kwargs.get('must_not', []):
+            _filter &= ~Q(**value)
+        return _filter
     return inner
 
 
@@ -144,13 +167,14 @@ def documents_search_factory(self, search, query_parser=None):
         # organisation public view
         if view != current_app.config.get('RERO_ILS_SEARCH_GLOBAL_VIEW_CODE'):
             org = Organisation.get_record_by_viewcode(view)
-            search = search.filter(
-                'term', holdings__organisation__organisation_pid=org['pid']
+            filters = Q(
+                'term',  organisation_pid=org['pid']
             )
+            search = search.filter(filters)
         # exclude masked documents
-        search = search.filter('bool', must_not=[Q('term', _masked=True)])
+        search = search.exclude(Q('term', _masked=True))
     # exclude draft documents
-    search = search.filter('bool', must_not=[Q('term', _draft=True)])
+    search = search.exclude(Q('term', _draft=True))
     return search, urlkwargs
 
 
@@ -283,16 +307,20 @@ def ill_request_search_factory(self, search, query_parser=None):
             'terms',
             patron__pid=[ptrn.pid for ptrn in current_patrons])
 
+    search = search.exclude(Q('term', to_anonymize=True))
+
+    if not request.args.get('remove_archived'):
+        return search, urlkwargs
+
     months = current_app.config.get('RERO_ILS_ILL_HIDE_MONTHS', 6)
     date_delta = datetime.now(timezone.utc) - relativedelta(months=months)
     filters = Q(
         'range',
         _created={'lte': 'now', 'gte': date_delta}
     )
-    filters |= Q('term', status='pending')
+    filters |= Q('term', status=ILLRequestStatus.PENDING)
 
-    return search.filter(
-        filters).exclude(Q('term', to_anonymize=True)), urlkwargs
+    return search.filter(filters), urlkwargs
 
 
 def circulation_search_factory(self, search, query_parser=None):
@@ -422,41 +450,14 @@ def search_factory(self, search, query_parser=None):
             # TODO: remove this bad hack
             qstr = _PUNCTUATION_REGEX.sub(' ', qstr)
             qstr = re.sub(r'\s+', ' ', qstr).rstrip()
-            return (
-                Q(
+            return Q(
                     query_type,
                     lenient=lenient,
                     query=qstr,
-                    boost=2,
-                    fields=query_boosting,
+                    fields=query_boosting if query_boosting else ["*"],
                     default_operator=default_operator,
                 )
-                | Q(
-                    query_type,
-                    lenient=lenient,
-                    query=qstr,
-                    default_operator=default_operator,
-                )
-                if query_boosting
-                else Q(
-                    query_type,
-                    lenient=lenient,
-                    query=qstr,
-                    default_operator=default_operator,
-                )
-            )
         return Q()
-
-    def _boosting_parser(query_boosting, search_index):
-        """Elasticsearch boosting fields parser."""
-        boosting = []
-        if search_index in query_boosting:
-            boosting.extend([
-                f'{field}^{boost}'
-                for field, boost in query_boosting[search_index].items()
-            ])
-
-        return boosting
 
     from invenio_records_rest.sorter import default_sorter_factory
 
@@ -467,11 +468,15 @@ def search_factory(self, search, query_parser=None):
     query_parser = query_parser or _default_parser
 
     search_index = search._index[0]
-    query_boosting = _boosting_parser(
-        current_app.config['RERO_ILS_QUERY_BOOSTING'],
-        search_index
-    )
-
+    query_boosting = \
+        current_app.config.get('RERO_ILS_QUERY_BOOSTING', {}).get(search_index)
+    if (
+        flask_request.args.get('fulltext', None)
+        in [None, '0', 'false', 0, False]
+        and query_boosting
+    ):
+        query_boosting = \
+            [v for v in query_boosting if not v.startswith('fulltext')]
     try:
         search = search.query(query_parser(query_string, query_boosting))
     except SyntaxError as err:

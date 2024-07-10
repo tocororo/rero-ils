@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2024 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -17,6 +17,7 @@
 
 """API for manipulating collections."""
 
+from datetime import datetime, timezone
 from functools import partial
 
 from rero_ils.modules.items.api import Item
@@ -49,6 +50,17 @@ class CollectionsSearch(IlsRecordsSearch):
         index = 'collections'
         doc_types = None
 
+    def active_by_item_pid(self, item_pid):
+        """Search for active collections by item pid.
+
+        :param item_pid: string - the item to filter with.
+        :return: An ElasticSearch query to get hits related the entity.
+        """
+        return self \
+            .filter('term', items__pid=item_pid) \
+            .filter('range', end_date={'gte': datetime.now(timezone.utc)}) \
+            .sort({'end_date': {'order': 'asc'}})
+
 
 class Collection(IlsRecord):
     """Collection class."""
@@ -76,10 +88,13 @@ class Collection(IlsRecord):
         for item in self.get('items', []):
             item_pid = extracted_data_from_ref(item)
             item = Item.get_record_by_pid(item_pid)
-            # inherit holdings call number when possible
-            issue_call_number = item.issue_inherited_first_call_number
-            if issue_call_number:
-                item['call_number'] = issue_call_number
+            # inherit holdings first call number when possible
+            if first_call_number := item.issue_inherited_first_call_number:
+                item['call_number'] = first_call_number
+            # inherit holdings second call number when possible
+            if second_call_number := item.issue_inherited_second_call_number:
+                item['second_call_number'] = second_call_number
+
             items.append(item)
         return items
 

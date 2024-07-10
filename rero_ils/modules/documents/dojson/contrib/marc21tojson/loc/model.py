@@ -28,6 +28,7 @@ from flask import current_app
 from rero_ils.dojson.utils import ReroIlsMarc21Overdo, TitlePartList, \
     build_identifier, build_string_from_subfields, get_field_items, \
     get_mef_link, remove_trailing_punctuation
+from rero_ils.modules.documents.models import DocumentFictionType
 from rero_ils.modules.entities.models import EntityType
 
 from ..utils import do_abbreviated_title, \
@@ -91,6 +92,7 @@ def marc21_to_type_and_issuance(self, key, value):
     """Get document type, content/Media/Carrier type and mode of issuance."""
     do_issuance(self, marc21)
     do_type(self, marc21)
+    self['fiction_statement'] = DocumentFictionType.Unspecified.value
 
 
 @marc21.over('language', '^008')
@@ -564,11 +566,17 @@ def marc21_to_subjects_6XX(self, key, value):
     subfields_2 = utils.force_list(value.get('2'))
     subfield_2 = subfields_2[0] if subfields_2 else None
     subfields_a = utils.force_list(value.get('a', []))
-    config_field_key = \
-        current_app.config.get(
+    # Try to get RERO_ILS_IMPORT_6XX_TARGET_ATTRIBUTE from current app
+    # In the dojson cli is no current app and we have to get the value directly
+    # from config.py
+    try:
+        config_field_key = current_app.config.get(
             'RERO_ILS_IMPORT_6XX_TARGET_ATTRIBUTE',
             'subjects_imported'
         )
+    except Exception:
+        from rero_ils.config import \
+            RERO_ILS_IMPORT_6XX_TARGET_ATTRIBUTE as config_field_key
 
     if subfield_2 in ['rero', 'gnd', 'idref']:
         if tag_key in ['600', '610', '611'] and value.get('t'):

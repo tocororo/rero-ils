@@ -30,6 +30,7 @@ from rero_ils.dojson.utils import ReroIlsMarc21Overdo, TitlePartList, \
     remove_trailing_punctuation
 from rero_ils.modules.documents.dojson.contrib.marc21tojson.utils import \
     do_language
+from rero_ils.modules.documents.models import DocumentFictionType
 from rero_ils.modules.documents.utils import create_authorized_access_point
 from rero_ils.modules.entities.models import EntityType
 
@@ -46,6 +47,7 @@ def marc21_to_issuance(self, key, value):
     )
     if marc21.admin_meta_data:
         self['adminMetadata'] = marc21.admin_meta_data
+    self['fiction_statement'] = DocumentFictionType.Unspecified.value
 
 
 @marc21.over('language', '^008')
@@ -512,7 +514,7 @@ def marc21_electronicLocator(self, key, value):
     indicator2 = key[4]
     electronic_locator = {}
     url = utils.force_list(value.get('u'))[0].strip()
-    subfield_3 = value.get('3')
+    subfield_3 = value.get('3')  # materials_specified
     if subfield_3:
         subfield_3 = utils.force_list(subfield_3)[0]
     if indicator2 == '2':
@@ -523,10 +525,16 @@ def marc21_electronicLocator(self, key, value):
                 'content': 'coverImage'
             }
     elif indicator2 == '0':
-        if subfield_x := value.get('x'):
+        if subfield_x := value.get('x'):  # nonpublic_note
             electronic_locator = {
                 'url': url,
                 'type': 'resource',
                 'source': utils.force_list(subfield_x)[0]
             }
+        if subfield_q := value.get('q'):  # electronic_format_type
+            if subfield_q == 'audio':
+                self['type'] = [{
+                    'main_type': 'docmaintype_audio',
+                    'subtype': 'docsubtype_audio_book'
+                }]
     return electronic_locator or None

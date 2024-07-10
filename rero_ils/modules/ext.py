@@ -18,8 +18,6 @@
 
 """RERO ILS invenio module declaration."""
 
-from __future__ import absolute_import, print_function
-
 import logging
 
 import jinja2
@@ -85,6 +83,8 @@ from rero_ils.modules.users.views import UsersCreateResource, UsersResource
 from rero_ils.modules.utils import remove_user_name, set_user_name
 from rero_ils.version import __version__
 
+from .receivers import set_boosting_query_fields
+
 
 @identity_loaded.connect
 def on_identity_loaded(sender, identity):
@@ -145,12 +145,30 @@ def load_actions(sender, app):
     for action in app.config.get('RERO_ILS_PERMISSIONS_ACTIONS', []):
         access_ext.register_action(obj_or_import_string(action))
 
+    # add jsonschema resolution from local:// and bib.rero.ch
+    data = app.extensions["invenio-jsonschemas"].refresolver_store()
+    cfg = app.config
+    schema_url = f'{cfg["JSONSCHEMAS_URL_SCHEME"]}://'\
+                 f'{cfg["JSONSCHEMAS_HOST"]}'\
+                 f'{cfg["JSONSCHEMAS_ENDPOINT"]}/'
+
+    app.extensions['rero-ils'].jsonschema_store = dict(
+        **data,
+        **{
+            k.replace('local://', schema_url): v
+            for k, v in data.items()
+        }
+    )
+
 
 class REROILSAPP(object):
     """rero-ils extension."""
 
     def __init__(self, app=None):
         """RERO ILS App module."""
+        # jsonschema store
+        # SEE: RECORDS_REFRESOLVER_STORE for more details
+        self.jsonschema_store = {}
         if app:
             self.init_app(app)
             # force to load ils template before others
@@ -195,6 +213,7 @@ class REROILSAPP(object):
             es_trace_logger.setLevel(es_log)
             handler = logging.StreamHandler()
             es_trace_logger.addHandler(handler)
+        app_loaded.connect(set_boosting_query_fields)
 
     @staticmethod
     def register_import_api_blueprint(app):
@@ -203,7 +222,7 @@ class REROILSAPP(object):
         def handle_bad_request(e):
             return 'not found', 404
 
-        api_blueprint = Blueprint('api_imports', __name__)
+        blueprint = Blueprint('api_imports', __name__)
         endpoints = app.config.get('RERO_IMPORT_REST_ENDPOINTS', {})
         for key, config in endpoints.items():
             # search view
@@ -214,7 +233,7 @@ class REROILSAPP(object):
                 import_class=config.get('import_class'),
                 import_size=config.get('import_size')
             )
-            api_blueprint.add_url_rule(search_path, view_func=search_view)
+            blueprint.add_url_rule(search_path, view_func=search_view)
 
             # record view
             record_view_name = f'import_{key}_record'
@@ -223,44 +242,44 @@ class REROILSAPP(object):
                 record_view_name,
                 import_class=config.get('import_class')
             )
-            api_blueprint.add_url_rule(record_path, view_func=record_view)
+            blueprint.add_url_rule(record_path, view_func=record_view)
 
-        api_blueprint.register_error_handler(
+        blueprint.register_error_handler(
             ResultNotFoundOnTheRemoteServer,
             handle_bad_request
         )
-        app.register_blueprint(api_blueprint)
+        app.register_blueprint(blueprint)
 
     @staticmethod
     def register_users_api_blueprint(app):
         """User blueprints initialization."""
-        api_blueprint = Blueprint('api_users', __name__)
+        blueprint = Blueprint('api_users', __name__)
 
-        @api_blueprint.errorhandler(ValidationError)
+        @blueprint.errorhandler(ValidationError)
         def validation_error(error):
             """Catch validation errors."""
             return JSONSchemaValidationError(error=error).get_response()
 
-        api_blueprint.add_url_rule(
+        blueprint.add_url_rule(
             '/users/<id>',
             view_func=UsersResource.as_view('users_item')
         )
-        api_blueprint.add_url_rule(
+        blueprint.add_url_rule(
             '/users/',
             view_func=UsersCreateResource.as_view('users_list')
         )
-        app.register_blueprint(api_blueprint)
+        app.register_blueprint(blueprint)
 
     @staticmethod
     def register_sru_api_blueprint(app):
         """SRU blueprints initialization."""
-        api_blueprint = Blueprint('api_sru', __name__)
+        blueprint = Blueprint('api_sru', __name__)
         sru_documents_search = SRUDocumentsSearch.as_view('documents')
-        api_blueprint.add_url_rule(
+        blueprint.add_url_rule(
             '/sru/documents',
             view_func=sru_documents_search
         )
-        app.register_blueprint(api_blueprint)
+        app.register_blueprint(blueprint)
 
     def init_config(self, app):
         """Initialize configuration."""

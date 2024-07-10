@@ -22,6 +22,7 @@ from __future__ import absolute_import, print_function
 from dojson.contrib.marc21.utils import create_record
 
 from rero_ils.modules.documents.dojson.contrib.unimarctojson import unimarc
+from rero_ils.modules.documents.models import DocumentFictionType
 
 
 # type: leader
@@ -1652,7 +1653,6 @@ def test_unimarc_to_electronicLocator_from_856():
         <subfield
             code="u">http://gallica.bnf.fr/ark:/12148/btv1b550017355</subfield>
       </datafield>
-
     </record>
     """
     unimarcjson = create_record(unimarcxml)
@@ -1661,3 +1661,31 @@ def test_unimarc_to_electronicLocator_from_856():
         'url': 'http://gallica.bnf.fr/ark:/12148/btv1b550017355',
         'type': 'resource',
     }]
+
+
+def test_unimarc_to_isFiktion_from_105():
+    """Test dojson isFiktion from 105."""
+
+    unimarcxml = """
+    <record>
+      <datafield tag="105" ind1=" " ind2=" ">
+        <subfield
+            code="a">y   z   00|||</subfield>
+      </datafield>
+    </record>
+    """
+    unimarcjson = create_record(unimarcxml)
+    data = unimarc.do(unimarcjson)
+    assert data['fiction_statement'] == DocumentFictionType.Unspecified.value
+
+    unimarcxml = """
+    <record>
+      <datafield tag="105" ind1=" " ind2=" ">
+        <subfield
+            code="a">y   z   00|a|</subfield>
+      </datafield>
+    </record>
+    """
+    unimarcjson = create_record(unimarcxml)
+    data = unimarc.do(unimarcjson)
+    assert data['fiction_statement'] == DocumentFictionType.Fiction.value

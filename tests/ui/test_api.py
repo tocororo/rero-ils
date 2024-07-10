@@ -24,7 +24,7 @@ import pytest
 from invenio_db import db
 from invenio_pidstore.models import PIDStatus, RecordIdentifier
 from invenio_pidstore.providers.base import BaseProvider
-from invenio_search import current_search
+from invenio_records.models import RecordMetadataBase
 from jsonschema.exceptions import ValidationError
 from utils import flush_index
 
@@ -96,6 +96,15 @@ id_minter_test = partial(id_minter, provider=ProviderTest)
 id_fetcher_test = partial(id_fetcher, provider=ProviderTest)
 
 
+class TestRecordMetadata(db.Model, RecordMetadataBase):
+    """Represent a record metadata."""
+
+    __tablename__ = "records_metadata_test"
+
+    # Enables SQLAlchemy-Continuum versioning
+    __versioned__ = {}
+
+
 class RecordTest(IlsRecord):
     """Test record class."""
 
@@ -103,11 +112,11 @@ class RecordTest(IlsRecord):
     minter = id_minter_test
     fetcher = id_fetcher_test
     provider = ProviderTest
+    model_cls = TestRecordMetadata
 
 
 def test_ilsrecord(app, es_default_index, ils_record, ils_record_2):
     """Test IlsRecord update."""
-    current_search.delete(ignore=[404])
 
     # the created records will be accessible in all function of this test file
     record_1 = RecordTest.create(

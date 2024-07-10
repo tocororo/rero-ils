@@ -29,6 +29,13 @@
             "role": {
               "$ref": "https://bib.rero.ch/schemas/documents/document_contribution_role-v0.0.1.json"
             }
+          },
+          "widget": {
+            "formlyConfig": {
+              "props": {
+                "hideLabel": true
+              }
+            }
           }
         },
         {
@@ -50,6 +57,13 @@
             },
             "role": {
               "$ref": "https://bib.rero.ch/schemas/documents/document_contribution_role-v0.0.1.json"
+            }
+          },
+          "widget": {
+            "formlyConfig": {
+              "props": {
+                "hideLabel": true
+              }
             }
           }
         }

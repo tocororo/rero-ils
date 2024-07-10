@@ -149,9 +149,11 @@ from .utils import TranslatedList, get_current_language
 
 APP_THEME = ['bootstrap3']
 
+
 def _(x):
     """Identity function used to trigger string extraction."""
     return x
+
 
 # Personalized homepage
 RERO_ILS_PERSONALIZED_CSS_BY_VIEW = True
@@ -211,6 +213,8 @@ SETTINGS_TEMPLATE = 'rero_ils/page_settings.html'
 # Google
 # =======================
 # THEME_GOOGLE_SITE_VERIFICATION = []
+# Example of id: UA-XXXXXX-XX
+# RERO_ILS_GOOGLE_ANALYTICS_TAG_ID =
 
 # Miscellaneous variable around templates
 # =======================
@@ -252,7 +256,7 @@ RERO_ILS_THEME_ORGANISATION_CSS_ENDPOINT = 'https://resources.rero.ch/bib/test/c
 THEME_TRACKINGCODE_TEMPLATE = 'rero_ils/trackingcode.html'
 THEME_JAVASCRIPT_TEMPLATE = 'rero_ils/javascript.html'
 
-# WEBPACKEXT_PROJECT = 'rero_ils.webpack.project'
+WEBPACKEXT_PROJECT = 'rero_ils.theme.webpack:project'
 
 # Email configuration
 # ===================
@@ -373,7 +377,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     'notification-creation': {
         'task': 'rero_ils.modules.notifications.tasks.create_notifications',
-        'schedule': crontab(minute=0, hour=3),  # Every day at 05:00 UTC,
+        'schedule': crontab(minute=0, hour=5),  # Every day at 05:00 UTC,
         'kwargs': {
             'types': [NotificationType.DUE_SOON, NotificationType.OVERDUE]
         },
@@ -410,6 +414,11 @@ CELERY_BEAT_SCHEDULE = {
     'cancel-expired-request': {
         'task': 'rero_ils.modules.loans.tasks.cancel_expired_request_task',
         'schedule': crontab(minute=15, hour=3),  # Every day at 03:15 UTC,
+        'enabled': False
+    },
+    'automatic_renewal': {
+        'task': 'rero_ils.modules.loans.tasks.automatic_renewal',
+        'schedule': crontab(minute=30, hour=3),  # Every day at 03:30 UTC
         'enabled': False
     },
     'anonymize-loans': {
@@ -533,7 +542,8 @@ APP_DEFAULT_SECURE_HEADERS = {
         'img-src': [
             '*',
             "'self'",
-            'data:'
+            'data:',
+            'blob:'
         ],
         'style-src': [
             '*',
@@ -549,7 +559,8 @@ APP_DEFAULT_SECURE_HEADERS = {
             'https://www.google-analytics.com',
             'https://services.test.rero.ch',
             'https://services.rero.ch',
-            'https://cdn.jsdelivr.net'
+            'https://cdn.jsdelivr.net',
+            'https://www.babelio.com'
         ]
     },
     'content_security_policy_report_uri': None,
@@ -565,11 +576,17 @@ SESSION_COOKIE_SECURE = False
 #: route correct hosts to the application.
 APP_ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
-# TODO: Check if needed one day
 # Previewers
 # ==========
-#: Include IIIF preview for images.
-# PREVIEWER_PREFERENCE = ['iiif_image'] + BASE_PREFERENCE
+PREVIEWER_RECORD_FILE_FACOTRY = (
+    "rero_invenio_files.records.previewer.record_file_factory"
+)
+
+PREVIEWER_MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024
+"""Maximum file size in bytes for image files."""
+
+PREVIEWER_MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024
+"""Maximum file size in bytes for JSON/XML files."""
 
 # Debug
 # =====
@@ -1239,7 +1256,7 @@ RECORDS_REST_ENDPOINTS = dict(
         item_route='/local_entities/<pid(locent, record_class="rero_ils.modules.entities.local_entities.api:LocalEntity"):pid_value>',
         default_media_type='application/json',
         max_result_window=MAX_RESULT_WINDOW,
-        search_factory_imp='rero_ils.query:search_factory',
+        search_factory_imp='rero_ils.query:remote_entity_view_search_factory',
         list_permission_factory_imp=lambda record: LocalEntityPermissionPolicy('search', record=record),
         read_permission_factory_imp=lambda record: LocalEntityPermissionPolicy('read', record=record),
         create_permission_factory_imp=lambda record: LocalEntityPermissionPolicy('create', record=record),
@@ -1264,7 +1281,7 @@ RECORDS_REST_ENDPOINTS = dict(
         item_route='/entities/<nooppid(ent, data={}):pid_value>',  # mandatory for invenio-records-rest (only used for permissions)
         default_media_type='application/json',
         max_result_window=MAX_RESULT_WINDOW,
-        search_factory_imp='rero_ils.query:search_factory',
+        search_factory_imp='rero_ils.query:remote_entity_view_search_factory',
         list_permission_factory_imp=allow_all,
         read_permission_factory_imp=deny_all,
         create_permission_factory_imp=deny_all,
@@ -1718,8 +1735,6 @@ PTRE_AGGREGATION_SIZE = RERO_ILS_AGGREGATION_SIZE.get('patron_transaction_events
 ACQ_ORDER_AGGREGATION_SIZE = RERO_ILS_AGGREGATION_SIZE.get('acq_orders', RERO_ILS_DEFAULT_AGGREGATION_SIZE)
 ENTITIES_AGGREGATION_SIZE = RERO_ILS_AGGREGATION_SIZE.get('entities', RERO_ILS_DEFAULT_AGGREGATION_SIZE)
 
-FICTIONS_TERMS = ['Fictions', 'Films de fiction']
-
 RECORDS_REST_FACETS = dict(
     documents=dict(
         i18n_aggs=dict(
@@ -1729,41 +1744,11 @@ RECORDS_REST_FACETS = dict(
                 de=dict(terms=dict(field='facet_contribution_de', size=DOCUMENTS_AGGREGATION_SIZE)),
                 it=dict(terms=dict(field='facet_contribution_it', size=DOCUMENTS_AGGREGATION_SIZE)),
             ),
-            subject_fiction=dict(
-                en=dict(
-                    terms=dict(field='facet_subject_en', size=DOCUMENTS_AGGREGATION_SIZE),
-                    filter=dict(bool=dict(must=[dict(terms=dict(facet_genre_form_en=FICTIONS_TERMS))]))
-                ),
-                fr=dict(
-                    terms=dict(field='facet_subject_fr', size=DOCUMENTS_AGGREGATION_SIZE),
-                    filter=dict(bool=dict(must=[dict(terms=dict(facet_genre_form_fr=FICTIONS_TERMS))]))
-                ),
-                de=dict(
-                    terms=dict(field='facet_subject_de', size=DOCUMENTS_AGGREGATION_SIZE),
-                    filter=dict(bool=dict(must=[dict(terms=dict(facet_genre_form_de=FICTIONS_TERMS))]))
-                ),
-                it=dict(
-                    terms=dict(field='facet_subject_it', size=DOCUMENTS_AGGREGATION_SIZE),
-                    filter=dict(bool=dict(must=[dict(terms=dict(facet_genre_form_it=FICTIONS_TERMS))]))
-                ),
-            ),
-            subject_no_fiction=dict(
-                en=dict(
-                    terms=dict(field='facet_subject_en', size=DOCUMENTS_AGGREGATION_SIZE),
-                    filter=dict(bool=dict(must_not=[dict(terms=dict(facet_genre_form_en=FICTIONS_TERMS))]))
-                ),
-                fr=dict(
-                    terms=dict(field='facet_subject_fr', size=DOCUMENTS_AGGREGATION_SIZE),
-                    filter=dict(bool=dict(must_not=[dict(terms=dict(facet_genre_form_fr=FICTIONS_TERMS))]))
-                ),
-                de=dict(
-                    terms=dict(field='facet_subject_de', size=DOCUMENTS_AGGREGATION_SIZE),
-                    filter=dict(bool=dict(must_not=[dict(terms=dict(facet_genre_form_de=FICTIONS_TERMS))]))
-                ),
-                it=dict(
-                    terms=dict(field='facet_subject_it', size=DOCUMENTS_AGGREGATION_SIZE),
-                    filter=dict(bool=dict(must_not=[dict(terms=dict(facet_genre_form_it=FICTIONS_TERMS))]))
-                ),
+            subject=dict(
+                en=dict(terms=dict(field='facet_subject_en', size=DOCUMENTS_AGGREGATION_SIZE)),
+                fr=dict(terms=dict(field='facet_subject_fr', size=DOCUMENTS_AGGREGATION_SIZE)),
+                de=dict(terms=dict(field='facet_subject_de', size=DOCUMENTS_AGGREGATION_SIZE)),
+                it=dict(terms=dict(field='facet_subject_it', size=DOCUMENTS_AGGREGATION_SIZE)),
             ),
             genreForm=dict(
                 en=dict(terms=dict(field='facet_genre_form_en', size=DOCUMENTS_AGGREGATION_SIZE)),
@@ -1782,12 +1767,12 @@ RECORDS_REST_FACETS = dict(
             ),
             language=dict(terms=dict(field='language.value', size=DOCUMENTS_AGGREGATION_SIZE)),
             organisation=dict(
-                terms=dict(field='holdings.organisation.organisation_pid', size=DOCUMENTS_AGGREGATION_SIZE, min_doc_count=0),
+                terms=dict(field='organisation_pid', size=DOCUMENTS_AGGREGATION_SIZE, min_doc_count=0),
                 aggs=dict(
                     library=dict(
-                        terms=dict(field='holdings.organisation.library_pid', size=DOCUMENTS_AGGREGATION_SIZE, min_doc_count=0),
+                        terms=dict(field='library_pid', size=DOCUMENTS_AGGREGATION_SIZE, min_doc_count=0),
                         aggs=dict(
-                            location=dict(terms=dict(field='holdings.location.pid', size=DOCUMENTS_AGGREGATION_SIZE, min_doc_count=0))
+                            location=dict(terms=dict(field='location_pid', size=DOCUMENTS_AGGREGATION_SIZE, min_doc_count=0))
                         )
                     )
                 )
@@ -1807,39 +1792,28 @@ RECORDS_REST_FACETS = dict(
                     date_min=dict(min=dict(field='holdings.items.acquisition.date', format='yyyy-MM-dd')),
                     date_max=dict(max=dict(field='holdings.items.acquisition.date', format='yyyy-MM-dd'))
                 )
-            )
+            ),
+            fiction_statement=dict(
+                terms=dict(field="fiction_statement", size=DOCUMENTS_AGGREGATION_SIZE)
+            ),
         ),
         filters={
             _('online'): or_terms_filter_by_criteria({
                 'electronicLocator.type': ['versionOfResource', 'resource'],
-                'holdings.holdings_type': ['electronic']
+                'holdings.holdings_type': ['electronic'],
+                '_exists_': 'files'
             }),
             _('not_online'): or_terms_filter_by_criteria({
                 'holdings.holdings_type': ['standard', 'serial']
             }),
             _('author'): and_i18n_term_filter('facet_contribution'),
-            _('subject_fiction'): and_i18n_term_filter(
-                'facet_subject',
-                must=[{
-                    'name_or_query': 'terms',
-                    # TODO: If we have translated concepts we have to addapt this filter.
-                    'facet_genre_form_en': FICTIONS_TERMS
-                }]
-            ),
-            _('subject_no_fiction'): and_i18n_term_filter(
-                'facet_subject',
-                must_not=[{
-                    'name_or_query': 'terms',
-                    # TODO: If we have translated concepts we have to addapt this filter.
-                    'facet_genre_form_en': FICTIONS_TERMS}
-                ]
-            ),
+            _('subject'): and_i18n_term_filter('facet_subject'),
             # This filter is used with timestamp
             _('acquisition'): acquisition_filter(),
             # This filter is only used for constructed queries
             # --> Ex: &new_acquisition=2020-01-01:2021-01-01
             _('new_acquisition'): acquisition_filter(),
-            _('identifiers'): nested_identified_filter()
+            _('identifiers'): nested_identified_filter(),
         },
         post_filters={
             _('document_type'): {
@@ -1849,15 +1823,16 @@ RECORDS_REST_FACETS = dict(
             _('language'): terms_filter('language.value'),
             _('organisation'): {
                 _('organisation'): terms_filter(
-                    'holdings.organisation.organisation_pid'
+                    'organisation_pid'
                 ),
-                _('library'): terms_filter('holdings.organisation.library_pid'),
-                _('location'): terms_filter('holdings.location.pid')
+                _('library'): terms_filter('library_pid'),
+                _('location'): terms_filter('location_pid')
             },
             _('status'): terms_filter('holdings.items.status'),
             _('genreForm'): i18n_terms_filter('facet_genre_form'),
             _('intendedAudience'): terms_filter('intendedAudience.value'),
-            _('year'): range_filter('provisionActivity.startDate')
+            _('year'): range_filter('provisionActivity.startDate'),
+            _('fiction_statement'): terms_filter('fiction_statement')
         }
 
     ),
@@ -2321,6 +2296,7 @@ RECORDS_REST_FACETS = dict(
             )
         ),
         filters={
+            'item': and_term_filter('item.pid'),
             'patron_type': and_term_filter('patron_type.pid'),
             'transaction_library': and_term_filter('library.pid'),
             'transaction_date': range_filter(
@@ -2329,7 +2305,6 @@ RECORDS_REST_FACETS = dict(
                 start_date_math='/d',
                 end_date_math='/d'
             ),
-
         },
         post_filters={
             'owning_library': {
@@ -2373,19 +2348,29 @@ RECORDS_REST_FACETS = dict(
 
 # Elasticsearch fields boosting by index
 RERO_ILS_QUERY_BOOSTING = {
-    'documents': {
-        'autocomplete_title': 3,
-        'title\.*': 3,
-        'contribution.entity.authorized_access_point_*': 2,
-        'contribution.entity.authorized_access_point': 2,
-        'publicationYearText': 2,
-        'freeFormedPublicationDate': 2,
-        'subjects.term': 2,
-        'notes.label.*': 1
-    },
-    'patrons': {
-        'barcode': 3
-    }
+    'documents': [
+        'autocomplete_title^3',
+        'title.*^3',
+        # the fulltext fields are removed by default
+        'fulltext^6',
+        'fulltext.*^6',
+        'contribution.entity.authorized_access_point_fr*^2',
+        'contribution.entity.authorized_access_point_en*^2',
+        'contribution.entity.authorized_access_point_de*^2',
+        'contribution.entity.authorized_access_point_it*^2',
+        'contribution.entity.authorized_access_point^2',
+        'subjects.entity.authorized_access_point_fr*^2',
+        'subjects.entity.authorized_access_point_en*^2',
+        'subjects.entity.authorized_access_point_de*^2',
+        'subjects.entity.authorized_access_point_it*^2',
+        'subjects.entity.authorized_access_point^2',
+        'provisionActivity.startDate^2',
+        '*'
+    ],
+    'patrons': [
+        'barcode^3',
+        '*'
+    ]
 }
 
 # sort options
@@ -2804,6 +2789,12 @@ RERO_ILS_PERMISSIONS_ACTIONS = [
     'rero_ils.modules.documents.permissions:create_action',
     'rero_ils.modules.documents.permissions:update_action',
     'rero_ils.modules.documents.permissions:delete_action',
+    'rero_ils.modules.files.permissions:access_action',
+    'rero_ils.modules.files.permissions:search_action',
+    'rero_ils.modules.files.permissions:read_action',
+    'rero_ils.modules.files.permissions:create_action',
+    'rero_ils.modules.files.permissions:update_action',
+    'rero_ils.modules.files.permissions:delete_action',
     'rero_ils.modules.entities.local_entities.permissions.access_action',
     'rero_ils.modules.entities.local_entities.permissions.search_action',
     'rero_ils.modules.entities.local_entities.permissions.read_action',
@@ -2923,7 +2914,6 @@ RERO_ILS_PERMISSIONS_ACTIONS = [
     'rero_ils.modules.permissions:can_use_debug_mode',
     'rero_ils.modules.items.permissions:late_issue_management'
 ]
-
 # Detailed View Configuration
 # ===========================
 RECORDS_UI_ENDPOINTS = {
@@ -2956,6 +2946,12 @@ RECORDS_UI_ENDPOINTS = {
         record_class='rero_ils.modules.stats.api.api:Stat',
         view_imp='rero_ils.modules.stats.views.stats_view_method',
         permission_factory_imp='rero_ils.modules.stats.permissions:stats_ui_permission_factory',
+    ),
+    "recid_preview": dict(
+        pid_type="recid",
+        route="/records/preview/<pid_value>/<path:filename>",
+        view_imp="rero_invenio_files.records.previewer.preview",
+        record_class="rero_invenio_files.records.api:RecordWithFile",
     )
 }
 
@@ -2973,6 +2969,7 @@ RECORDS_UI_EXPORT_FORMATS = {
         ),
     }
 }
+
 
 RERO_ILS_DEFAULT_JSON_SCHEMA = {
     'acac': '/acq_accounts/acq_account-v0.0.1.json',
@@ -3258,11 +3255,18 @@ RERO_ILS_PATRON_ROLES_MANAGEMENT_RESTRICTIONS = {
 
 # JSONSchemas
 # ===========
-#: Hostname used in URLs for local JSONSchemas.
-JSONSCHEMAS_URL_SCHEME = 'https'
+"""Default json schema host."""
 JSONSCHEMAS_HOST = 'bib.rero.ch'
-JSONSCHEMAS_REPLACE_REFS = True
+"""Default schema endpoint."""
+JSONSCHEMAS_ENDPOINT = "/schemas"
+"""Whether to resolve $ref before serving a schema."""
+JSONSCHEMAS_REPLACE_REFS = False
+"""Loader class used in ``JSONRef`` when replacing ``$ref``."""
 JSONSCHEMAS_LOADER_CLS = 'rero_ils.jsonschemas.utils.JsonLoader'
+"""Register the endpoints on the API app."""
+JSONSCHEMAS_REGISTER_ENDPOINTS_API = False
+"""Register the endpoints on the UI app."""
+JSONSCHEMAS_REGISTER_ENDPOINTS_UI = False
 
 # OAI-PMH
 # =======
@@ -3984,3 +3988,20 @@ RERO_ILS_APP_ADVANCED_SEARCH_CONFIG = [
         }
     },
 ]
+
+# Babeltheque Configuration
+# =========================
+RERO_ILS_APP_BABELTHEQUE_ENABLED_VIEWS = []
+
+FILES_REST_STORAGE_CLASS_LIST = {
+    "L": "Local"
+}
+
+MAX_CONTENT_LENGTH = 500 * 1024 * 1024
+
+FILES_REST_DEFAULT_STORAGE_CLASS = "L"
+RECORDS_REFRESOLVER_CLS = "invenio_records.resolver.InvenioRefResolver"
+RECORDS_REFRESOLVER_STORE = "rero_ils.modules.utils.refresolver_store"
+
+RERO_FILES_RECORD_SERVICE_CONFIG = "rero_ils.modules.files.services.RecordServiceConfig"
+RERO_FILES_RECORD_FILE_SERVICE_CONFIG = "rero_ils.modules.files.services.RecordFileServiceConfig"

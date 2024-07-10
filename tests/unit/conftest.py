@@ -20,6 +20,7 @@
 from __future__ import absolute_import, print_function
 
 from copy import deepcopy
+from datetime import datetime, timezone
 
 import pytest
 from pkg_resources import resource_string
@@ -28,6 +29,7 @@ from utils import get_schema
 from rero_ils.modules.entities.remote_entities.api import \
     RemoteEntitiesSearch, RemoteEntity
 from rero_ils.modules.patrons.api import Patron
+from rero_ils.modules.utils import date_string_to_utc
 
 
 @pytest.fixture(scope='module')
@@ -302,9 +304,12 @@ def vendors_schema():
 @pytest.fixture()
 def marc21_record():
     """Marc21 record."""
+    date = datetime.now(timezone.utc).isoformat()
+    created = date_string_to_utc(date).strftime('%y%m%d')
     return {
         'leader': '00000cam a2200000zu 4500',
-        '008': '000000|||||||||xx#|||||||||||||||||||||c',
+        '005': '20270707070707.0',
+        '008': f'{created}|||||||||xx#|||||||||||||||||||||c'
     }
 
 
@@ -318,7 +323,7 @@ def mef_record_with_idref_rero_data():
             '$schema': 'https://mef.rero.ch/schemas/'
                        'agents_idref/idref-agent-v0.0.1.json',
             'authorized_access_point': 'Honnoré, Patrick',
-            'bf:Agent': 'bf:Person',
+            'type': 'bf:Person',
             'biographical_information': ['Traduit du japonais en français'],
             'country_associated': 'fr',
             'identifier': 'http://www.idref.fr/072277742',
@@ -333,7 +338,7 @@ def mef_record_with_idref_rero_data():
             '$schema': 'https://mef.rero.ch/schemas/'
                        'agents_rero/rero-agent-v0.0.1.json',
             'authorized_access_point': 'Honnoré, Patrick',
-            'bf:Agent': 'bf:Person',
+            'type': 'bf:Person',
             'identifier': 'http://data.rero.ch/02-A009220673',
             'md5': 'c90fa0c93eac4346910734badb77bdce',
             'pid': 'A009220673',
@@ -371,7 +376,7 @@ def mef_record_with_idref_gnd_data():
             '$schema': 'https://mef.rero.ch/schemas/'
                        'agents_gnd/gnd-agent-v0.0.1.json',
             'authorized_access_point': 'Université de Genève',
-            'bf:Agent': 'bf:Organisation',
+            'type': 'bf:Organisation',
             'conference': False,
             'country_associated': 'sz',
             'date_of_establishment': '1873',
@@ -404,7 +409,7 @@ def mef_record_with_idref_gnd_data():
             '$schema': 'https://mef.rero.ch/schemas/'
                        'agents_idref/idref-agent-v0.0.1.json',
             'authorized_access_point': 'Université de Genève',
-            'bf:Agent': 'bf:Organisation',
+            'type': 'bf:Organisation',
             'biographical_information': [
                 "Fondée en 1559, l'académie devint Université en 1872",
                 "3 pl. de l'Université, Genève (Suisse)"
@@ -473,7 +478,7 @@ def mef_record_with_idref_gnd_rero_data():
             '$schema': 'https://mef.rero.ch/schemas/'
                        'agents_gnd/gnd-agent-v0.0.1.json',
             'authorized_access_point': 'Congrès Ouvrier de France',
-            'bf:Agent': 'bf:Organisation',
+            'type': 'bf:Organisation',
             'conference': True,
             'identifier': 'http://d-nb.info/gnd/5034321-X',
             'md5': '21ea03e240e10011305acac0cd731813',
@@ -484,7 +489,7 @@ def mef_record_with_idref_gnd_rero_data():
             '$schema': 'https://mef.rero.ch/schemas/'
                        'agents_idref/idref-agent-v0.0.1.json',
             'authorized_access_point': 'Congrès ouvrier français',
-            'bf:Agent': 'bf:Organisation',
+            'type': 'bf:Organisation',
             'biographical_information': [
                 'L\'ordre des formes exclues suit l\'ordre chronologique des '
                 'publications et correspond à l\'évolution historique '
@@ -518,7 +523,7 @@ def mef_record_with_idref_gnd_rero_data():
             '$schema': 'https://mef.rero.ch/schemas/'
                        'agents_rero/rero-agent-v0.0.1.json',
             'authorized_access_point': 'Congrès ouvrier de France',
-            'bf:Agent': 'bf:Organisation',
+            'type': 'bf:Organisation',
             'conference': True,
             'identifier': 'http://data.rero.ch/02-A005462931',
             'md5': 'e94636af02fbfabca711ec87a103f1b3',

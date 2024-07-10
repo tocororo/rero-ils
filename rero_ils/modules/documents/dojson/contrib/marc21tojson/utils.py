@@ -810,7 +810,6 @@ def do_provision_activity(data, marc21, key, value):
             publication['endDate'] = marc21.date['end_date']
         if 'note' in marc21.date:
             publication['note'] = marc21.date['note']
-        publication['startDate'] = marc21.date['start_date']
 
         places = []
         place = marc21.build_place()
@@ -846,7 +845,7 @@ def do_provision_activity(data, marc21, key, value):
         }
 
         _, link = get_field_link_data(value)
-        try:
+        with contextlib.suppress(Exception):
             alt_gr = marc21.alternate_graphic['264'][link]
             subfield = \
                 marc21.get_subfields(alt_gr['field'], code='c')
@@ -855,8 +854,6 @@ def do_provision_activity(data, marc21, key, value):
                     'language': marc21.get_language_script(
                         alt_gr['script'])
             })
-        except Exception as err:
-            pass
         publication.setdefault('statement', [])
         publication['statement'].append(date)
     # make second provision activity for 260 $ e $f $g
@@ -1725,9 +1722,9 @@ def _do_work_access_point_creator(marc21, key, value):
                 not_repetitive(bib_id, bib_id, key, value, 'b'))
         if date := not_repetitive(bib_id, bib_id, key, value, 'd'):
             date_parts = [d.strip().rstrip('.') for d in date.split('-')]
-            if date_parts[0]:
+            if date_parts and date_parts[0]:
                 data['date_of_birth'] = date_parts[0]
-            if date_parts[1]:
+            if len(date_parts) > 1 and date_parts[1]:
                 data['date_of_death'] = date_parts[1]
         if value.get('c'):
             data['qualifier'] = remove_trailing_punctuation(

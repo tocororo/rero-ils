@@ -554,7 +554,8 @@ def stats(item_pid):
     :param item_pid: the item pid
     """
     search = OperationLogsSearch()\
-        .filter('term', loan__item__pid=item_pid)
+        .filter('term', loan__item__pid=item_pid)\
+        .filter('term', record__type='loan')
     trigger = A(
         'terms',
         field='loan.trigger',
@@ -569,7 +570,7 @@ def stats(item_pid):
     for result in results.aggregations.trigger.buckets:
         output['total'][result.key] = result.doc_count
         output['total_year'][result.key] = result.year.doc_count
-    # Add legacy count on checkout
+    # Add legacy checkout count
     if item := Item.get_record_by_pid(item_pid):
         legacy_count = item.get('legacy_checkout_count', 0)
         output['total'].setdefault('checkout', 0)

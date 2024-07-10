@@ -101,7 +101,7 @@ class Entity(IlsRecord, ABC):
         search = DocumentsSearch().by_entity(self)[:0]
         agg = A(
             'terms',
-            field='holdings.organisation.organisation_pid',
+            field='organisation_pid',
             min_doc_count=1,
             size=current_app.config
                             .get('RERO_ILS_AGGREGATION_SIZE', {})
@@ -133,8 +133,8 @@ class Entity(IlsRecord, ABC):
             subjects=with_subjects,
             imported_subjects=with_subjects_imported,
             genre_forms=with_genre_forms
-        ).source('pid')
-        return [hit.pid for hit in search.scan()]
+        )
+        return [hit.pid for hit in search.source('pid').scan()]
 
     def documents_ids(
         self, with_subjects=True, with_subjects_imported=True,

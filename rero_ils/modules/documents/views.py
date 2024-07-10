@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2024 RERO
 # Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
@@ -42,6 +42,7 @@ from rero_ils.modules.patrons.api import current_patrons
 from rero_ils.modules.utils import extracted_data_from_ref
 
 from .api import Document, DocumentsSearch
+from .dumpers import document_indexer_dumper
 from .extensions import EditionStatementExtension, \
     ProvisionActivitiesExtension, SeriesStatementExtension, TitleExtension
 from .utils import display_alternate_graphic_first, get_remote_cover, \
@@ -97,11 +98,11 @@ def doc_item_view_method(pid, record, template=None, **kwargs):
         query = query.filter(
             'term', holdings__organisation__organisation_pid=organisation.pid)
     linked_documents_count = query.count()
-
     return render_template(
         template,
         pid=pid,
         record=record,
+        es_record=record.dumps(document_indexer_dumper),
         holdings_count=holdings_count,
         viewcode=viewcode,
         recordType='documents',
@@ -116,6 +117,26 @@ blueprint = Blueprint(
     template_folder='templates',
     static_folder='static',
 )
+
+
+@blueprint.app_template_filter()
+def babeltheque_enabled_view(view):
+    """Check if the view is activated for babeltheque."""
+    enabled_views = current_app.config.get(
+        'RERO_ILS_APP_BABELTHEQUE_ENABLED_VIEWS', [])
+    return view in enabled_views
+
+
+@blueprint.app_template_filter()
+def get_first_isbn(record):
+    """Get first isbn result."""
+    # ISBN
+    isbns = [
+        identified_by.get('value')
+        for identified_by in record.get('identifiedBy', [])
+        if identified_by.get('type') == 'bf:Isbn'
+    ]
+    return isbns[0] if isbns else None
 
 
 @blueprint.app_template_filter()

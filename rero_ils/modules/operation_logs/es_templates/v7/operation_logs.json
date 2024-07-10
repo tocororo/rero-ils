@@ -108,6 +108,9 @@
           "override_flag": {
             "type": "boolean"
           },
+          "auto_extend": {
+            "type": "boolean"
+          },
           "transaction_channel": {
             "type": "keyword"
           },
@@ -140,6 +143,28 @@
                 "type": "keyword"
               },
               "name": {
+                "type": "keyword"
+              }
+            }
+          },
+          "file": {
+            "type": "object",
+            "properties": {
+              "document": {
+                "type": "object",
+                "properties": {
+                  "pid": {
+                    "type": "keyword"
+                  },
+                  "title": {
+                    "type": "text"
+                  },
+                  "type": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "recid": {
                 "type": "keyword"
               }
             }

@@ -28,6 +28,7 @@ from dojson.utils import GroupableOrderedDict
 from rero_ils.dojson.utils import ReroIlsMarc21Overdo, build_identifier, \
     build_string_from_subfields, error_print, get_field_items, get_mef_link, \
     not_repetitive, re_identified, remove_trailing_punctuation
+from rero_ils.modules.documents.models import DocumentFictionType
 from rero_ils.modules.documents.utils import create_authorized_access_point
 from rero_ils.modules.entities.models import EntityType
 
@@ -45,7 +46,36 @@ from ..utils import _CONTRIBUTION_ROLE, do_abbreviated_title, \
     do_usage_and_access_policy_from_field_506_540, do_work_access_point, \
     perform_subdivisions
 
-marc21 = ReroIlsMarc21Overdo()
+
+class MyReroIlsMarc21Overdo(ReroIlsMarc21Overdo):
+    """Class MyReroIlsMarc21Overdo.
+
+    Adds fiction for records with genre form.
+    """
+
+    def do(self, blob, ignore_missing=True, exception_handlers=None):
+        """Translate blob values and instantiate new model instance."""
+        result = super().do(blob, ignore_missing, exception_handlers)
+        # add fiction
+        if 'genreForm' in result and 'harvested' not in result:
+            for genre_form in result.get('genreForm', []):
+                entity = genre_form['entity']
+                if (
+                    entity['type'] == 'bf:Topic' and
+                    entity['authorized_access_point'] in
+                    ['Fictions', 'Films de fiction']
+                ):
+                    result['fiction_statement'] = \
+                        DocumentFictionType.Fiction.value
+            if 'fiction_statement' not in result and 'subjects' in result:
+                result['fiction_statement'] = \
+                    DocumentFictionType.NonFiction.value
+        if 'fiction_statement' not in result:
+            result['fiction_statement'] = DocumentFictionType.Unspecified.value
+        return result
+
+
+marc21 = MyReroIlsMarc21Overdo()
 
 _CONTAINS_FACTUM_REGEXP = re.compile(r'factum')
 
@@ -98,6 +128,12 @@ def marc21_to_language(self, key, value):
     # if not language:
     #     error_print('ERROR LANGUAGE:', marc21.bib_id, 'set to "und"')
     #     language = [{'value': 'und', 'type': 'bf:Language'}]
+    # is
+    self['fiction_statement'] = DocumentFictionType.Unspecified.value
+    if value[33] in ['1', 'd', 'f', 'j', 'p']:
+        self['fiction_statement'] = DocumentFictionType.Fiction.value
+    elif value[33] in ['0', 'e', 'h', 'i', 's']:
+        self['fiction_statement'] = DocumentFictionType.NonFiction.value
     return language or None
 
 

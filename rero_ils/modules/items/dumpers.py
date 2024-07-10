@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2024 RERO
 # Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,14 @@ from copy import deepcopy
 
 from invenio_records.dumpers import Dumper as InvenioRecordsDumper
 
+from rero_ils.modules.collections.api import CollectionsSearch
 from rero_ils.modules.commons.exceptions import MissingDataException
 from rero_ils.modules.documents.api import Document
 from rero_ils.modules.documents.dumpers import \
     TitleDumper as DocumentTitleDumper
 from rero_ils.modules.holdings.api import Holding
 from rero_ils.modules.holdings.dumpers import ClaimIssueHoldingDumper
+from rero_ils.modules.item_types.api import ItemType
 from rero_ils.modules.libraries.dumpers import \
     LibrarySerialClaimNotificationDumper
 from rero_ils.modules.loans.dumpers import \
@@ -54,6 +56,13 @@ class ItemNotificationDumper(InvenioRecordsDumper):
             'library_name': location.get_library().get('name'),
             'enumerationAndChronology': record.get('enumerationAndChronology')
         }
+        if item_type_pid := record.item_type_pid:
+            if item_type := ItemType.get_record_by_pid(item_type_pid):
+                data['item_type'] = item_type['name']
+        if temporary_item_type_pid := record.temporary_item_type_pid:
+            if temporary_item_type := ItemType.get_record_by_pid(
+                    temporary_item_type_pid):
+                data['temporary_item_type'] = temporary_item_type['name']
         data = {k: v for k, v in data.items() if v}
         return data
 
@@ -144,4 +153,15 @@ class CirculationActionDumper(InvenioRecordsDumper):
             data['pending_loans'] = [
                 first_request.dumps(LoanCirculationDumper())
             ]
+        # add temporary location name
+        if temporary_location_pid := item.get('temporary_location', {}).get(
+            'pid'
+        ):
+            data['temporary_location']['name'] = Location.get_record_by_pid(
+                temporary_location_pid).get('name')
+        # add collections
+        results = CollectionsSearch().active_by_item_pid(item['pid'])\
+            .params(preserve_order=True).source('title').scan()
+        if collections := [collection.title for collection in results]:
+            data['collections'] = collections
         return data

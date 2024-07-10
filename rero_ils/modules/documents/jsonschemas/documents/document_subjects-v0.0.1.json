@@ -24,6 +24,13 @@
             "entity": {
               "$ref": "https://bib.rero.ch/schemas/documents/document_subjects_entity_link-v0.0.1.json"
             }
+          },
+          "widget": {
+            "formlyConfig": {
+              "props": {
+                "hideLabel": true
+              }
+            }
           }
         },
         {
@@ -40,6 +47,13 @@
           "properties": {
             "entity": {
               "$ref": "https://bib.rero.ch/schemas/documents/document_entity_local-v0.0.1.json"
+            }
+          },
+          "widget": {
+            "formlyConfig": {
+              "props": {
+                "hideLabel": true
+              }
             }
           }
         }

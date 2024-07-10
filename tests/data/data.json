@@ -169,6 +169,10 @@
       {
         "type": "booking",
         "email": "reroilstest+martigny+booking@gmail.com"
+      },
+      {
+        "type": "auto_extend",
+        "email": "reroilstest+martigny+auto_extend@gmail.com"
       }
     ],
     "communication_language": "fre",
@@ -354,6 +358,10 @@
       {
         "type": "booking",
         "email": "reroilstest+saxon@gmail.com"
+      },
+      {
+        "type": "auto_extend",
+        "email": "reroilstest+saxon+auto_extend@gmail.com"
       }
     ],
     "communication_language": "fre",
@@ -497,6 +505,10 @@
       {
         "type": "booking",
         "email": "reroilstest+fully@gmail.com"
+      },
+      {
+        "type": "auto_extend",
+        "email": "reroilstest+fully+auto_extend@gmail.com"
       }
     ],
     "communication_language": "fre",
@@ -637,6 +649,10 @@
       {
         "type": "booking",
         "email": "reroilstest+sion@gmail.com"
+      },
+      {
+        "type": "auto_extend",
+        "email": "reroilstest+sion+auto_extend@gmail.com"
       }
     ],
     "communication_language": "fre",
@@ -768,6 +784,10 @@
       {
         "type": "booking",
         "email": "reroilstest+aproz@gmail.com"
+      },
+      {
+        "type": "auto_extend",
+        "email": "reroilstest+aproz+auto_extend@gmail.com"
       }
     ],
     "communication_language": "fre",
@@ -899,6 +919,10 @@
       {
         "type": "booking",
         "email": "reroilstest+saillon@gmail.com"
+      },
+      {
+        "type": "auto_extend",
+        "email": "reroilstest+saillon+auto_extend@gmail.com"
       }
     ],
     "communication_language": "fre",
@@ -948,6 +972,10 @@
       },
       {
         "type": "booking",
+        "email": "reroilstest+martignybourg@gmail.com"
+      },
+      {
+        "type": "auto_extend",
         "email": "reroilstest+martignybourg@gmail.com"
       }
     ],
@@ -1339,6 +1367,7 @@
     "pickup_hold_duration": 10,
     "number_renewals": 3,
     "renewal_duration": 30,
+    "automatic_renewal": true,
     "policy_library_level": false,
     "is_default": true
   },
@@ -1377,6 +1406,7 @@
     ],
     "number_renewals": 1,
     "renewal_duration": 15,
+    "automatic_renewal": true,
     "is_default": false,
     "policy_library_level": false,
     "settings": [
@@ -2052,6 +2082,7 @@
         "subtype": "docsubtype_other_book"
       }
     ],
+    "fiction_statement": "unspecified",
     "issuance": {
       "main_type": "rdami:1001",
       "subtype": "materialUnit"
@@ -2339,6 +2370,7 @@
         "subtype": "docsubtype_other_book"
       }
     ],
+    "fiction_statement": "unspecified",
     "issuance": {
       "main_type": "rdami:1001",
       "subtype": "materialUnit"
@@ -2438,6 +2470,7 @@
         "subtype": "docsubtype_other_book"
       }
     ],
+    "fiction_statement": "unspecified",
     "issuance": {
       "main_type": "rdami:1001",
       "subtype": "materialUnit"
@@ -2582,6 +2615,7 @@
         "subtype": "docsubtype_other_book"
       }
     ],
+    "fiction_statement": "unspecified",
     "issuance": {
       "main_type": "rdami:1001",
       "subtype": "materialUnit"
@@ -2840,6 +2874,7 @@
         "main_type": "docmaintype_serial"
       }
     ],
+    "fiction_statement": "unspecified",
     "issuance": {
       "main_type": "rdami:1003",
       "subtype": "monographicSeries"
@@ -2942,6 +2977,7 @@
         "main_type": "docmaintype_serial"
       }
     ],
+    "fiction_statement": "unspecified",
     "issuance": {
       "main_type": "rdami:1003",
       "subtype": "periodical"
@@ -3045,6 +3081,7 @@
         "subtype": "docsubtype_other_book"
       }
     ],
+    "fiction_statement": "unspecified",
     "issuance": {
       "main_type": "rdami:1002",
       "subtype": "set"
@@ -3186,6 +3223,7 @@
         "subtype": "docsubtype_sound"
       }
     ],
+    "fiction_statement": "unspecified",
     "language": [
       {
         "type": "bf:Language",
@@ -3446,6 +3484,7 @@
         "subtype": "docsubtype_other_book"
       }
     ],
+    "fiction_statement": "unspecified",
     "issuance": {
       "main_type": "rdami:1001",
       "subtype": "materialUnit"
@@ -3541,6 +3580,7 @@
         "subtype": "docsubtype_e-book"
       }
     ],
+    "fiction_statement": "unspecified",
     "issuance": {
       "main_type": "rdami:1001",
       "subtype": "materialUnit"
@@ -3657,8 +3697,13 @@
       {
         "main_type": "docmaintype_book",
         "subtype": "docsubtype_e-book"
+      },
+      {
+        "main_type": "docmaintype_audio",
+        "subtype": "docsubtype_audio_book"
       }
     ],
+    "fiction_statement": "unspecified",
     "issuance": {
       "main_type": "rdami:1001",
       "subtype": "materialUnit"
@@ -3757,6 +3802,7 @@
         "subtype": "docsubtype_e-book"
       }
     ],
+    "fiction_statement": "unspecified",
     "issuance": {
       "main_type": "rdami:1001",
       "subtype": "materialUnit"
@@ -3848,6 +3894,7 @@
         "subtype": "docsubtype_e-book"
       }
     ],
+    "fiction_statement": "unspecified",
     "issuance": {
       "main_type": "rdami:1001",
       "subtype": "materialUnit"
@@ -3959,6 +4006,7 @@
         "subtype": "docsubtype_e-book"
       }
     ],
+    "fiction_statement": "unspecified",
     "issuance": {
       "main_type": "rdami:1001",
       "subtype": "materialUnit"
@@ -4085,13 +4133,7 @@
     "url": "https://lipda.mediatheque.ch/CH-000019-X:223156.file",
     "pac_code": "0_frozen_collection",
     "price": 23.2,
-    "legacy_checkout_count": 4,
-    "legacy_circulation_rules": {
-      "use_item_specific_rules": false,
-      "loan_duration": 15,
-      "allow_request": false,
-      "floats": false
-    }
+    "legacy_checkout_count": 4
   },
   "item2": {
     "$schema": "https://bib.rero.ch/schemas/items/item-v0.0.1.json",
