@@ -57,87 +57,6 @@ success_msg() {
 # Displays program name
 msg "PROGRAM: ${PROGRAM}"
 
-# options may be followed by one colon to indicate they have a required argument
-if ! options=$(getopt -o dct: -l deploy,ci,tgz_package: -- "$@")
-then
-    # something went wrong, getopt will put out an error message for us
-    exit 1
-fi
-
-# The real bootstrap script starts with app installation below ;-)
-flags=()
-deploy=false
-cmd="poetry install"
-ci=false
-sip2=false
-tgz_file=""
-while test $# -gt 0
-do
-  case "$1" in
-    -d|--deploy)
-      # We are probably inside travis, check for env variables
-      deploy=true ;;
-    -c|--ci)
-      # We are probably inside travis, check for env variables
-      ci=true ;;
-    -t|--tgz_package)
-      tgz_file=$2
-      if [[ ! -f "${tgz_file}" ]]
-      then
-        error_msg+exit "package tgz file does not exist: ${tgz_file}"
-      fi
-      shift ;;
-    -s|--sip2)
-        # install extra sip2 package
-        sip2=true ;;
-    (--) shift; break;;
-    (-*) flags+=("$1") ;;
-    (*) break;;
-  esac
-  shift
-done
-
-
-# Poetry is a mandatory condition to launch this program!
-if [[ -z "${VIRTUAL_ENV}" ]]; then
-  error_msg+exit "Error - Launch this script via poetry command:\n\tpoetry run ${PROGRAM}"
-fi
-
-if $deploy ; then
-  if ! $ci ; then
-      flags=("--no-dev")
-  fi
-fi
-
-if ! $deploy ; then
-    if $ci ; then
-        cmd="poetry update"
-    fi
-fi
-
-if $sip2  ; then
-  flags+=("--extras sip2")
-fi
-
-# create virtualenv and upgrade pip
-info_msg "Upgrade pip"
-poetry run pip install --upgrade pip
-
-info_msg "Install poethepoet"
-poetry run pip install poethepoet
-
-# BOOTSTRAP START
-# install the application and all the dependencies
-info_msg "Install with command: ${cmd} ${flags[@]}"
-${cmd} ${flags[@]}
-
-# install the app itself
-if ! $deploy ; then
-    if $ci ; then
-        poetry install
-    fi
-fi
-
 # collect static files and compile html/css assets
 # ------------------------------------------------
 # install the npm dependencies
@@ -160,22 +79,22 @@ invenio collect -v
 
 info_msg "Build web assets: using webpack"
 invenio webpack buildall
-
-if $deploy ; then
-  if ! $ci ; then
-    info_msg "Clean web assets"
-      invenio webpack clean
-
-    info_msg "Clean npm cache"
-    npm cache clean --force
-
-    info_msg "Clean pip cache"
-    pip cache purge
-  fi
-fi
-
-info_msg "Compile translations"
-poetry run pybabel compile -d rero_ils/translations
-
-success_msg "${PROGRAM} finished!"
-exit 0
+#
+#if $deploy ; then
+#  if ! $ci ; then
+#    info_msg "Clean web assets"
+#    invenio webpack clean
+#
+#    info_msg "Clean npm cache"
+#    npm cache clean --force
+#
+#    info_msg "Clean pip cache"
+#    pip cache purge
+#  fi
+#fi
+#
+#info_msg "Compile translations"
+#poetry run pybabel compile -d rero_ils/translations
+#
+#success_msg "${PROGRAM} finished!"
+#exit 0
