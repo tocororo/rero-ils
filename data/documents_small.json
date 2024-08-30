@@ -194,7 +194,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/167"
+          "$ref": "https://bib.upr.edu.cu/api/documents/167"
         }
       }
     ],
@@ -382,7 +382,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000025"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000025"
         }
       }
     ],
@@ -1234,7 +1234,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000047"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000047"
       }
     ],
     "contribution": [
@@ -1336,7 +1336,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000057"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000057"
         }
       }
     ],
@@ -1446,7 +1446,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000070"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000070"
         },
         "numbering": [
           {
@@ -1706,7 +1706,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000029"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000029"
       }
     ],
     "contribution": [
@@ -1996,7 +1996,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000073"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000073"
         }
       }
     ],
@@ -2171,7 +2171,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/19"
+          "$ref": "https://bib.upr.edu.cu/api/documents/19"
         }
       }
     ],
@@ -2251,7 +2251,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000076"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000076"
         }
       }
     ],
@@ -3158,7 +3158,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/19"
+          "$ref": "https://bib.upr.edu.cu/api/documents/19"
         }
       }
     ],
@@ -3391,7 +3391,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000060"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000060"
         }
       }
     ],
@@ -3489,7 +3489,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000049"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000049"
         },
         "numbering": [
           {
@@ -3984,7 +3984,7 @@
     ],
     "relatedTo": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000056"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000056"
       }
     ],
     "dimensions": [
@@ -4405,7 +4405,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/98"
+          "$ref": "https://bib.upr.edu.cu/api/documents/98"
         }
       }
     ],
@@ -4682,7 +4682,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000038"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000038"
         }
       }
     ],
@@ -5589,7 +5589,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000055"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000055"
         }
       }
     ],
@@ -6363,7 +6363,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/36"
+          "$ref": "https://bib.upr.edu.cu/api/documents/36"
         }
       }
     ],
@@ -6600,12 +6600,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000009"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000009"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000008"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000008"
       }
     ],
     "identifiedBy": [
@@ -7919,7 +7919,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000050"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000050"
         },
         "numbering": [
           {
@@ -8370,7 +8370,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/267"
+          "$ref": "https://bib.upr.edu.cu/api/documents/267"
         }
       }
     ],
@@ -8520,7 +8520,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000059"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000059"
         },
         "numbering": [
           {
@@ -9187,7 +9187,7 @@
     ],
     "supplementTo": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000012"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000012"
       }
     ],
     "adminMetadata": {
@@ -9264,7 +9264,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000017"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000017"
         },
         "numbering": [
           {
@@ -11220,7 +11220,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000036"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000036"
         }
       }
     ],
@@ -12249,7 +12249,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000072"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000072"
         }
       }
     ],
@@ -12388,12 +12388,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000065"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000065"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000064"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000064"
       }
     ],
     "contribution": [
@@ -12501,7 +12501,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000079"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000079"
         },
         "numbering": [
           {
@@ -12668,7 +12668,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000024"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000024"
         },
         "numbering": [
           {
@@ -12861,7 +12861,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000051"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000051"
       }
     ],
     "identifiedBy": [
@@ -12873,10 +12873,10 @@
     ],
     "supplementTo": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000052"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000052"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000053"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000053"
       }
     ],
     "adminMetadata": {
@@ -12968,7 +12968,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000013"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000013"
         },
         "numbering": [
           {
@@ -13466,7 +13466,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/283"
+          "$ref": "https://bib.upr.edu.cu/api/documents/283"
         }
       }
     ],
@@ -13636,7 +13636,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/98"
+          "$ref": "https://bib.upr.edu.cu/api/documents/98"
         }
       }
     ],
@@ -13728,7 +13728,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000023"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000023"
         },
         "numbering": [
           {
@@ -14187,7 +14187,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/253"
+          "$ref": "https://bib.upr.edu.cu/api/documents/253"
         },
         "numbering": [
           {
@@ -14694,7 +14694,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000045"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000045"
         }
       }
     ],
@@ -15262,7 +15262,7 @@
     ],
     "supplement": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000046"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000046"
       }
     ],
     "identifiedBy": [
@@ -15546,7 +15546,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000063"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000063"
         },
         "numbering": [
           {
@@ -15697,7 +15697,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000024"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000024"
         },
         "numbering": [
           {
@@ -15988,7 +15988,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/87"
+          "$ref": "https://bib.upr.edu.cu/api/documents/87"
         },
         "numbering": [
           {
@@ -16206,7 +16206,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000005"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000005"
         },
         "numbering": [
           {
@@ -16317,7 +16317,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000026"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000026"
         }
       }
     ],
@@ -16516,7 +16516,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/260"
+          "$ref": "https://bib.upr.edu.cu/api/documents/260"
         },
         "numbering": [
           {
@@ -17137,7 +17137,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000062"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000062"
         },
         "numbering": [
           {
@@ -17671,13 +17671,13 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000084"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000084"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000085"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000085"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/273"
+        "$ref": "https://bib.upr.edu.cu/api/documents/273"
       }
     ],
     "contribution": [
@@ -18144,7 +18144,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000093"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000093"
         },
         "numbering": [
           {
@@ -18607,7 +18607,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000109"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000109"
       }
     ],
     "identifiedBy": [
@@ -18752,10 +18752,10 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000088"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000088"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/139"
+        "$ref": "https://bib.upr.edu.cu/api/documents/139"
       }
     ],
     "contribution": [
@@ -18921,7 +18921,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/139"
+        "$ref": "https://bib.upr.edu.cu/api/documents/139"
       }
     ],
     "identifiedBy": [
@@ -19528,7 +19528,7 @@
     ],
     "supplement": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/153"
+        "$ref": "https://bib.upr.edu.cu/api/documents/153"
       }
     ],
     "identifiedBy": [
@@ -19802,12 +19802,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000086"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000086"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/23"
+        "$ref": "https://bib.upr.edu.cu/api/documents/23"
       }
     ],
     "contribution": [
@@ -22174,7 +22174,7 @@
     ],
     "supplement": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/272"
+        "$ref": "https://bib.upr.edu.cu/api/documents/272"
       }
     ],
     "contribution": [
@@ -22847,7 +22847,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/36"
+        "$ref": "https://bib.upr.edu.cu/api/documents/36"
       }
     ],
     "identifiedBy": [
@@ -22983,15 +22983,15 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000098"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000098"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000096"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000096"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000097"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000097"
       }
     ],
     "contribution": [
@@ -23014,7 +23014,7 @@
     ],
     "otherEdition": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000099"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000099"
       }
     ],
     "adminMetadata": {
@@ -23156,12 +23156,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000100"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000100"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/91"
+        "$ref": "https://bib.upr.edu.cu/api/documents/91"
       }
     ],
     "identifiedBy": [
@@ -23523,7 +23523,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000104"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000104"
       }
     ],
     "contribution": [
@@ -23780,7 +23780,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/250"
+        "$ref": "https://bib.upr.edu.cu/api/documents/250"
       }
     ],
     "contribution": [
@@ -24121,12 +24121,12 @@
     ],
     "issuedWith": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000082"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000082"
       }
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000083"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000083"
       }
     ],
     "contribution": [
@@ -24716,7 +24716,7 @@
     ],
     "issuedWith": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000094"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000094"
       }
     ],
     "identifiedBy": [
@@ -24732,7 +24732,7 @@
     ],
     "supplementTo": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/19"
+        "$ref": "https://bib.upr.edu.cu/api/documents/19"
       }
     ],
     "adminMetadata": {
@@ -24967,17 +24967,17 @@
     ],
     "issuedWith": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000106"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000106"
       }
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000105"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000105"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/105"
+        "$ref": "https://bib.upr.edu.cu/api/documents/105"
       }
     ],
     "contribution": [
@@ -25450,7 +25450,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/176"
+        "$ref": "https://bib.upr.edu.cu/api/documents/176"
       }
     ],
     "identifiedBy": [
@@ -25548,7 +25548,7 @@
     ],
     "supplement": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/176"
+        "$ref": "https://bib.upr.edu.cu/api/documents/176"
       }
     ],
     "contribution": [
@@ -25673,7 +25673,7 @@
     ],
     "supplement": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/176"
+        "$ref": "https://bib.upr.edu.cu/api/documents/176"
       }
     ],
     "contribution": [
@@ -25812,7 +25812,7 @@
     ],
     "otherEdition": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000095"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000095"
       }
     ],
     "adminMetadata": {
@@ -26312,12 +26312,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000090"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000090"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000089"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000089"
       }
     ],
     "identifiedBy": [
@@ -26626,7 +26626,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000087"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000087"
       }
     ],
     "identifiedBy": [
@@ -26946,7 +26946,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000107"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000107"
         }
       }
     ],
@@ -27167,12 +27167,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/173"
+        "$ref": "https://bib.upr.edu.cu/api/documents/173"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000108"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000108"
       }
     ],
     "contribution": [
@@ -27298,12 +27298,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000081"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000081"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/173"
+        "$ref": "https://bib.upr.edu.cu/api/documents/173"
       }
     ],
     "contribution": [
@@ -28100,7 +28100,7 @@
     ],
     "supplementTo": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/40"
+        "$ref": "https://bib.upr.edu.cu/api/documents/40"
       }
     ],
     "adminMetadata": {
@@ -28516,12 +28516,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000102"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000102"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000101"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000101"
       }
     ],
     "contribution": [
@@ -28991,7 +28991,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000103"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000103"
         }
       }
     ],
@@ -29365,12 +29365,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000092"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000092"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000091"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000091"
       }
     ],
     "contribution": [
@@ -30082,7 +30082,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000065"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000065"
       }
     ],
     "contribution": [
@@ -30203,7 +30203,7 @@
     ],
     "issuedWith": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000042"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000042"
       }
     ],
     "contribution": [
@@ -30320,7 +30320,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000042"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000042"
       }
     ],
     "contribution": [
@@ -30483,7 +30483,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000001"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000001"
       }
     ],
     "contribution": [
@@ -30666,7 +30666,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000001"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000001"
       }
     ],
     "contribution": [
@@ -30795,15 +30795,15 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000113"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000113"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000112"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000112"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000014"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000014"
       }
     ],
     "contribution": [
@@ -30964,7 +30964,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000060"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000060"
       }
     ],
     "identifiedBy": [
@@ -31062,15 +31062,15 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000123"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000123"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000008"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000008"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000122"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000122"
       }
     ],
     "contribution": [
@@ -31229,10 +31229,10 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000117"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000117"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000118"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000118"
       }
     ],
     "identifiedBy": [
@@ -31351,7 +31351,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000057"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000057"
       }
     ],
     "identifiedBy": [
@@ -31532,10 +31532,10 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000077"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000077"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000116"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000116"
       }
     ],
     "contribution": [
@@ -31632,7 +31632,7 @@
     ],
     "otherPhysicalFormat": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000091"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000091"
       }
     ],
     "responsibilityStatement": [
@@ -31768,12 +31768,12 @@
     ],
     "supplement": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000115"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000115"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000077"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000077"
       }
     ],
     "contribution": [
@@ -32068,7 +32068,7 @@
     ],
     "issuedWith": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000046"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000046"
       }
     ],
     "contribution": [
@@ -32241,7 +32241,7 @@
     ],
     "otherEdition": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000054"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000054"
       }
     ],
     "adminMetadata": {
@@ -32372,7 +32372,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000034"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000034"
       }
     ],
     "contribution": [
@@ -32395,13 +32395,13 @@
     ],
     "otherEdition": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000111"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000111"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000120"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000120"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000121"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000121"
       }
     ],
     "adminMetadata": {
@@ -32520,7 +32520,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000034"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000034"
       }
     ],
     "contribution": [
@@ -32543,10 +32543,10 @@
     ],
     "otherEdition": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000110"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000110"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000114"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000114"
       }
     ],
     "adminMetadata": {
@@ -32657,7 +32657,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000034"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000034"
       }
     ],
     "contribution": [
@@ -32680,7 +32680,7 @@
     ],
     "otherEdition": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000119"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000119"
       }
     ],
     "adminMetadata": {
@@ -32797,10 +32797,10 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000110"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000110"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000111"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000111"
       }
     ],
     "contribution": [
@@ -32827,7 +32827,7 @@
     ],
     "otherEdition": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000034"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000034"
       }
     ],
     "adminMetadata": {
@@ -32976,12 +32976,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000124"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000124"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000035"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000035"
       }
     ],
     "identifiedBy": [
@@ -33101,7 +33101,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000072"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000072"
       }
     ],
     "identifiedBy": [
@@ -33196,7 +33196,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000072"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000072"
       }
     ],
     "contribution": [
@@ -33415,7 +33415,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000038"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000038"
       }
     ],
     "contribution": [
@@ -33601,12 +33601,12 @@
     ],
     "issuedWith": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000106"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000106"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000047"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000047"
       }
     ],
     "contribution": [
@@ -33719,10 +33719,10 @@
     ],
     "issuedWith": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000105"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000105"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000047"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000047"
       }
     ],
     "identifiedBy": [
@@ -33913,7 +33913,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000064"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000064"
       }
     ],
     "contribution": [
@@ -34018,7 +34018,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000007"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000007"
       }
     ],
     "identifiedBy": [
@@ -34149,7 +34149,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000099"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000099"
       }
     ],
     "contribution": [
@@ -34176,10 +34176,10 @@
     ],
     "otherEdition": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000097"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000097"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000114"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000114"
       }
     ],
     "adminMetadata": {
@@ -34346,10 +34346,10 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000099"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000099"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000128"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000128"
       }
     ],
     "contribution": [
@@ -34376,13 +34376,13 @@
     ],
     "otherEdition": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000096"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000096"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000120"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000120"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000121"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000121"
       }
     ],
     "adminMetadata": {
@@ -34588,20 +34588,20 @@
     ],
     "issuedWith": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000127"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000127"
       }
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000126"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000126"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000086"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000086"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000125"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000125"
       }
     ],
     "identifiedBy": [
@@ -34705,7 +34705,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000086"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000086"
       }
     ],
     "contribution": [
@@ -34830,10 +34830,10 @@
     ],
     "otherEdition": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000097"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000097"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000110"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000110"
       }
     ],
     "adminMetadata": {
@@ -35042,7 +35042,7 @@
     ],
     "supplementTo": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000092"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000092"
       }
     ],
     "adminMetadata": {
@@ -35189,7 +35189,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000091"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000091"
       }
     ],
     "contribution": [
@@ -35379,12 +35379,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000132"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000132"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000089"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000089"
       }
     ],
     "identifiedBy": [
@@ -35512,7 +35512,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000089"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000089"
       }
     ],
     "contribution": [
@@ -35633,7 +35633,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000099"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000099"
       }
     ],
     "contribution": [
@@ -35656,7 +35656,7 @@
     ],
     "otherEdition": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000098"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000098"
       }
     ],
     "adminMetadata": {
@@ -35782,13 +35782,13 @@
     ],
     "otherEdition": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000096"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000096"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000121"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000121"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000111"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000111"
       }
     ],
     "adminMetadata": {
@@ -35913,13 +35913,13 @@
     ],
     "otherEdition": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000096"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000096"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000120"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000120"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000111"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000111"
       }
     ],
     "adminMetadata": {
@@ -36029,7 +36029,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000088"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000088"
       }
     ],
     "contribution": [
@@ -36158,7 +36158,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000088"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000088"
       }
     ],
     "contribution": [
@@ -36321,18 +36321,18 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000130"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000130"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000131"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000131"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000129"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000129"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000100"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000100"
       }
     ],
     "identifiedBy": [
@@ -36525,12 +36525,12 @@
     ],
     "issuedWith": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000127"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000127"
       }
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000112"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000112"
       }
     ],
     "identifiedBy": [
@@ -36752,12 +36752,12 @@
     ],
     "issuedWith": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000127"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000127"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000112"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000112"
       }
     ],
     "identifiedBy": [
@@ -36995,18 +36995,18 @@
     ],
     "issuedWith": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000126"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000126"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000112"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000112"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000125"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000125"
       }
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000133"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000133"
       }
     ],
     "contribution": [
@@ -37118,12 +37118,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000111"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000111"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000111"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000111"
       }
     ],
     "contribution": [
@@ -37312,12 +37312,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000124"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000124"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000137"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000137"
       }
     ],
     "identifiedBy": [
@@ -37500,18 +37500,18 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000135"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000135"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000136"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000136"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000134"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000134"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000124"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000124"
       }
     ],
     "identifiedBy": [
@@ -37670,10 +37670,10 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000134"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000134"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000124"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000124"
       }
     ],
     "identifiedBy": [
@@ -37805,7 +37805,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000117"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000117"
       }
     ],
     "identifiedBy": [
@@ -37913,7 +37913,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000127"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000127"
       }
     ],
     "contribution": [
@@ -37936,7 +37936,7 @@
     ],
     "supplementTo": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000139"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000139"
       }
     ],
     "adminMetadata": {
@@ -38092,15 +38092,15 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000130"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000130"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000131"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000131"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000138"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000138"
       }
     ],
     "identifiedBy": [
@@ -38259,12 +38259,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000140"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000140"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000130"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000130"
       }
     ],
     "identifiedBy": [
@@ -38372,15 +38372,15 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000140"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000140"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000130"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000130"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000130"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000130"
       }
     ],
     "identifiedBy": [
@@ -38547,12 +38547,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000129"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000129"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000141"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000141"
       }
     ],
     "identifiedBy": [
@@ -38747,17 +38747,17 @@
     ],
     "issuedWith": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000142"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000142"
       }
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000134"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000134"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000143"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000143"
       }
     ],
     "identifiedBy": [
@@ -38894,7 +38894,7 @@
     ],
     "supplement": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000133"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000133"
       }
     ],
     "contribution": [
@@ -39084,15 +39084,15 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000144"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000144"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000135"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000135"
       },
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000136"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000136"
       }
     ],
     "identifiedBy": [
@@ -39253,7 +39253,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000137"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000137"
       }
     ],
     "identifiedBy": [
@@ -39455,12 +39455,12 @@
     ],
     "issuedWith": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000138"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000138"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000146"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000146"
       }
     ],
     "identifiedBy": [
@@ -39652,7 +39652,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000138"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000138"
       }
     ],
     "identifiedBy": [
@@ -39819,12 +39819,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000145"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000145"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000140"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000140"
       }
     ],
     "identifiedBy": [
@@ -39966,12 +39966,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000147"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000147"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000144"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000144"
       }
     ],
     "identifiedBy": [
@@ -40114,7 +40114,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000142"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000142"
       }
     ],
     "identifiedBy": [
@@ -40260,12 +40260,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000148"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000148"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000145"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000145"
       }
     ],
     "identifiedBy": [
@@ -40418,12 +40418,12 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000149"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000149"
       }
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000147"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000147"
       }
     ],
     "identifiedBy": [
@@ -40561,7 +40561,7 @@
     ],
     "succeededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000148"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000148"
       }
     ],
     "identifiedBy": [
@@ -40939,7 +40939,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000075"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000075"
         },
         "numbering": [
           {
@@ -41110,7 +41110,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000002"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000002"
         }
       }
     ],
@@ -42009,7 +42009,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/41"
+          "$ref": "https://bib.upr.edu.cu/api/documents/41"
         }
       }
     ],
@@ -42195,7 +42195,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/54"
+          "$ref": "https://bib.upr.edu.cu/api/documents/54"
         },
         "numbering": [
           {
@@ -42494,7 +42494,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000071"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000071"
         }
       }
     ],
@@ -42679,7 +42679,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000054"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000054"
         },
         "numbering": [
           {
@@ -43154,7 +43154,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/36"
+          "$ref": "https://bib.upr.edu.cu/api/documents/36"
         }
       }
     ],
@@ -44145,7 +44145,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000034"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000034"
         }
       }
     ],
@@ -44237,7 +44237,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000058"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000058"
         }
       }
     ],
@@ -44404,7 +44404,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000037"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000037"
         }
       }
     ],
@@ -44888,7 +44888,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000044"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000044"
         },
         "numbering": [
           {
@@ -45243,7 +45243,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000043"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000043"
         }
       }
     ],
@@ -45393,7 +45393,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/193"
+          "$ref": "https://bib.upr.edu.cu/api/documents/193"
         },
         "numbering": [
           {
@@ -45814,7 +45814,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000014"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000014"
       }
     ],
     "contribution": [
@@ -45929,7 +45929,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000020"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000020"
         },
         "numbering": [
           {
@@ -45939,7 +45939,7 @@
       },
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000021"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000021"
         }
       }
     ],
@@ -46140,7 +46140,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000006"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000006"
         },
         "numbering": [
           {
@@ -46324,7 +46324,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/207"
+          "$ref": "https://bib.upr.edu.cu/api/documents/207"
         }
       }
     ],
@@ -46827,7 +46827,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/19"
+          "$ref": "https://bib.upr.edu.cu/api/documents/19"
         }
       }
     ],
@@ -46919,7 +46919,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000039"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000039"
         },
         "numbering": [
           {
@@ -47367,7 +47367,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000074"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000074"
         }
       }
     ],
@@ -47557,7 +47557,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000003"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000003"
         }
       }
     ],
@@ -47653,7 +47653,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/22"
+          "$ref": "https://bib.upr.edu.cu/api/documents/22"
         }
       }
     ],
@@ -47754,7 +47754,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000077"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000077"
         },
         "numbering": [
           {
@@ -48048,7 +48048,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/1"
+          "$ref": "https://bib.upr.edu.cu/api/documents/1"
         },
         "numbering": [
           {
@@ -49183,7 +49183,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000011"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000011"
         },
         "numbering": [
           {
@@ -49449,7 +49449,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000040"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000040"
       }
     ],
     "contribution": [
@@ -50088,7 +50088,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000016"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000016"
         },
         "numbering": [
           {
@@ -50605,7 +50605,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000015"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000015"
         },
         "numbering": [
           {
@@ -52065,7 +52065,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000066"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000066"
         },
         "numbering": [
           {
@@ -52329,7 +52329,7 @@
     ],
     "relatedTo": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000030"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000030"
       }
     ],
     "dimensions": [
@@ -53436,7 +53436,7 @@
     ],
     "supplementTo": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000027"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000027"
       }
     ],
     "adminMetadata": {
@@ -53548,7 +53548,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000001"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000001"
       }
     ],
     "contribution": [
@@ -53839,7 +53839,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000022"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000022"
         }
       }
     ],
@@ -54456,7 +54456,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000061"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000061"
         },
         "numbering": [
           {
@@ -54863,7 +54863,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000042"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000042"
         },
         "numbering": [
           {
@@ -55821,7 +55821,7 @@
     ],
     "otherPhysicalFormat": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/283"
+        "$ref": "https://bib.upr.edu.cu/api/documents/283"
       }
     ],
     "responsibilityStatement": [
@@ -56605,7 +56605,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/176"
+          "$ref": "https://bib.upr.edu.cu/api/documents/176"
         },
         "numbering": [
           {
@@ -57225,7 +57225,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000000"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000000"
         },
         "numbering": [
           {
@@ -57512,7 +57512,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000048"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000048"
         }
       }
     ],
@@ -57682,7 +57682,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000007"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000007"
         },
         "numbering": [
           {
@@ -58409,7 +58409,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/274"
+          "$ref": "https://bib.upr.edu.cu/api/documents/274"
         },
         "numbering": [
           {
@@ -58624,7 +58624,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/19"
+          "$ref": "https://bib.upr.edu.cu/api/documents/19"
         }
       }
     ],
@@ -58771,7 +58771,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000033"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000033"
       }
     ],
     "contribution": [
@@ -59415,7 +59415,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000080"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000080"
         },
         "numbering": [
           {
@@ -59641,7 +59641,7 @@
     ],
     "supplement": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000068"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000068"
       }
     ],
     "contribution": [
@@ -59830,7 +59830,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000031"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000031"
         },
         "numbering": [
           {
@@ -60297,7 +60297,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000067"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000067"
         },
         "numbering": [
           {
@@ -60809,7 +60809,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000018"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000018"
         }
       }
     ],
@@ -61363,7 +61363,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000019"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000019"
         },
         "numbering": [
           {
@@ -61579,7 +61579,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000003"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000003"
         }
       }
     ],
@@ -62466,7 +62466,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/19"
+          "$ref": "https://bib.upr.edu.cu/api/documents/19"
         }
       }
     ],
@@ -62820,7 +62820,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000038"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000038"
         }
       }
     ],
@@ -63382,7 +63382,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000004"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000004"
         }
       }
     ],
@@ -63814,7 +63814,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/75"
+          "$ref": "https://bib.upr.edu.cu/api/documents/75"
         },
         "numbering": [
           {
@@ -64196,7 +64196,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000078"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000078"
         },
         "numbering": [
           {
@@ -64560,7 +64560,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/19"
+          "$ref": "https://bib.upr.edu.cu/api/documents/19"
         }
       }
     ],
@@ -64918,7 +64918,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000069"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000069"
         },
         "numbering": [
           {
@@ -65532,7 +65532,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000010"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000010"
         }
       }
     ],
@@ -65894,7 +65894,7 @@
     ],
     "otherPhysicalFormat": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/79"
+        "$ref": "https://bib.upr.edu.cu/api/documents/79"
       }
     ],
     "fiction_statement": "non_fiction"
@@ -66798,7 +66798,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000041"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000041"
         }
       }
     ],
@@ -67039,7 +67039,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/156"
+          "$ref": "https://bib.upr.edu.cu/api/documents/156"
         },
         "numbering": [
           {
@@ -67897,7 +67897,7 @@
     ],
     "precededBy": [
       {
-        "$ref": "https://bib.rero.ch/api/documents/2000035"
+        "$ref": "https://bib.upr.edu.cu/api/documents/2000035"
       }
     ],
     "identifiedBy": [
@@ -68190,7 +68190,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000032"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000032"
         },
         "numbering": [
           {
@@ -68371,7 +68371,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/2000028"
+          "$ref": "https://bib.upr.edu.cu/api/documents/2000028"
         }
       }
     ],
@@ -68946,7 +68946,7 @@
     "partOf": [
       {
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/75"
+          "$ref": "https://bib.upr.edu.cu/api/documents/75"
         },
         "numbering": [
           {

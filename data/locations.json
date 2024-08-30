@@ -1,424 +1,54 @@
 [
   {
     "pid": "1",
-    "code": "AOSTE-CANT1-PUB",
-    "name": "Espaces publics",
+    "code": "UPR-CT-Def",
+    "name": "Local Biblioteca Ciencias Técnicas",
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
     "is_pickup": true,
-    "pickup_name": "AOSTE CANT1: Espaces publics",
+    "pickup_name": "UPR-CT-Def: Local Biblioteca Ciencias Técnicas",
     "is_ill_pickup": true,
-    "ill_pickup_name": "AOSTE CANT1: ILL Espaces publics",
+    "ill_pickup_name": "UPR-CT-Def: ILL Local Biblioteca Ciencias Técnicas",
     "allow_request": true
   },
   {
     "pid": "2",
-    "code": "AOSTE-CANT1-BIBLIOGR",
-    "name": "Bibliographie vald\u00f4taine",
+    "code": "UPR-Hum-Eco",
+    "name": "Local Biblioteca Ciencias Económicas y Humanísticas",
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
+    "is_pickup": true,
+    "pickup_name": "UPR-Hum-Eco: Local Biblioteca Ciencias Económicas y Humanísticas",
+    "is_ill_pickup": true,
+    "ill_pickup_name": "UPR-Hum-Eco: ILL Local Biblioteca Ciencias Económicas y Humanísticas",
     "allow_request": true
   },
   {
     "pid": "3",
-    "code": "AOSTE-CANT1-MAGA",
-    "name": "Magasin A",
+    "code": "UPR-Ped",
+    "name": "Local Biblioteca Ciencias Pedagógicas",
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
+    "is_pickup": true,
+    "pickup_name": "UPR-Ped: Local Biblioteca Ciencias Pedagógicas",
+    "is_ill_pickup": true,
+    "ill_pickup_name": "UPR-Ped: ILL Local Biblioteca Ciencias Pedagógicas",
     "allow_request": true
   },
   {
     "pid": "4",
-    "code": "AOSTE-CANT1-ONL",
-    "name": "Online",
-    "is_pickup": false,
+    "code": "UPR-Dep",
+    "name": "Local Biblioteca Ciencias del Deporte",
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
-    },
-    "is_online": true,
-    "allow_request": true
-  },
-  {
-    "pid": "5",
-    "code": "AOSTE-CANT2-PUB",
-    "name": "Espaces publics",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/2"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
     "is_pickup": true,
-    "pickup_name": "AOSTE CANT2: Espaces publics",
+    "pickup_name": "UPR-Dep: Local Biblioteca Ciencias del Deporte",
     "is_ill_pickup": true,
-    "ill_pickup_name": "AOSTE CANT2: ILL Espaces publics",
-    "allow_request": true
-  },
-  {
-    "pid": "7",
-    "code": "AOSTE-AVISE-FIC",
-    "name": "Section fiction",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
-    },
-    "allow_request": true
-  },
-  {
-    "pid": "8",
-    "code": "AOSTE-AVISE-DOC",
-    "name": "Section documentaires",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
-    },
-    "allow_request": true
-  },
-  {
-    "pid": "9",
-    "code": "AOSTE-AVISE-ENF",
-    "name": "Section enfants",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
-    },
-    "allow_request": true
-  },
-  {
-    "pid": "10",
-    "code": "AOSTE-AVISE-MUL",
-    "name": "Section multim\u00e9dia",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
-    },
-    "allow_request": true
-  },
-  {
-    "pid": "11",
-    "code": "AOSTE-AVISE-PUB",
-    "name": "Espaces publics",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
-    },
-    "is_pickup": true,
-    "pickup_name": "AOSTE-AVISE-PUB: Espaces publics",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "AOSTE-AVISE-PUB: ILL Espaces publics",
-    "allow_request": true
-  },
-  {
-    "pid": "12",
-    "code": "AOSTE-AVISE-ONL",
-    "name": "Online",
-    "is_pickup": false,
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
-    },
-    "is_online": true,
-    "allow_request": true
-  },
-  {
-    "pid": "13",
-    "code": "AOSTE-LYCEE-PUB",
-    "name": "Espaces publics",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/4"
-    },
-    "is_pickup": true,
-    "pickup_name": "AOSTE-LYCEE: Espaces publics",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "AOSTE-LYCEE: ILL Espaces publics",
-    "allow_request": true
-  },
-  {
-    "pid": "14",
-    "code": "AOSTE-LYCEE-MAT",
-    "name": "Travaux de maturit\u00e9",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/4"
-    },
-    "allow_request": true
-  },
-  {
-    "pid": "16",
-    "code": "HOG-RESTR",
-    "name": "Restricted Section",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/5"
-    },
-    "allow_request": true
-  },
-  {
-    "pid": "17",
-    "code": "HOG-PUBL",
-    "name": "Public Section",
-    "is_pickup": true,
-    "pickup_name": "Public Section",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Public Section",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/5"
-    },
-    "allow_request": true
-  },
-  {
-    "pid": "18",
-    "code": "HOG-ONL",
-    "name": "Online",
-    "is_pickup": false,
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/5"
-    },
-    "is_online": true,
-    "allow_request": true
-  },
-  {
-    "pid": "19",
-    "code": "CITA-BIB",
-    "name": "Default location for La Citadelle",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/7"
-    },
-    "is_pickup": true,
-    "pickup_name": "La Citadelle",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL La Citadelle",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "20",
-    "code": "BEAST-BIB",
-    "name": "Default location for Beast's Library",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/8"
-    },
-    "is_pickup": true,
-    "pickup_name": "Beast's Library",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Beast's Library",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "21",
-    "code": "DREAM-BIB",
-    "name": "Default location for Dream's Library",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/9"
-    },
-    "is_pickup": true,
-    "pickup_name": "Dream's Library",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Dream's Library",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "22",
-    "code": "LUX-BIB",
-    "name": "Default location for Lux Foundation Library",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/10"
-    },
-    "is_pickup": true,
-    "pickup_name": "Lux Foundation Library",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Lux Foundation Library",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "23",
-    "code": "HOG-BIB",
-    "name": "Default location for Hogwarts Library",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/11"
-    },
-    "is_pickup": true,
-    "pickup_name": "Hogwarts Library",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Hogwarts Library",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "24",
-    "code": "BABEL-BIB",
-    "name": "Default location for Biblioth\u00e8que de Babel",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/12"
-    },
-    "is_pickup": true,
-    "pickup_name": "Biblioth\u00e8que de Babel",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Biblioth\u00e8que de Babel",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "25",
-    "code": "ROSE-BIB",
-    "name": "Default location for Biblioth\u00e8que de l\u2019abbaye",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/13"
-    },
-    "is_pickup": true,
-    "pickup_name": "Biblioth\u00e8que de l\u2019abbaye",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Biblioth\u00e8que de l\u2019abbaye",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "26",
-    "code": "UNI-BIB",
-    "name": "Default location for The University's Library",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/14"
-    },
-    "is_pickup": true,
-    "pickup_name": "The University's Library",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL The University's Library",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "27",
-    "code": "CEMETERY-BIB",
-    "name": "Default location for Cemetery of Forgotten Books",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/15"
-    },
-    "is_pickup": true,
-    "pickup_name": "Cemetery of Forgotten Books",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Cemetery of Forgotten Books",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "28",
-    "code": "TRUTH-BIB",
-    "name": "Default location for Ministry of Truth",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/16"
-    },
-    "is_pickup": true,
-    "pickup_name": "Ministry of Truth",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Ministry of Truth",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "29",
-    "code": "RIVE-BIB",
-    "name": "Default location for Rivendell Library",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/17"
-    },
-    "is_pickup": true,
-    "pickup_name": "Rivendell Library",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Rivendell Library",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "30",
-    "code": "MATILDA-BIB",
-    "name": "Default location for Matilda's Library",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/18"
-    },
-    "is_pickup": true,
-    "pickup_name": "Matilda's Library",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Matilda's Library",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "31",
-    "code": "UNSEEN-BIB",
-    "name": "Default location for Unseen University Library",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/19"
-    },
-    "is_pickup": true,
-    "pickup_name": "Unseen University Library",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Unseen University Library",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "32",
-    "code": "WAN-BIB",
-    "name": "Default location for Wan Shi Tong's Library",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/20"
-    },
-    "is_pickup": true,
-    "pickup_name": "Wan Shi Tong's Library",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Wan Shi Tong's Library",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "33",
-    "code": "BUFFY-BIB",
-    "name": "Default location for Sunnydale High School library",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/21"
-    },
-    "is_pickup": true,
-    "pickup_name": "Sunnydale High School library",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Sunnydale High School library",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "34",
-    "code": "JEDI-BIB",
-    "name": "Default location for Jedi Archives",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/6"
-    },
-    "is_pickup": true,
-    "pickup_name": "Jedi Archives",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Jedi Archives",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "35",
-    "code": "STARFLEET-BIB",
-    "name": "Default location for Starfleet library",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/22"
-    },
-    "is_pickup": true,
-    "pickup_name": "Starfleet library",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Starfleet library",
-    "is_online": false,
-    "allow_request": true
-  },
-  {
-    "pid": "36",
-    "code": "VULCAN-BIB",
-    "name": "Default location for Vulcan library",
-    "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/23"
-    },
-    "is_pickup": true,
-    "pickup_name": "Vulcan library",
-    "is_ill_pickup": true,
-    "ill_pickup_name": "ILL Vulcan library",
-    "is_online": false,
+    "ill_pickup_name": "UPR-Dep: ILL Local Biblioteca Ciencias del Deporte",
     "allow_request": true
   }
 ]

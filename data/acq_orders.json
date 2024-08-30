@@ -11,13 +11,13 @@
       }
     ],
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
     "vendor": {
-      "$ref": "https://bib.rero.ch/api/vendors/7"
+      "$ref": "https://bib.upr.edu.cu/api/vendors/7"
     },
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     }
   },
   {
@@ -32,13 +32,13 @@
       }
     ],
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
     "vendor": {
-      "$ref": "https://bib.rero.ch/api/vendors/4"
+      "$ref": "https://bib.upr.edu.cu/api/vendors/4"
     },
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     }
   },
   {
@@ -53,13 +53,13 @@
       }
     ],
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/2"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/2"
     },
     "vendor": {
-      "$ref": "https://bib.rero.ch/api/vendors/10"
+      "$ref": "https://bib.upr.edu.cu/api/vendors/10"
     },
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     }
   },
   {
@@ -74,13 +74,13 @@
       }
     ],
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/3"
     },
     "vendor": {
-      "$ref": "https://bib.rero.ch/api/vendors/1"
+      "$ref": "https://bib.upr.edu.cu/api/vendors/1"
     },
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     }
   },
   {
@@ -95,13 +95,13 @@
       }
     ],
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/4"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/4"
     },
     "vendor": {
-      "$ref": "https://bib.rero.ch/api/vendors/16"
+      "$ref": "https://bib.upr.edu.cu/api/vendors/16"
     },
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     }
   },
   {
@@ -110,13 +110,13 @@
     "type": "monograph",
     "currency": "EUR",
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
     "vendor": {
-      "$ref": "https://bib.rero.ch/api/vendors/7"
+      "$ref": "https://bib.upr.edu.cu/api/vendors/7"
     },
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     }
   },
   {
@@ -131,13 +131,13 @@
       }
     ],
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
     "vendor": {
-      "$ref": "https://bib.rero.ch/api/vendors/7"
+      "$ref": "https://bib.upr.edu.cu/api/vendors/7"
     },
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     }
   }
 ]

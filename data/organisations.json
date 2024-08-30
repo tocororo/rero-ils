@@ -1,44 +1,11 @@
 [
   {
     "pid": "1",
-    "address": "Via Challand 132, 11100 Aosta",
-    "name": "R\u00e9seau des biblioth\u00e8ques du Canton d'Aoste",
-    "code": "aoste",
-    "default_currency": "EUR",
+    "address": "Calle Martí, No. 300, Barrio Segundo Sur, entre 27 de Noviembre y González Alcorta, Pinar del Río, Cuba.",
+    "name": "Universidad de Pinar del Río \"Hermanos Saíz Montes de Oca\" ",
+    "code": "upr",
+    "default_currency": "CUP",
     "current_budget_pid": "1",
-    "online_harvested_source": [
-      "ebibliomedia"
-    ],
-    "collection_enabled_on_public_view": true
-  },
-  {
-    "pid": "2",
-    "address": "Highlands, Scotland, Great Britain",
-    "name": "Libraries of the British Ministry of Magic",
-    "code": "highlands",
-    "default_currency": "GBP",
-    "current_budget_pid": "2",
-    "online_harvested_source": [
-      "mv-cantook"
-    ],
-    "collection_enabled_on_public_view": false
-  },
-  {
-    "pid": "3",
-    "address": "The imagination",
-    "name": "Network of fictive libraries",
-    "code": "fictive",
-    "default_currency": "CHF",
-    "current_budget_pid": "3",
-    "collection_enabled_on_public_view": false
-  },
-  {
-    "pid": "4",
-    "address": "The front-end",
-    "name": "Institute of user interface tests",
-    "code": "cypress",
-    "default_currency": "CHF",
-    "current_budget_pid": "4",
     "collection_enabled_on_public_view": true
   }
 ]

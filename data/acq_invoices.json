@@ -8,13 +8,13 @@
     "invoice_items": [
       {
         "acq_order_line": {
-          "$ref": "https://bib.rero.ch/api/acq_order_lines/1"
+          "$ref": "https://bib.upr.edu.cu/api/acq_order_lines/1"
         },
         "acq_account": {
-          "$ref": "https://bib.rero.ch/api/acq_accounts/2"
+          "$ref": "https://bib.upr.edu.cu/api/acq_accounts/2"
         },
         "document": {
-          "$ref": "https://bib.rero.ch/api/documents/15"
+          "$ref": "https://bib.upr.edu.cu/api/documents/15"
         },
         "order_number": "AOSTE-CANT1-POL-1",
         "quantity": 3,
@@ -22,13 +22,13 @@
       }
     ],
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "vendor": {
-      "$ref": "https://bib.rero.ch/api/vendors/7"
+      "$ref": "https://bib.upr.edu.cu/api/vendors/7"
     }
   }
 ]

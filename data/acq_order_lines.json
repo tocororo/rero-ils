@@ -12,16 +12,16 @@
       }
     ],
     "acq_account": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/2"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/2"
     },
     "acq_order": {
-      "$ref": "https://bib.rero.ch/api/acq_orders/1"
+      "$ref": "https://bib.upr.edu.cu/api/acq_orders/1"
     },
     "document": {
-      "$ref": "https://bib.rero.ch/api/documents/15"
+      "$ref": "https://bib.upr.edu.cu/api/documents/15"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
     "is_cancelled": false,
     "send_now": true
@@ -39,16 +39,16 @@
       }
     ],
     "acq_account": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/2"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/2"
     },
     "acq_order": {
-      "$ref": "https://bib.rero.ch/api/acq_orders/1"
+      "$ref": "https://bib.upr.edu.cu/api/acq_orders/1"
     },
     "document": {
-      "$ref": "https://bib.rero.ch/api/documents/282"
+      "$ref": "https://bib.upr.edu.cu/api/documents/282"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
     "is_cancelled": false,
     "send_now": true
@@ -66,16 +66,16 @@
       }
     ],
     "acq_account": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/2"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/2"
     },
     "acq_order": {
-      "$ref": "https://bib.rero.ch/api/acq_orders/1"
+      "$ref": "https://bib.upr.edu.cu/api/acq_orders/1"
     },
     "document": {
-      "$ref": "https://bib.rero.ch/api/documents/96"
+      "$ref": "https://bib.upr.edu.cu/api/documents/96"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
     "is_cancelled": false,
     "send_now": true
@@ -87,16 +87,16 @@
     "amount": 10,
     "exchange_rate": 1,
     "acq_account": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/7"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/7"
     },
     "acq_order": {
-      "$ref": "https://bib.rero.ch/api/acq_orders/3"
+      "$ref": "https://bib.upr.edu.cu/api/acq_orders/3"
     },
     "document": {
-      "$ref": "https://bib.rero.ch/api/documents/32"
+      "$ref": "https://bib.upr.edu.cu/api/documents/32"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/2"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/2"
     },
     "is_cancelled": false,
     "send_now": true
@@ -114,16 +114,16 @@
       }
     ],
     "acq_account": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/7"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/7"
     },
     "acq_order": {
-      "$ref": "https://bib.rero.ch/api/acq_orders/3"
+      "$ref": "https://bib.upr.edu.cu/api/acq_orders/3"
     },
     "document": {
-      "$ref": "https://bib.rero.ch/api/documents/228"
+      "$ref": "https://bib.upr.edu.cu/api/documents/228"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/2"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/2"
     },
     "is_cancelled": false,
     "send_now": true
@@ -135,16 +135,16 @@
     "amount": 7,
     "exchange_rate": 1,
     "acq_account": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/14"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/14"
     },
     "acq_order": {
-      "$ref": "https://bib.rero.ch/api/acq_orders/4"
+      "$ref": "https://bib.upr.edu.cu/api/acq_orders/4"
     },
     "document": {
-      "$ref": "https://bib.rero.ch/api/documents/208"
+      "$ref": "https://bib.upr.edu.cu/api/documents/208"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/3"
     },
     "is_cancelled": false,
     "send_now": true
@@ -156,16 +156,16 @@
     "amount": 12,
     "exchange_rate": 1,
     "acq_account": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/20"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/20"
     },
     "acq_order": {
-      "$ref": "https://bib.rero.ch/api/acq_orders/5"
+      "$ref": "https://bib.upr.edu.cu/api/acq_orders/5"
     },
     "document": {
-      "$ref": "https://bib.rero.ch/api/documents/88"
+      "$ref": "https://bib.upr.edu.cu/api/documents/88"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/4"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/4"
     },
     "is_cancelled": false,
     "send_now": true
@@ -177,16 +177,16 @@
     "amount": 20,
     "exchange_rate": 1,
     "acq_account": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/4"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/4"
     },
     "acq_order": {
-      "$ref": "https://bib.rero.ch/api/acq_orders/2"
+      "$ref": "https://bib.upr.edu.cu/api/acq_orders/2"
     },
     "document": {
-      "$ref": "https://bib.rero.ch/api/documents/136"
+      "$ref": "https://bib.upr.edu.cu/api/documents/136"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
     "is_cancelled": false,
     "send_now": true
@@ -198,16 +198,16 @@
     "amount": 22,
     "exchange_rate": 1,
     "acq_account": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/2"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/2"
     },
     "acq_order": {
-      "$ref": "https://bib.rero.ch/api/acq_orders/1"
+      "$ref": "https://bib.upr.edu.cu/api/acq_orders/1"
     },
     "document": {
-      "$ref": "https://bib.rero.ch/api/documents/15"
+      "$ref": "https://bib.upr.edu.cu/api/documents/15"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
     "is_cancelled": false
   },
@@ -224,16 +224,16 @@
       }
     ],
     "acq_account": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/72"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/72"
     },
     "acq_order": {
-      "$ref": "https://bib.rero.ch/api/acq_orders/7"
+      "$ref": "https://bib.upr.edu.cu/api/acq_orders/7"
     },
     "document": {
-      "$ref": "https://bib.rero.ch/api/documents/15"
+      "$ref": "https://bib.upr.edu.cu/api/documents/15"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
     "is_cancelled": false,
     "order_date": "2021-07-20"

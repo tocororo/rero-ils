@@ -1,12 +1,12 @@
 [
   {
     "pid": "1",
-    "address": "Via Challand 132, 11100 Aosta",
-    "code": "AOSTE-CANT1",
-    "email": "reroilstest+aoste1@gmail.com",
-    "name": "Biblioth\u00e8que cantonale vald\u00f4taine, site d'Aoste",
+    "address": "Calle Martí, No. 300, Barrio Segundo Sur, entre 27 de Noviembre y González Alcorta",
+    "code": "UPR-CT",
+    "email": "maura@upr.edu.cu",
+    "name": "Biblioteca Ciencias Técnicas",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "opening_hours": [
       {
@@ -147,7 +147,7 @@
         "email": "reroilstest+aoste1@gmail.com"
       }
     ],
-    "communication_language": "ita",
+    "communication_language": "es",
     "acquisition_settings": {
       "shipping_informations": {
         "name": "Doe, John",
@@ -197,10 +197,6 @@
       }
     },
     "online_harvested_source": [
-      {
-        "source": "ebibliomedia",
-        "url": "https://la-chaux-de-fonds.ebibliomedia.ch"
-      }
     ],
     "rollover_settings": {
       "account_transfer": "rollover_allocated_amount"
@@ -208,26 +204,39 @@
   },
   {
     "pid": "2",
-    "address": "Viale Carlo Viola 931, 11026 Pont-Saint-Martin",
-    "code": "AOSTE-CANT2",
-    "email": "reroilstest+aoste2@gmail.com",
-    "name": "Biblioth\u00e8que cantonale vald\u00f4taine, site de Pont-saint-Martin",
+    "address": "Calle Martí, No. 300, Barrio Segundo Sur, entre 27 de Noviembre y González Alcorta",
+    "code": "UPR-Hum-Eco",
+    "email": "maura@upr.edu.cu",
+    "name": "Biblioteca Ciencias Económicas y Humanísticas",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "opening_hours": [
       {
         "day": "monday",
-        "is_open": false,
-        "times": []
+        "is_open": true,
+        "times": [
+          {
+            "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "19:00"
+          }
+        ]
       },
       {
         "day": "tuesday",
         "is_open": true,
         "times": [
           {
-            "start_time": "09:00",
+            "start_time": "07:00",
             "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "19:00"
           }
         ]
       },
@@ -236,8 +245,8 @@
         "is_open": true,
         "times": [
           {
-            "start_time": "09:00",
-            "end_time": "12:00"
+            "start_time": "07:00",
+            "end_time": "19:00"
           }
         ]
       },
@@ -246,8 +255,12 @@
         "is_open": true,
         "times": [
           {
-            "start_time": "09:00",
+            "start_time": "07:00",
             "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "19:00"
           }
         ]
       },
@@ -256,8 +269,12 @@
         "is_open": true,
         "times": [
           {
-            "start_time": "09:00",
-            "end_time": "17:00"
+            "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "21:00"
           }
         ]
       },
@@ -280,101 +297,109 @@
         "end_date": "2019-01-06"
       },
       {
-        "title": "8 f\u00e9vrier apr\u00e8s-midi",
+        "title": "Vacances de Carnaval",
         "is_open": false,
-        "start_date": "2019-02-08",
+        "start_date": "2019-03-01",
+        "end_date": "2019-03-11"
+      },
+      {
+        "title": "1er mai",
+        "is_open": false,
+        "start_date": "2019-05-01",
         "times": [
           {
-            "start_time": "12:00",
-            "end_time": "18:00"
+            "start_time": "07:00",
+            "end_time": "19:00"
           }
         ]
       },
       {
-        "title": "Dimanche du livre",
-        "is_open": true,
-        "start_date": "2019-05-24",
-        "times": [
-          {
-            "start_time": "10:00",
-            "end_time": "16:00"
-          }
-        ]
-      },
-      {
-        "title": "1er ao\u00fbt",
+        "title": "Vacances d'\u00e9t\u00e9",
         "is_open": false,
-        "start_date": "2019-08-01",
-        "repeat": {
-          "interval": 1,
-          "period": "yearly",
-          "data": [
-            8
-          ]
-        }
+        "start_date": "2019-07-15",
+        "end_date": "2019-08-15"
       }
     ],
     "notification_settings": [
       {
-        "type": "availability",
-        "email": "reroilstest+aoste2@gmail.com",
-        "delay": 5
+        "type": "due_soon",
+        "email": "reroilstest+aoste1@gmail.com"
       },
       {
         "type": "overdue",
-        "email": "reroilstest+aoste2@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
       },
       {
         "type": "recall",
-        "email": "reroilstest+aoste2@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
       },
       {
         "type": "request",
-        "email": "reroilstest+aoste2@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
       },
       {
         "type": "transit_notice",
-        "email": "reroilstest+aoste2@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
       },
       {
         "type": "booking",
-        "email": "reroilstest+aoste2@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
       },
       {
         "type": "auto_extend",
-        "email": "reroilstest+aoste2@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
       }
     ],
-    "communication_language": "ita",
+    "communication_language": "es",
     "acquisition_settings": {
       "shipping_informations": {
-        "name": "Cover, Harry",
+        "name": "Doe, John",
         "email": "reroilstest+shippingaoste1@gmail.com",
-        "phone": "+4134567896",
+        "phone": "+4134567890",
         "address": {
-          "street": "Viale Carlo Viola 931 bte/4",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
+          "street": "Via Challand 133 bte/1",
+          "zip_code": "11100",
+          "city": "Aosta",
+          "country": "sz"
+        }
+      },
+      "billing_informations": {
+        "name": "Doe, John",
+        "email": "reroilstest+shippingaoste1@gmail.com",
+        "phone": "+4134567890",
+        "address": {
+          "street": "Via Challand 133 bte/1",
+          "zip_code": "11100",
+          "city": "Aosta",
+          "country": "sz"
+        }
+      }
+    },
+    "serial_acquisition_settings": {
+      "shipping_informations": {
+        "name": "Cover, Harry",
+        "email": "reroilstest+serial+shipping@gmail.com",
+        "phone": "+4134567890",
+        "address": {
+          "street": "Via Challand 133 bte/2",
+          "zip_code": "11100",
+          "city": "Aosta",
           "country": "sz"
         }
       },
       "billing_informations": {
         "name": "Derata, Daisy",
-        "email": "reroilstest+billingaoste1@gmail.com",
-        "phone": "+4134567896",
+        "email": "reroilstest+serial+billing@gmail.com",
+        "phone": "+4134567890",
         "address": {
-          "street": "Viale Carlo Viola 931 bte/5",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
+          "street": "Via Challand 133 bte/10",
+          "zip_code": "11100",
+          "city": "Aosta",
           "country": "sz"
         }
       }
     },
     "online_harvested_source": [
-      {
-        "source": "ebibliomedia",
-        "url": "https://bv-lelocle.ebibliomedia.ch/"
-      }
     ],
     "rollover_settings": {
       "account_transfer": "rollover_allocated_amount"
@@ -382,12 +407,12 @@
   },
   {
     "pid": "3",
-    "address": "Avise 345, 11010 Avise",
-    "code": "AOSTE-AVISE",
-    "email": "reroilstest+aoste3@gmail.com",
-    "name": "Biblioth\u00e8que communale et scolaire d'Avise",
+    "address": "Calle Martí, No. 300, Barrio Segundo Sur, entre 27 de Noviembre y González Alcorta",
+    "code": "UPR-Ped",
+    "email": "maura@upr.edu.cu",
+    "name": "Biblioteca Ciencias Pedagógicas",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "opening_hours": [
       {
@@ -395,12 +420,12 @@
         "is_open": true,
         "times": [
           {
-            "start_time": "09:00",
-            "end_time": "11:00"
+            "start_time": "07:00",
+            "end_time": "12:00"
           },
           {
-            "start_time": "15:00",
-            "end_time": "18:00"
+            "start_time": "13:00",
+            "end_time": "19:00"
           }
         ]
       },
@@ -409,157 +434,17 @@
         "is_open": true,
         "times": [
           {
-            "start_time": "09:00",
-            "end_time": "11:00"
+            "start_time": "07:00",
+            "end_time": "12:00"
           },
           {
-            "start_time": "15:00",
-            "end_time": "18:00"
+            "start_time": "13:00",
+            "end_time": "19:00"
           }
         ]
       },
       {
         "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "09:00",
-            "end_time": "11:00"
-          },
-          {
-            "start_time": "15:00",
-            "end_time": "18:00"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "09:00",
-            "end_time": "11:00"
-          },
-          {
-            "start_time": "15:00",
-            "end_time": "18:00"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "09:00",
-            "end_time": "11:00"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "09:00",
-            "end_time": "11:00"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": false,
-        "times": []
-      }
-    ],
-    "exception_dates": [
-      {
-        "title": "Inventaire mensuel",
-        "is_open": false,
-        "start_date": "2019-01-03",
-        "repeat": {
-          "interval": 1,
-          "period": "monthly",
-          "data": [
-            8
-          ]
-        }
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+aoste3@gmail.com",
-        "delay": 5
-      },
-      {
-        "type": "due_soon",
-        "email": "reroilstest+aoste3@gmail.com"
-      },
-      {
-        "type": "recall",
-        "email": "reroilstest+aoste3@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+aoste3@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+aoste3@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+aoste3@gmail.com"
-      }
-    ],
-    "communication_language": "ita",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "Smith, John",
-        "email": "reroilstest+shippingaoste3@gmail.com",
-        "phone": "+4134567890",
-        "address": {
-          "street": "Avise 345",
-          "zip_code": "11010",
-          "city": "Aosta",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "Smith, John",
-        "email": "reroilstest+shippingaoste3@gmail.com",
-        "phone": "+4134567890",
-        "address": {
-          "street": "Avise 345",
-          "zip_code": "11010",
-          "city": "Aosta",
-          "country": "sz"
-        }
-      }
-    },
-    "online_harvested_source": [
-      {
-        "source": "ebibliomedia",
-        "url": "https://bpu-neuchatel.ebibliomedia.ch"
-      }
-    ],
-    "rollover_settings": {
-      "account_transfer": "rollover_allocated_amount"
-    }
-  },
-  {
-    "pid": "4",
-    "address": "Via Piave 3, 11027 Saint-Vincent",
-    "code": "AOSTE-LYCEE",
-    "email": "reroilstest+aoste4@gmail.com",
-    "name": "Biblioth\u00e8que du Lyc\u00e9e de la Vall\u00e9e d'Aoste",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
         "is_open": true,
         "times": [
           {
@@ -569,29 +454,32 @@
         ]
       },
       {
-        "day": "tuesday",
-        "is_open": false,
-        "times": []
-      },
-      {
-        "day": "wednesday",
-        "is_open": false,
-        "times": []
-      },
-      {
         "day": "thursday",
         "is_open": true,
         "times": [
           {
             "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
             "end_time": "19:00"
           }
         ]
       },
       {
         "day": "friday",
-        "is_open": false,
-        "times": []
+        "is_open": true,
+        "times": [
+          {
+            "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "21:00"
+          }
+        ]
       },
       {
         "day": "saturday",
@@ -600,13 +488,8 @@
       },
       {
         "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "14:00",
-            "end_time": "18:00"
-          }
-        ]
+        "is_open": false,
+        "times": []
       }
     ],
     "exception_dates": [
@@ -614,7 +497,7 @@
         "title": "Vacances de No\u00ebl",
         "is_open": false,
         "start_date": "2018-12-22",
-        "end_date": "2019-01-15"
+        "end_date": "2019-01-06"
       },
       {
         "title": "Vacances de Carnaval",
@@ -623,87 +506,116 @@
         "end_date": "2019-03-11"
       },
       {
-        "title": "Assembl\u00e9e annuelle",
-        "is_open": true,
-        "start_date": "2019-09-15",
+        "title": "1er mai",
+        "is_open": false,
+        "start_date": "2019-05-01",
         "times": [
           {
-            "start_time": "14:00",
-            "end_time": "16:00"
+            "start_time": "07:00",
+            "end_time": "19:00"
           }
         ]
       },
       {
         "title": "Vacances d'\u00e9t\u00e9",
         "is_open": false,
-        "start_date": "2019-07-01",
-        "end_date": "2019-08-22"
+        "start_date": "2019-07-15",
+        "end_date": "2019-08-15"
       }
     ],
     "notification_settings": [
       {
-        "type": "availability",
-        "email": "reroilstest+aoste4@gmail.com",
-        "delay": 5
-      },
-      {
         "type": "due_soon",
-        "email": "reroilstest+aoste4@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
       },
       {
         "type": "overdue",
-        "email": "reroilstest+aoste4@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
+      },
+      {
+        "type": "recall",
+        "email": "reroilstest+aoste1@gmail.com"
       },
       {
         "type": "request",
-        "email": "reroilstest+aoste4@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
       },
       {
         "type": "transit_notice",
-        "email": "reroilstest+aoste4@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
       },
       {
         "type": "booking",
-        "email": "reroilstest+aoste4@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
+      },
+      {
+        "type": "auto_extend",
+        "email": "reroilstest+aoste1@gmail.com"
       }
     ],
-    "communication_language": "ita",
+    "communication_language": "es",
     "acquisition_settings": {
       "shipping_informations": {
-        "name": "Gomez, Selena",
-        "email": "reroilstest+shippingaoste4@gmail.com",
+        "name": "Doe, John",
+        "email": "reroilstest+shippingaoste1@gmail.com",
         "phone": "+4134567890",
         "address": {
-          "street": "Via Piave 3",
-          "zip_code": "11027",
-          "city": "Saint-Vincent",
+          "street": "Via Challand 133 bte/1",
+          "zip_code": "11100",
+          "city": "Aosta",
           "country": "sz"
         }
       },
       "billing_informations": {
-        "name": "Gomez, Selena",
-        "email": "reroilstest+shippingaoste4@gmail.com",
+        "name": "Doe, John",
+        "email": "reroilstest+shippingaoste1@gmail.com",
         "phone": "+4134567890",
         "address": {
-          "street": "Via Piave 3",
-          "zip_code": "11027",
-          "city": "Saint-Vincent",
+          "street": "Via Challand 133 bte/1",
+          "zip_code": "11100",
+          "city": "Aosta",
           "country": "sz"
         }
       }
     },
+    "serial_acquisition_settings": {
+      "shipping_informations": {
+        "name": "Cover, Harry",
+        "email": "reroilstest+serial+shipping@gmail.com",
+        "phone": "+4134567890",
+        "address": {
+          "street": "Via Challand 133 bte/2",
+          "zip_code": "11100",
+          "city": "Aosta",
+          "country": "sz"
+        }
+      },
+      "billing_informations": {
+        "name": "Derata, Daisy",
+        "email": "reroilstest+serial+billing@gmail.com",
+        "phone": "+4134567890",
+        "address": {
+          "street": "Via Challand 133 bte/10",
+          "zip_code": "11100",
+          "city": "Aosta",
+          "country": "sz"
+        }
+      }
+    },
+    "online_harvested_source": [
+    ],
     "rollover_settings": {
       "account_transfer": "rollover_allocated_amount"
     }
   },
   {
-    "pid": "5",
-    "address": "Highlands, Scotland, Great Britain",
-    "code": "HOG",
-    "email": "reroilstest+magic1@gmail.com",
-    "name": "Hogwarts Library",
+    "pid": "4",
+    "address": "Calle Martí, No. 300, Barrio Segundo Sur, entre 27 de Noviembre y González Alcorta",
+    "code": "UPR-Dep",
+    "email": "maura@upr.edu.cu",
+    "name": "Biblioteca Ciencias del Deporte",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "opening_hours": [
       {
@@ -711,8 +623,12 @@
         "is_open": true,
         "times": [
           {
-            "start_time": "09:00",
-            "end_time": "20:00"
+            "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "19:00"
           }
         ]
       },
@@ -721,8 +637,12 @@
         "is_open": true,
         "times": [
           {
-            "start_time": "09:00",
-            "end_time": "20:00"
+            "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "19:00"
           }
         ]
       },
@@ -731,8 +651,8 @@
         "is_open": true,
         "times": [
           {
-            "start_time": "09:00",
-            "end_time": "20:00"
+            "start_time": "07:00",
+            "end_time": "19:00"
           }
         ]
       },
@@ -741,8 +661,12 @@
         "is_open": true,
         "times": [
           {
-            "start_time": "09:00",
-            "end_time": "20:00"
+            "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "19:00"
           }
         ]
       },
@@ -751,20 +675,19 @@
         "is_open": true,
         "times": [
           {
-            "start_time": "09:00",
-            "end_time": "20:00"
+            "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "21:00"
           }
         ]
       },
       {
         "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "13:00",
-            "end_time": "17:00"
-          }
-        ]
+        "is_open": false,
+        "times": []
       },
       {
         "day": "sunday",
@@ -774,2558 +697,118 @@
     ],
     "exception_dates": [
       {
-        "title": "House Cup Ceremony",
+        "title": "Vacances de No\u00ebl",
         "is_open": false,
-        "start_date": "2019-06-30",
-        "repeat": {
-          "interval": 1,
-          "period": "yearly",
-          "data": [
-            8
-          ]
-        }
+        "start_date": "2018-12-22",
+        "end_date": "2019-01-06"
       },
       {
-        "title": "Hogwarts Quidditch Cup: final match",
+        "title": "Vacances de Carnaval",
         "is_open": false,
-        "start_date": "2019-04-15",
-        "repeat": {
-          "interval": 1,
-          "period": "yearly",
-          "data": [
-            8
-          ]
-        }
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+aoste5@gmail.com",
-        "delay": 5
+        "start_date": "2019-03-01",
+        "end_date": "2019-03-11"
       },
       {
-        "type": "due_soon",
-        "email": "reroilstest+aoste5@gmail.com"
-      },
-      {
-        "type": "overdue",
-        "email": "reroilstest+aoste5@gmail.com"
-      },
-      {
-        "type": "recall",
-        "email": "reroilstest+aoste5@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+aoste5@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+aoste5@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+aoste5@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "Highlander, John",
-        "email": "reroilstest+magic1@gmail.com",
-        "phone": "+4134567891",
-        "address": {
-          "street": "Highlands, Scotland, Great Britain",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "Highlander, John",
-        "email": "reroilstest+magic1@gmail.com",
-        "phone": "+4134567891",
-        "address": {
-          "street": "Highlands, Scotland, Great Britain",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "6",
-    "address": "street of jedi.",
-    "code": "JEDI",
-    "email": "reroilstest+jedi@gmail.com",
-    "name": "Jedi Archives",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
+        "title": "1er mai",
+        "is_open": false,
+        "start_date": "2019-05-01",
         "times": [
           {
-            "start_time": "01:00",
-            "end_time": "23:59"
+            "start_time": "07:00",
+            "end_time": "19:00"
           }
         ]
       },
       {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
+        "title": "Vacances d'\u00e9t\u00e9",
+        "is_open": false,
+        "start_date": "2019-07-15",
+        "end_date": "2019-08-15"
       }
     ],
     "notification_settings": [
       {
         "type": "due_soon",
-        "email": "reroilstest+jedi@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
       },
       {
         "type": "overdue",
-        "email": "reroilstest+jedi@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
       },
       {
         "type": "recall",
-        "email": "reroilstest+jedi@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
       },
       {
         "type": "request",
-        "email": "reroilstest+jedi@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
       },
       {
         "type": "transit_notice",
-        "email": "reroilstest+jedi@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
       },
       {
         "type": "booking",
-        "email": "reroilstest+jedi@gmail.com"
+        "email": "reroilstest+aoste1@gmail.com"
+      },
+      {
+        "type": "auto_extend",
+        "email": "reroilstest+aoste1@gmail.com"
       }
     ],
-    "communication_language": "eng",
+    "communication_language": "es",
     "acquisition_settings": {
       "shipping_informations": {
-        "name": "Jedi, John",
-        "email": "reroilstest+jedi@gmail.com",
-        "phone": "+4134567892",
+        "name": "Doe, John",
+        "email": "reroilstest+shippingaoste1@gmail.com",
+        "phone": "+4134567890",
         "address": {
-          "street": "street of jedi",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
+          "street": "Via Challand 133 bte/1",
+          "zip_code": "11100",
+          "city": "Aosta",
           "country": "sz"
         }
       },
       "billing_informations": {
-        "name": "Jedi, John",
-        "email": "reroilstest+jedi@gmail.com",
-        "phone": "+4134567892",
+        "name": "Doe, John",
+        "email": "reroilstest+shippingaoste1@gmail.com",
+        "phone": "+4134567890",
         "address": {
-          "street": "street of jedi",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
+          "street": "Via Challand 133 bte/1",
+          "zip_code": "11100",
+          "city": "Aosta",
           "country": "sz"
         }
       }
     },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "7",
-    "address": "street of citadelle.",
-    "code": "CITADELLE",
-    "email": "reroilstest+citadelle@gmail.com",
-    "name": "La Citadelle",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+citadelle@gmail.com",
-        "delay": 5
-      },
-      {
-        "type": "overdue",
-        "email": "reroilstest+citadelle@gmail.com"
-      },
-      {
-        "type": "recall",
-        "email": "reroilstest+citadelle@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+citadelle@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+citadelle@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+citadelle@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
+    "serial_acquisition_settings": {
       "shipping_informations": {
-        "name": "Citadelle, John",
-        "email": "reroilstest+citadelle@gmail.com",
-        "phone": "+4134567893",
+        "name": "Cover, Harry",
+        "email": "reroilstest+serial+shipping@gmail.com",
+        "phone": "+4134567890",
         "address": {
-          "street": "street of citadelle",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
+          "street": "Via Challand 133 bte/2",
+          "zip_code": "11100",
+          "city": "Aosta",
           "country": "sz"
         }
       },
       "billing_informations": {
-        "name": "Citadelle, John",
-        "email": "reroilstest+citadelle@gmail.com",
-        "phone": "+4134567893",
+        "name": "Derata, Daisy",
+        "email": "reroilstest+serial+billing@gmail.com",
+        "phone": "+4134567890",
         "address": {
-          "street": "street of citadelle",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
+          "street": "Via Challand 133 bte/10",
+          "zip_code": "11100",
+          "city": "Aosta",
           "country": "sz"
         }
       }
     },
+    "online_harvested_source": [
+    ],
     "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "8",
-    "address": "street of beast.",
-    "code": "BEAST",
-    "email": "reroilstest+beast@gmail.com",
-    "name": "Beast's Library",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+beast@gmail.com",
-        "delay": 5
-      },
-      {
-        "type": "due_soon",
-        "email": "reroilstest+beast@gmail.com"
-      },
-      {
-        "type": "recall",
-        "email": "reroilstest+beast@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+beast@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+beast@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+beast@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "Beast, John",
-        "email": "reroilstest+beast@gmail.com",
-        "phone": "+4134567894",
-        "address": {
-          "street": "street of beast",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "Beast, John",
-        "email": "reroilstest+beast@gmail.com",
-        "phone": "+4134567894",
-        "address": {
-          "street": "street of beast",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "9",
-    "address": "street of dream.",
-    "code": "DREAM",
-    "email": "reroilstest+dream@gmail.com",
-    "name": "Dream's Library",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+dream@gmail.com",
-        "delay": 5
-      },
-      {
-        "type": "due_soon",
-        "email": "reroilstest+dream@gmail.com"
-      },
-      {
-        "type": "overdue",
-        "email": "reroilstest+dream@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+dream@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+dream@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+dream@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "Dream, John",
-        "email": "reroilstest+dream@gmail.com",
-        "phone": "+4134567895",
-        "address": {
-          "street": "street of dream",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "Dream, John",
-        "email": "reroilstest+dream@gmail.com",
-        "phone": "+4134567895",
-        "address": {
-          "street": "street of dream",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "10",
-    "address": "street of who.",
-    "code": "WHO",
-    "email": "reroilstest+who@gmail.com",
-    "name": "Lux Foundation Library",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+who@gmail.com",
-        "delay": 5
-      },
-      {
-        "type": "due_soon",
-        "email": "reroilstest+who@gmail.com"
-      },
-      {
-        "type": "overdue",
-        "email": "reroilstest+who@gmail.com"
-      },
-      {
-        "type": "recall",
-        "email": "reroilstest+who@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+who@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+who@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+who@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "Who, John",
-        "email": "reroilstest+who@gmail.com",
-        "phone": "+4134567896",
-        "address": {
-          "street": "street of dream",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "Who, John",
-        "email": "reroilstest+who@gmail.com",
-        "phone": "+4134567896",
-        "address": {
-          "street": "street of who",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "11",
-    "address": "street of hog.",
-    "code": "HOG",
-    "email": "reroilstest+hog@gmail.com",
-    "name": "Hogwarts Library",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "due_soon",
-        "email": "reroilstest+hog@gmail.com"
-      },
-      {
-        "type": "overdue",
-        "email": "reroilstest+hog@gmail.com"
-      },
-      {
-        "type": "recall",
-        "email": "reroilstest+hog@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+hog@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+hog@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+hog@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "Hog, John",
-        "email": "reroilstest+hog@gmail.com",
-        "phone": "+4134567897",
-        "address": {
-          "street": "street of hog",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "Hog, John",
-        "email": "reroilstest+hog@gmail.com",
-        "phone": "+4134567897",
-        "address": {
-          "street": "street of hog",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "12",
-    "address": "street of babel.",
-    "code": "BABEL",
-    "email": "reroilstest+babel@gmail.com",
-    "name": "Biblioth\u00e8que de Babel",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+babel@gmail.com",
-        "delay": 5
-      },
-      {
-        "type": "overdue",
-        "email": "reroilstest+babel@gmail.com"
-      },
-      {
-        "type": "recall",
-        "email": "reroilstest+babel@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+babel@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+babel@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+babel@gmail.com"
-      }
-    ],
-    "communication_language": "fre",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "babel, John",
-        "email": "reroilstest+babel@gmail.com",
-        "phone": "+4134567898",
-        "address": {
-          "street": "street of babel",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "babel, John",
-        "email": "reroilstest+babel@gmail.com",
-        "phone": "+4134567898",
-        "address": {
-          "street": "street of babel",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "13",
-    "address": "street of rose.",
-    "code": "ROSE",
-    "email": "reroilstest+rose@gmail.com",
-    "name": "Biblioth\u00e8que de l\u2019abbaye",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+rose@gmail.com",
-        "delay": 5
-      },
-      {
-        "type": "due_soon",
-        "email": "reroilstest+rose@gmail.com"
-      },
-      {
-        "type": "recall",
-        "email": "reroilstest+rose@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+rose@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+rose@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+rose@gmail.com"
-      }
-    ],
-    "communication_language": "fre",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "rose, John",
-        "email": "reroilstest+rose@gmail.com",
-        "phone": "+4134567899",
-        "address": {
-          "street": "street of rose",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "rose, John",
-        "email": "reroilstest+rose@gmail.com",
-        "phone": "+4134567899",
-        "address": {
-          "street": "street of rose",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "14",
-    "address": "street of uni.",
-    "code": "UNI",
-    "email": "reroilstest+uni@gmail.com",
-    "name": "The University's Library",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+uni@gmail.com",
-        "delay": 5
-      },
-      {
-        "type": "due_soon",
-        "email": "reroilstest+uni@gmail.com"
-      },
-      {
-        "type": "overdue",
-        "email": "reroilstest+uni@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+uni@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+uni@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+uni@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "uni, John",
-        "email": "reroilstest+uni@gmail.com",
-        "phone": "+4134567880",
-        "address": {
-          "street": "street of rose",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "uni, John",
-        "email": "reroilstest+uni@gmail.com",
-        "phone": "+4134567880",
-        "address": {
-          "street": "street of uni",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "15",
-    "address": "street of cemetery.",
-    "code": "CEMETERY",
-    "email": "reroilstest+cemetery@gmail.com",
-    "name": "Cemetery of Forgotten Books",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+cemetery@gmail.com",
-        "delay": 5
-      },
-      {
-        "type": "due_soon",
-        "email": "reroilstest+cemetery@gmail.com"
-      },
-      {
-        "type": "overdue",
-        "email": "reroilstest+cemetery@gmail.com"
-      },
-      {
-        "type": "recall",
-        "email": "reroilstest+cemetery@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+cemetery@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+cemetery@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+cemetery@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "cemetery, John",
-        "email": "reroilstest+cemetery@gmail.com",
-        "phone": "+4134567881",
-        "address": {
-          "street": "street of cemetery",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "cemetery, John",
-        "email": "reroilstest+cemetery@gmail.com",
-        "phone": "+4134567881",
-        "address": {
-          "street": "street of cemetery",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "16",
-    "address": "street of truth.",
-    "code": "TRUTH",
-    "email": "reroilstest+truth@gmail.com",
-    "name": "Ministry of Truth",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "due_soon",
-        "email": "reroilstest+truth@gmail.com"
-      },
-      {
-        "type": "overdue",
-        "email": "reroilstest+truth@gmail.com"
-      },
-      {
-        "type": "recall",
-        "email": "reroilstest+truth@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+truth@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+truth@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+truth@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "truth, John",
-        "email": "reroilstest+truth@gmail.com",
-        "phone": "+4134567882",
-        "address": {
-          "street": "street of truth",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "truth, John",
-        "email": "reroilstest+truth@gmail.com",
-        "phone": "+4134567882",
-        "address": {
-          "street": "street of truth",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "17",
-    "address": "street of rive.",
-    "code": "RIVE",
-    "email": "reroilstest+rive@gmail.com",
-    "name": "Rivendell Library",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+rive@gmail.com",
-        "delay": 5
-      },
-      {
-        "type": "overdue",
-        "email": "reroilstest+rive@gmail.com"
-      },
-      {
-        "type": "recall",
-        "email": "reroilstest+rive@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+rive@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+rive@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+rive@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "rive, John",
-        "email": "reroilstest+rive@gmail.com",
-        "phone": "+4134567883",
-        "address": {
-          "street": "street of rive",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "rive, John",
-        "email": "reroilstest+rive@gmail.com",
-        "phone": "+4134567883",
-        "address": {
-          "street": "street of rive",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "18",
-    "address": "street of matilda.",
-    "code": "MATILDA",
-    "email": "reroilstest+matilda@gmail.com",
-    "name": "Matilda's Library",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+matilda@gmail.com",
-        "delay": 5
-      },
-      {
-        "type": "due_soon",
-        "email": "reroilstest+matilda@gmail.com"
-      },
-      {
-        "type": "recall",
-        "email": "reroilstest+matilda@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+matilda@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+matilda@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+matilda@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "matilda, John",
-        "email": "reroilstest+matilda@gmail.com",
-        "phone": "+4134567884",
-        "address": {
-          "street": "street of matilda",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "matilda, John",
-        "email": "reroilstest+matilda@gmail.com",
-        "phone": "+4134567884",
-        "address": {
-          "street": "street of matilda",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "19",
-    "address": "street of unseen.",
-    "code": "UNSEEN",
-    "email": "reroilstest+unseen@gmail.com",
-    "name": "Unseen University Library",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+unseen@gmail.com",
-        "delay": 5
-      },
-      {
-        "type": "due_soon",
-        "email": "reroilstest+unseen@gmail.com"
-      },
-      {
-        "type": "overdue",
-        "email": "reroilstest+unseen@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+unseen@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+unseen@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+unseen@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "unseen, John",
-        "email": "reroilstest+unseen@gmail.com",
-        "phone": "+4134567885",
-        "address": {
-          "street": "street of unseen",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "unseen, John",
-        "email": "reroilstest+unseen@gmail.com",
-        "phone": "+4134567885",
-        "address": {
-          "street": "street of unseen",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "20",
-    "address": "street of wan.",
-    "code": "WAN",
-    "email": "reroilstest+wan@gmail.com",
-    "name": "Wan Shi Tong's Library",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+wan@gmail.com",
-        "delay": 5
-      },
-      {
-        "type": "due_soon",
-        "email": "reroilstest+wan@gmail.com"
-      },
-      {
-        "type": "overdue",
-        "email": "reroilstest+wan@gmail.com"
-      },
-      {
-        "type": "recall",
-        "email": "reroilstest+wan@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+wan@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+wan@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+wan@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "wan, John",
-        "email": "reroilstest+wan@gmail.com",
-        "phone": "+4134567886",
-        "address": {
-          "street": "street of wan",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "wan, John",
-        "email": "reroilstest+wan@gmail.com",
-        "phone": "+4134567886",
-        "address": {
-          "street": "street of wan",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "21",
-    "address": "street of buffy.",
-    "code": "BUFFY",
-    "email": "reroilstest+buffy@gmail.com",
-    "name": "Sunnydale High School library",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+buffy@gmail.com",
-        "delay": 5
-      },
-      {
-        "type": "recall",
-        "email": "reroilstest+buffy@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+buffy@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+buffy@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+buffy@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "buffy, John",
-        "email": "reroilstest+buffy@gmail.com",
-        "phone": "+4134567887",
-        "address": {
-          "street": "street of buffy",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "buffy, John",
-        "email": "reroilstest+buffy@gmail.com",
-        "phone": "+4134567887",
-        "address": {
-          "street": "street of buffy",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "22",
-    "address": "On board the Enterprise",
-    "code": "ENTERPRISE",
-    "email": "reroilstest+cypress1@gmail.com",
-    "name": "Starfleet library",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/4"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "due_soon",
-        "email": "reroilstest+cypress1@gmail.com"
-      },
-      {
-        "type": "overdue",
-        "email": "reroilstest+cypress1@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+cypress1@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+cypress1@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+cypress1@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "cypress1, John",
-        "email": "reroilstest+cypress1@gmail.com",
-        "phone": "+4134567888",
-        "address": {
-          "street": "street of cypress1",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "cypress1, John",
-        "email": "reroilstest+cypress1@gmail.com",
-        "phone": "+4134567888",
-        "address": {
-          "street": "street of cypress1",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
-    }
-  },
-  {
-    "pid": "23",
-    "address": "Somewhere on Vulcan",
-    "code": "VULCAN",
-    "email": "reroilstest+cypress2@gmail.com",
-    "name": "Vulcan Sciences Academy",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/4"
-    },
-    "opening_hours": [
-      {
-        "day": "monday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "tuesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "wednesday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "thursday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "friday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "saturday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      },
-      {
-        "day": "sunday",
-        "is_open": true,
-        "times": [
-          {
-            "start_time": "01:00",
-            "end_time": "23:59"
-          }
-        ]
-      }
-    ],
-    "notification_settings": [
-      {
-        "type": "availability",
-        "email": "reroilstest+cypress2@gmail.com",
-        "delay": 5
-      },
-      {
-        "type": "due_soon",
-        "email": "reroilstest+cypress2@gmail.com"
-      },
-      {
-        "type": "overdue",
-        "email": "reroilstest+cypress2@gmail.com"
-      },
-      {
-        "type": "recall",
-        "email": "reroilstest+cypress2@gmail.com"
-      },
-      {
-        "type": "request",
-        "email": "reroilstest+cypress2@gmail.com"
-      },
-      {
-        "type": "transit_notice",
-        "email": "reroilstest+cypress2@gmail.com"
-      },
-      {
-        "type": "booking",
-        "email": "reroilstest+cypress2@gmail.com"
-      }
-    ],
-    "communication_language": "eng",
-    "acquisition_settings": {
-      "shipping_informations": {
-        "name": "cypress2, John",
-        "email": "reroilstest+cypress2@gmail.com",
-        "phone": "+4134567889",
-        "address": {
-          "street": "street of cypress2",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      },
-      "billing_informations": {
-        "name": "cypress2, John",
-        "email": "reroilstest+cypress2@gmail.com",
-        "phone": "+4134567889",
-        "address": {
-          "street": "street of cypress2",
-          "zip_code": "11026",
-          "city": "Pont-Saint-Martin",
-          "country": "sz"
-        }
-      }
-    },
-    "rollover_settings": {
-      "account_transfer": "rollover_no_transfer"
+      "account_transfer": "rollover_allocated_amount"
     }
   }
 ]

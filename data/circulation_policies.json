@@ -4,7 +4,7 @@
     "name": "Default",
     "description": "Default circulation policy",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "checkout_duration": 30,
     "allow_requests": true,
@@ -32,40 +32,10 @@
   },
   {
     "pid": "2",
-    "name": "Default",
-    "description": "Default circulation policy",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
-    },
-    "checkout_duration": 30,
-    "allow_requests": true,
-    "pickup_hold_duration": 10,
-    "reminders": [
-      {
-        "type": "due_soon",
-        "days_delay": 5,
-        "communication_channel": "patron_setting",
-        "template": "email/due_soon"
-      },
-      {
-        "type": "overdue",
-        "days_delay": 5,
-        "fee_amount": 2.0,
-        "communication_channel": "patron_setting",
-        "template": "email/overdue"
-      }
-    ],
-    "number_renewals": 3,
-    "renewal_duration": 30,
-    "policy_library_level": false,
-    "is_default": true
-  },
-  {
-    "pid": "3",
     "name": "Site d'Aoste: short",
     "description": "Short loan (7 days), applies only at Site d'Aoste.",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "checkout_duration": 7,
     "allow_requests": true,
@@ -92,26 +62,26 @@
     "is_default": false,
     "libraries": [
       {
-        "$ref": "https://bib.rero.ch/api/libraries/1"
+        "$ref": "https://bib.upr.edu.cu/api/libraries/1"
       }
     ],
     "settings": [
       {
         "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/1"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/1"
         },
         "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/1"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/1"
         }
       }
     ]
   },
   {
-    "pid": "4",
+    "pid": "3",
     "name": "Short",
     "description": "Short loan (14 days)",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "checkout_duration": 14,
     "allow_requests": true,
@@ -139,28 +109,28 @@
     "settings": [
       {
         "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/1"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/1"
         },
         "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/2"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/2"
         }
       },
       {
         "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/3"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/3"
         },
         "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/2"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/2"
         }
       }
     ]
   },
   {
-    "pid": "6",
+    "pid": "4",
     "name": "Standard adults",
     "description": "Standard loan (28 days) for adults",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "checkout_duration": 28,
     "allow_requests": true,
@@ -188,20 +158,20 @@
     "settings": [
       {
         "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/1"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/1"
         },
         "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/5"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/5"
         }
       }
     ]
   },
   {
-    "pid": "7",
+    "pid": "5",
     "name": "Extended",
     "description": "Extended loan (3 months).",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "reminders": [
       {
@@ -229,52 +199,52 @@
     "settings": [
       {
         "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/2"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/2"
         },
         "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/1"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/1"
         }
       },
       {
         "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/2"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/2"
         },
         "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/2"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/2"
         }
       },
       {
         "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/2"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/2"
         },
         "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/3"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/3"
         }
       },
       {
         "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/2"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/2"
         },
         "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/5"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/5"
         }
       },
       {
         "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/2"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/2"
         },
         "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/6"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/6"
         }
       }
     ]
   },
   {
-    "pid": "8",
+    "pid": "6",
     "name": "On-site",
     "description": "On-site consultation",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "checkout_duration": 0,
     "allow_requests": true,
@@ -285,199 +255,110 @@
     "settings": [
       {
         "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/1"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/1"
         },
         "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/3"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/3"
         }
       },
       {
         "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/3"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/3"
         },
         "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/3"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/3"
+        }
+      }
+    ]
+  },
+  {
+    "pid": "7",
+    "name": "No checkout",
+    "description": "No checkout.",
+    "organisation": {
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
+    },
+    "allow_requests": false,
+    "policy_library_level": false,
+    "is_default": false,
+    "settings": [
+      {
+        "patron_type": {
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/1"
+        },
+        "item_type": {
+          "$ref": "https://bib.upr.edu.cu/api/item_types/4"
+        }
+      },
+      {
+        "patron_type": {
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/2"
+        },
+        "item_type": {
+          "$ref": "https://bib.upr.edu.cu/api/item_types/4"
+        }
+      },
+      {
+        "patron_type": {
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/3"
+        },
+        "item_type": {
+          "$ref": "https://bib.upr.edu.cu/api/item_types/4"
+        }
+      },
+      {
+        "patron_type": {
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/3"
+        },
+        "item_type": {
+          "$ref": "https://bib.upr.edu.cu/api/item_types/5"
+        }
+      },
+      {
+        "patron_type": {
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/3"
+        },
+        "item_type": {
+          "$ref": "https://bib.upr.edu.cu/api/item_types/6"
+        }
+      }
+    ]
+  },
+  {
+    "pid": "8",
+    "name": "Ebooks no circulation",
+    "description": "Ebooks no circulation.",
+    "organisation": {
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
+    },
+    "allow_requests": false,
+    "policy_library_level": false,
+    "is_default": false,
+    "settings": [
+      {
+        "patron_type": {
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/1"
+        },
+        "item_type": {
+          "$ref": "https://bib.upr.edu.cu/api/item_types/8"
+        }
+      },
+      {
+        "patron_type": {
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/2"
+        },
+        "item_type": {
+          "$ref": "https://bib.upr.edu.cu/api/item_types/8"
         }
       }
     ]
   },
   {
     "pid": "9",
-    "name": "No checkout",
-    "description": "No checkout.",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
-    },
-    "allow_requests": false,
-    "policy_library_level": false,
-    "is_default": false,
-    "settings": [
-      {
-        "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/1"
-        },
-        "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/4"
-        }
-      },
-      {
-        "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/2"
-        },
-        "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/4"
-        }
-      },
-      {
-        "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/3"
-        },
-        "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/4"
-        }
-      },
-      {
-        "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/3"
-        },
-        "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/5"
-        }
-      },
-      {
-        "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/3"
-        },
-        "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/6"
-        }
-      }
-    ]
-  },
-  {
-    "pid": "10",
-    "name": "Ebooks no circulation",
-    "description": "Ebooks no circulation.",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
-    },
-    "allow_requests": false,
-    "policy_library_level": false,
-    "is_default": false,
-    "settings": [
-      {
-        "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/1"
-        },
-        "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/8"
-        }
-      },
-      {
-        "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/2"
-        },
-        "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/8"
-        }
-      }
-    ]
-  },
-  {
-    "pid": "11",
-    "name": "Ebooks no circulation",
-    "description": "Ebooks no circulation.",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
-    },
-    "allow_requests": false,
-    "policy_library_level": false,
-    "is_default": false,
-    "settings": [
-      {
-        "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/6"
-        },
-        "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/9"
-        }
-      },
-      {
-        "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/4"
-        },
-        "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/9"
-        }
-      }
-    ]
-  },
-  {
-    "pid": "12",
-    "name": "Default",
-    "description": "Default circulation policy.",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
-    },
-    "reminders": [
-      {
-        "type": "due_soon",
-        "days_delay": 5,
-        "communication_channel": "patron_setting",
-        "template": "email/due_soon"
-      },
-      {
-        "type": "overdue",
-        "days_delay": 5,
-        "fee_amount": 2.0,
-        "communication_channel": "patron_setting",
-        "template": "email/overdue"
-      }
-    ],
-    "checkout_duration": 28,
-    "allow_requests": true,
-    "pickup_hold_duration": 10,
-    "number_renewals": 3,
-    "renewal_duration": 30,
-    "policy_library_level": false,
-    "is_default": true
-  },
-  {
-    "pid": "13",
-    "name": "Default",
-    "description": "Default circulation policy.",
-    "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/4"
-    },
-    "reminders": [
-      {
-        "type": "due_soon",
-        "days_delay": 5,
-        "communication_channel": "patron_setting",
-        "template": "email/due_soon"
-      },
-      {
-        "type": "overdue",
-        "days_delay": 5,
-        "fee_amount": 2.0,
-        "communication_channel": "patron_setting",
-        "template": "email/overdue"
-      }
-    ],
-    "checkout_duration": 30,
-    "allow_requests": true,
-    "pickup_hold_duration": 10,
-    "number_renewals": 3,
-    "renewal_duration": 30,
-    "policy_library_level": false,
-    "is_default": true
-  },
-  {
-    "pid": "14",
     "name": "Standard, no request",
     "description": "Loan 28 days, requests not allowed, used for missing items",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "checkout_duration": 28,
     "allow_requests": false,
@@ -503,34 +384,34 @@
     "settings": [
       {
         "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/1"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/1"
         },
         "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/12"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/12"
         }
       },
       {
         "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/3"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/3"
         },
         "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/12"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/12"
         }
       },
       {
         "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/2"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/2"
         },
         "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/12"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/12"
         }
       },
       {
         "patron_type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/8"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/8"
         },
         "item_type": {
-          "$ref": "https://bib.rero.ch/api/item_types/12"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/12"
         }
       }
     ]

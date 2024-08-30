@@ -2,36 +2,36 @@
   {
     "pid": "1",
     "acq_receipt": {
-      "$ref": "https://bib.rero.ch/api/acq_receipts/1"
+      "$ref": "https://bib.upr.edu.cu/api/acq_receipts/1"
     },
     "acq_order_line": {
-      "$ref": "https://bib.rero.ch/api/acq_order_lines/1"
+      "$ref": "https://bib.upr.edu.cu/api/acq_order_lines/1"
     },
     "quantity": 3,
     "amount": 25,
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "receive_now": true
   },
   {
     "pid": "2",
     "acq_receipt": {
-      "$ref": "https://bib.rero.ch/api/acq_receipts/2"
+      "$ref": "https://bib.upr.edu.cu/api/acq_receipts/2"
     },
     "acq_order_line": {
-      "$ref": "https://bib.rero.ch/api/acq_order_lines/10"
+      "$ref": "https://bib.upr.edu.cu/api/acq_order_lines/10"
     },
     "quantity": 3,
     "amount": 25,
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     },
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "receive_now": true
   }

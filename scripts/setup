@@ -293,7 +293,7 @@ eval ${PREFIX} invenio roles add gipi@ngscan.com document_importer
 
 # create token access for monitoring
 info_msg "Create token for: monitoring@rero.ch"
-create_token monitoring monitoring@rero.ch ${INVENIO_RERO_ACCESS_TOKEN_MONITORING}
+create_token monitoring monitoring@rero.ch ${`INVENIO_RERO_ACCESS_TOKEN_MONITORING`}
 # create token access for ngscan (ezpump)
 info_msg "Create token for: gipi@ngscan.com"
 create_token ezpump gipi@ngscan.com ${INVENIO_RERO_ACCESS_TOKEN_NGSCAN}

@@ -4,10 +4,10 @@
     "name": "Book",
     "description": "Base model for a usual book",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "documents",
@@ -123,10 +123,10 @@
     "name": "DVD, movies",
     "description": "Base model for a usual DVD or movie",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "documents",
@@ -231,10 +231,10 @@
     "name": "Aosta bibliography",
     "description": "Item with no checkout allowed",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "items",
@@ -252,10 +252,10 @@
     "name": "Standard patron",
     "description": "Use this template for a usual registration",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "patrons",
@@ -264,7 +264,7 @@
         "communication_channel": "email",
         "communication_language": "fre",
         "type": {
-          "$ref": "https://bib.rero.ch/api/patron_types/1"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/1"
         }
       },
       "roles": [
@@ -277,10 +277,10 @@
     "name": "Greek book",
     "description": "Greek with latin transliteration",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "private",
     "template_type": "documents",
@@ -418,10 +418,10 @@
     "name": "Russian book",
     "description": "Russian Cyrillic with latin transliteration",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/6"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/6"
     },
     "visibility": "private",
     "template_type": "documents",
@@ -559,10 +559,10 @@
     "name": "Book",
     "description": "Base model for a usual book",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "documents",
@@ -678,10 +678,10 @@
     "name": "DVD, movies",
     "description": "Base model for a usual DVD or movie",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "documents",
@@ -786,10 +786,10 @@
     "name": "Hogwarts bibliography",
     "description": "In restricted section",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "items",
@@ -806,10 +806,10 @@
     "name": "Standard patron",
     "description": "Use this template for a usual registration",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "patrons",
@@ -823,7 +823,7 @@
       "first_name": "",
       "last_name": "",
       "patron_type": {
-        "$ref": "https://bib.rero.ch/api/patron_types/4"
+        "$ref": "https://bib.upr.edu.cu/api/patron_types/4"
       },
       "home_phone": "",
       "postal_code": "",
@@ -838,10 +838,10 @@
     "name": "Greek book",
     "description": "Greek with latin transliteration",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "private",
     "template_type": "documents",
@@ -979,10 +979,10 @@
     "name": "Russian book",
     "description": "Russian Cyrillic with latin transliteration",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "private",
     "template_type": "documents",
@@ -1120,10 +1120,10 @@
     "name": "Book",
     "description": "Base model for a usual book",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "documents",
@@ -1239,10 +1239,10 @@
     "name": "DVD, movies",
     "description": "Base model for a usual DVD or movie",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "documents",
@@ -1347,10 +1347,10 @@
     "name": "Bibliography of fictive libraries",
     "description": "Very specifal item that must be preserved for eternity!",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "items",
@@ -1367,10 +1367,10 @@
     "name": "Standard patron",
     "description": "Use this template for a usual registration",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "patrons",
@@ -1384,7 +1384,7 @@
       "first_name": "",
       "last_name": "",
       "patron_type": {
-        "$ref": "https://bib.rero.ch/api/patron_types/5"
+        "$ref": "https://bib.upr.edu.cu/api/patron_types/5"
       },
       "home_phone": "",
       "postal_code": "",
@@ -1399,10 +1399,10 @@
     "name": "Greek book",
     "description": "Greek with latin transliteration",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "private",
     "template_type": "documents",
@@ -1540,10 +1540,10 @@
     "name": "Russian book",
     "description": "Russian Cyrillic with latin transliteration",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "private",
     "template_type": "documents",
@@ -1681,10 +1681,10 @@
     "name": "Annually with one level of enumeration",
     "description": "Example:\n No 37 2018\nNo 38 2019",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -1723,10 +1723,10 @@
     "name": "Annually without enumeration",
     "description": "Example: 2019",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -1756,10 +1756,10 @@
     "name": "Annually with two years",
     "description": "Example: 2020-2021",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -1798,10 +1798,10 @@
     "name": "Quarterly with two levels of enumeration",
     "description": "Example: ann\u00e9e 95 no 3 juil./sept. 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -1858,10 +1858,10 @@
     "name": "Quarterly with one level of enumeration",
     "description": "Example: 2020 no 146 oct.",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -1912,10 +1912,10 @@
     "name": "Quarterly with seasons",
     "description": "Example: no 2 printemps 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -1967,10 +1967,10 @@
     "name": "Quarterly with one level of enumeration starting on feb.",
     "description": "Example: 2008 no 2 nov.",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -2022,10 +2022,10 @@
     "name": "Quarterly with three levels of enumeration",
     "description": "Example: N.s., A. 26 no 109 janv. 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -2096,10 +2096,10 @@
     "name": "Quarterly with one level of enumeration - month - year",
     "description": "Example: no. 172 Dec. 2019",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -2150,10 +2150,10 @@
     "name": "Quarterly with one level of enumeration - trimester",
     "description": "Example: 2007 no 18 4e trimestre",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -2204,10 +2204,10 @@
     "name": "Quarterly with three levels of enumeration and two levels of chronology starting on march",
     "description": "Example: anno 100 1er trimestre no 20 2020 mars ",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -2277,10 +2277,10 @@
     "name": "Quarterly with two levels of enumeration and two levels of chronology",
     "description": "Example: anno 100 no 20 2020 janv.",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -2351,10 +2351,10 @@
     "name": "Semiannual with three levels of enumeration",
     "description": "Example: A. 50 vol. 45 no 196 2017",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -2439,10 +2439,10 @@
     "name": "Semiannual with three levels of enumeration - German",
     "description": "Example: Jg. 37 Nr. 99 Dez. 2017",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -2508,10 +2508,10 @@
     "name": "Semiannual with two levels of chronology",
     "description": "Example: juin 2019",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -2551,10 +2551,10 @@
     "name": "Monthly without Jan. and Aug.",
     "description": "Example: no 901 Sept 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -2611,10 +2611,10 @@
     "name": "Monthly with July/Aug. combined ",
     "description": "Example: no 15 mars 2012",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -2672,10 +2672,10 @@
     "name": "Monthly with 12 months",
     "description": "Example: no 9 Sept. 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -2734,10 +2734,10 @@
     "name": "Bimonthly with three levels of enumeration",
     "description": "Example: vol. 146 partie 1 livr. 2 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -2823,10 +2823,10 @@
     "name": "Bimonthly with days, months and year",
     "description": "Example: 2009 no 80 4 juin/juil.",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -2890,10 +2890,10 @@
     "name": "Bimonthly with one level of enumeration",
     "description": "Example: no 257 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -2946,10 +2946,10 @@
     "name": "Three times a year with two levels of enumeration and season",
     "description": "Example: ann\u00e9e 30 no 115 printemps 2013",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3019,10 +3019,10 @@
     "name": "Three times a year with two levels of enumeration",
     "description": "Example: Vol. 62 no 175 2018",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3092,10 +3092,10 @@
     "name": "Weekly - two levels of enumeration",
     "description": "Example: ann\u00e9e 10 no 1 01 01 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3131,10 +3131,10 @@
     "name": "Weekly - volume changes every 8 weeks",
     "description": "Example: Vol. 557 No 7707 31 05 2018",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3190,10 +3190,10 @@
     "name": "Weekly - volume changes every 13 weeks",
     "description": "Example: Vol. 369 no 6502 24 07 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3254,10 +3254,10 @@
     "name": "Weekly - 51 weeks",
     "description": "Example: 2010 no 224 27 02",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3288,10 +3288,10 @@
     "name": "Weekly - one level of enumeration",
     "description": "Example: no 3888 26 06 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3322,10 +3322,10 @@
     "name": "Published 10 times",
     "description": "Example: Jg. 10 no 1 janv. 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3386,10 +3386,10 @@
     "name": "Biennial - one edition",
     "description": "Example: \u00e9d. 13 2019",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3419,10 +3419,10 @@
     "name": "Biennial - with two years",
     "description": "Example: 2019/2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3452,10 +3452,10 @@
     "name": "Biennial",
     "description": "Example: no 13 2021",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3486,10 +3486,10 @@
     "name": "Published 11 times",
     "description": "Example: no 2 fev. 2020 ",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3544,10 +3544,10 @@
     "name": "Semiweekly",
     "description": "Example: Jg. 10 Nr. 1 01 01 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3583,10 +3583,10 @@
     "name": "Biweekly",
     "description": "Example: ann\u00e9e 10 no 1 01 01 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3622,10 +3622,10 @@
     "name": "Triennial",
     "description": "17 Rapport 139",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3664,10 +3664,10 @@
     "name": "Triennial - display day month",
     "description": "2020 no 1708 28 03",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3698,10 +3698,10 @@
     "name": "Semimonthly",
     "description": "2020 no 1708 28 mars",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3732,10 +3732,10 @@
     "name": "Annually with one level of enumeration",
     "description": "Example: No 37 2018",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3774,10 +3774,10 @@
     "name": "Annually without enumeration",
     "description": "Example: 2019",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3807,10 +3807,10 @@
     "name": "Annually with two years",
     "description": "Example: 2020-2021",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3849,10 +3849,10 @@
     "name": "Quarterly with two levels of enumeration",
     "description": "Example: ann\u00e9e 95 no 3 juil./sept. 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3909,10 +3909,10 @@
     "name": "Quarterly with one level of enumeration",
     "description": "Example: 2020 no 146 oct.",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -3963,10 +3963,10 @@
     "name": "Quarterly with seasons",
     "description": "Example: no 2 printemps 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4018,10 +4018,10 @@
     "name": "Quarterly with one level of enumeration starting on feb.",
     "description": "Example: 2008 no 2 nov.",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4073,10 +4073,10 @@
     "name": "Quarterly with three levels of enumeration",
     "description": "Example: N.s., A. 26 no 109 janv. 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4147,10 +4147,10 @@
     "name": "Quarterly with one level of enumeration - month - year",
     "description": "Example: no. 172 Dec. 2019",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4201,10 +4201,10 @@
     "name": "Quarterly with one level of enumeration - trimester",
     "description": "Example: 2007 no 18 4e trimestre",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4255,10 +4255,10 @@
     "name": "Quarterly with three levels of enumeration and two levels of chronology starting on march",
     "description": "Example: anno 100 1er trimestre no 20 2020 mars ",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4328,10 +4328,10 @@
     "name": "Quarterly with two levels of enumeration and two levels of chronology",
     "description": "Example: anno 100 no 20 2020 janv.",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4402,10 +4402,10 @@
     "name": "Semiannual with three levels of enumeration",
     "description": "Example: A. 50 vol. 45 no 196 2017",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4490,10 +4490,10 @@
     "name": "Semiannual with three levels of enumeration - German",
     "description": "Example: Jg. 37 Nr. 99 Dez. 2017",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4559,10 +4559,10 @@
     "name": "Semiannual with two levels of chronology",
     "description": "Example: juin 2019",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4602,10 +4602,10 @@
     "name": "Monthly without Jan. and Aug.",
     "description": "Example: no 901 Sept 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4662,10 +4662,10 @@
     "name": "Monthly with July/Aug. combined ",
     "description": "Example: no 15 mars 2012",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4723,10 +4723,10 @@
     "name": "Monthly with 12 months",
     "description": "Example: no 9 Sept. 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4785,10 +4785,10 @@
     "name": "Bimonthly with three levels of enumeration",
     "description": "Example: vol. 146 partie 1 livr. 2 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4874,10 +4874,10 @@
     "name": "Bimonthly with days, months and year",
     "description": "Example: 2009 no 80 4 juin/juil.",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4941,10 +4941,10 @@
     "name": "Bimonthly with one level of enumeration",
     "description": "Example: no 257 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -4997,10 +4997,10 @@
     "name": "Three times a year with two levels of enumeration and season",
     "description": "Example: ann\u00e9e 30 no 115 printemps 2013",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5070,10 +5070,10 @@
     "name": "Three times a year with two levels of enumeration",
     "description": "Example: Vol. 62 no 175 2018",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5143,10 +5143,10 @@
     "name": "Weekly - two levels of enumeration",
     "description": "Example: ann\u00e9e 10 no 1 01 01 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5182,10 +5182,10 @@
     "name": "Weekly - volume changes every 8 weeks",
     "description": "Example: Vol. 557 No 7707 31 05 2018",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5241,10 +5241,10 @@
     "name": "Weekly - volume changes every 13 weeks",
     "description": "Example: Vol. 369 no 6502 24 07 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5305,10 +5305,10 @@
     "name": "Weekly - 51 weeks",
     "description": "Example: 2010 no 224 27 02",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5339,10 +5339,10 @@
     "name": "Weekly - one level of enumeration",
     "description": "Example: no 3888 26 06 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5373,10 +5373,10 @@
     "name": "Published 10 times",
     "description": "Example: Jg. 10 no 1 janv. 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5437,10 +5437,10 @@
     "name": "Biennial - one edition",
     "description": "Example: \u00e9d. 13 2019",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5470,10 +5470,10 @@
     "name": "Biennial - with two years",
     "description": "Example: 2019/2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5503,10 +5503,10 @@
     "name": "Biennial",
     "description": "Example: no 13 2021",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5537,10 +5537,10 @@
     "name": "Published 11 times",
     "description": "Example: no 2 fev. 2020 ",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5595,10 +5595,10 @@
     "name": "Semiweekly",
     "description": "Example: Jg. 10 Nr. 1 01 01 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5634,10 +5634,10 @@
     "name": "Biweekly",
     "description": "Example: ann\u00e9e 10 no 1 01 01 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5673,10 +5673,10 @@
     "name": "Triennial",
     "description": "17 Rapport 139",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5715,10 +5715,10 @@
     "name": "Triennial - display day month",
     "description": "2020 no 1708 28 03",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5749,10 +5749,10 @@
     "name": "Semimonthly",
     "description": "2020 no 1708 28 mars",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5783,10 +5783,10 @@
     "name": "Annually with one level of enumeration",
     "description": "Example: No 37 2018",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5825,10 +5825,10 @@
     "name": "Annually without enumeration",
     "description": "Example: 2019",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5858,10 +5858,10 @@
     "name": "Annually with two years",
     "description": "Example: 2020-2021",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5900,10 +5900,10 @@
     "name": "Quarterly with two levels of enumeration",
     "description": "Example: ann\u00e9e 95 no 3 juil./sept. 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -5960,10 +5960,10 @@
     "name": "Quarterly with one level of enumeration",
     "description": "Example: 2020 no 146 oct.",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6014,10 +6014,10 @@
     "name": "Quarterly with seasons",
     "description": "Example: no 2 printemps 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6069,10 +6069,10 @@
     "name": "Quarterly with one level of enumeration starting on feb.",
     "description": "Example: 2008 no 2 nov.",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6124,10 +6124,10 @@
     "name": "Quarterly with three levels of enumeration",
     "description": "Example: N.s., A. 26 no 109 janv. 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6198,10 +6198,10 @@
     "name": "Quarterly with one level of enumeration - month - year",
     "description": "Example: no. 172 Dec. 2019",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6252,10 +6252,10 @@
     "name": "Quarterly with one level of enumeration - trimester",
     "description": "Example: 2007 no 18 4e trimestre",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6306,10 +6306,10 @@
     "name": "Quarterly with three levels of enumeration and two levels of chronology starting on march",
     "description": "Example: anno 100 1er trimestre no 20 2020 mars ",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6379,10 +6379,10 @@
     "name": "Quarterly with two levels of enumeration and two levels of chronology",
     "description": "Example: anno 100 no 20 2020 janv.",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6453,10 +6453,10 @@
     "name": "Semiannual with three levels of enumeration",
     "description": "Example: A. 50 vol. 45 no 196 2017",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6541,10 +6541,10 @@
     "name": "Semiannual with three levels of enumeration - German",
     "description": "Example: Jg. 37 Nr. 99 Dez. 2017",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6610,10 +6610,10 @@
     "name": "Semiannual with two levels of chronology",
     "description": "Example: juin 2019",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6653,10 +6653,10 @@
     "name": "Monthly without Jan. and Aug.",
     "description": "Example: no 901 Sept 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6713,10 +6713,10 @@
     "name": "Monthly with July/Aug. combined ",
     "description": "Example: no 15 mars 2012",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6774,10 +6774,10 @@
     "name": "Monthly with 12 months",
     "description": "Example: no 9 Sept. 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6836,10 +6836,10 @@
     "name": "Bimonthly with three levels of enumeration",
     "description": "Example: vol. 146 partie 1 livr. 2 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6925,10 +6925,10 @@
     "name": "Bimonthly with days, months and year",
     "description": "Example: 2009 no 80 4 juin/juil.",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -6992,10 +6992,10 @@
     "name": "Bimonthly with one level of enumeration",
     "description": "Example: no 257 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7048,10 +7048,10 @@
     "name": "Three times a year with two levels of enumeration and season",
     "description": "Example: ann\u00e9e 30 no 115 printemps 2013",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7121,10 +7121,10 @@
     "name": "Three times a year with two levels of enumeration",
     "description": "Example: Vol. 62 no 175 2018",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7194,10 +7194,10 @@
     "name": "Weekly - two levels of enumeration",
     "description": "Example: ann\u00e9e 10 no 1 01 01 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7233,10 +7233,10 @@
     "name": "Weekly - volume changes every 8 weeks",
     "description": "Example: Vol. 557 No 7707 31 05 2018",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7292,10 +7292,10 @@
     "name": "Weekly - volume changes every 13 weeks",
     "description": "Example: Vol. 369 no 6502 24 07 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7356,10 +7356,10 @@
     "name": "Weekly - 51 weeks",
     "description": "Example: 2010 no 224 27 02",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7390,10 +7390,10 @@
     "name": "Weekly - one level of enumeration",
     "description": "Example: no 3888 26 06 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7424,10 +7424,10 @@
     "name": "Published 10 times",
     "description": "Example: Jg. 10 no 1 janv. 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7488,10 +7488,10 @@
     "name": "Biennial - one edition",
     "description": "Example: \u00e9d. 13 2019",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7521,10 +7521,10 @@
     "name": "Biennial - with two years",
     "description": "Example: 2019/2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7554,10 +7554,10 @@
     "name": "Biennial",
     "description": "Example: no 13 2021",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7588,10 +7588,10 @@
     "name": "Published 11 times",
     "description": "Example: no 2 fev. 2020 ",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7646,10 +7646,10 @@
     "name": "Semiweekly",
     "description": "Example: Jg. 10 Nr. 1 01 01 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7685,10 +7685,10 @@
     "name": "Biweekly",
     "description": "Example: ann\u00e9e 10 no 1 01 01 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7724,10 +7724,10 @@
     "name": "Triennial",
     "description": "17 Rapport 139",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7766,10 +7766,10 @@
     "name": "Triennial - display day month",
     "description": "2020 no 1708 28 03",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7800,10 +7800,10 @@
     "name": "Semimonthly",
     "description": "2020 no 1708 28 mars",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7834,10 +7834,10 @@
     "name": "Daily",
     "description": "1 10 2020\n2 10 2020\n3 10 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/1"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/1"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7868,10 +7868,10 @@
     "name": "Daily",
     "description": "1 10 2020\n2 10 2020\n3 10 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/13"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/13"
     },
     "visibility": "public",
     "template_type": "holdings",
@@ -7902,10 +7902,10 @@
     "name": "Daily",
     "description": "1 10 2020\n2 10 2020\n3 10 2020",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "creator": {
-      "$ref": "https://bib.rero.ch/api/patrons/16"
+      "$ref": "https://bib.upr.edu.cu/api/patrons/16"
     },
     "visibility": "public",
     "template_type": "holdings",

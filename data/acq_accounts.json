@@ -7,10 +7,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     }
   },
   {
@@ -21,13 +21,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/1"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/1"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     }
   },
   {
@@ -38,13 +38,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/1"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/1"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     }
   },
   {
@@ -55,10 +55,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     }
   },
   {
@@ -69,13 +69,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/4"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/4"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     }
   },
   {
@@ -86,13 +86,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/4"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/4"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     }
   },
   {
@@ -103,10 +103,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/2"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/2"
     }
   },
   {
@@ -117,13 +117,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/7"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/7"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/2"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/2"
     }
   },
   {
@@ -134,13 +134,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/7"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/7"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/2"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/2"
     }
   },
   {
@@ -151,10 +151,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/2"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/2"
     }
   },
   {
@@ -165,13 +165,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/10"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/10"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/2"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/2"
     }
   },
   {
@@ -182,13 +182,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/10"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/10"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/2"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/2"
     }
   },
   {
@@ -199,10 +199,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/3"
     }
   },
   {
@@ -213,13 +213,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/13"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/13"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/3"
     }
   },
   {
@@ -230,13 +230,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/13"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/13"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/3"
     }
   },
   {
@@ -247,10 +247,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/3"
     }
   },
   {
@@ -261,13 +261,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/16"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/16"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/3"
     }
   },
   {
@@ -278,13 +278,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/16"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/16"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/3"
     }
   },
   {
@@ -295,10 +295,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/4"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/4"
     }
   },
   {
@@ -309,13 +309,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/19"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/19"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/4"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/4"
     }
   },
   {
@@ -326,13 +326,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/19"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/19"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/4"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/4"
     }
   },
   {
@@ -343,10 +343,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/4"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/4"
     }
   },
   {
@@ -357,13 +357,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/22"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/22"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/4"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/4"
     }
   },
   {
@@ -374,13 +374,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/22"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/22"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/1"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/1"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/4"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/4"
     }
   },
   {
@@ -391,10 +391,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/2"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/2"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/5"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/5"
     }
   },
   {
@@ -405,13 +405,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/25"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/25"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/2"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/2"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/5"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/5"
     }
   },
   {
@@ -422,10 +422,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/6"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/6"
     }
   },
   {
@@ -436,13 +436,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/27"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/27"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/6"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/6"
     }
   },
   {
@@ -453,10 +453,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/7"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/7"
     }
   },
   {
@@ -467,13 +467,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/29"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/29"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/7"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/7"
     }
   },
   {
@@ -484,10 +484,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/8"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/8"
     }
   },
   {
@@ -498,13 +498,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/31"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/31"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/8"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/8"
     }
   },
   {
@@ -515,10 +515,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/9"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/9"
     }
   },
   {
@@ -529,13 +529,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/33"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/33"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/9"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/9"
     }
   },
   {
@@ -546,10 +546,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/10"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/10"
     }
   },
   {
@@ -560,13 +560,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/35"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/35"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/10"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/10"
     }
   },
   {
@@ -577,10 +577,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/11"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/11"
     }
   },
   {
@@ -591,13 +591,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/37"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/37"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/11"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/11"
     }
   },
   {
@@ -608,10 +608,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/12"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/12"
     }
   },
   {
@@ -622,13 +622,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/39"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/39"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/12"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/12"
     }
   },
   {
@@ -639,10 +639,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/13"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/13"
     }
   },
   {
@@ -653,13 +653,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/41"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/41"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/13"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/13"
     }
   },
   {
@@ -670,10 +670,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/14"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/14"
     }
   },
   {
@@ -684,13 +684,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/43"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/43"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/14"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/14"
     }
   },
   {
@@ -701,10 +701,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/15"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/15"
     }
   },
   {
@@ -715,13 +715,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/45"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/45"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/15"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/15"
     }
   },
   {
@@ -732,10 +732,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/16"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/16"
     }
   },
   {
@@ -746,13 +746,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/47"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/47"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/16"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/16"
     }
   },
   {
@@ -763,10 +763,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/17"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/17"
     }
   },
   {
@@ -777,13 +777,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/49"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/49"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/17"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/17"
     }
   },
   {
@@ -794,10 +794,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/18"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/18"
     }
   },
   {
@@ -808,13 +808,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/51"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/51"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/18"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/18"
     }
   },
   {
@@ -825,10 +825,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/19"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/19"
     }
   },
   {
@@ -839,13 +839,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/53"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/53"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/19"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/19"
     }
   },
   {
@@ -856,10 +856,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/20"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/20"
     }
   },
   {
@@ -870,13 +870,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/55"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/55"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/20"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/20"
     }
   },
   {
@@ -887,10 +887,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/21"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/21"
     }
   },
   {
@@ -901,13 +901,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/57"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/57"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/3"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/3"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/21"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/21"
     }
   },
   {
@@ -918,10 +918,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/4"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/4"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/22"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/22"
     }
   },
   {
@@ -932,13 +932,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/59"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/59"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/4"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/4"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/22"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/22"
     }
   },
   {
@@ -949,10 +949,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/4"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/4"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/23"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/23"
     }
   },
   {
@@ -963,13 +963,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/61"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/61"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/4"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/4"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/23"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/23"
     }
   },
   {
@@ -980,10 +980,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/5"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/5"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     }
   },
   {
@@ -994,13 +994,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/71"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/71"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/5"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/5"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
     }
   },
   {
@@ -1011,10 +1011,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/5"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/5"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/2"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/2"
     }
   },
   {
@@ -1025,13 +1025,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/73"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/73"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/5"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/5"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/2"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/2"
     }
   },
   {
@@ -1042,10 +1042,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/5"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/5"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/3"
     }
   },
   {
@@ -1056,13 +1056,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/75"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/75"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/5"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/5"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/3"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/3"
     }
   },
   {
@@ -1073,10 +1073,10 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/5"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/5"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/4"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/4"
     }
   },
   {
@@ -1087,13 +1087,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/77"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/77"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/5"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/5"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/4"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/4"
     }
   },
   {
@@ -1104,13 +1104,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/22"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/22"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/5"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/5"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/4"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/4"
     }
   },
   {
@@ -1121,13 +1121,13 @@
     "encumbrance_exceedance": 5,
     "expenditure_exceedance": 5,
     "parent": {
-      "$ref": "https://bib.rero.ch/api/acq_accounts/79"
+      "$ref": "https://bib.upr.edu.cu/api/acq_accounts/79"
     },
     "budget": {
-      "$ref": "https://bib.rero.ch/api/budgets/5"
+      "$ref": "https://bib.upr.edu.cu/api/budgets/5"
     },
     "library": {
-      "$ref": "https://bib.rero.ch/api/libraries/4"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/4"
     }
   }
 ]
