@@ -3129,7 +3129,7 @@ INDEXER_RECORD_TO_INDEX = 'rero_ils.modules.indexer_utils.record_to_index'
 RERO_ILS_INDEXER_TASK_DELAY = timedelta(seconds=2)
 
 RERO_ILS_APP_URL_SCHEME = 'https'
-RERO_ILS_APP_HOST = 'bib.rero.ch'
+RERO_ILS_APP_HOST = 'bib.upr.edu.cu'
 #: Actual URL used to construct links in notifications for example
 RERO_ILS_APP_URL = 'https://bib.upr.edu.cu'
 
@@ -3257,7 +3257,7 @@ RERO_ILS_PATRON_ROLES_MANAGEMENT_RESTRICTIONS = {
 # JSONSchemas
 # ===========
 """Default json schema host."""
-JSONSCHEMAS_HOST = 'bib.rero.ch'
+JSONSCHEMAS_HOST = 'bib.upr.edu.cu'
 """Default schema endpoint."""
 JSONSCHEMAS_ENDPOINT = "/schemas"
 """Whether to resolve $ref before serving a schema."""
@@ -3271,7 +3271,7 @@ JSONSCHEMAS_REGISTER_ENDPOINTS_UI = False
 
 # OAI-PMH
 # =======
-OAISERVER_ID_PREFIX = 'oai:bib.rero.ch:'
+OAISERVER_ID_PREFIX = 'oai:bib.upr.edu.cu:'
 
 # =============================================================================
 # RERO_ILS LOANS SPECIAL CONFIGURATION

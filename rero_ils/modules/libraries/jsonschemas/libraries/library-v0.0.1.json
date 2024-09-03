@@ -460,7 +460,7 @@
         "eng",
         "fre",
         "ita",
-        "esp"
+        "spa"
       ],
       "widget": {
         "formlyConfig": {
@@ -484,8 +484,8 @@
                 "value": "ita"
               },
               {
-                "label": "lang_esp",
-                "value": "esp"
+                "label": "lang_spa",
+                "value": "spa"
               }
             ]
           }

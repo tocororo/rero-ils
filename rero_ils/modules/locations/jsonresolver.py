@@ -24,7 +24,7 @@ import jsonresolver
 from ..jsonresolver import resolve_json_refs
 
 
-@jsonresolver.route('/api/locations/<pid>', host='bib.rero.ch')
+@jsonresolver.route('/api/locations/<pid>', host='bib.upr.edu.cu')
 def location_resolver(pid):
     """Location resolver."""
     return resolve_json_refs('loc', pid)

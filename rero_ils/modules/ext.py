@@ -145,7 +145,7 @@ def load_actions(sender, app):
     for action in app.config.get('RERO_ILS_PERMISSIONS_ACTIONS', []):
         access_ext.register_action(obj_or_import_string(action))
 
-    # add jsonschema resolution from local:// and bib.rero.ch
+    # add jsonschema resolution from local:// and bib.upr.edu.cu
     data = app.extensions["invenio-jsonschemas"].refresolver_store()
     cfg = app.config
     schema_url = f'{cfg["JSONSCHEMAS_URL_SCHEME"]}://'\

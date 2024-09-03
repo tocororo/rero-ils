@@ -22,7 +22,7 @@ from flask import current_app
 from invenio_pidstore.models import PersistentIdentifier, PIDStatus
 
 
-@jsonresolver.route('/api/collections/<pid>', host='bib.rero.ch')
+@jsonresolver.route('/api/collections/<pid>', host='bib.upr.edu.cu')
 def collection_resolver(pid):
     """Resolver for collection record."""
     persistent_id = PersistentIdentifier.get('coll', pid)

@@ -101,6 +101,7 @@ fi
 
 # Start Server
 invenio run \
+   --host "bib.upr.edu.cu" \
    --cert "$SCRIPT_PATH"/../docker/nginx/test.crt \
    --key "$SCRIPT_PATH"/../docker/nginx/test.key & PID_SERVER=$!
 
