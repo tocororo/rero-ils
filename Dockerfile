@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ARG VERSION=latest
-FROM rero/rero-ils-base:${VERSION}
+FROM crai/rero-ils-base:${VERSION}
 
 USER 0
 

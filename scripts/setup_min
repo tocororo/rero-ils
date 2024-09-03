@@ -287,6 +287,8 @@ info_msg "Grant roles to users"
 eval ${PREFIX} invenio roles add admin@rero.ch admin
 eval ${PREFIX} invenio roles add admin@rero.ch superuser
 eval ${PREFIX} invenio roles add admin@rero.ch monitoring
+eval ${PREFIX} invenio roles add admin@rero.ch pro_full_permissions
+
 eval ${PREFIX} invenio roles add editor@rero.ch editor
 eval ${PREFIX} invenio roles add monitoring@rero.ch monitoring
 eval ${PREFIX} invenio roles add gipi@ngscan.com document_importer
@@ -304,6 +306,12 @@ info_msg "Generate fixtures:"
 info_msg "- Organisations ${DATA_PATH}/organisations.json ${CREATE_LAZY} ${DONT_STOP}"
 eval ${PREFIX} invenio reroils fixtures create --pid_type org ${DATA_PATH}/organisations.json --append ${CREATE_LAZY} ${DONT_STOP}
 eval ${PREFIX} invenio reroils index reindex -t org --yes-i-know
+
+
+info_msg "- Libraries: ${DATA_PATH}/libraries.json ${CREATE_LAZY} ${DONT_STOP}"
+eval ${PREFIX} invenio reroils fixtures create --pid_type lib ${DATA_PATH}/libraries.json --append ${CREATE_LAZY} ${DONT_STOP}
+eval ${PREFIX} invenio reroils index reindex -t lib --yes-i-know
+
 
 info_msg "Initialize wiki search"
 eval ${PREFIX} invenio flask_wiki init-index

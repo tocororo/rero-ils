@@ -28,3 +28,5 @@ en docker-services.yml
 image: mher/flower:0.9.7
 
 
+podman build --no-cache --rm -t crai/rero-ils-base:0.1.0 -f Dockerfile.base .
+

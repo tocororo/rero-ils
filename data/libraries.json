@@ -147,7 +147,7 @@
         "email": "reroilstest+aoste1@gmail.com"
       }
     ],
-    "communication_language": "es",
+    "communication_language": "esp",
     "acquisition_settings": {
       "shipping_informations": {
         "name": "Doe, John",
@@ -196,8 +196,6 @@
         }
       }
     },
-    "online_harvested_source": [
-    ],
     "rollover_settings": {
       "account_transfer": "rollover_allocated_amount"
     }
@@ -350,7 +348,7 @@
         "email": "reroilstest+aoste1@gmail.com"
       }
     ],
-    "communication_language": "es",
+    "communication_language": "esp",
     "acquisition_settings": {
       "shipping_informations": {
         "name": "Doe, John",
@@ -399,8 +397,6 @@
         }
       }
     },
-    "online_harvested_source": [
-    ],
     "rollover_settings": {
       "account_transfer": "rollover_allocated_amount"
     }
@@ -553,7 +549,7 @@
         "email": "reroilstest+aoste1@gmail.com"
       }
     ],
-    "communication_language": "es",
+    "communication_language": "esp",
     "acquisition_settings": {
       "shipping_informations": {
         "name": "Doe, John",
@@ -602,8 +598,6 @@
         }
       }
     },
-    "online_harvested_source": [
-    ],
     "rollover_settings": {
       "account_transfer": "rollover_allocated_amount"
     }
@@ -756,7 +750,7 @@
         "email": "reroilstest+aoste1@gmail.com"
       }
     ],
-    "communication_language": "es",
+    "communication_language": "esp",
     "acquisition_settings": {
       "shipping_informations": {
         "name": "Doe, John",
@@ -805,8 +799,408 @@
         }
       }
     },
-    "online_harvested_source": [
+    "rollover_settings": {
+      "account_transfer": "rollover_allocated_amount"
+    }
+  },
+  {
+    "pid": "5",
+    "address": "Calle Martí, No. 300, Barrio Segundo Sur, entre 27 de Noviembre y González Alcorta",
+    "code": "UPR-Dep",
+    "email": "maura@upr.edu.cu",
+    "name": "Sala Universal",
+    "organisation": {
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
+    },
+    "opening_hours": [
+      {
+        "day": "monday",
+        "is_open": true,
+        "times": [
+          {
+            "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "19:00"
+          }
+        ]
+      },
+      {
+        "day": "tuesday",
+        "is_open": true,
+        "times": [
+          {
+            "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "19:00"
+          }
+        ]
+      },
+      {
+        "day": "wednesday",
+        "is_open": true,
+        "times": [
+          {
+            "start_time": "07:00",
+            "end_time": "19:00"
+          }
+        ]
+      },
+      {
+        "day": "thursday",
+        "is_open": true,
+        "times": [
+          {
+            "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "19:00"
+          }
+        ]
+      },
+      {
+        "day": "friday",
+        "is_open": true,
+        "times": [
+          {
+            "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "21:00"
+          }
+        ]
+      },
+      {
+        "day": "saturday",
+        "is_open": false,
+        "times": []
+      },
+      {
+        "day": "sunday",
+        "is_open": false,
+        "times": []
+      }
     ],
+    "exception_dates": [
+      {
+        "title": "Vacances de No\u00ebl",
+        "is_open": false,
+        "start_date": "2018-12-22",
+        "end_date": "2019-01-06"
+      },
+      {
+        "title": "Vacances de Carnaval",
+        "is_open": false,
+        "start_date": "2019-03-01",
+        "end_date": "2019-03-11"
+      },
+      {
+        "title": "1er mai",
+        "is_open": false,
+        "start_date": "2019-05-01",
+        "times": [
+          {
+            "start_time": "07:00",
+            "end_time": "19:00"
+          }
+        ]
+      },
+      {
+        "title": "Vacances d'\u00e9t\u00e9",
+        "is_open": false,
+        "start_date": "2019-07-15",
+        "end_date": "2019-08-15"
+      }
+    ],
+    "notification_settings": [
+      {
+        "type": "due_soon",
+        "email": "reroilstest+aoste1@gmail.com"
+      },
+      {
+        "type": "overdue",
+        "email": "reroilstest+aoste1@gmail.com"
+      },
+      {
+        "type": "recall",
+        "email": "reroilstest+aoste1@gmail.com"
+      },
+      {
+        "type": "request",
+        "email": "reroilstest+aoste1@gmail.com"
+      },
+      {
+        "type": "transit_notice",
+        "email": "reroilstest+aoste1@gmail.com"
+      },
+      {
+        "type": "booking",
+        "email": "reroilstest+aoste1@gmail.com"
+      },
+      {
+        "type": "auto_extend",
+        "email": "reroilstest+aoste1@gmail.com"
+      }
+    ],
+    "communication_language": "esp",
+    "acquisition_settings": {
+      "shipping_informations": {
+        "name": "Doe, John",
+        "email": "reroilstest+shippingaoste1@gmail.com",
+        "phone": "+4134567890",
+        "address": {
+          "street": "Via Challand 133 bte/1",
+          "zip_code": "11100",
+          "city": "Aosta",
+          "country": "sz"
+        }
+      },
+      "billing_informations": {
+        "name": "Doe, John",
+        "email": "reroilstest+shippingaoste1@gmail.com",
+        "phone": "+4134567890",
+        "address": {
+          "street": "Via Challand 133 bte/1",
+          "zip_code": "11100",
+          "city": "Aosta",
+          "country": "sz"
+        }
+      }
+    },
+    "serial_acquisition_settings": {
+      "shipping_informations": {
+        "name": "Cover, Harry",
+        "email": "reroilstest+serial+shipping@gmail.com",
+        "phone": "+4134567890",
+        "address": {
+          "street": "Via Challand 133 bte/2",
+          "zip_code": "11100",
+          "city": "Aosta",
+          "country": "sz"
+        }
+      },
+      "billing_informations": {
+        "name": "Derata, Daisy",
+        "email": "reroilstest+serial+billing@gmail.com",
+        "phone": "+4134567890",
+        "address": {
+          "street": "Via Challand 133 bte/10",
+          "zip_code": "11100",
+          "city": "Aosta",
+          "country": "sz"
+        }
+      }
+    },
+    "rollover_settings": {
+      "account_transfer": "rollover_allocated_amount"
+    }
+  },
+  {
+    "pid": "6",
+    "address": "Calle Martí, No. 300, Barrio Segundo Sur, entre 27 de Noviembre y González Alcorta",
+    "code": "UPR-Dep",
+    "email": "maura@upr.edu.cu",
+    "name": "Archivo General",
+    "organisation": {
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
+    },
+    "opening_hours": [
+      {
+        "day": "monday",
+        "is_open": true,
+        "times": [
+          {
+            "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "19:00"
+          }
+        ]
+      },
+      {
+        "day": "tuesday",
+        "is_open": true,
+        "times": [
+          {
+            "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "19:00"
+          }
+        ]
+      },
+      {
+        "day": "wednesday",
+        "is_open": true,
+        "times": [
+          {
+            "start_time": "07:00",
+            "end_time": "19:00"
+          }
+        ]
+      },
+      {
+        "day": "thursday",
+        "is_open": true,
+        "times": [
+          {
+            "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "19:00"
+          }
+        ]
+      },
+      {
+        "day": "friday",
+        "is_open": true,
+        "times": [
+          {
+            "start_time": "07:00",
+            "end_time": "12:00"
+          },
+          {
+            "start_time": "13:00",
+            "end_time": "21:00"
+          }
+        ]
+      },
+      {
+        "day": "saturday",
+        "is_open": false,
+        "times": []
+      },
+      {
+        "day": "sunday",
+        "is_open": false,
+        "times": []
+      }
+    ],
+    "exception_dates": [
+      {
+        "title": "Vacances de No\u00ebl",
+        "is_open": false,
+        "start_date": "2018-12-22",
+        "end_date": "2019-01-06"
+      },
+      {
+        "title": "Vacances de Carnaval",
+        "is_open": false,
+        "start_date": "2019-03-01",
+        "end_date": "2019-03-11"
+      },
+      {
+        "title": "1er mai",
+        "is_open": false,
+        "start_date": "2019-05-01",
+        "times": [
+          {
+            "start_time": "07:00",
+            "end_time": "19:00"
+          }
+        ]
+      },
+      {
+        "title": "Vacances d'\u00e9t\u00e9",
+        "is_open": false,
+        "start_date": "2019-07-15",
+        "end_date": "2019-08-15"
+      }
+    ],
+    "notification_settings": [
+      {
+        "type": "due_soon",
+        "email": "reroilstest+aoste1@gmail.com"
+      },
+      {
+        "type": "overdue",
+        "email": "reroilstest+aoste1@gmail.com"
+      },
+      {
+        "type": "recall",
+        "email": "reroilstest+aoste1@gmail.com"
+      },
+      {
+        "type": "request",
+        "email": "reroilstest+aoste1@gmail.com"
+      },
+      {
+        "type": "transit_notice",
+        "email": "reroilstest+aoste1@gmail.com"
+      },
+      {
+        "type": "booking",
+        "email": "reroilstest+aoste1@gmail.com"
+      },
+      {
+        "type": "auto_extend",
+        "email": "reroilstest+aoste1@gmail.com"
+      }
+    ],
+    "communication_language": "esp",
+    "acquisition_settings": {
+      "shipping_informations": {
+        "name": "Doe, John",
+        "email": "reroilstest+shippingaoste1@gmail.com",
+        "phone": "+4134567890",
+        "address": {
+          "street": "Via Challand 133 bte/1",
+          "zip_code": "11100",
+          "city": "Aosta",
+          "country": "sz"
+        }
+      },
+      "billing_informations": {
+        "name": "Doe, John",
+        "email": "reroilstest+shippingaoste1@gmail.com",
+        "phone": "+4134567890",
+        "address": {
+          "street": "Via Challand 133 bte/1",
+          "zip_code": "11100",
+          "city": "Aosta",
+          "country": "sz"
+        }
+      }
+    },
+    "serial_acquisition_settings": {
+      "shipping_informations": {
+        "name": "Cover, Harry",
+        "email": "reroilstest+serial+shipping@gmail.com",
+        "phone": "+4134567890",
+        "address": {
+          "street": "Via Challand 133 bte/2",
+          "zip_code": "11100",
+          "city": "Aosta",
+          "country": "sz"
+        }
+      },
+      "billing_informations": {
+        "name": "Derata, Daisy",
+        "email": "reroilstest+serial+billing@gmail.com",
+        "phone": "+4134567890",
+        "address": {
+          "street": "Via Challand 133 bte/10",
+          "zip_code": "11100",
+          "city": "Aosta",
+          "country": "sz"
+        }
+      }
+    },
     "rollover_settings": {
       "account_transfer": "rollover_allocated_amount"
     }
