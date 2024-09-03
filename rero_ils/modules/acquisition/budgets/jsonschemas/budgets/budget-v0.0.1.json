@@ -104,7 +104,7 @@
         "$ref": {
           "title": "Organisation URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https://bib.upr.edu.cu/api/organisations/.*?$"
         }
       }
     }

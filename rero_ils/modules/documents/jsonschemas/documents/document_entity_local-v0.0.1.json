@@ -76,7 +76,7 @@
       }
     },
     "identifiedBy": {
-      "$ref": "https://bib.rero.ch/schemas/common/identifier-v0.0.1.json#/identifier"
+      "$ref": "https://bib.upr.edu.cu/schemas/common/identifier-v0.0.1.json#/identifier"
     },
     "source": {
       "title": "Source",
@@ -142,7 +142,7 @@
                 "$ref": "#/properties/authorized_access_point"
               },
               "identifiedBy": {
-                "$ref": "https://bib.rero.ch/schemas/common/identifier-v0.0.1.json#/identifier"
+                "$ref": "https://bib.upr.edu.cu/schemas/common/identifier-v0.0.1.json#/identifier"
               }
             },
             "widget": {

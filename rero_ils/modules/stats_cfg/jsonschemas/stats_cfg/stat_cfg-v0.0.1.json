@@ -26,7 +26,7 @@
       "description": "Schema to validate statistics configuration records against.",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/stats_cfg/stat_cfg-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/stats_cfg/stat_cfg-v0.0.1.json"
     },
     "pid": {
       "title": "Configuration ID",
@@ -106,7 +106,7 @@
         "properties": {
           "$ref": {
             "type": "string",
-            "pattern": "^https://bib.rero.ch/api/libraries/.*?$",
+            "pattern": "^https://bib.upr.edu.cu/api/libraries/.*?$",
             "widget": {
               "formlyConfig": {
                 "props": {
@@ -136,7 +136,7 @@
         "$ref": {
           "title": "Library URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/libraries/.*?$"
+          "pattern": "^https://bib.upr.edu.cu/api/libraries/.*?$"
         }
       }
     },

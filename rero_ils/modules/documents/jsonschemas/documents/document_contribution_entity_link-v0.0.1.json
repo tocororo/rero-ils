@@ -14,7 +14,7 @@
     "$ref": {
       "title": "Agent",
       "type": "string",
-      "pattern": "^(https://mef.rero.ch/api/agents/(gnd|idref|rero)/.*|https://bib.rero.ch/api/local_entities/.*?)$",
+      "pattern": "^(https://mef.rero.ch/api/agents/(gnd|idref|rero)/.*|https://bib.upr.edu.cu/api/local_entities/.*?)$",
       "widget": {
         "formlyConfig": {
           "type": "entityTypeahead",

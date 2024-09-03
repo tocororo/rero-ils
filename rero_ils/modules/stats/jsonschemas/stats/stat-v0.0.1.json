@@ -15,7 +15,7 @@
       "description": "Schema to validate stats records against.",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/stats/stat-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/stats/stat-v0.0.1.json"
     },
     "type": {
       "title": "Statistics type",
@@ -36,7 +36,7 @@
       "minLength": 1
     },
     "config": {
-      "$ref": "https://bib.rero.ch/schemas/stats_cfg/stat_cfg-v0.0.1.json"
+      "$ref": "https://bib.upr.edu.cu/schemas/stats_cfg/stat_cfg-v0.0.1.json"
     },
     "values": {
       "title": "Statistics",

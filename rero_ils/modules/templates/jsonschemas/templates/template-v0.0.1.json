@@ -26,7 +26,7 @@
       "description": "Schema to validate templates records against.",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/templates/template-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/templates/template-v0.0.1.json"
     },
     "pid": {
       "title": "Template ID",
@@ -62,7 +62,7 @@
         "$ref": {
           "title": "Organisation URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https://bib.upr.edu.cu/api/organisations/.*?$"
         }
       }
     },
@@ -73,7 +73,7 @@
         "$ref": {
           "title": "Creator URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/patrons/.*?$"
+          "pattern": "^https://bib.upr.edu.cu/api/patrons/.*?$"
         }
       }
     },

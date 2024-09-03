@@ -13,7 +13,7 @@
     "$ref": {
       "title": "Genre, form",
       "type": "string",
-      "pattern": "^(https://mef.rero.ch/api/concepts/(gnd|idref|rero)/.*|https://bib.rero.ch/api/local_entities/.*?)$",
+      "pattern": "^(https://mef.rero.ch/api/concepts/(gnd|idref|rero)/.*|https://bib.upr.edu.cu/api/local_entities/.*?)$",
       "widget": {
         "formlyConfig": {
           "type": "entityTypeahead",

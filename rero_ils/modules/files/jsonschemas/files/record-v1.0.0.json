@@ -35,7 +35,7 @@
             "$ref": {
               "title": "Parent document URI",
               "type": "string",
-              "pattern": "^https://bib.rero.ch/api/documents/.*?$"
+              "pattern": "^https://bib.upr.edu.cu/api/documents/.*?$"
             }
           }
         },
@@ -46,7 +46,7 @@
             "$ref": {
               "title": "Library URI",
               "type": "string",
-              "pattern": "^https://bib.rero.ch/api/libraries/.*?$"
+              "pattern": "^https://bib.upr.edu.cu/api/libraries/.*?$"
             }
           }
         }

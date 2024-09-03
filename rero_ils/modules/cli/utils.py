@@ -394,7 +394,7 @@ def create_documents_with_items_lofis(infile, dont_stop_on_error,
             # change the parent pid
             # "parent": {
             # "$ref":
-            #   "https://bib.rero.ch/api/documents/{parent_pid}"}
+            #   "https://bib.upr.edu.cu/api/documents/{parent_pid}"}
             local_field['parent']['$ref'] = local_field['parent'][
                 '$ref'].format(parent_pid=parent_pid)
             local_field_rec = LocalField.create(
@@ -516,7 +516,7 @@ def create_documents_with_items_lofis(infile, dont_stop_on_error,
                         # change the document pid
                         # "document": {
                         # "$ref":
-                        #   "https://bib.rero.ch/api/documents/{document_pid}"}
+                        #   "https://bib.upr.edu.cu/api/documents/{document_pid}"}
                         item['document']['$ref'] = item['document'][
                             '$ref'].format(document_pid=doc_pid)
                         item_local_fields = item.pop('local_fields', [])

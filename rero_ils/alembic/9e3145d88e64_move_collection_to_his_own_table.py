@@ -33,7 +33,7 @@ branch_labels = ()
 depends_on = None
 
 LOGGER = getLogger('alembic')
-SCHEMA = 'https://bib.rero.ch/schemas/collections/collection-v0.0.1.json'
+SCHEMA = 'https://bib.upr.edu.cu/schemas/collections/collection-v0.0.1.json'
 
 
 def upgrade():

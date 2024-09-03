@@ -487,7 +487,7 @@ def marc21_to_part_of(self, key, value):
             break
     if linked_pid:
         part_of = {'document': {
-            '$ref': f'https://bib.rero.ch/api/documents/{linked_pid}'
+            '$ref': f'https://bib.upr.edu.cu/api/documents/{linked_pid}'
         }}
         numbering = []
         if subfield_v := utils.force_list(value.get('v')):

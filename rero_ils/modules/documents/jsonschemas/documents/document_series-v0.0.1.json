@@ -24,7 +24,7 @@
           "minItems": 1,
           "items": {
             "title": "Title",
-            "$ref": "https://bib.rero.ch/schemas/common/languages-v0.0.1.json#/language_script"
+            "$ref": "https://bib.upr.edu.cu/schemas/common/languages-v0.0.1.json#/language_script"
           }
         },
         "seriesEnumeration": {
@@ -65,7 +65,7 @@
                 "minItems": 1,
                 "items": {
                   "title": "Title",
-                  "$ref": "https://bib.rero.ch/schemas/common/languages-v0.0.1.json#/language_script"
+                  "$ref": "https://bib.upr.edu.cu/schemas/common/languages-v0.0.1.json#/language_script"
                 }
               },
               "subseriesEnumeration": {
@@ -95,7 +95,7 @@
           }
         },
         "identifiedBy": {
-          "$ref": "https://bib.rero.ch/schemas/documents/document_identified_by-v0.0.1.json#/identifiedBy"
+          "$ref": "https://bib.upr.edu.cu/schemas/documents/document_identified_by-v0.0.1.json#/identifiedBy"
         }
       }
     },
@@ -136,7 +136,7 @@
           }
         },
         "language": {
-          "$ref": "https://bib.rero.ch/schemas/common/languages-v0.0.1.json#/language_script_code",
+          "$ref": "https://bib.upr.edu.cu/schemas/common/languages-v0.0.1.json#/language_script_code",
           "widget": {
             "formlyConfig": {
               "props": {

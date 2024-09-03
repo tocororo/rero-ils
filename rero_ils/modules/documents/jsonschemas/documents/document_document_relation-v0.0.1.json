@@ -263,20 +263,20 @@
       "properties": {
         "$ref": {
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/documents/.*?$",
+          "pattern": "^https://bib.upr.edu.cu/api/documents/.*?$",
           "widget": {
             "formlyConfig": {
               "props": {
                 "validation": {
                   "messages": {
-                    "patternMessage": "Should be in the following format: https://bib.rero.ch/api/documents/<PID>."
+                    "patternMessage": "Should be in the following format: https://bib.upr.edu.cu/api/documents/<PID>."
                   }
                 },
                 "remoteTypeahead": {
                   "type": "documents",
                   "filter": "NOT harvested:true"
                 },
-                "placeholder": "Example: https://bib.rero.ch/api/documents/66"
+                "placeholder": "Example: https://bib.upr.edu.cu/api/documents/66"
               }
             }
           }
@@ -300,7 +300,7 @@
           "minLength": 1
         },
         "identifiedBy": {
-          "$ref": "https://bib.rero.ch/schemas/documents/document_identified_by-v0.0.1.json#/identifiedBy"
+          "$ref": "https://bib.upr.edu.cu/schemas/documents/document_identified_by-v0.0.1.json#/identifiedBy"
         }
       }
     }

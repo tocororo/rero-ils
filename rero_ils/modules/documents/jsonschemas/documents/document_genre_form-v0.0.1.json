@@ -22,7 +22,7 @@
           ],
           "properties": {
             "entity": {
-              "$ref": "https://bib.rero.ch/schemas/documents/document_genre_form_link-v0.0.1.json"
+              "$ref": "https://bib.upr.edu.cu/schemas/documents/document_genre_form_link-v0.0.1.json"
             }
           }
         },
@@ -39,7 +39,7 @@
           ],
           "properties": {
             "entity": {
-              "$ref": "https://bib.rero.ch/schemas/documents/document_genre_form_local-v0.0.1.json"
+              "$ref": "https://bib.upr.edu.cu/schemas/documents/document_genre_form_local-v0.0.1.json"
             }
           }
         }

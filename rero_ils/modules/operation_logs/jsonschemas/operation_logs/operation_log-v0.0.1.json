@@ -16,7 +16,7 @@
       "description": "Schema to validate operation logs records against.",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schema/operation_logs/operation_log-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schema/operation_logs/operation_log-v0.0.1.json"
     },
     "pid": {
       "title": "Operation log PID",

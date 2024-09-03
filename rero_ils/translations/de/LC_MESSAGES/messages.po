@@ -5137,8 +5137,8 @@ msgstr "URI der Bestellung"
 #: rero_ils/modules/documents/jsonschemas/documents/document_part_of-v0.0.1.json:39
 msgid ""
 "Should be in the following format: "
-"https://bib.rero.ch/api/documents/<PID>."
-msgstr "Soll im folgenden Format sein: https://bib.rero.ch/api/documents/<PID>."
+"https://bib.upr.edu.cu/api/documents/<PID>."
+msgstr "Soll im folgenden Format sein: https://bib.upr.edu.cu/api/documents/<PID>."
 
 #: rero_ils/modules/acquisition/acq_order_lines/jsonschemas/acq_order_lines/acq_order_line-v0.0.1.json:328
 msgid "Cancelled"
@@ -7464,8 +7464,8 @@ msgid "Document link"
 msgstr "Link des Dokuments"
 
 #: rero_ils/modules/documents/jsonschemas/documents/document_document_relation-v0.0.1.json:279
-msgid "Example: https://bib.rero.ch/api/documents/66"
-msgstr "Beispiel: https://bib.rero.ch/api/documents/66"
+msgid "Example: https://bib.upr.edu.cu/api/documents/66"
+msgstr "Beispiel: https://bib.upr.edu.cu/api/documents/66"
 
 #: rero_ils/modules/documents/jsonschemas/documents/document_duration-v0.0.1.json:3
 msgid "Durations"
@@ -10521,8 +10521,8 @@ msgid "Patron URI"
 msgstr "Kunden URI"
 
 #: rero_ils/modules/ill_requests/jsonschemas/ill_requests/ill_request-v0.0.1.json:99
-msgid "Should be in the following format: https://bib.rero.ch/api/patrons/<PID>."
-msgstr "Soll im folgenden Format sein: https://bib.rero.ch/api/patrons/<PID>."
+msgid "Should be in the following format: https://bib.upr.edu.cu/api/patrons/<PID>."
+msgstr "Soll im folgenden Format sein: https://bib.upr.edu.cu/api/patrons/<PID>."
 
 #: rero_ils/modules/ill_requests/jsonschemas/ill_requests/ill_request-v0.0.1.json:113
 #: rero_ils/modules/operation_logs/jsonschemas/operation_logs/operation_log-v0.0.1.json:170

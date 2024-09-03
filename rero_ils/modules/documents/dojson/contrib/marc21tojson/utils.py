@@ -666,7 +666,7 @@ def do_specific_document_relation(data, marc21, key, value):
             pid = match.group(2)
         if pid and source == ('REROILS:'):
             # TODO: find a way to use a parameter for ref
-            ref = f'https://bib.rero.ch/api/documents/{pid}'
+            ref = f'https://bib.upr.edu.cu/api/documents/{pid}'
             relation = {'$ref': ref}
         else:
             label = build_string_from_subfields(value, 'ctw')

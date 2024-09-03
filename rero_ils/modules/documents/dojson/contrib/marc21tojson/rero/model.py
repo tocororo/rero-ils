@@ -956,7 +956,7 @@ def marc21_to_part_of(self, key, value):
         match = re.compile(r'^REROILS:')
         pid = match.sub('', subfield_w)
         part_of['document'] = {
-            '$ref': f'https://bib.rero.ch/api/documents/{pid}'
+            '$ref': f'https://bib.upr.edu.cu/api/documents/{pid}'
         }
         if key[:3] == '773':
             discard_numbering = False

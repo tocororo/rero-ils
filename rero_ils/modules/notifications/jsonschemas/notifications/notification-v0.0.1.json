@@ -57,7 +57,7 @@
           "properties": {
             "$ref": {
               "type": "string",
-              "pattern": "^https://bib.rero.ch/api/loans/.*?$"
+              "pattern": "^https://bib.upr.edu.cu/api/loans/.*?$"
             }
           }
         },
@@ -84,7 +84,7 @@
           "properties": {
             "$ref": {
               "type": "string",
-              "pattern": "^https://bib.rero.ch/api/acq_orders/.*?$"
+              "pattern": "^https://bib.upr.edu.cu/api/acq_orders/.*?$"
             }
           }
         },
@@ -111,7 +111,7 @@
           "properties": {
             "$ref": {
               "type": "string",
-              "pattern": "^https://bib.rero.ch/api/items/.*?$"
+              "pattern": "^https://bib.upr.edu.cu/api/items/.*?$"
             }
           }
         },
@@ -134,7 +134,7 @@
       "description": "Schema to validate notifications records against.",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/notifications/notification-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/notifications/notification-v0.0.1.json"
     },
     "pid": {
       "title": "Notification ID",

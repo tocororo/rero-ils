@@ -42,7 +42,7 @@
                 }
               },
               "language": {
-                "$ref": "https://bib.rero.ch/schemas/common/languages-v0.0.1.json#/language_script_code"
+                "$ref": "https://bib.upr.edu.cu/schemas/common/languages-v0.0.1.json#/language_script_code"
               }
             }
           }

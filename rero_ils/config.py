@@ -3131,7 +3131,7 @@ RERO_ILS_INDEXER_TASK_DELAY = timedelta(seconds=2)
 RERO_ILS_APP_URL_SCHEME = 'https'
 RERO_ILS_APP_HOST = 'bib.rero.ch'
 #: Actual URL used to construct links in notifications for example
-RERO_ILS_APP_URL = 'https://bib.rero.ch'
+RERO_ILS_APP_URL = 'https://bib.upr.edu.cu'
 
 RERO_ILS_PERMALINK_RERO_URL = 'http://data.rero.ch/01-{identifier}'
 

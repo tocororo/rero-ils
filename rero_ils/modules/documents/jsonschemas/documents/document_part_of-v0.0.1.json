@@ -30,13 +30,13 @@
             "$ref": {
               "title": "Document link",
               "type": "string",
-              "pattern": "^https://bib.rero.ch/api/documents/.*?$",
+              "pattern": "^https://bib.upr.edu.cu/api/documents/.*?$",
               "widget": {
                 "formlyConfig": {
                   "props": {
                     "validation": {
                       "messages": {
-                        "patternMessage": "Should be in the following format: https://bib.rero.ch/api/documents/<PID>."
+                        "patternMessage": "Should be in the following format: https://bib.upr.edu.cu/api/documents/<PID>."
                       }
                     },
                     "remoteTypeahead": {

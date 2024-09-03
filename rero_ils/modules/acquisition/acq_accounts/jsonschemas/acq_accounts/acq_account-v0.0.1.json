@@ -26,7 +26,7 @@
       "description": "Schema to validate account records against.",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/acq_accounts/acq_account-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/acq_accounts/acq_account-v0.0.1.json"
     },
     "pid": {
       "title": "Account ID",
@@ -104,7 +104,7 @@
         "$ref": {
           "title": "Account URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/acq_accounts/.*?$",
+          "pattern": "^https://bib.upr.edu.cu/api/acq_accounts/.*?$",
           "widget": {
             "formlyConfig": {
               "hideLabel": true,
@@ -125,7 +125,7 @@
         "$ref": {
           "title": "Budget URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/budgets/.*?$"
+          "pattern": "^https://bib.upr.edu.cu/api/budgets/.*?$"
         }
       },
       "required": [
@@ -139,7 +139,7 @@
         "$ref": {
           "title": "Library URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/libraries/.*?$"
+          "pattern": "^https://bib.upr.edu.cu/api/libraries/.*?$"
         }
       }
     },
@@ -154,7 +154,7 @@
         "$ref": {
           "title": "Organisation URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https://bib.upr.edu.cu/api/organisations/.*?$"
         }
       }
     }

@@ -23,7 +23,7 @@
       "description": "Schema to validate patron_types records against.",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/patron_types/patron_type-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/patron_types/patron_type-v0.0.1.json"
     },
     "pid": {
       "title": "Patron type ID",
@@ -75,7 +75,7 @@
         "$ref": {
           "title": "Organisation URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https://bib.upr.edu.cu/api/organisations/.*?$"
         }
       }
     },
@@ -158,7 +158,7 @@
                       "$ref": {
                         "title": "Library URI",
                         "type": "string",
-                        "pattern": "^https://bib.rero.ch/api/libraries/.*?$",
+                        "pattern": "^https://bib.upr.edu.cu/api/libraries/.*?$",
                         "widget": {
                           "formlyConfig": {
                             "props": {
