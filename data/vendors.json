@@ -9,7 +9,7 @@
         "content": "Personne de contact litiges: Mme di Marzo"
       }
     ],
-    "communication_language": "es",
+    "communication_language": "spa",
     "contacts": [
       {
         "type": "default",
@@ -32,7 +32,7 @@
     "pid": "2",
     "name": "Ministerio de Educación",
     "website": "http://www.fnac.it",
-    "communication_language": "es",
+    "communication_language": "spa",
     "contacts": [
       {
         "type": "default",
@@ -54,7 +54,7 @@
   {
     "pid": "3",
     "name": "Editorial Loynaz",
-    "communication_language": "es",
+    "communication_language": "spa",
     "notes": [
       {
         "type": "claim_note",

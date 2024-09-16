@@ -8,7 +8,8 @@
       "EUR",
       "GBP",
       "USD",
-      "AUD"
+      "AUD",
+      "CUP"
     ],
     "default": "CHF",
     "pattern": "^[A-Z]{3}$",

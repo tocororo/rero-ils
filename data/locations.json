@@ -1,7 +1,7 @@
 [
   {
     "pid": "1",
-    "code": "UPR-CT-Def",
+    "code": "UPR-CT-Def-Loc",
     "name": "Local Biblioteca Ciencias Técnicas",
     "library": {
       "$ref": "https://bib.upr.edu.cu/api/libraries/1"
@@ -9,46 +9,72 @@
     "is_pickup": true,
     "pickup_name": "UPR-CT-Def: Local Biblioteca Ciencias Técnicas",
     "is_ill_pickup": true,
-    "ill_pickup_name": "UPR-CT-Def: ILL Local Biblioteca Ciencias Técnicas",
+    "ill_pickup_name": "UPR-CT-Def: Local Biblioteca Ciencias Técnicas",
     "allow_request": true
   },
   {
     "pid": "2",
-    "code": "UPR-Hum-Eco",
+    "code": "UPR-Hum-Eco-Loc",
     "name": "Local Biblioteca Ciencias Económicas y Humanísticas",
     "library": {
-      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/2"
     },
     "is_pickup": true,
     "pickup_name": "UPR-Hum-Eco: Local Biblioteca Ciencias Económicas y Humanísticas",
     "is_ill_pickup": true,
-    "ill_pickup_name": "UPR-Hum-Eco: ILL Local Biblioteca Ciencias Económicas y Humanísticas",
+    "ill_pickup_name": "UPR-Hum-Eco: Local Biblioteca Ciencias Económicas y Humanísticas",
     "allow_request": true
   },
   {
     "pid": "3",
-    "code": "UPR-Ped",
+    "code": "UPR-Ped-Loc",
     "name": "Local Biblioteca Ciencias Pedagógicas",
     "library": {
-      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/3"
     },
     "is_pickup": true,
     "pickup_name": "UPR-Ped: Local Biblioteca Ciencias Pedagógicas",
     "is_ill_pickup": true,
-    "ill_pickup_name": "UPR-Ped: ILL Local Biblioteca Ciencias Pedagógicas",
+    "ill_pickup_name": "UPR-Ped: Local Biblioteca Ciencias Pedagógicas",
     "allow_request": true
   },
   {
     "pid": "4",
-    "code": "UPR-Dep",
+    "code": "UPR-Dep-Loc",
     "name": "Local Biblioteca Ciencias del Deporte",
     "library": {
-      "$ref": "https://bib.upr.edu.cu/api/libraries/1"
+      "$ref": "https://bib.upr.edu.cu/api/libraries/4"
     },
     "is_pickup": true,
     "pickup_name": "UPR-Dep: Local Biblioteca Ciencias del Deporte",
     "is_ill_pickup": true,
-    "ill_pickup_name": "UPR-Dep: ILL Local Biblioteca Ciencias del Deporte",
+    "ill_pickup_name": "UPR-Dep: Local Biblioteca Ciencias del Deporte",
+    "allow_request": true
+  },
+  {
+    "pid": "5",
+    "code": "UPR-Universal-Loc",
+    "name": "Local Sala Universal",
+    "library": {
+      "$ref": "https://bib.upr.edu.cu/api/libraries/5"
+    },
+    "is_pickup": true,
+    "pickup_name": "Local Sala Universal",
+    "is_ill_pickup": true,
+    "ill_pickup_name": "UPR-Universal: Local Sala Universal",
+    "allow_request": true
+  },
+  {
+    "pid": "6",
+    "code": "UPR-General-Loc",
+    "name": "Local Archivo General",
+    "library": {
+      "$ref": "https://bib.upr.edu.cu/api/libraries/5"
+    },
+    "is_pickup": true,
+    "pickup_name": "UPR-General-Loc: Local Archivo General",
+    "is_ill_pickup": true,
+    "ill_pickup_name": "UPR-Dep: Local Archivo General",
     "allow_request": true
   }
 ]

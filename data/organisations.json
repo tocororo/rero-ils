@@ -7,5 +7,14 @@
     "default_currency": "CUP",
     "current_budget_pid": "1",
     "collection_enabled_on_public_view": true
+  },
+    {
+    "pid": "2",
+    "address": "Calle Martí, No. 300, Barrio Segundo Sur, entre 27 de Noviembre y González Alcorta, Pinar del Río, Cuba.",
+    "name": "Universidad de La Isla \"Jesus Montane Oropesa\" ",
+    "code": "uli",
+    "default_currency": "CUP",
+    "current_budget_pid": "1",
+    "collection_enabled_on_public_view": true
   }
 ]

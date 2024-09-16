@@ -6,7 +6,8 @@
       "de",
       "en",
       "fr",
-      "it"
+      "it",
+      "sp"
     ],
     "widget": {
       "formlyConfig": {
@@ -29,6 +30,10 @@
             {
               "label": "lang_ita",
               "value": "it"
+            },
+            {
+              "label": "lang_spa",
+              "value": "sp"
             }
           ]
         }

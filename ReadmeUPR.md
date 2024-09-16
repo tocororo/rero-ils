@@ -30,3 +30,8 @@ image: mher/flower:0.9.7
 
 podman build --no-cache --rm -t crai/rero-ils-base:0.1.0 -f Dockerfile.base .
 
+
+```commandline
+(rero-ils-py3.9) malayo@rafael-sceiba-dsti:~/dev/rero/rero-ils/data/upr$ invenio reroils utils marc21tojson -t rero data/upr/db/BECSH/marc21.fix.mrcxml data/upr/db/BECSH/marc21.fix.json data/upr/db/BECSH/marc21.fix.error.mrcxml -v -d
+
+```

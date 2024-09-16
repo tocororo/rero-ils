@@ -387,7 +387,7 @@
           "$ref": "https://bib.upr.edu.cu/api/patron_types/1"
         },
         "item_type": {
-          "$ref": "https://bib.upr.edu.cu/api/item_types/12"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/9"
         }
       },
       {
@@ -395,7 +395,7 @@
           "$ref": "https://bib.upr.edu.cu/api/patron_types/3"
         },
         "item_type": {
-          "$ref": "https://bib.upr.edu.cu/api/item_types/12"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/9"
         }
       },
       {
@@ -403,15 +403,15 @@
           "$ref": "https://bib.upr.edu.cu/api/patron_types/2"
         },
         "item_type": {
-          "$ref": "https://bib.upr.edu.cu/api/item_types/12"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/9"
         }
       },
       {
         "patron_type": {
-          "$ref": "https://bib.upr.edu.cu/api/patron_types/8"
+          "$ref": "https://bib.upr.edu.cu/api/patron_types/4"
         },
         "item_type": {
-          "$ref": "https://bib.upr.edu.cu/api/item_types/12"
+          "$ref": "https://bib.upr.edu.cu/api/item_types/9"
         }
       }
     ]

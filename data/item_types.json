@@ -36,7 +36,7 @@
       },
       {
         "label": "Préstamo: 14 días",
-        "language": "es"
+        "language": "sp"
       }
     ],
     "negative_availability": false
@@ -68,7 +68,7 @@
       },
       {
         "label": "Circulación local",
-        "language": "es"
+        "language": "sp"
       }
     ],
     "negative_availability": false
@@ -98,12 +98,8 @@
         "language": "it"
       },
       {
-        "label": "Prestito non consentito",
-        "language": "it"
-      },
-      {
         "label": "Préstamo no permitido",
-        "language": "es"
+        "language": "sp"
       }
     ],
     "negative_availability": false
@@ -135,7 +131,7 @@
       },
       {
         "label": "Préstamo solo a adultos",
-        "language": "es"
+        "language": "sp"
       }
     ],
     "negative_availability": false
@@ -167,7 +163,7 @@
       },
       {
         "label": "Préstamo solo a adultos (16+)",
-        "language": "es"
+        "language": "sp"
       }
     ],
     "negative_availability": false
@@ -209,7 +205,7 @@
       },
       {
         "label": "perdido",
-        "language": "es"
+        "language": "sp"
       }
     ]
   },
@@ -240,7 +236,7 @@
       },
       {
         "label": "en adquisición",
-        "language": "es"
+        "language": "sp"
       }
     ]
   }

@@ -466,6 +466,7 @@ tests = {cmd = "pytest", help = "pytest"}
 tests_debug = {cmd = "pytest -s -vv --no-cov", help = "pytest -s -vv --no-cov"}
 server = {cmd = "./scripts/server", help = "Starts the server "}
 setup = {cmd = "./scripts/setup", help = "Runs setup"}
+setup_min = {cmd = "./scripts/setup_min", help = "Runs min setup"}
 update = {cmd = "./scripts/update", help = "Runs update"}
 
 [build-system]

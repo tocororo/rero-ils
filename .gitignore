@@ -107,3 +107,5 @@ tests/e2e/cypress/cypress/integration/test
 
 # Files
 /data/files
+data/upr
+

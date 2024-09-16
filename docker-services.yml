@@ -79,17 +79,17 @@ services:
 #    elasticsearch-icu-7.10.2
     restart: "unless-stopped"
     environment:
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "bootstrap.memory_lock=true"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - "discovery.type=single-node"
       - "indices.query.bool.max_clause_count=3000"
-      - "https_proxy=http://rafael.martinez:Rme.2021@proxy.upr.edu.cu:8080/"
-      - "http_proxy=http://rafael.martinez:Rme.2021@proxy.upr.edu.cu:8080/"
-#    ulimits:
-#      memlock:
-#        soft: -1
-#        hard: -1
-    mem_limit: 1g
+#      - "https_proxy=http://rafael.martinez:Rme.2021@proxy.upr.edu.cu:8080/"
+#      - "http_proxy=http://rafael.martinez:Rme.2021@proxy.upr.edu.cu:8080/"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 2g
     ports:
       - "9200:9200"
       - "9300:9300"

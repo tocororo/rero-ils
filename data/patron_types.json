@@ -39,30 +39,6 @@
     "description": "Patron with restriction on checkout",
     "organisation": {
       "$ref": "https://bib.upr.edu.cu/api/organisations/1"
-    },
-    "limits": {
-      "unpaid_subscription": false,
-      "checkout_limits": {
-        "global_limit": 10,
-        "library_limit": 8,
-        "library_exceptions": [
-          {
-            "library": {
-              "$ref": "https://bib.upr.edu.cu/api/libraries/1"
-            },
-            "value": 5
-          },
-          {
-            "library": {
-              "$ref": "https://bib.upr.edu.cu/api/libraries/2"
-            },
-            "value": 12
-          }
-        ]
-      },
-      "overdue_items_limits": {
-        "default_value": 3
-      }
     }
   }
 ]
