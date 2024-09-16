@@ -27,6 +27,7 @@ limits.kernel.memlock unlimited
 en docker-services.yml
 image: mher/flower:0.9.7
 
+docker build --rm -t rero/rero-ils-base:latest -f Dockerfile.base .
 
 podman build --no-cache --rm -t crai/rero-ils-base:0.1.0 -f Dockerfile.base .
 

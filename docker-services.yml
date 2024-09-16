@@ -21,7 +21,7 @@ services:
       context: ./
       args:
         - ENVIRONMENT=DEV
-    image: crai/rero-ils
+    image: crai/rero-ils-base
     environment:
       - "INVENIO_ACCOUNTS_SESSION_REDIS_URL=redis://cache:6379/1"
       - "INVENIO_BROKER_URL=amqp://guest:guest@mq:5672/"
