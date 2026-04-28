@@ -51,14 +51,14 @@ services:
       - "80"
       - "443"
   cache:
-    image: redis
+    image: docker.uclv.cu/redis:7
     restart: "unless-stopped"
     read_only: true
     command: redis-server --save ""
     ports:
       - "6379:6379"
   db:
-    image: postgres:17
+    image: docker.uclv.cu/postgres:17
     restart: "unless-stopped"
     environment:
       - "POSTGRES_USER=rero-ils"
@@ -67,7 +67,7 @@ services:
     ports:
       - "5432:5432"
   mq:
-    image: rabbitmq:4.2-management
+    image: docker.uclv.cu/rabbitmq:4.2-management
     restart: "unless-stopped"
     ports:
       - "15672:15672"
@@ -80,13 +80,14 @@ services:
       start_period: 30s
   es:
     build: ./docker/elasticsearch/
-    image: elasticsearch-icu-7.10.2
+    image: localhost/elasticsearch-icu-7.17.1
     restart: "unless-stopped"
     environment:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "discovery.type=single-node"
       - "indices.query.bool.max_clause_count=3000"
+      - "cluster.routing.allocation.disk.threshold_enabled=false"
     ulimits:
       memlock:
         soft: -1
@@ -94,7 +95,7 @@ services:
     mem_limit: 1g
     ports:
       - "9200:9200"
-      - "9300:9300"
+      - "9300:9300" 
   kibana:
     image: docker.elastic.co/kibana/kibana-oss:7.10.2
     environment:
@@ -106,3 +107,4 @@ services:
     command: --broker=amqp://guest:guest@mq:5672/ --broker_api=http://guest:guest@mq:15672/api/
     ports:
       - "5555:5555"
+ 
