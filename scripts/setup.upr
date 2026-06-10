@@ -1,0 +1,191 @@
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
+#
+# Setup mínimo para el despliegue de la Biblioteca de Vueltabajo (UPR).
+#
+# Carga únicamente los datos estructurales de data.upr/ (organizaciones,
+# bibliotecas, ubicaciones, tipos de ítem, tipos de lector, políticas de
+# circulación, usuarios profesionales y presupuestos).
+#
+# No conecta a ningún servicio externo ni carga datos de prueba.
+#
+# Uso:
+#   uv run scripts/setup.upr
+#   uv run scripts/setup.upr -D ./data.upr   # ruta alternativa
+#   uv run scripts/setup.upr -t              # mostrar tiempos
+
+DATA_PATH=./data.upr
+
+# COLORS
+NC='\033[0m'
+INFO_COLOR='\033[1;97;44m'
+SUCCESS_COLOR='\033[1;97;42m'
+ERROR_COLOR='\033[1;97;41m'
+
+PROGRAM=`basename $0`
+
+msg()         { echo -e "${1}" 1>&2; }
+colored_msg() { msg "${1}[${2}]: ${3}${NC}"; }
+info_msg()    { colored_msg "${INFO_COLOR}"    "INFO"    "${1}"; }
+error_msg()   { colored_msg "${ERROR_COLOR}"   "ERROR"   "${1}"; }
+success_msg() { colored_msg "${SUCCESS_COLOR}" "SUCCESS" "${1}"; }
+
+error_msg+exit() { error_msg "${1}" && exit 1; }
+
+PREFIX=""
+STOP_EXECUTION=true
+CREATE_LAZY=""
+DONT_STOP=""
+
+msg "PROGRAM: ${PROGRAM}"
+
+if [[ -z "${VIRTUAL_ENV}" ]]; then
+  error_msg+exit "Error - Launch this script via uv command:\n\tuv run ${PROGRAM}"
+fi
+
+if ! options=$(getopt -o D:tcp -l data_path:,time,continue,pursue -- "$@")
+then
+    exit 1
+fi
+
+while [ $# -gt 0 ]; do
+    case $1 in
+    -D|--data_path) DATA_PATH=$2; shift ;;
+    -t|--time)      PREFIX="time" ;;
+    -c|--continue)  STOP_EXECUTION=false ;;
+    -p|--pursue)    DONT_STOP="--dont-stop" ;;
+    (--) shift; break ;;
+    (-*) error_msg+exit "$0: Unrecognized option $1" ;;
+    (*) break ;;
+    esac
+    shift
+done
+
+if [[ ! -d "${DATA_PATH}" ]]; then
+    error_msg+exit "Error - data path does not exist: ${DATA_PATH}"
+fi
+
+# Verify required fixture files exist before starting
+REQUIRED_FILES=(
+    organisations.json libraries.json locations.json
+    item_types.json patron_types.json circulation_policies.json
+    users.json budgets.json
+    system_role_policies.json role_policies.json
+)
+for f in "${REQUIRED_FILES[@]}"; do
+    if [[ ! -f "${DATA_PATH}/${f}" ]]; then
+        error_msg+exit "Required fixture file missing: ${DATA_PATH}/${f}"
+    fi
+done
+
+# ---------------------------------------------------------------------------
+# Infrastructure
+# ---------------------------------------------------------------------------
+info_msg "Purge celery"
+celery --app rero_ils.celery purge -f
+
+info_msg "Clean redis"
+eval "${PREFIX} invenio shell --no-term-title -c \"import redis; redis.StrictRedis.from_url(app.config['CACHE_REDIS_URL']).flushall(); print('Cache cleared')\""
+
+info_msg "Init database"
+eval ${PREFIX} invenio db destroy --yes-i-know
+eval ${PREFIX} invenio db init create
+
+info_msg "Init search indexes"
+eval ${PREFIX} invenio reroils index queue purge
+eval ${PREFIX} invenio reroils index queue delete
+eval ${PREFIX} invenio reroils migrations index destroy --yes-i-know
+set -e
+eval ${PREFIX} invenio index destroy --force --yes-i-know
+eval ${PREFIX} invenio reroils fixtures destroy_operation_logs --yes-i-know
+eval ${PREFIX} invenio reroils index init --force
+eval ${PREFIX} invenio reroils migrations index init
+eval ${PREFIX} invenio reroils index queue init
+eval ${PREFIX} invenio index delete loans-loan-v1.0.0 --force --yes-i-know
+
+info_msg "Init files location"
+FILES_PATH="${INVENIO_RERO_ILS_FILES_FOLDER:=data/files}"
+eval rm -fr ${FILES_PATH}/*
+eval ${PREFIX} invenio files location create --default fixtures ${FILES_PATH}
+
+# ---------------------------------------------------------------------------
+# Roles and system users
+# ---------------------------------------------------------------------------
+info_msg "Create roles"
+eval ${PREFIX} "invenio roles create -d 'Admins Group' admin"
+eval ${PREFIX} "invenio roles create -d 'Super Users Group' superuser"
+eval ${PREFIX} "invenio roles create -d 'Monitoring Group' monitoring"
+eval ${PREFIX} "invenio roles create -d 'Patron' patron"
+eval ${PREFIX} "invenio roles create -d 'Professional: Read_only' pro_read_only"
+eval ${PREFIX} "invenio roles create -d 'Professional: Acquisition manager' pro_acquisition_manager"
+eval ${PREFIX} "invenio roles create -d 'Professional: Full permissions' pro_full_permissions"
+eval ${PREFIX} "invenio roles create -d 'Professional: Catalog manager' pro_catalog_manager"
+eval ${PREFIX} "invenio roles create -d 'Professional: Circulation manager' pro_circulation_manager"
+eval ${PREFIX} "invenio roles create -d 'Professional: Library administrator' pro_library_administrator"
+eval ${PREFIX} "invenio roles create -d 'Professional: User manager' pro_user_manager"
+eval ${PREFIX} "invenio roles create -d 'Professional: Entity manager' pro_entity_manager"
+eval ${PREFIX} "invenio roles create -d 'Documentation Editor' editor"
+eval ${PREFIX} "invenio roles create -d 'Document Importing' document_importer"
+eval ${PREFIX} "invenio roles create -d 'Professional: Statistics manager' pro_statistic_manager"
+
+info_msg "Load role policies"
+eval ${PREFIX} "invenio reroils fixtures import_system_role_policies ${DATA_PATH}/system_role_policies.json"
+eval ${PREFIX} "invenio reroils fixtures import_role_policies ${DATA_PATH}/role_policies.json"
+
+info_msg "Create system admin user"
+ADMIN_EMAIL="${UPR_ADMIN_EMAIL:=admin@upr.edu.cu}"
+ADMIN_PASSWORD="${UPR_ADMIN_PASSWORD:=ChangeMe!}"
+eval ${PREFIX} invenio users create --active --confirm --password "${ADMIN_PASSWORD}" "${ADMIN_EMAIL}"
+eval ${PREFIX} invenio access allow superuser-access role admin
+eval ${PREFIX} invenio access allow superuser-access role superuser
+eval ${PREFIX} invenio roles add "${ADMIN_EMAIL}" admin
+eval ${PREFIX} invenio roles add "${ADMIN_EMAIL}" superuser
+
+# ---------------------------------------------------------------------------
+# Core fixtures from DATA_PATH (orden obligatorio por dependencias)
+# ---------------------------------------------------------------------------
+info_msg "- Organisations: ${DATA_PATH}/organisations.json"
+eval ${PREFIX} invenio reroils fixtures create --pid_type org ${DATA_PATH}/organisations.json --append ${CREATE_LAZY} ${DONT_STOP}
+eval ${PREFIX} invenio reroils index reindex -t org --yes-i-know
+
+info_msg "- Libraries: ${DATA_PATH}/libraries.json"
+eval ${PREFIX} invenio reroils fixtures create --pid_type lib ${DATA_PATH}/libraries.json --append ${CREATE_LAZY} ${DONT_STOP}
+eval ${PREFIX} invenio reroils index reindex -t lib --yes-i-know
+
+info_msg "- Locations: ${DATA_PATH}/locations.json"
+eval ${PREFIX} invenio reroils fixtures create --pid_type loc ${DATA_PATH}/locations.json --append ${CREATE_LAZY} ${DONT_STOP}
+eval ${PREFIX} invenio reroils index reindex -t loc --yes-i-know
+
+info_msg "- Item types: ${DATA_PATH}/item_types.json"
+eval ${PREFIX} invenio reroils fixtures create --pid_type itty ${DATA_PATH}/item_types.json --append ${CREATE_LAZY} ${DONT_STOP}
+eval ${PREFIX} invenio reroils index reindex -t itty --yes-i-know
+
+info_msg "- Patron types: ${DATA_PATH}/patron_types.json"
+eval ${PREFIX} invenio reroils fixtures create --pid_type ptty ${DATA_PATH}/patron_types.json --append ${CREATE_LAZY} ${DONT_STOP}
+eval ${PREFIX} invenio reroils index reindex -t ptty --yes-i-know
+
+info_msg "- Circulation policies: ${DATA_PATH}/circulation_policies.json"
+eval ${PREFIX} invenio reroils fixtures create --pid_type cipo ${DATA_PATH}/circulation_policies.json --append ${CREATE_LAZY} ${DONT_STOP}
+eval ${PREFIX} invenio reroils index reindex -t cipo --yes-i-know
+
+eval ${PREFIX} invenio reroils index run --raise-on-error
+
+info_msg "- Professional users: ${DATA_PATH}/users.json"
+eval ${PREFIX} invenio reroils fixtures import_users ${DATA_PATH}/users.json -v --append ${CREATE_LAZY} ${DONT_STOP}
+
+info_msg "- Budgets: ${DATA_PATH}/budgets.json"
+eval ${PREFIX} invenio reroils fixtures create --pid_type budg ${DATA_PATH}/budgets.json --append ${CREATE_LAZY} ${DONT_STOP}
+eval ${PREFIX} invenio reroils index reindex -d -t budg --yes-i-know
+
+eval ${PREFIX} invenio reroils index run --raise-on-error
+
+# ---------------------------------------------------------------------------
+# Scheduler (all tasks disabled — no external services)
+# ---------------------------------------------------------------------------
+info_msg "Initialize scheduler (all tasks disabled)"
+eval ${PREFIX} invenio reroils scheduler init --reset
+eval ${PREFIX} invenio reroils scheduler enable-tasks --all --verbose --disable
+
+date
+success_msg "Setup UPR complete. System ready for data import."
+exit 0
