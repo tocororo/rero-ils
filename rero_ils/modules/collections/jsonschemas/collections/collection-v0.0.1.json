@@ -41,7 +41,7 @@
       "title": "Schema",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schema/collections/collection-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schema/collections/collection-v0.0.1.json"
     },
     "pid": {
       "title": "Internal collection PID",
@@ -242,7 +242,7 @@
           "$ref": {
             "title": "Name",
             "type": "string",
-            "pattern": "^https://bib.rero.ch/api/libraries/.*?$",
+            "pattern": "^https?://[^/]+/api/libraries/.*?$",
             "widget": {
               "formlyConfig": {
                 "props": {
@@ -276,7 +276,7 @@
           "$ref": {
             "title": "Item",
             "type": "string",
-            "pattern": "^https://bib.rero.ch/api/items/.*?$",
+            "pattern": "^https?://[^/]+/api/items/.*?$",
             "widget": {
               "formlyConfig": {
                 "type": "remoteAutoComplete",
@@ -310,7 +310,7 @@
         "$ref": {
           "title": "Organisation URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https?://[^/]+/api/organisations/.*?$"
         }
       }
     },

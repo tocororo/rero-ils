@@ -3,7 +3,7 @@
     "pid": "1",
     "name": "Préstamo estándar",
     "description": "Préstamo a domicilio, 28 días",
-    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/1"},
+    "organisation": {"$ref": "https://bib.upr.edu.cu/api/organisations/1"},
     "type": "standard",
     "negative_availability": false
   },
@@ -11,14 +11,14 @@
     "pid": "2",
     "name": "Consulta en sala",
     "description": "Solo consulta en sala, no sale del edificio",
-    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/1"},
+    "organisation": {"$ref": "https://bib.upr.edu.cu/api/organisations/1"},
     "type": "standard",
     "negative_availability": false
   },
   {
     "pid": "3",
     "name": "En adquisición",
-    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/1"},
+    "organisation": {"$ref": "https://bib.upr.edu.cu/api/organisations/1"},
     "type": "standard",
     "negative_availability": true,
     "displayed_status": [
@@ -30,7 +30,7 @@
     "pid": "4",
     "name": "Préstamo estándar",
     "description": "Préstamo a domicilio, 28 días",
-    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/2"},
+    "organisation": {"$ref": "https://bib.upr.edu.cu/api/organisations/2"},
     "type": "standard",
     "negative_availability": false
   },
@@ -38,14 +38,14 @@
     "pid": "5",
     "name": "Consulta en sala",
     "description": "Solo consulta en sala, no sale del edificio",
-    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/2"},
+    "organisation": {"$ref": "https://bib.upr.edu.cu/api/organisations/2"},
     "type": "standard",
     "negative_availability": false
   },
   {
     "pid": "6",
     "name": "En adquisición",
-    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/2"},
+    "organisation": {"$ref": "https://bib.upr.edu.cu/api/organisations/2"},
     "type": "standard",
     "negative_availability": true,
     "displayed_status": [
@@ -57,7 +57,7 @@
     "pid": "7",
     "name": "Préstamo estándar",
     "description": "Préstamo a domicilio, 28 días",
-    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/3"},
+    "organisation": {"$ref": "https://bib.upr.edu.cu/api/organisations/3"},
     "type": "standard",
     "negative_availability": false
   },
@@ -65,14 +65,14 @@
     "pid": "8",
     "name": "Consulta en sala",
     "description": "Solo consulta en sala, no sale del edificio",
-    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/3"},
+    "organisation": {"$ref": "https://bib.upr.edu.cu/api/organisations/3"},
     "type": "standard",
     "negative_availability": false
   },
   {
     "pid": "9",
     "name": "En adquisición",
-    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/3"},
+    "organisation": {"$ref": "https://bib.upr.edu.cu/api/organisations/3"},
     "type": "standard",
     "negative_availability": true,
     "displayed_status": [

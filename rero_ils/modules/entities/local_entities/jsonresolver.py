@@ -20,10 +20,10 @@
 
 import jsonresolver
 
-from rero_ils.modules.jsonresolver import resolve_json_refs
+from rero_ils.modules.jsonresolver import resolve_json_refs, RERO_ILS_HOST
 
 
-@jsonresolver.route("/api/local_entities/<pid>", host="bib.rero.ch")
+@jsonresolver.route("/api/local_entities/<pid>", host=RERO_ILS_HOST)
 def local_entities_resolver(pid):
     """Resolver for local entity record."""
     return resolve_json_refs("locent", pid)

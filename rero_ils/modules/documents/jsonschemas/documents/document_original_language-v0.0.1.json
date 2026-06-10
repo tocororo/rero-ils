@@ -5,7 +5,7 @@
     "type": "array",
     "minItems": 1,
     "items": {
-      "$ref": "https://bib.rero.ch/schemas/common/languages-v0.0.1.json#/language"
+      "$ref": "https://bib.upr.edu.cu/schemas/common/languages-v0.0.1.json#/language"
     },
     "widget": {
       "formlyConfig": {

@@ -92,7 +92,7 @@
                     }
                   },
                   {
-                    "$ref": "https://bib.rero.ch/schemas/common/countries-v0.0.1.json#/country"
+                    "$ref": "https://bib.upr.edu.cu/schemas/common/countries-v0.0.1.json#/country"
                   }
                 ]
               },
@@ -108,7 +108,7 @@
                     }
                   },
                   {
-                    "$ref": "https://bib.rero.ch/schemas/common/cantons-v0.0.1.json#/canton"
+                    "$ref": "https://bib.upr.edu.cu/schemas/common/cantons-v0.0.1.json#/canton"
                   }
                 ]
               },
@@ -124,7 +124,7 @@
                     }
                   },
                   {
-                    "$ref": "https://bib.rero.ch/schemas/common/identifier-v0.0.1.json#/identifier"
+                    "$ref": "https://bib.upr.edu.cu/schemas/common/identifier-v0.0.1.json#/identifier"
                   }
                 ]
               }
@@ -203,7 +203,7 @@
                 "minItems": 1,
                 "items": {
                   "title": "Label",
-                  "$ref": "https://bib.rero.ch/schemas/common/languages-v0.0.1.json#/language_script"
+                  "$ref": "https://bib.upr.edu.cu/schemas/common/languages-v0.0.1.json#/language_script"
                 },
                 "widget": {
                   "formlyConfig": {

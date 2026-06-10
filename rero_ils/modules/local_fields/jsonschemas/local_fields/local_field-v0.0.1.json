@@ -17,7 +17,7 @@
       "title": "Schema",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schema/local_fields/local_field-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schema/local_fields/local_field-v0.0.1.json"
     },
     "pid": {
       "title": "Local field PID",
@@ -35,7 +35,7 @@
         "$ref": {
           "title": "Organisation",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https?://[^/]+/api/organisations/.*?$"
         }
       }
     },
@@ -50,7 +50,7 @@
         "$ref": {
           "title": "Parent URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/documents|items|holdings/.*?$"
+          "pattern": "^https?://[^/]+/api/documents|items|holdings/.*?$"
         }
       }
     },

@@ -16,7 +16,7 @@
       "title": "Schema",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/patron_transaction_events/patron_transaction_event-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/patron_transaction_events/patron_transaction_event-v0.0.1.json"
     },
     "pid": {
       "title": "Patron transaction event ID",
@@ -30,7 +30,7 @@
         "$ref": {
           "title": "Patron transaction URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/patron_transactions/.*?$"
+          "pattern": "^https?://[^/]+/api/patron_transactions/.*?$"
         }
       }
     },
@@ -87,7 +87,7 @@
         "$ref": {
           "title": "Library URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/libraries/.*?$"
+          "pattern": "^https?://[^/]+/api/libraries/.*?$"
         }
       }
     },
@@ -98,7 +98,7 @@
         "$ref": {
           "title": "Operator patron URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/patrons/.*?$"
+          "pattern": "^https?://[^/]+/api/patrons/.*?$"
         }
       }
     }

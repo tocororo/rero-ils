@@ -26,7 +26,7 @@
       "title": "Schema",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/item_types/item_type-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/item_types/item_type-v0.0.1.json"
     },
     "pid": {
       "title": "ItemType ID.",
@@ -128,7 +128,7 @@
         ],
         "properties": {
           "language": {
-            "$ref": "https://bib.rero.ch/schemas/common/ui-languages-v0.0.1.json#/language"
+            "$ref": "https://bib.upr.edu.cu/schemas/common/ui-languages-v0.0.1.json#/language"
           },
           "label": {
             "title": "Label",
@@ -194,7 +194,7 @@
         ],
         "properties": {
           "language": {
-            "$ref": "https://bib.rero.ch/schemas/common/ui-languages-v0.0.1.json#/language"
+            "$ref": "https://bib.upr.edu.cu/schemas/common/ui-languages-v0.0.1.json#/language"
           },
           "label": {
             "title": "Label",
@@ -254,7 +254,7 @@
         "$ref": {
           "title": "Organisation URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https?://[^/]+/api/organisations/.*?$"
         }
       }
     }

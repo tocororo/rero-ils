@@ -19,10 +19,10 @@
 
 import jsonresolver
 
-from ..jsonresolver import resolve_json_refs
+from ..jsonresolver import resolve_json_refs, RERO_ILS_HOST
 
 
-@jsonresolver.route("/api/patron_types/<pid>", host="bib.rero.ch")
+@jsonresolver.route("/api/patron_types/<pid>", host=RERO_ILS_HOST)
 def patron_type_resolver(pid):
     """Patron type resolver."""
     return resolve_json_refs("ptty", pid)

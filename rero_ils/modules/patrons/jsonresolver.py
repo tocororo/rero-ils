@@ -19,10 +19,10 @@
 
 import jsonresolver
 
-from ..jsonresolver import resolve_json_refs
+from ..jsonresolver import resolve_json_refs, RERO_ILS_HOST
 
 
-@jsonresolver.route("/api/patrons/<pid>", host="bib.rero.ch")
+@jsonresolver.route("/api/patrons/<pid>", host=RERO_ILS_HOST)
 def patron_resolver(pid):
     """Patron resolver."""
     return resolve_json_refs("ptrn", pid)

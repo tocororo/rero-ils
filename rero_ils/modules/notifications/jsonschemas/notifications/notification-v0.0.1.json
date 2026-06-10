@@ -57,7 +57,7 @@
           "properties": {
             "$ref": {
               "type": "string",
-              "pattern": "^https://bib.rero.ch/api/loans/.*?$"
+              "pattern": "^https?://[^/]+/api/loans/.*?$"
             }
           }
         },
@@ -84,7 +84,7 @@
           "properties": {
             "$ref": {
               "type": "string",
-              "pattern": "^https://bib.rero.ch/api/acq_orders/.*?$"
+              "pattern": "^https?://[^/]+/api/acq_orders/.*?$"
             }
           }
         },
@@ -111,7 +111,7 @@
           "properties": {
             "$ref": {
               "type": "string",
-              "pattern": "^https://bib.rero.ch/api/items/.*?$"
+              "pattern": "^https?://[^/]+/api/items/.*?$"
             }
           }
         },
@@ -133,7 +133,7 @@
       "title": "Schema",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/notifications/notification-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/notifications/notification-v0.0.1.json"
     },
     "pid": {
       "title": "Notification ID",

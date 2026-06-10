@@ -34,7 +34,7 @@
       "title": "Schema",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/circ_policies/circ_policy-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/circ_policies/circ_policy-v0.0.1.json"
     },
     "pid": {
       "title": "Circulation policy ID",
@@ -73,7 +73,7 @@
         "$ref": {
           "title": "Organisation URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https?://[^/]+/api/organisations/.*?$"
         }
       }
     },
@@ -424,7 +424,7 @@
         "properties": {
           "$ref": {
             "type": "string",
-            "pattern": "^https://bib.rero.ch/api/libraries/.*?$",
+            "pattern": "^https?://[^/]+/api/libraries/.*?$",
             "widget": {
               "formlyConfig": {
                 "props": {
@@ -466,7 +466,7 @@
               "$ref": {
                 "title": "Patron type URI",
                 "type": "string",
-                "pattern": "^https://bib.rero.ch/api/patron_types/.*?$"
+                "pattern": "^https?://[^/]+/api/patron_types/.*?$"
               }
             }
           },
@@ -481,7 +481,7 @@
               "$ref": {
                 "title": "Item type URI",
                 "type": "string",
-                "pattern": "^https://bib.rero.ch/api/item_types/.*?$"
+                "pattern": "^https?://[^/]+/api/item_types/.*?$"
               }
             }
           }

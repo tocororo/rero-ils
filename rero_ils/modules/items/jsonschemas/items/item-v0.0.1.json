@@ -38,7 +38,7 @@
       "description": "Schema to validate item records against.",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/items/item-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/items/item-v0.0.1.json"
     },
     "pid": {
       "title": "Item ID",
@@ -129,7 +129,7 @@
         "$ref": {
           "title": "Location URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/locations/.+?$",
+          "pattern": "^https?://[^/]+/api/locations/.+?$",
           "widget": {
             "formlyConfig": {
               "props": {
@@ -156,8 +156,8 @@
         "$ref": {
           "title": "Document URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/documents/.+?$",
-          "default": "https://bib.rero.ch/api/documents/"
+          "pattern": "^https?://[^/]+/api/documents/.+?$",
+          "default": "https://bib.upr.edu.cu/api/documents/"
         }
       }
     },
@@ -171,7 +171,7 @@
         "$ref": {
           "title": "Item Type URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/item_types/.+?$",
+          "pattern": "^https?://[^/]+/api/item_types/.+?$",
           "widget": {
             "formlyConfig": {
               "props": {
@@ -208,7 +208,7 @@
         "$ref": {
           "title": "Item Type URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/item_types/.+?$",
+          "pattern": "^https?://[^/]+/api/item_types/.+?$",
           "widget": {
             "formlyConfig": {
               "props": {
@@ -266,7 +266,7 @@
         "$ref": {
           "title": "Location URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/locations/.+?$",
+          "pattern": "^https?://[^/]+/api/locations/.+?$",
           "widget": {
             "formlyConfig": {
               "props": {
@@ -526,7 +526,7 @@
         "$ref": {
           "title": "Holding URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/holdings/.+?$"
+          "pattern": "^https?://[^/]+/api/holdings/.+?$"
         }
       }
     },
@@ -541,7 +541,7 @@
         "$ref": {
           "title": "Organisation URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https?://[^/]+/api/organisations/.*?$"
         }
       }
     },
@@ -556,7 +556,7 @@
         "$ref": {
           "title": "Library URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/libraries/.*?$"
+          "pattern": "^https?://[^/]+/api/libraries/.*?$"
         }
       }
     },

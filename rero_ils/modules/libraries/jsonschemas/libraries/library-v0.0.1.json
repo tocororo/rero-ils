@@ -99,7 +99,7 @@
           "minLength": 2
         },
         "country": {
-          "$ref": "https://bib.rero.ch/schemas/common/countries-v0.0.1.json#/country"
+          "$ref": "https://bib.upr.edu.cu/schemas/common/countries-v0.0.1.json#/country"
         }
       }
     },
@@ -189,7 +189,7 @@
       "title": "Schema",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/libraries/library-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/libraries/library-v0.0.1.json"
     },
     "pid": {
       "title": "Library ID",
@@ -206,7 +206,7 @@
         "$ref": {
           "title": "Organisation URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https?://[^/]+/api/organisations/.*?$"
         }
       }
     },

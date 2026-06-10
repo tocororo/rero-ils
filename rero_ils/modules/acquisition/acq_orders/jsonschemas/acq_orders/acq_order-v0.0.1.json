@@ -20,8 +20,8 @@
     "$schema": {
       "title": "Schema",
       "type": "string",
-      "default": "https://bib.rero.ch/schemas/acq_orders/acq_order-v0.0.1.json",
-      "pattern": "^https://bib.rero.ch/schemas/acq_orders/acq_order-v([0-9]+?\\.){3}json$"
+      "default": "https://bib.upr.edu.cu/schemas/acq_orders/acq_order-v0.0.1.json",
+      "pattern": "^https?://[^/]+/schemas/acq_orders/acq_order-v([0-9]+?\\.){3}json$"
     },
     "pid": {
       "title": "AcqOrder ID",
@@ -34,7 +34,7 @@
       "minLength": 3
     },
     "currency": {
-      "$ref": "https://bib.rero.ch/schemas/common/currency-v0.0.1.json#/currency"
+      "$ref": "https://bib.upr.edu.cu/schemas/common/currency-v0.0.1.json#/currency"
     },
     "order_date": {
       "title": "Order date",
@@ -149,7 +149,7 @@
         "$ref": {
           "title": "Vendor URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/vendors/.*?$",
+          "pattern": "^https?://[^/]+/api/vendors/.*?$",
           "widget": {
             "formlyConfig": {
               "focus": true,
@@ -175,7 +175,7 @@
         "$ref": {
           "title": "Library URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/libraries/.*?$"
+          "pattern": "^https?://[^/]+/api/libraries/.*?$"
         }
       }
     },
@@ -190,7 +190,7 @@
         "$ref": {
           "title": "Organisation URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https?://[^/]+/api/organisations/.*?$"
         }
       }
     },
@@ -205,7 +205,7 @@
         "$ref": {
           "title": "Acquisition order URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/acq_orders/.*?$"
+          "pattern": "^https?://[^/]+/api/acq_orders/.*?$"
         }
       }
     }

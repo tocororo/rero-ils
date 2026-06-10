@@ -23,6 +23,7 @@ import re
 import sys
 
 from dojson import utils
+from flask import current_app
 from dojson.utils import GroupableOrderedDict
 from iso639 import find
 
@@ -706,7 +707,7 @@ def do_specific_document_relation(data, marc21, key, value):
             pid = match.group(2)
         if pid and source == ("REROILS:"):
             # TODO: find a way to use a parameter for ref
-            ref = f"https://bib.rero.ch/api/documents/{pid}"
+            ref = f"{current_app.config['RERO_ILS_URL']}/api/documents/{pid}"
             relation = {"$ref": ref}
         else:
             label = build_string_from_subfields(value, "ctw")

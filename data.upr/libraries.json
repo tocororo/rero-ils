@@ -6,7 +6,7 @@
     "address": "Universidad de Pinar del Río, Pinar del Río, Cuba",
     "email": "bct@upr.edu.cu",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "communication_language": "spa",
     "rollover_settings": {
@@ -72,7 +72,7 @@
     "address": "Universidad de Pinar del Río, Pinar del Río, Cuba",
     "email": "becsh@upr.edu.cu",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "communication_language": "spa",
     "rollover_settings": {
@@ -138,7 +138,7 @@
     "address": "Universidad de Pinar del Río, Pinar del Río, Cuba",
     "email": "fcf@upr.edu.cu",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "communication_language": "spa",
     "rollover_settings": {
@@ -204,7 +204,7 @@
     "address": "Universidad de Pinar del Río, Pinar del Río, Cuba",
     "email": "fcp@upr.edu.cu",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/1"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/1"
     },
     "communication_language": "spa",
     "rollover_settings": {
@@ -270,7 +270,7 @@
     "address": "Pinar del Río, Cuba",
     "email": "biblioteca@cultura.pri.cu",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/2"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/2"
     },
     "communication_language": "spa",
     "rollover_settings": {
@@ -338,7 +338,7 @@
     "address": "San Luis, Pinar del Río, Cuba",
     "email": "biblioteca@sanluiseduca.cu",
     "organisation": {
-      "$ref": "https://bib.rero.ch/api/organisations/3"
+      "$ref": "https://bib.upr.edu.cu/api/organisations/3"
     },
     "communication_language": "spa",
     "rollover_settings": {

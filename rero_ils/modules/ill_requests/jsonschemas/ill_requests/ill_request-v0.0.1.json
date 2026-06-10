@@ -30,7 +30,7 @@
       "type": "string",
       "title": "Schema",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schema/ill-requests/ill-request-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schema/ill-requests/ill-request-v0.0.1.json"
     },
     "pid": {
       "type": "string",
@@ -89,7 +89,7 @@
         "$ref": {
           "type": "string",
           "title": "Patron URI",
-          "pattern": "^https://bib.rero.ch/api/patrons/.*?$",
+          "pattern": "^https?://[^/]+/api/patrons/.*?$",
           "widget": {
             "formlyConfig": {
               "type": "remoteAutoComplete",
@@ -97,7 +97,7 @@
                 "hideLabel": true,
                 "validation": {
                   "messages": {
-                    "patternMessage": "Should be in the following format: https://bib.rero.ch/api/patrons/<PID>."
+                    "patternMessage": "Should be in the following format: https://bib.upr.edu.cu/api/patrons/<PID>."
                   }
                 },
                 "queryOptions": {
@@ -160,7 +160,7 @@
         "$ref": {
           "type": "string",
           "title": "Pickup location URI",
-          "pattern": "^https://bib.rero.ch/api/locations/.+?$",
+          "pattern": "^https?://[^/]+/api/locations/.+?$",
           "widget": {
             "formlyConfig": {
               "props": {

@@ -42,7 +42,7 @@
     "$schema": {
       "title": "Schema",
       "type": "string",
-      "default": "https://bib.rero.ch/schemas/holdings/holding-v0.0.1.json",
+      "default": "https://bib.upr.edu.cu/schemas/holdings/holding-v0.0.1.json",
       "minLength": 9
     },
     "pid": {
@@ -78,7 +78,7 @@
         "$ref": {
           "title": "Circulation category URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/item_types/.*?$",
+          "pattern": "^https?://[^/]+/api/item_types/.*?$",
           "widget": {
             "formlyConfig": {
               "props": {
@@ -103,7 +103,7 @@
         "$ref": {
           "title": "Organisation URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https?://[^/]+/api/organisations/.*?$"
         }
       }
     },
@@ -114,7 +114,7 @@
         "$ref": {
           "title": "Library URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/libraries/.*?$"
+          "pattern": "^https?://[^/]+/api/libraries/.*?$"
         }
       }
     },
@@ -128,7 +128,7 @@
         "$ref": {
           "title": "Location URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/locations/.+?$",
+          "pattern": "^https?://[^/]+/api/locations/.+?$",
           "widget": {
             "formlyConfig": {
               "props": {
@@ -147,7 +147,7 @@
         "$ref": {
           "title": "Parent document URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/documents/.*?$"
+          "pattern": "^https?://[^/]+/api/documents/.*?$"
         }
       }
     },
@@ -523,7 +523,7 @@
         "language": {
           "title": "Language",
           "type": "string",
-          "$ref": "https://bib.rero.ch/schemas/common/languages-v0.0.1.json#/language"
+          "$ref": "https://bib.upr.edu.cu/schemas/common/languages-v0.0.1.json#/language"
         }
       },
       "widget": {
@@ -547,7 +547,7 @@
         "$ref": {
           "title": "Vendor URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/vendors/.*?$",
+          "pattern": "^https?://[^/]+/api/vendors/.*?$",
           "widget": {
             "formlyConfig": {
               "props": {

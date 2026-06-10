@@ -23,6 +23,7 @@ import re
 
 from dojson import utils
 from dojson.utils import GroupableOrderedDict
+from flask import current_app
 
 from rero_ils.dojson.utils import (
     ReroIlsMarc21Overdo,
@@ -945,7 +946,7 @@ def marc21_to_part_of(self, key, value):
     if subfield_w:
         match = re.compile(r"^REROILS:")
         pid = match.sub("", subfield_w)
-        part_of["document"] = {"$ref": f"https://bib.rero.ch/api/documents/{pid}"}
+        part_of["document"] = {"$ref": f"{current_app.config['RERO_ILS_URL']}/api/documents/{pid}"}
         if key[:3] == "773":
             discard_numbering = False
             for subfield_g in utils.force_list(value.get("g", [])):

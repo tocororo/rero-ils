@@ -27,7 +27,7 @@
       "title": "Schema",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/vendors/vendor-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/vendors/vendor-v0.0.1.json"
     },
     "pid": {
       "title": "Vendor ID",
@@ -423,7 +423,7 @@
       }
     },
     "currency": {
-      "$ref": "https://bib.rero.ch/schemas/common/currency-v0.0.1.json#/currency"
+      "$ref": "https://bib.upr.edu.cu/schemas/common/currency-v0.0.1.json#/currency"
     },
     "vat_rate": {
       "title": "VAT rate",
@@ -449,7 +449,7 @@
         "$ref": {
           "title": "Organisation URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https?://[^/]+/api/organisations/.*?$"
         }
       }
     }
