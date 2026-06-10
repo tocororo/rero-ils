@@ -207,16 +207,16 @@ RATELIMIT_ENABLED = False
 # I18N
 # ====
 #: Default language
-BABEL_DEFAULT_LANGUAGE = "en"
-RERO_ILS_DEFAULT_LANGUAGE = "eng"
+BABEL_DEFAULT_LANGUAGE = "es"
+RERO_ILS_DEFAULT_LANGUAGE = "spa"
 #: Default time zone
-BABEL_DEFAULT_TIMEZONE = "Europe/Zurich"
+BABEL_DEFAULT_TIMEZONE = "America/Havana"
 #: Other supported languages (do not include the default language in list).
 I18N_LANGUAGES = [
+    ("en", _("English")),
     ("fr", _("French")),
     ("de", _("German")),
     ("it", _("Italian")),
-    ("es", _("Spanish")),
 ]
 # Define the default system currency in used. Each organisation can override
 # this parameter using the "default_currency" field
@@ -3883,7 +3883,7 @@ HOLDING_CIRCULATION_ACTIONS_VALIDATION = {
 WIKI_CONTENT_DIR = "./data/wiki"
 WIKI_INDEX_DIR = "./data/wiki/_index"
 WIKI_URL_PREFIX = "/help"
-WIKI_LANGUAGES = {"en": "English", "fr": "French", "de": "German", "it": "Italian"}
+WIKI_LANGUAGES = {"es": "Spanish", "en": "English", "fr": "French", "de": "German", "it": "Italian"}
 WIKI_CURRENT_LANGUAGE = get_current_language
 WIKI_UPLOAD_FOLDER = os.path.join(WIKI_CONTENT_DIR, "files")
 WIKI_BASE_TEMPLATE = "rero_ils/page_wiki.html"
