@@ -1,0 +1,400 @@
+[
+  {
+    "pid": "1",
+    "code": "UPR-BCT",
+    "name": "Biblioteca de Ciencias Técnicas",
+    "address": "Universidad de Pinar del Río, Pinar del Río, Cuba",
+    "email": "bct@upr.edu.cu",
+    "organisation": {
+      "$ref": "https://bib.rero.ch/api/organisations/1"
+    },
+    "communication_language": "spa",
+    "rollover_settings": {
+      "account_transfer": "rollover_no_transfer"
+    },
+    "opening_hours": [
+      {
+        "day": "monday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "tuesday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "wednesday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "thursday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "friday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "saturday",
+        "is_open": false,
+        "times": []
+      },
+      {
+        "day": "sunday",
+        "is_open": false,
+        "times": []
+      }
+    ]
+  },
+  {
+    "pid": "2",
+    "code": "UPR-BECSH",
+    "name": "Biblioteca de Economía, Ciencias Sociales y Humanísticas",
+    "address": "Universidad de Pinar del Río, Pinar del Río, Cuba",
+    "email": "becsh@upr.edu.cu",
+    "organisation": {
+      "$ref": "https://bib.rero.ch/api/organisations/1"
+    },
+    "communication_language": "spa",
+    "rollover_settings": {
+      "account_transfer": "rollover_no_transfer"
+    },
+    "opening_hours": [
+      {
+        "day": "monday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "tuesday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "wednesday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "thursday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "friday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "saturday",
+        "is_open": false,
+        "times": []
+      },
+      {
+        "day": "sunday",
+        "is_open": false,
+        "times": []
+      }
+    ]
+  },
+  {
+    "pid": "3",
+    "code": "UPR-FCF",
+    "name": "Biblioteca de la Facultad de Cultura Física",
+    "address": "Universidad de Pinar del Río, Pinar del Río, Cuba",
+    "email": "fcf@upr.edu.cu",
+    "organisation": {
+      "$ref": "https://bib.rero.ch/api/organisations/1"
+    },
+    "communication_language": "spa",
+    "rollover_settings": {
+      "account_transfer": "rollover_no_transfer"
+    },
+    "opening_hours": [
+      {
+        "day": "monday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "tuesday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "wednesday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "thursday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "friday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "saturday",
+        "is_open": false,
+        "times": []
+      },
+      {
+        "day": "sunday",
+        "is_open": false,
+        "times": []
+      }
+    ]
+  },
+  {
+    "pid": "4",
+    "code": "UPR-FCP",
+    "name": "Biblioteca de la Facultad de Ciencias Políticas",
+    "address": "Universidad de Pinar del Río, Pinar del Río, Cuba",
+    "email": "fcp@upr.edu.cu",
+    "organisation": {
+      "$ref": "https://bib.rero.ch/api/organisations/1"
+    },
+    "communication_language": "spa",
+    "rollover_settings": {
+      "account_transfer": "rollover_no_transfer"
+    },
+    "opening_hours": [
+      {
+        "day": "monday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "tuesday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "wednesday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "thursday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "friday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "saturday",
+        "is_open": false,
+        "times": []
+      },
+      {
+        "day": "sunday",
+        "is_open": false,
+        "times": []
+      }
+    ]
+  },
+  {
+    "pid": "5",
+    "code": "MINCULT-RGC",
+    "name": "Biblioteca Provincial \"Ramón González Coro\"",
+    "address": "Pinar del Río, Cuba",
+    "email": "biblioteca@cultura.pri.cu",
+    "organisation": {
+      "$ref": "https://bib.rero.ch/api/organisations/2"
+    },
+    "communication_language": "spa",
+    "rollover_settings": {
+      "account_transfer": "rollover_no_transfer"
+    },
+    "opening_hours": [
+      {
+        "day": "monday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "tuesday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "wednesday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "thursday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "friday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "saturday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"}
+        ]
+      },
+      {
+        "day": "sunday",
+        "is_open": false,
+        "times": []
+      }
+    ]
+  },
+  {
+    "pid": "6",
+    "code": "MINED-SL",
+    "name": "Biblioteca Escolar de San Luis",
+    "address": "San Luis, Pinar del Río, Cuba",
+    "email": "biblioteca@sanluiseduca.cu",
+    "organisation": {
+      "$ref": "https://bib.rero.ch/api/organisations/3"
+    },
+    "communication_language": "spa",
+    "rollover_settings": {
+      "account_transfer": "rollover_no_transfer"
+    },
+    "opening_hours": [
+      {
+        "day": "monday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "tuesday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "wednesday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "thursday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "friday",
+        "is_open": true,
+        "times": [
+          {"start_time": "08:00", "end_time": "12:00"},
+          {"start_time": "13:00", "end_time": "17:00"}
+        ]
+      },
+      {
+        "day": "saturday",
+        "is_open": false,
+        "times": []
+      },
+      {
+        "day": "sunday",
+        "is_open": false,
+        "times": []
+      }
+    ]
+  }
+]

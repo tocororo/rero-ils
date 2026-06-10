@@ -1,0 +1,79 @@
+[
+  {
+    "pid": "1",
+    "name": "Estudiante",
+    "description": "Estudiantes universitarios de la UPR.",
+    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/1"},
+    "limits": {
+      "unpaid_subscription": false,
+      "checkout_limits": {"global_limit": 5},
+      "request_limits": {"global_limit": 5}
+    }
+  },
+  {
+    "pid": "2",
+    "name": "Profesor / Investigador",
+    "description": "Profesores, investigadores y personal docente de la UPR.",
+    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/1"},
+    "limits": {
+      "unpaid_subscription": false,
+      "checkout_limits": {"global_limit": 15},
+      "request_limits": {"global_limit": 10}
+    }
+  },
+  {
+    "pid": "3",
+    "name": "Personal",
+    "description": "Personal administrativo y técnico de la UPR.",
+    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/1"},
+    "limits": {
+      "unpaid_subscription": false,
+      "checkout_limits": {"global_limit": 10},
+      "request_limits": {"global_limit": 5}
+    }
+  },
+  {
+    "pid": "4",
+    "name": "Usuario general",
+    "description": "Usuarios generales de la Biblioteca Provincial.",
+    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/2"},
+    "limits": {
+      "unpaid_subscription": false,
+      "checkout_limits": {"global_limit": 5},
+      "request_limits": {"global_limit": 3}
+    }
+  },
+  {
+    "pid": "5",
+    "name": "Investigador",
+    "description": "Investigadores y especialistas.",
+    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/2"},
+    "limits": {
+      "unpaid_subscription": false,
+      "checkout_limits": {"global_limit": 10},
+      "request_limits": {"global_limit": 5}
+    }
+  },
+  {
+    "pid": "6",
+    "name": "Alumno",
+    "description": "Alumnos de primaria, secundaria y preuniversitario.",
+    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/3"},
+    "limits": {
+      "unpaid_subscription": false,
+      "checkout_limits": {"global_limit": 3},
+      "request_limits": {"global_limit": 2}
+    }
+  },
+  {
+    "pid": "7",
+    "name": "Docente",
+    "description": "Docentes y personal educativo.",
+    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/3"},
+    "limits": {
+      "unpaid_subscription": false,
+      "checkout_limits": {"global_limit": 10},
+      "request_limits": {"global_limit": 5}
+    }
+  }
+]

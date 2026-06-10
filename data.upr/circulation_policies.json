@@ -1,0 +1,118 @@
+[
+  {
+    "pid": "1",
+    "name": "Préstamo estándar",
+    "description": "Política de préstamo general, 28 días con renovaciones",
+    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/1"},
+    "checkout_duration": 28,
+    "allow_requests": true,
+    "pickup_hold_duration": 7,
+    "number_renewals": 2,
+    "renewal_duration": 14,
+    "policy_library_level": false,
+    "is_default": true,
+    "reminders": [
+      {
+        "type": "due_soon",
+        "days_delay": 3,
+        "communication_channel": "patron_setting",
+        "template": "email/due_soon"
+      },
+      {
+        "type": "overdue",
+        "days_delay": 7,
+        "fee_amount": 0,
+        "communication_channel": "patron_setting",
+        "template": "email/overdue"
+      }
+    ]
+  },
+  {
+    "pid": "2",
+    "name": "Consulta en sala",
+    "description": "Solo consulta en sala, sin préstamo a domicilio",
+    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/1"},
+    "checkout_duration": 1,
+    "allow_requests": false,
+    "pickup_hold_duration": 0,
+    "number_renewals": 0,
+    "renewal_duration": 0,
+    "policy_library_level": false,
+    "is_default": false
+  },
+  {
+    "pid": "3",
+    "name": "Préstamo estándar",
+    "description": "Política de préstamo general, 28 días con renovaciones",
+    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/2"},
+    "checkout_duration": 28,
+    "allow_requests": true,
+    "pickup_hold_duration": 7,
+    "number_renewals": 2,
+    "renewal_duration": 14,
+    "policy_library_level": false,
+    "is_default": true,
+    "reminders": [
+      {
+        "type": "due_soon",
+        "days_delay": 3,
+        "communication_channel": "patron_setting",
+        "template": "email/due_soon"
+      },
+      {
+        "type": "overdue",
+        "days_delay": 7,
+        "fee_amount": 0,
+        "communication_channel": "patron_setting",
+        "template": "email/overdue"
+      }
+    ]
+  },
+  {
+    "pid": "4",
+    "name": "Consulta en sala",
+    "description": "Solo consulta en sala, sin préstamo a domicilio",
+    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/2"},
+    "checkout_duration": 1,
+    "allow_requests": false,
+    "pickup_hold_duration": 0,
+    "number_renewals": 0,
+    "renewal_duration": 0,
+    "policy_library_level": false,
+    "is_default": false
+  },
+  {
+    "pid": "5",
+    "name": "Préstamo estándar",
+    "description": "Política de préstamo general, 14 días",
+    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/3"},
+    "checkout_duration": 14,
+    "allow_requests": true,
+    "pickup_hold_duration": 5,
+    "number_renewals": 1,
+    "renewal_duration": 7,
+    "policy_library_level": false,
+    "is_default": true,
+    "reminders": [
+      {
+        "type": "due_soon",
+        "days_delay": 2,
+        "communication_channel": "patron_setting",
+        "template": "email/due_soon"
+      }
+    ]
+  },
+  {
+    "pid": "6",
+    "name": "Consulta en sala",
+    "description": "Solo consulta en sala, sin préstamo a domicilio",
+    "organisation": {"$ref": "https://bib.rero.ch/api/organisations/3"},
+    "checkout_duration": 1,
+    "allow_requests": false,
+    "pickup_hold_duration": 0,
+    "number_renewals": 0,
+    "renewal_duration": 0,
+    "policy_library_level": false,
+    "is_default": false
+  }
+]
