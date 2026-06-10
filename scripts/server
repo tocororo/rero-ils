@@ -23,7 +23,10 @@ ERROR_COLOR='\033[1;97;41m'     # Bold + white + red background
 
 PROGRAM=`basename $0`
 
+
 set -e
+
+export RERO_ILS_APP_HOST="bib.upr.edu.cu"
 
 # MESSAGES
 msg() {

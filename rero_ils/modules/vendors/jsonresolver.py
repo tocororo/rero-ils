@@ -21,6 +21,8 @@ import jsonresolver
 from flask import current_app
 from invenio_pidstore.models import PersistentIdentifier, PIDStatus
 
+from rero_ils.modules.jsonresolver import RERO_ILS_HOST
+
 
 @jsonresolver.route("/api/vendors/<pid>", host=RERO_ILS_HOST)
 def vendor_resolver(pid):
