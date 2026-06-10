@@ -237,8 +237,8 @@ eval ${PREFIX} "invenio roles create -d 'Document Importing' document_importer"
 eval ${PREFIX} "invenio roles create -d 'Professional: Statistics manager' pro_statistic_manager"
 
 info_msg "Create action roles policies"
-eval ${PREFIX} "invenio reroils fixtures import_system_role_policies data/system_role_policies.json"
-eval ${PREFIX} "invenio reroils fixtures import_role_policies data/role_policies.json"
+eval ${PREFIX} "invenio reroils fixtures import_system_role_policies ${DATA_PATH}/system_role_policies.json"
+eval ${PREFIX} "invenio reroils fixtures import_role_policies ${DATA_PATH}/role_policies.json"
 
 # create users
 info_msg "Create users"
@@ -320,7 +320,7 @@ eval ${PREFIX} invenio reroils fixtures create --pid_type stacfg ${DATA_PATH}/st
 eval ${PREFIX} invenio reroils index reindex -t stacfg --yes-i-know
 
 info_msg "- Local entities ${DATA_PATH}/local_entities.json ${CREATE_LAZY} ${DONT_STOP}"
-eval ${PREFIX} invenio reroils fixtures create --pid_type locent --schema 'https://bib.rero.ch/schemas/local_entities/local_entity-v0.0.1.json' ${DATA_PATH}/local_entities.json --append ${CREATE_LAZY} ${DONT_STOP}
+eval ${PREFIX} invenio reroils fixtures create --pid_type locent --schema 'https://bib.upr.edu.cu/schemas/local_entities/local_entity-v0.0.1.json' ${DATA_PATH}/local_entities.json --append ${CREATE_LAZY} ${DONT_STOP}
 eval ${PREFIX} invenio reroils index reindex -t locent --yes-i-know
 eval ${PREFIX} invenio reroils index run --raise-on-error
 
@@ -347,7 +347,7 @@ fi
 if ${LOAD_REMOTE_ENTITIES}
 then
     info_msg "- REMOTE REMOTE_ENTITIES: ${REMOTE_ENTITIES} ${CREATE_LAZY} ${DONT_STOP}"
-    eval ${PREFIX} invenio reroils fixtures create --pid_type rement --schema 'https://bib.rero.ch/schemas/remote_entities/remote_entity-v0.0.1.json' ${REMOTE_ENTITIES} --append ${CREATE_LAZY} ${DONT_STOP}
+    eval ${PREFIX} invenio reroils fixtures create --pid_type rement --schema 'https://bib.upr.edu.cu/schemas/remote_entities/remote_entity-v0.0.1.json' ${REMOTE_ENTITIES} --append ${CREATE_LAZY} ${DONT_STOP}
     info_msg "Indexing Entities:"
     eval ${PREFIX} invenio reroils index reindex -t rement --yes-i-know
     if [ ${INDEX_PARALLEL} -gt 0 ]; then
@@ -366,13 +366,13 @@ info_msg "Pause cover URL queue worker to avoid race conditions"
 eval ${PREFIX} invenio reroils documents cover-url-queue-worker pause
 
 info_msg "- Documents: ${DOCUMENTS} ${CREATE_LAZY} ${DONT_STOP}"
-eval ${PREFIX} invenio reroils fixtures create --pid_type doc --schema 'https://bib.rero.ch/schemas/documents/document-v0.0.1.json' ${DOCUMENTS} --append ${CREATE_LAZY} ${DONT_STOP}
+eval ${PREFIX} invenio reroils fixtures create --pid_type doc --schema 'https://bib.upr.edu.cu/schemas/documents/document-v0.0.1.json' ${DOCUMENTS} --append ${CREATE_LAZY} ${DONT_STOP}
 
 info_msg "- Holdings: ${HOLDINGS} ${CREATE_LAZY} ${DONT_STOP}"
-eval ${PREFIX} invenio reroils fixtures create --pid_type hold --schema 'https://bib.rero.ch/schemas/holdings/holding-v0.0.1.json' ${HOLDINGS} --append ${CREATE_LAZY} ${DONT_STOP}
+eval ${PREFIX} invenio reroils fixtures create --pid_type hold --schema 'https://bib.upr.edu.cu/schemas/holdings/holding-v0.0.1.json' ${HOLDINGS} --append ${CREATE_LAZY} ${DONT_STOP}
 
 info_msg "- Items: ${ITEMS} ${CREATE_LAZY} ${DONT_STOP}"
-eval ${PREFIX} invenio reroils fixtures create --pid_type item --schema 'https://bib.rero.ch/schemas/items/item-v0.0.1.json' ${ITEMS} --append ${CREATE_LAZY} ${DONT_STOP}
+eval ${PREFIX} invenio reroils fixtures create --pid_type item --schema 'https://bib.upr.edu.cu/schemas/items/item-v0.0.1.json' ${ITEMS} --append ${CREATE_LAZY} ${DONT_STOP}
 
 info_msg "- Generate files"
 if ${DEPLOYMENT}
