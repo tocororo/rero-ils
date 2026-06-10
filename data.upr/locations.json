@@ -1,0 +1,106 @@
+[
+  {
+    "pid": "1",
+    "code": "UPR-BCT-GENERAL",
+    "name": "Sala General",
+    "library": {"$ref": "https://bib.rero.ch/api/libraries/1"},
+    "is_pickup": true,
+    "pickup_name": "BCT: Sala General",
+    "allow_request": true
+  },
+  {
+    "pid": "2",
+    "code": "UPR-BCT-REF",
+    "name": "Sala de Referencia",
+    "library": {"$ref": "https://bib.rero.ch/api/libraries/1"},
+    "is_pickup": false,
+    "allow_request": false
+  },
+  {
+    "pid": "3",
+    "code": "UPR-BECSH-GENERAL",
+    "name": "Sala General",
+    "library": {"$ref": "https://bib.rero.ch/api/libraries/2"},
+    "is_pickup": true,
+    "pickup_name": "BECSH: Sala General",
+    "allow_request": true
+  },
+  {
+    "pid": "4",
+    "code": "UPR-BECSH-REF",
+    "name": "Sala de Referencia",
+    "library": {"$ref": "https://bib.rero.ch/api/libraries/2"},
+    "is_pickup": false,
+    "allow_request": false
+  },
+  {
+    "pid": "5",
+    "code": "UPR-FCF-GENERAL",
+    "name": "Sala General",
+    "library": {"$ref": "https://bib.rero.ch/api/libraries/3"},
+    "is_pickup": true,
+    "pickup_name": "FCF: Sala General",
+    "allow_request": true
+  },
+  {
+    "pid": "6",
+    "code": "UPR-FCF-REF",
+    "name": "Sala de Referencia",
+    "library": {"$ref": "https://bib.rero.ch/api/libraries/3"},
+    "is_pickup": false,
+    "allow_request": false
+  },
+  {
+    "pid": "7",
+    "code": "UPR-FCP-GENERAL",
+    "name": "Sala General",
+    "library": {"$ref": "https://bib.rero.ch/api/libraries/4"},
+    "is_pickup": true,
+    "pickup_name": "FCP: Sala General",
+    "allow_request": true
+  },
+  {
+    "pid": "8",
+    "code": "UPR-FCP-REF",
+    "name": "Sala de Referencia",
+    "library": {"$ref": "https://bib.rero.ch/api/libraries/4"},
+    "is_pickup": false,
+    "allow_request": false
+  },
+  {
+    "pid": "9",
+    "code": "MINCULT-RGC-GENERAL",
+    "name": "Sala General",
+    "library": {"$ref": "https://bib.rero.ch/api/libraries/5"},
+    "is_pickup": true,
+    "pickup_name": "RGC: Sala General",
+    "is_ill_pickup": true,
+    "ill_pickup_name": "RGC: Préstamo Interbibliotecario",
+    "allow_request": true
+  },
+  {
+    "pid": "10",
+    "code": "MINCULT-RGC-REF",
+    "name": "Sala de Referencia y Hemeroteca",
+    "library": {"$ref": "https://bib.rero.ch/api/libraries/5"},
+    "is_pickup": false,
+    "allow_request": false
+  },
+  {
+    "pid": "11",
+    "code": "MINED-SL-GENERAL",
+    "name": "Sala General",
+    "library": {"$ref": "https://bib.rero.ch/api/libraries/6"},
+    "is_pickup": true,
+    "pickup_name": "San Luis: Sala General",
+    "allow_request": true
+  },
+  {
+    "pid": "12",
+    "code": "MINED-SL-REF",
+    "name": "Sala de Referencia",
+    "library": {"$ref": "https://bib.rero.ch/api/libraries/6"},
+    "is_pickup": false,
+    "allow_request": false
+  }
+]

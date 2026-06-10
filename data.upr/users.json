@@ -1,0 +1,77 @@
+[
+  {
+    "pid": "1",
+    "username": "admin-upr",
+    "email": "admin@upr.edu.cu",
+    "first_name": "Administrador",
+    "last_name": "UPR",
+    "birth_date": "1980-01-01",
+    "city": "Pinar del Río",
+    "street": "Martí Final",
+    "postal_code": "20100",
+    "roles": [
+      "pro_full_permissions"
+    ],
+    "libraries": [
+      {"$ref": "https://bib.rero.ch/api/libraries/1"},
+      {"$ref": "https://bib.rero.ch/api/libraries/2"},
+      {"$ref": "https://bib.rero.ch/api/libraries/3"},
+      {"$ref": "https://bib.rero.ch/api/libraries/4"}
+    ],
+    "notes": [
+      {
+        "type": "staff_note",
+        "content": "Administrador del sistema para la Universidad de Pinar del Río."
+      }
+    ],
+    "password": "Pw123456"
+  },
+  {
+    "pid": "2",
+    "username": "admin-mincult",
+    "email": "admin@cultura.pri.cu",
+    "first_name": "Administrador",
+    "last_name": "Cultura",
+    "birth_date": "1980-01-01",
+    "city": "Pinar del Río",
+    "street": "Pinar del Río",
+    "postal_code": "20100",
+    "roles": [
+      "pro_full_permissions"
+    ],
+    "libraries": [
+      {"$ref": "https://bib.rero.ch/api/libraries/5"}
+    ],
+    "notes": [
+      {
+        "type": "staff_note",
+        "content": "Administrador de la Biblioteca Provincial Ramón González Coro."
+      }
+    ],
+    "password": "Pw123456"
+  },
+  {
+    "pid": "3",
+    "username": "admin-mined",
+    "email": "admin@sanluiseduca.cu",
+    "first_name": "Administrador",
+    "last_name": "Educación",
+    "birth_date": "1980-01-01",
+    "city": "San Luis",
+    "street": "San Luis, Pinar del Río",
+    "postal_code": "23400",
+    "roles": [
+      "pro_full_permissions"
+    ],
+    "libraries": [
+      {"$ref": "https://bib.rero.ch/api/libraries/6"}
+    ],
+    "notes": [
+      {
+        "type": "staff_note",
+        "content": "Administrador de la Biblioteca Escolar de San Luis."
+      }
+    ],
+    "password": "Pw123456"
+  }
+]
