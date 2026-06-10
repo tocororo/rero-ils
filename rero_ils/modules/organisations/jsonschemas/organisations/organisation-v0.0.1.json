@@ -16,7 +16,7 @@
       "title": "Schema",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/organisations/organisation-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/organisations/organisation-v0.0.1.json"
     },
     "pid": {
       "title": "Organisation ID",

@@ -25,7 +25,7 @@
       "title": "Schema",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/acq_accounts/acq_account-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/acq_accounts/acq_account-v0.0.1.json"
     },
     "pid": {
       "title": "Account ID",
@@ -106,7 +106,7 @@
         "$ref": {
           "title": "Account URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/acq_accounts/.*?$",
+          "pattern": "^https?://[^/]+/api/acq_accounts/.*?$",
           "widget": {
             "formlyConfig": {
               "type": "account-select",
@@ -127,7 +127,7 @@
         "$ref": {
           "title": "Budget URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/budgets/.*?$"
+          "pattern": "^https?://[^/]+/api/budgets/.*?$"
         }
       },
       "required": [
@@ -141,7 +141,7 @@
         "$ref": {
           "title": "Library URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/libraries/.*?$"
+          "pattern": "^https?://[^/]+/api/libraries/.*?$"
         }
       }
     },
@@ -156,7 +156,7 @@
         "$ref": {
           "title": "Organisation URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https?://[^/]+/api/organisations/.*?$"
         }
       }
     }

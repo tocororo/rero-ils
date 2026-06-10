@@ -25,7 +25,7 @@
       "title": "Schema",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/patrons/patron-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/patrons/patron-v0.0.1.json"
     },
     "pid": {
       "title": "Patron ID",
@@ -122,7 +122,7 @@
         "country": {
           "allOf": [
             {
-              "$ref": "https://bib.rero.ch/schemas/common/countries-v0.0.1.json#/country"
+              "$ref": "https://bib.upr.edu.cu/schemas/common/countries-v0.0.1.json#/country"
             },
             {
               "widget": {
@@ -180,7 +180,7 @@
           "properties": {
             "$ref": {
               "type": "string",
-              "pattern": "^https://bib.rero.ch/api/patron_types/.*?$",
+              "pattern": "^https?://[^/]+/api/patron_types/.*?$",
               "widget": {
                 "formlyConfig": {
                   "props": {
@@ -239,7 +239,7 @@
             "properties": {
               "$ref": {
                 "type": "string",
-                "pattern": "^https://bib.rero.ch/api/libraries/.*?$",
+                "pattern": "^https?://[^/]+/api/libraries/.*?$",
                 "widget": {
                   "formlyConfig": {
                     "props": {
@@ -381,7 +381,7 @@
                 "properties": {
                   "$ref": {
                     "type": "string",
-                    "pattern": "^https://bib.rero.ch/api/patron_types/.*?$"
+                    "pattern": "^https?://[^/]+/api/patron_types/.*?$"
                   }
                 }
               },
@@ -395,7 +395,7 @@
                   "$ref": {
                     "title": "Patron transaction URI",
                     "type": "string",
-                    "pattern": "^https://bib.rero.ch/api/patron_transactions/.*?$"
+                    "pattern": "^https?://[^/]+/api/patron_transactions/.*?$"
                   }
                 }
               }
@@ -448,7 +448,7 @@
           "$ref": {
             "title": "Library URI",
             "type": "string",
-            "pattern": "^https://bib.rero.ch/api/libraries/.*?$",
+            "pattern": "^https?://[^/]+/api/libraries/.*?$",
             "widget": {
               "formlyConfig": {
                 "props": {

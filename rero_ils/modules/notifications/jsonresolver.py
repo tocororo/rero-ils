@@ -19,10 +19,10 @@
 
 import jsonresolver
 
-from ..jsonresolver import resolve_json_refs
+from ..jsonresolver import resolve_json_refs, RERO_ILS_HOST
 
 
-@jsonresolver.route("/api/notifications/<pid>", host="bib.rero.ch")
+@jsonresolver.route("/api/notifications/<pid>", host=RERO_ILS_HOST)
 def notification_resolver(pid):
     """Resolver for notifications record."""
     return resolve_json_refs("notif", pid)

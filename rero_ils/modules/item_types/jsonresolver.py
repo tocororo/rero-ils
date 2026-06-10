@@ -19,10 +19,10 @@
 
 import jsonresolver
 
-from ..jsonresolver import resolve_json_refs
+from ..jsonresolver import resolve_json_refs, RERO_ILS_HOST
 
 
-@jsonresolver.route("/api/item_types/<pid>", host="bib.rero.ch")
+@jsonresolver.route("/api/item_types/<pid>", host=RERO_ILS_HOST)
 def item_type_resolver(pid):
     """Item type resolver."""
     return resolve_json_refs("itty", pid)

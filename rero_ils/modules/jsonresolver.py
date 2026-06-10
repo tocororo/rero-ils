@@ -17,8 +17,15 @@
 
 """General resolver."""
 
+import os
+
 from flask import current_app
 from invenio_pidstore.models import PersistentIdentifier
+
+# Host used to match $ref URLs in JSON resolvers. Override via env variable
+# RERO_ILS_APP_HOST so that test environments can keep using the default
+# (bib.rero.ch) while production instances set their own domain.
+RERO_ILS_HOST = os.environ.get("RERO_ILS_APP_HOST", "bib.upr.edu.cu")
 
 
 def resolve_json_refs(pid_type, pid):

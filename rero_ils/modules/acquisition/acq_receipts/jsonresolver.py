@@ -20,10 +20,10 @@
 
 import jsonresolver
 
-from rero_ils.modules.jsonresolver import resolve_json_refs
+from rero_ils.modules.jsonresolver import resolve_json_refs, RERO_ILS_HOST
 
 
-@jsonresolver.route("/api/acq_receipts/<pid>", host="bib.rero.ch")
+@jsonresolver.route("/api/acq_receipts/<pid>", host=RERO_ILS_HOST)
 def acq_receipt_resolver(pid):
     """Resolver for acquisition receipt record."""
     return resolve_json_refs("acre", pid)

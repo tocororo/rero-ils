@@ -22,6 +22,7 @@ from copy import deepcopy
 
 import jsonref
 from dojson import utils
+from flask import current_app
 from dojson.utils import GroupableOrderedDict
 from importlib_resources import files
 from isbnlib import EAN13
@@ -482,7 +483,7 @@ def marc21_to_part_of(self, key, value):
             linked_pid = pid
             break
     if linked_pid:
-        part_of = {"document": {"$ref": f"https://bib.rero.ch/api/documents/{linked_pid}"}}
+        part_of = {"document": {"$ref": f"{current_app.config['RERO_ILS_URL']}/api/documents/{linked_pid}"}}
         numbering = []
         if subfield_v := utils.force_list(value.get("v")):
             with contextlib.suppress(ValueError):

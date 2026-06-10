@@ -31,7 +31,7 @@
       "title": "Schema",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/locations/location-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/locations/location-v0.0.1.json"
     },
     "pid": {
       "title": "Location ID",
@@ -85,7 +85,7 @@
         ],
         "properties": {
           "language": {
-            "$ref": "https://bib.rero.ch/schemas/common/ui-languages-v0.0.1.json#/language"
+            "$ref": "https://bib.upr.edu.cu/schemas/common/ui-languages-v0.0.1.json#/language"
           },
           "label": {
             "title": "Label",
@@ -223,7 +223,7 @@
         "$ref": {
           "title": "Library URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/libraries/.*?$"
+          "pattern": "^https?://[^/]+/api/libraries/.*?$"
         }
       }
     },
@@ -279,7 +279,7 @@
           "$ref": {
             "title": "Location URI",
             "type": "string",
-            "pattern": "^https://bib.rero.ch/api/locations/.*?$",
+            "pattern": "^https?://[^/]+/api/locations/.*?$",
             "widget": {
               "formlyConfig": {
                 "props": {

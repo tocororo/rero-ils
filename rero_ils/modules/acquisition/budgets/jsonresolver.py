@@ -19,10 +19,10 @@
 
 import jsonresolver
 
-from rero_ils.modules.jsonresolver import resolve_json_refs
+from rero_ils.modules.jsonresolver import resolve_json_refs, RERO_ILS_HOST
 
 
-@jsonresolver.route("/api/budgets/<pid>", host="bib.rero.ch")
+@jsonresolver.route("/api/budgets/<pid>", host=RERO_ILS_HOST)
 def budget_resolver(pid):
     """Resolver for budget record."""
     return resolve_json_refs("budg", pid)

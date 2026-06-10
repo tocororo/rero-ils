@@ -19,10 +19,10 @@
 
 import jsonresolver
 
-from ..jsonresolver import resolve_json_refs
+from ..jsonresolver import resolve_json_refs, RERO_ILS_HOST
 
 
-@jsonresolver.route("/api/stats_cfg/<pid>", host="bib.rero.ch")
+@jsonresolver.route("/api/stats_cfg/<pid>", host=RERO_ILS_HOST)
 def stats_cfg_resolver(pid):
     """Statistics configuration resolver."""
     return resolve_json_refs("stacfg", pid)

@@ -22,7 +22,7 @@
       "title": "Schema",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/budgets/budget-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/budgets/budget-v0.0.1.json"
     },
     "pid": {
       "title": "Budget ID",
@@ -104,7 +104,7 @@
         "$ref": {
           "title": "Organisation URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https?://[^/]+/api/organisations/.*?$"
         }
       }
     }

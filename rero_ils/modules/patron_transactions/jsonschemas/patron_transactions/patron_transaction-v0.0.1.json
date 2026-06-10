@@ -17,7 +17,7 @@
       "title": "Schema",
       "type": "string",
       "minLength": 9,
-      "default": "https://bib.rero.ch/schemas/patron_transactions/patron_transaction-v0.0.1.json"
+      "default": "https://bib.upr.edu.cu/schemas/patron_transactions/patron_transaction-v0.0.1.json"
     },
     "pid": {
       "title": "Patron transaction ID",
@@ -114,7 +114,7 @@
         "$ref": {
           "title": "Patron URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/patrons/.*?$"
+          "pattern": "^https?://[^/]+/api/patrons/.*?$"
         }
       }
     },
@@ -129,7 +129,7 @@
         "$ref": {
           "title": "Library URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/libraries/.*?$"
+          "pattern": "^https?://[^/]+/api/libraries/.*?$"
         }
       }
     },
@@ -144,7 +144,7 @@
         "$ref": {
           "title": "Notification URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/notifications/.*?$"
+          "pattern": "^https?://[^/]+/api/notifications/.*?$"
         }
       }
     },
@@ -159,7 +159,7 @@
         "$ref": {
           "title": "Loan URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/loans/.*?$"
+          "pattern": "^https?://[^/]+/api/loans/.*?$"
         }
       }
     },
@@ -174,7 +174,7 @@
         "$ref": {
           "title": "Organisation URI",
           "type": "string",
-          "pattern": "^https://bib.rero.ch/api/organisations/.*?$"
+          "pattern": "^https?://[^/]+/api/organisations/.*?$"
         }
       }
     },

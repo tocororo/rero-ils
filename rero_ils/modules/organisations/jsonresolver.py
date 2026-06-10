@@ -19,10 +19,10 @@
 
 import jsonresolver
 
-from ..jsonresolver import resolve_json_refs
+from ..jsonresolver import resolve_json_refs, RERO_ILS_HOST
 
 
-@jsonresolver.route("/api/organisations/<pid>", host="bib.rero.ch")
+@jsonresolver.route("/api/organisations/<pid>", host=RERO_ILS_HOST)
 def organisation_resolver(pid):
     """Organisation resolver."""
     return resolve_json_refs("org", pid)

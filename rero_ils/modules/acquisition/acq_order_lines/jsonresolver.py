@@ -19,10 +19,10 @@
 
 import jsonresolver
 
-from rero_ils.modules.jsonresolver import resolve_json_refs
+from rero_ils.modules.jsonresolver import resolve_json_refs, RERO_ILS_HOST
 
 
-@jsonresolver.route("/api/acq_order_lines/<pid>", host="bib.rero.ch")
+@jsonresolver.route("/api/acq_order_lines/<pid>", host=RERO_ILS_HOST)
 def acq_order_line_resolver(pid):
     """Resolver for Acquisition Order Line record."""
     return resolve_json_refs("acol", pid)
