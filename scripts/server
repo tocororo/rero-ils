@@ -81,7 +81,7 @@ if ! options=$(getopt -o nl: -l no-worker,loglevel: -- "$@"); then
   exit 1
 fi
 
-CELERY_LOG_LEVEL="INFO"
+CELERY_LOG_LEVEL="DEBUG"
 worker=true
 while test $# -gt 0
 do

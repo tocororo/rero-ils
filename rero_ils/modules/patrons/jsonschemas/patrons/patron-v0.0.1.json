@@ -315,7 +315,8 @@
             "ger",
             "eng",
             "fre",
-            "ita"
+            "ita",
+            "spa"
           ],
           "widget": {
             "formlyConfig": {
@@ -338,6 +339,10 @@
                   {
                     "label": "lang_ita",
                     "value": "ita"
+                  },
+                  {
+                    "label": "lang_spa",
+                    "value": "spa"
                   }
                 ]
               }

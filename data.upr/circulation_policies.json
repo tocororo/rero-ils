@@ -21,7 +21,7 @@
       {
         "type": "overdue",
         "days_delay": 7,
-        "fee_amount": 0,
+        "fee_amount": 0.1,
         "communication_channel": "patron_setting",
         "template": "email/overdue"
       }
@@ -34,9 +34,9 @@
     "organisation": {"$ref": "https://bib.upr.edu.cu/api/organisations/1"},
     "checkout_duration": 1,
     "allow_requests": false,
-    "pickup_hold_duration": 0,
+    "pickup_hold_duration": 5,
     "number_renewals": 0,
-    "renewal_duration": 0,
+    "renewal_duration": 2,
     "policy_library_level": false,
     "is_default": false
   },
@@ -62,7 +62,7 @@
       {
         "type": "overdue",
         "days_delay": 7,
-        "fee_amount": 0,
+        "fee_amount": 0.1,
         "communication_channel": "patron_setting",
         "template": "email/overdue"
       }
@@ -75,9 +75,9 @@
     "organisation": {"$ref": "https://bib.upr.edu.cu/api/organisations/2"},
     "checkout_duration": 1,
     "allow_requests": false,
-    "pickup_hold_duration": 0,
+    "pickup_hold_duration": 4,
     "number_renewals": 0,
-    "renewal_duration": 0,
+    "renewal_duration": 3,
     "policy_library_level": false,
     "is_default": false
   },
@@ -109,9 +109,9 @@
     "organisation": {"$ref": "https://bib.upr.edu.cu/api/organisations/3"},
     "checkout_duration": 1,
     "allow_requests": false,
-    "pickup_hold_duration": 0,
+    "pickup_hold_duration": 3,
     "number_renewals": 0,
-    "renewal_duration": 0,
+    "renewal_duration": 3,
     "policy_library_level": false,
     "is_default": false
   }
