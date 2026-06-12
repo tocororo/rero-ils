@@ -3,6 +3,12 @@
   Pinar del Río, Cuba
 */
 
+/* Override the compiled 50px height from footer.scss so the expanded
+   footer content is fully visible. */
+.rero-ils-footer {
+  height: auto !important;
+}
+
 /* Active item color in the libraries dropdown (overrides Bootstrap's blue) */
 .rero-ils-libraries-menu .dropdown-item.active,
 .rero-ils-libraries-menu .dropdown-item:active {
