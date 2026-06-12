@@ -4,7 +4,24 @@
   Universidad de Pinar del Río "Hermanos Saíz Montes de Oca"
 
 #}
-<section class="col-md-4 order-1 order-md-1 px-4 pt-4">
+
+{# --- Row 1: Acceso rápido (full width) ---------------------------------- #}
+<section class="col-12 px-4 pt-4">
+  <h5>{{ _('Acceso rápido') }}</h5>
+  <div class="d-flex flex-wrap">
+    {% for org in organisations %}
+      {% if not org.is_test_organisation() %}
+        <a href="{{ url_for('rero_ils.index_with_view_code', viewcode=org.code) }}"
+           class="btn btn-outline-success btn-sm mr-2 mb-2">
+          <i class="fa fa-book mr-1" aria-hidden="true"></i>{{ org.name }}
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+{# --- Row 2: Sobre la biblioteca (full width) ----------------------------- #}
+<section class="col-12 px-4 pt-3">
   <h5>{{ _('Sobre la Biblioteca de Vueltabajo') }}</h5>
   <p>
     {{ _('La Biblioteca de Vueltabajo integra los fondos bibliográficos físicos y digitales de las bibliotecas y centros de documentación de la provincia de Pinar del Río.') }}
@@ -20,21 +37,11 @@
   </p>
 </section>
 
-<section class="col-md-4 order-3 order-md-3 px-4 pt-4">
-  {%- include "rero_ils/_frontpage_organisation_link.html" %}
+{# --- Row 3: Placeholder estadísticas (dos bloques) ---------------------- #}
+<section class="col-md-6 px-4 pt-3">
+  {# Estadísticas 1 — reservado para uso futuro #}
 </section>
 
-<section class="col-md-4 order-2 order-md-2 px-4 pt-4">
-  <h5>{{ _('Acceso rápido') }}</h5>
-  <ul class="list-unstyled">
-    {% for org in organisations %}
-      {% if not org.is_test_organisation() %}
-        <li>
-          <a href="{{ url_for('rero_ils.index_with_view_code', viewcode=org.code) }}">
-            <i class="fa fa-book mr-1" aria-hidden="true"></i>{{ org.name }}
-          </a>
-        </li>
-      {% endif %}
-    {% endfor %}
-  </ul>
+<section class="col-md-6 px-4 pt-3">
+  {# Estadísticas 2 — reservado para uso futuro #}
 </section>
