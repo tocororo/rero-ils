@@ -87,17 +87,26 @@ def fix_upr_tag8(value: str, countries, languages):
         if not c15_17_country or not c35_37_language:
             return DEFAULT_008
 
-        country_start = value.index(c15_17_country)
+        # Search for country starting after the entry date (pos 6) so the
+        # code cannot accidentally match bytes inside the 6-digit date prefix.
+        country_start = value.index(c15_17_country, 6)
         lang_start = index_reversed(value, c35_37_language)
 
-        # If both codes point to the same position there is no room for
-        # the material-specific bytes — return the default.
+        # The language code must appear after the country code.
         if lang_start <= country_start:
             return DEFAULT_008
 
-        c18_34 = value[country_start:lang_start]
+        # Bytes between entry date and country code should hold positions
+        # 06-14 (type of date + two dates). Preserve them when legible.
+        c06_14_raw = value[6:country_start].ljust(9)[:9]
+        valid_date_types = set('abcdeikmnpqrstu|')
+        if c06_14_raw[0] not in valid_date_types:
+            c06_14_raw = 'b' + c06_14_raw[1:]
+        c06_14 = c06_14_raw
 
-        c06_14 = 'b'.ljust(9)
+        # Material-specific bytes (pos 18-34) live between the END of the
+        # country code and the START of the language code.
+        c18_34 = value[country_start + len(c15_17_country):lang_start]
 
         # Parse material-specific bytes from right to left, tolerating a
         # string that is shorter than expected.
@@ -218,11 +227,10 @@ def process_database(db_name, countries, languages):
             cf001.text = 'REROILS:' + cf001.text
 
         # Add document-type field 339
+        cf006 = record.find('{http://www.loc.gov/MARC21/slim}controlfield[@tag="006"]')
         is_thesis = (
             record.find('{http://www.loc.gov/MARC21/slim}datafield[@tag="502"]') is not None or
-            record.find('{http://www.loc.gov/MARC21/slim}datafield[@tag="500"]') is not None or
-            (record.find('{http://www.loc.gov/MARC21/slim}controlfield[@tag="006"]') is not None and
-             record.find('{http://www.loc.gov/MARC21/slim}controlfield[@tag="006"]').text == 'Tesis')
+            (cf006 is not None and cf006.text == 'Tesis')
         )
         df339 = ET.SubElement(record, '{http://www.loc.gov/MARC21/slim}datafield',
                               tag='339', ind1=' ', ind2=' ')
