@@ -180,6 +180,12 @@ def footer_message():
     return None
 
 
+@blueprint.add_app_template_global
+def all_organisations():
+    """Get all organisations for navigation bar."""
+    return Organisation.get_all()
+
+
 def prepare_jsonschema(schema):
     """Json schema prep."""
     schema = copy.deepcopy(schema)
