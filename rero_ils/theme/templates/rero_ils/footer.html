@@ -68,5 +68,22 @@
       </div>
 
     </div>
+
+    {# --- Original credit line ------------------------------------------- #}
+    <div class="border-top border-secondary pt-3 pb-1">
+      <p class="text-center text-white-50 small mb-0">
+        {{ _('Powered by') }} <a href="https://www.rero.ch/produits/ils" target="_blank" class="text-white-50">RERO ILS</a> &amp;
+        <a href="https://inveniosoftware.org/" target="_blank" rel="noopener" class="text-white-50">Invenio</a> |
+        <a href="https://github.com/rero/rero-ils/releases/tag/v{{version}}" target="_blank" class="text-white-50">v{{ version }}</a>
+        {% if config.RERO_ILS_PRIVACY_POLICY_URL %} |
+          <a href="{{ config.RERO_ILS_PRIVACY_POLICY_URL }}" target="_blank" class="text-white-50">{{ _('Privacy policy') }}</a>
+        {% endif %}
+        {% set footer_message = footer_message() %}
+        {% if footer_message %} |
+          <span class="text-white-50">{{ footer_message }}</span>
+        {% endif %}
+      </p>
+    </div>
+
   </div>
 </footer>
