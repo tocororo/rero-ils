@@ -1,10 +1,16 @@
-@layer bootstrap {
-  /* Biblioteca de Vueltabajo — Global view
-     Deep forest green inspired by the sierras and valleys of Pinar del Río */
-  body#view-global nav.rero-ils-header {
-    background-color: #1b5e20 !important;
-  }
+/*
+  Biblioteca de Vueltabajo — Global view
+  Deep forest green inspired by the sierras and valleys of Pinar del Río.
 
+  The background-color rule is intentionally outside @layer so it has
+  the highest cascade priority and cannot be overridden by Bootstrap's
+  bg-dark utility (which uses !important inside @layer bootstrap).
+*/
+body#view-global nav.rero-ils-header {
+  background-color: #1b5e20;
+}
+
+@layer bootstrap {
   body#view-global nav.rero-ils-header img.rero-ils-logo {
     display: none;
   }
