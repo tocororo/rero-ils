@@ -5,6 +5,22 @@
 
 #}
 
+{# --- Org header: only shown when browsing a specific organisation -------- #}
+{%- if viewcode != config.RERO_ILS_SEARCH_GLOBAL_VIEW_CODE %}
+  {%- for org in organisations if org.code == viewcode %}
+  <section class="col-12 px-4 pt-4">
+    <h4>{{ org.name }}</h4>
+    <ul class="list-unstyled mb-0">
+      {%- for lib in org.get_libraries() %}
+        <li class="small text-muted">
+          <i class="fa fa-book mr-1" aria-hidden="true"></i>{{ lib.get('name') }}
+        </li>
+      {%- endfor %}
+    </ul>
+  </section>
+  {%- endfor %}
+{%- endif %}
+
 {# --- Row 1: Acceso rápido (full width) ---------------------------------- #}
 <section class="col-12 px-4 pt-4">
   <h5>{{ _('Acceso rápido') }}</h5>
