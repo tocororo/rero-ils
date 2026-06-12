@@ -1,10 +1,12 @@
-@layer bootstrap {
-  /* Ministerio de Educación — Pinar del Río
-     Teal green — the growth of knowledge, like the forests of Guanahacabibes */
-  body#view-mined-pr nav.rero-ils-header {
-    background-color: #00695c !important;
-  }
+/*
+  Ministerio de Educación — Pinar del Río
+  Teal green — the growth of knowledge, like the forests of Guanahacabibes.
+*/
+body#view-mined-pr nav.rero-ils-header {
+  background-color: #00695c;
+}
 
+@layer bootstrap {
   body#view-mined-pr nav.rero-ils-header img.rero-ils-logo {
     display: none;
   }

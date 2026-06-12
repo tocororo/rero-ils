@@ -16,19 +16,57 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #}
-<footer class="rero-ils-footer border-top mt-4 bg-light d-flex">
-  <div class="container d-flex justify-content-center align-items-center py-4">
-    <p class="text-secondary mb-0">
-      {{ _('Powered by') }} <a href="https://www.rero.ch/produits/ils" target="_blank">RERO ILS</a> &
-      <a href="https://inveniosoftware.org/" target="_blank" rel="noopener">Invenio</a> |
-      <a href="https://github.com/rero/rero-ils/releases/tag/v{{version}}" target="_blank">v{{ version }}</a>
-      {% if config.RERO_ILS_PRIVACY_POLICY_URL %} |
-      <a href="{{ config.RERO_ILS_PRIVACY_POLICY_URL }}" target="_blank">{{ _('Privacy policy') }}</a>
-      {% endif %}
-      {% set footer_message = footer_message() %}
-      {% if footer_message %} |
-        <a>{{ footer_message }}</a>
-      {% endif %}
-    </p>
+<footer class="rero-ils-footer border-top mt-4 bg-dark text-white">
+  <div class="container py-4">
+    <div class="row">
+
+      {# --- Horario -------------------------------------------------------- #}
+      <div class="col-md-4 mb-4">
+        <h6 class="text-uppercase font-weight-bold mb-3">{{ _('Horario de la Biblioteca') }}</h6>
+        <ul class="list-unstyled small">
+          <li>{{ _('Lunes a Jueves:') }} 8:00 am – 10:00 pm</li>
+          <li>{{ _('Viernes:') }} 8:00 am – 5:00 pm</li>
+          <li>{{ _('Sábados:') }} 8:00 am – 12:00 m</li>
+        </ul>
+        <ul class="list-unstyled small mt-2">
+          <li><a href="#" class="text-white-50">{{ _('Código de ética del usuario') }}</a></li>
+          <li><a href="#" class="text-white-50">{{ _('Regulaciones de la Biblioteca') }}</a></li>
+          <li><a href="#" class="text-white-50">CRAI</a></li>
+        </ul>
+      </div>
+
+      {# --- Contáctenos ---------------------------------------------------- #}
+      <div class="col-md-4 mb-4">
+        <h6 class="text-uppercase font-weight-bold mb-3">{{ _('Contáctenos') }}</h6>
+        <p class="small">
+          {{ _('Puede contactarnos en los horarios establecidos o enviarnos sus comentarios a través del correo electrónico.') }}
+        </p>
+        <ul class="list-unstyled small">
+          <li><i class="fa fa-map-marker mr-2" aria-hidden="true"></i>Calle Martí 300 e/ González Alcorta y 27 de Noviembre, Pinar del Río, Cuba.</li>
+          <li class="mt-1"><i class="fa fa-phone mr-2" aria-hidden="true"></i>+53 48 755032</li>
+          <li class="mt-1"><i class="fa fa-envelope mr-2" aria-hidden="true"></i><a href="mailto:biblioteca@upr.edu.cu" class="text-white-50">biblioteca@upr.edu.cu</a></li>
+        </ul>
+      </div>
+
+      {# --- Créditos ------------------------------------------------------- #}
+      <div class="col-md-4 mb-4">
+        <h6 class="text-uppercase font-weight-bold mb-3">{{ _('Biblioteca de Vueltabajo') }}</h6>
+        <p class="small text-white-50">
+          {{ _('Powered by') }} <a href="https://www.rero.ch/produits/ils" target="_blank" class="text-white-50">RERO ILS</a> &amp;
+          <a href="https://inveniosoftware.org/" target="_blank" rel="noopener" class="text-white-50">Invenio</a>
+          | <a href="https://github.com/rero/rero-ils/releases/tag/v{{version}}" target="_blank" class="text-white-50">v{{ version }}</a>
+        </p>
+        {% if config.RERO_ILS_PRIVACY_POLICY_URL %}
+        <p class="small">
+          <a href="{{ config.RERO_ILS_PRIVACY_POLICY_URL }}" target="_blank" class="text-white-50">{{ _('Privacy policy') }}</a>
+        </p>
+        {% endif %}
+        {% set footer_message = footer_message() %}
+        {% if footer_message %}
+        <p class="small text-white-50">{{ footer_message }}</p>
+        {% endif %}
+      </div>
+
+    </div>
   </div>
 </footer>

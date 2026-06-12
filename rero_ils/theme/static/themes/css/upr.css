@@ -1,10 +1,12 @@
-@layer bootstrap {
-  /* Universidad de Pinar del Río "Hermanos Saíz Montes de Oca"
-     Emerald green — knowledge growing from Cuban soil */
-  body#view-upr nav.rero-ils-header {
-    background-color: #2e7d32 !important;
-  }
+/*
+  Universidad de Pinar del Río "Hermanos Saíz Montes de Oca"
+  Emerald green — knowledge growing from Cuban soil.
+*/
+body#view-upr nav.rero-ils-header {
+  background-color: #2e7d32;
+}
 
+@layer bootstrap {
   body#view-upr nav.rero-ils-header img.rero-ils-logo {
     display: none;
   }

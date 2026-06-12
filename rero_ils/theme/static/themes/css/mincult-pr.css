@@ -1,10 +1,12 @@
-@layer bootstrap {
-  /* Ministerio de Cultura — Pinar del Río
-     Olive green — culture rooted in the land, heritage of Vueltabajo */
-  body#view-mincult-pr nav.rero-ils-header {
-    background-color: #33691e !important;
-  }
+/*
+  Ministerio de Cultura — Pinar del Río
+  Olive green — culture rooted in the land, heritage of Vueltabajo.
+*/
+body#view-mincult-pr nav.rero-ils-header {
+  background-color: #33691e;
+}
 
+@layer bootstrap {
   body#view-mincult-pr nav.rero-ils-header img.rero-ils-logo {
     display: none;
   }
