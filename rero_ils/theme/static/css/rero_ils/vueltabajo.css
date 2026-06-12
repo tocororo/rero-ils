@@ -1,0 +1,42 @@
+/*
+  Biblioteca de Vueltabajo — Shared styles
+  Pinar del Río, Cuba
+
+  Colors inspired by the natural landscape of Vueltabajo:
+  - Forest green: the sierras de los Órganos and del Rosario
+  - Tobacco green: the world-famous tobacco leaf
+  - Viñales jade: the lush Valle de Viñales
+*/
+
+/* === Organization navigation bar === */
+
+.rero-ils-org-bar {
+  background-color: #e8f5e9;
+  border-bottom: 1px solid #c8e6c9;
+  font-size: 0.8125rem;
+}
+
+.rero-ils-org-bar-label {
+  color: #388e3c;
+  opacity: 0.75;
+  flex-shrink: 0;
+}
+
+.rero-ils-org-bar-link {
+  color: #2e7d32;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.rero-ils-org-bar-link:hover {
+  color: #1b5e20;
+  text-decoration: underline;
+}
+
+.rero-ils-org-bar-link.active {
+  font-weight: 600;
+  color: #1b5e20;
+  border-bottom: 2px solid #43a047;
+  padding-bottom: 1px;
+}

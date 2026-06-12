@@ -18,6 +18,26 @@
 #}
 {%- from "rero_ils/macros/header_menus.html" import menu, submenu, mobile_menu -%}
 <header class="sticky-top">
+  <!-- LIBRARY NAVIGATION BAR :: Quick access to all organisations ======= -->
+  <nav class="rero-ils-org-bar py-1" aria-label="{{ _('Libraries') }}">
+    <div class="container d-flex align-items-center justify-content-end flex-wrap">
+      <span class="rero-ils-org-bar-label mr-2">
+        <i class="fa fa-university" aria-hidden="true"></i>
+      </span>
+      <a href="{{ url_for('rero_ils.index') }}"
+         class="rero-ils-org-bar-link mr-3{% if viewcode == config.RERO_ILS_SEARCH_GLOBAL_VIEW_CODE %} active{% endif %}">
+        {{ _('All libraries') }}
+      </a>
+      {% for org in all_organisations() %}
+        {% if not org.is_test_organisation() %}
+          <a href="{{ url_for('rero_ils.index_with_view_code', viewcode=org.code) }}"
+             class="rero-ils-org-bar-link mr-3{% if org.code == viewcode %} active{% endif %}">
+            {{ org.name }}
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </nav>
   {%- block navbar %}
     <!-- SEARCH NAVBAR :: Brand / search / expand ========================= -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark rero-ils-header">

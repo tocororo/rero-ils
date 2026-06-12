@@ -182,8 +182,8 @@ def _(x):
 # Personalized homepage
 RERO_ILS_PERSONALIZED_CSS_BY_VIEW = True
 RERO_ILS_PERSONALIZED_HOMEPAGE_BY_VIEW = False
-RERO_ILS_HOMEPAGE_GENERAL_BLOCK = "rero_ils/_frontpage_block_test.html"
-RERO_ILS_HOMEPAGE_GENERAL_SLOGAN = "rero_ils/_frontpage_slogan_test.html"
+RERO_ILS_HOMEPAGE_GENERAL_BLOCK = "rero_ils/_frontpage_block_vueltabajo.html"
+RERO_ILS_HOMEPAGE_GENERAL_SLOGAN = "rero_ils/_frontpage_slogan_vueltabajo.html"
 #: Link to privacy and data protection policy for the instance
 RERO_ILS_PRIVACY_POLICY_URL = (
     "https://www.rero.ch/legal/privacy/declaration_protection_donnees_RERO-ILS.pdf"

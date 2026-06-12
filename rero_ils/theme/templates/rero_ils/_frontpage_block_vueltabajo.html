@@ -1,0 +1,40 @@
+{# -*- coding: utf-8 -*-
+
+  Biblioteca de Vueltabajo
+  Universidad de Pinar del Río "Hermanos Saíz Montes de Oca"
+
+#}
+<section class="col-md-4 order-1 order-md-1 px-4 pt-4">
+  <h5>{{ _('Sobre la Biblioteca de Vueltabajo') }}</h5>
+  <p>
+    {{ _('La Biblioteca de Vueltabajo integra los fondos bibliográficos físicos y digitales de las bibliotecas y centros de documentación de la provincia de Pinar del Río.') }}
+  </p>
+  <p>
+    {{ _('Puedes descubrir, buscar y consultar documentos de las bibliotecas universitarias, públicas y escolares de la provincia.') }}
+  </p>
+  <h5>{{ _('Acerca del proyecto') }}</h5>
+  <p>
+    {{ _('Una iniciativa de la') }}
+    <strong>{{ _('Universidad de Pinar del Río "Hermanos Saíz Montes de Oca"') }}</strong>
+    {{ _('en colaboración con el Ministerio de Cultura y el Ministerio de Educación de la provincia.') }}
+  </p>
+</section>
+
+<section class="col-md-4 order-3 order-md-3 px-4 pt-4">
+  {%- include "rero_ils/_frontpage_organisation_link.html" %}
+</section>
+
+<section class="col-md-4 order-2 order-md-2 px-4 pt-4">
+  <h5>{{ _('Acceso rápido') }}</h5>
+  <ul class="list-unstyled">
+    {% for org in organisations %}
+      {% if not org.is_test_organisation() %}
+        <li>
+          <a href="{{ url_for('rero_ils.index_with_view_code', viewcode=org.code) }}">
+            <i class="fa fa-book mr-1" aria-hidden="true"></i>{{ org.name }}
+          </a>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</section>

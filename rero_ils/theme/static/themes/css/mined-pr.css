@@ -1,0 +1,43 @@
+@layer bootstrap {
+  /* Ministerio de Educación — Pinar del Río
+     Teal green — the growth of knowledge, like the forests of Guanahacabibes */
+  body#view-mined-pr nav.rero-ils-header {
+    background-color: #00695c !important;
+  }
+
+  body#view-mined-pr nav.rero-ils-header img.rero-ils-logo {
+    display: none;
+  }
+
+  div#mined-pr-logo {
+    min-height: 44px;
+    max-height: 44px;
+    min-width: 58px;
+  }
+
+  #view-mined-pr .rero-ils-frontpage {
+    background: linear-gradient(135deg, #004d40 0%, #00695c 60%, #00897b 100%);
+  }
+
+  #view-mined-pr .rero-slogan {
+    margin-bottom: 4em;
+  }
+
+  @media (max-width: 576px) {
+    .h1, h1 {
+      font-size: 1.5rem;
+    }
+
+    .h2, h2 {
+      font-size: 1.2rem;
+    }
+
+    #view-mined-pr .rero-ils-frontpage {
+      height: 20vh;
+    }
+
+    #view-mined-pr .rero-slogan {
+      margin-bottom: 1em;
+    }
+  }
+}
