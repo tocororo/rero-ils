@@ -21,7 +21,57 @@
   {%- endfor %}
 {%- endif %}
 
-{# --- Row 1: Acceso rápido (full width) ---------------------------------- #}
+{# --- Row 1: Estadísticas generales (full width) ------------------------- #}
+{%- set stats = public_stats(viewcode) %}
+{%- if stats %}
+<section class="col-12 px-4 pt-4">
+  <h5>{{ _('Estadísticas') }}</h5>
+  <div class="row text-center">
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card border-success">
+        <div class="card-body py-3">
+          <p class="display-4 text-success font-weight-bold mb-1">{{ stats.documents | int }}</p>
+          <p class="text-muted small mb-0">
+            <i class="fa fa-file-text-o mr-1" aria-hidden="true"></i>{{ _('Documentos') }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card border-success">
+        <div class="card-body py-3">
+          <p class="display-4 text-success font-weight-bold mb-1">{{ stats.items | int }}</p>
+          <p class="text-muted small mb-0">
+            <i class="fa fa-book mr-1" aria-hidden="true"></i>{{ _('Ejemplares') }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card border-success">
+        <div class="card-body py-3">
+          <p class="display-4 text-success font-weight-bold mb-1">{{ stats.libraries | int }}</p>
+          <p class="text-muted small mb-0">
+            <i class="fa fa-university mr-1" aria-hidden="true"></i>{{ _('Bibliotecas') }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card border-success">
+        <div class="card-body py-3">
+          <p class="display-4 text-success font-weight-bold mb-1">{{ stats.patrons | int }}</p>
+          <p class="text-muted small mb-0">
+            <i class="fa fa-users mr-1" aria-hidden="true"></i>{{ _('Usuarios') }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+{# --- Row 2: Acceso rápido (full width) ---------------------------------- #}
 <section class="col-12 px-4 pt-4">
   <h5>{{ _('Acceso rápido') }}</h5>
   <div class="d-flex flex-wrap">
@@ -36,7 +86,7 @@
   </div>
 </section>
 
-{# --- Row 2: Sobre la biblioteca (full width) ----------------------------- #}
+{# --- Row 3: Sobre la biblioteca (full width) ----------------------------- #}
 <section class="col-12 px-4 pt-3">
   <h5>{{ _('Sobre la Biblioteca de Vueltabajo') }}</h5>
   <p>
@@ -53,11 +103,11 @@
   </p>
 </section>
 
-{# --- Row 3: Placeholder estadísticas (dos bloques) ---------------------- #}
+{# --- Row 4: Placeholder estadísticas adicionales (dos bloques) ---------- #}
 <section class="col-md-6 px-4 pt-3">
-  {# Estadísticas 1 — reservado para uso futuro #}
+  {# Estadísticas adicionales 1 — reservado para uso futuro #}
 </section>
 
 <section class="col-md-6 px-4 pt-3">
-  {# Estadísticas 2 — reservado para uso futuro #}
+  {# Estadísticas adicionales 2 — reservado para uso futuro #}
 </section>

@@ -40,8 +40,12 @@ from invenio_jsonschemas import current_jsonschemas
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_jsonschemas.proxies import current_refresolver_store
 
+from rero_ils.modules.documents.api import DocumentsSearch
+from rero_ils.modules.items.api import ItemsSearch
+from rero_ils.modules.libraries.api import LibrariesSearch
 from rero_ils.modules.messages import Message
 from rero_ils.modules.organisations.api import Organisation
+from rero_ils.modules.patrons.api import PatronsSearch
 from rero_ils.modules.utils import cached
 from rero_ils.permissions import can_access_professional_view
 
@@ -184,6 +188,42 @@ def footer_message():
 def all_organisations():
     """Get all organisations for navigation bar."""
     return Organisation.get_all()
+
+
+@blueprint.add_app_template_global
+def public_stats(viewcode=None):
+    """Return public catalogue statistics, optionally scoped to one organisation.
+
+    Queries are performed against Elasticsearch and are therefore fast
+    (no database round-trips).  Results are intentionally kept simple so
+    they can be rendered directly in a Jinja template.
+    """
+    global_view = current_app.config.get("RERO_ILS_SEARCH_GLOBAL_VIEW_CODE")
+    org_pid = None
+    if viewcode and viewcode != global_view:
+        org = Organisation.get_record_by_viewcode(viewcode)
+        if org:
+            org_pid = org["pid"]
+
+    def _filter_org(search):
+        if org_pid:
+            return search.filter("term", **{"organisation__pid": org_pid})
+        return search
+
+    try:
+        documents = _filter_org(DocumentsSearch()).count()
+        items = _filter_org(ItemsSearch()).count()
+        libraries = _filter_org(LibrariesSearch()).count()
+        patrons = _filter_org(PatronsSearch()).count()
+    except Exception:
+        return {}
+
+    return {
+        "documents": documents,
+        "items": items,
+        "libraries": libraries,
+        "patrons": patrons,
+    }
 
 
 def prepare_jsonschema(schema):
