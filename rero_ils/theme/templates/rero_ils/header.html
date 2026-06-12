@@ -21,7 +21,7 @@
   {%- block navbar %}
     <!-- SEARCH NAVBAR :: Brand / search / expand ========================= -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark rero-ils-header">
-      <div class="container d-flex align-self-center justify-content-between">
+      <div class="container d-flex align-self-center justify-content-start">
         {%- block navbar_brand %}
           {%- if config.THEME_LOGO %}
             <a href="/{% if viewcode != config.RERO_ILS_SEARCH_GLOBAL_VIEW_CODE %}{{ viewcode }}{% endif %}" class="navbar-brand pr-2" id="homepage-logo" aria-label="{{ _(config.THEME_SITENAME) }} — {{ _('Home') }}">

@@ -90,7 +90,7 @@ def main():
         if not os.path.exists(mrcxml):
             print(f'  WARNING: {mrcxml} not found — skipping {db}')
             continue
-
+        print(mrcxml)          
         tree = ET.parse(mrcxml)
         root = tree.getroot()
         records = root.findall(f'{{{MARC_NS}}}record')
