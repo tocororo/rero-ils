@@ -57,6 +57,16 @@
       <button type="submit" class="btn btn-primary btn-lg btn-block mb-2"><i class="fa fa-sign-in"></i>
         {{_('Log In')}}</button>
     </form>
+    {%- if config.OAUTHCLIENT_REMOTE_APPS %}
+    <hr class="my-3">
+    {%- for name, app in config.OAUTHCLIENT_REMOTE_APPS.items() %}
+    <a href="{{ url_for('invenio_oauthclient.login', remote_app=name) }}"
+       class="btn btn-secondary btn-lg btn-block mb-2">
+      <i class="{{ app.get('icon', 'fa fa-university') }}"></i>
+      {{ app.get('title', name) }}
+    </a>
+    {%- endfor %}
+    {%- endif %}
     {%- endwith %}
     {%- endblock form_outer %}
   </div>

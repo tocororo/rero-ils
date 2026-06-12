@@ -4082,6 +4082,27 @@ SIP2_SUMMARY_FIELDS = {
 # OAuth base template
 OAUTH2SERVER_COVER_TEMPLATE = "rero_ils/oauth/base.html"
 
+# ---------------------------------------------------------------------------
+# Dex OpenID institutional authentication
+# ---------------------------------------------------------------------------
+# Override DEX_APP_CREDENTIALS, DEX_BASE_URL, and DEX_TITLE in invenio.cfg.
+# Example invenio.cfg:
+#   DEX_APP_CREDENTIALS = {"consumer_key": "myapp", "consumer_secret": "..."}
+#   DEX_BASE_URL = "https://idp.example.com"
+#   DEX_TITLE = "Universidad XYZ"
+# ---------------------------------------------------------------------------
+from .oauth.dex import DexOAuthSettingsHelper
+from .oauth.registration_form import dex_registration_form
+
+_dex = DexOAuthSettingsHelper()
+OAUTHCLIENT_REMOTE_APPS = dict(dex=_dex.remote_app)
+
+#: Credentials placeholder — override with real values in invenio.cfg.
+DEX_APP_CREDENTIALS = dict(consumer_key="", consumer_secret="")
+
+#: Remove the password field from the OAuth sign-up form.
+OAUTHCLIENT_SIGNUP_FORM = dex_registration_form
+
 # STOP WORDS
 # Disregarded articles for sorting processes
 # ==========
