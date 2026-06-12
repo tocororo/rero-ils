@@ -44,7 +44,7 @@ from rero_ils.modules.documents.api import DocumentsSearch
 from rero_ils.modules.items.api import ItemsSearch
 from rero_ils.modules.libraries.api import LibrariesSearch
 from rero_ils.modules.messages import Message
-from rero_ils.modules.organisations.api import Organisation, OrganisationsSearch
+from rero_ils.modules.organisations.api import Organisation
 from rero_ils.modules.patrons.api import PatronsSearch
 from rero_ils.modules.utils import cached
 from rero_ils.permissions import can_access_professional_view
@@ -192,46 +192,38 @@ def all_organisations():
 
 @blueprint.add_app_template_global
 def public_stats(viewcode=None):
-    """Return catalogue statistics broken down by org (global) or library (org view).
+    """Return public catalogue statistics, optionally scoped to one organisation.
 
-    - Global view  → list of {name, documents, items, libraries} per organisation.
-    - Org view     → list of {name, documents, items} per library in that org.
-
-    All queries hit Elasticsearch directly (no DB round-trips).
-    Returns an empty dict on any error so the template can hide the block.
+    Queries are performed against Elasticsearch and are therefore fast
+    (no database round-trips).  Results are intentionally kept simple so
+    they can be rendered directly in a Jinja template.
     """
     global_view = current_app.config.get("RERO_ILS_SEARCH_GLOBAL_VIEW_CODE")
-    is_global = not viewcode or viewcode == global_view
+    org_pid = None
+    if viewcode and viewcode != global_view:
+        org = Organisation.get_record_by_viewcode(viewcode)
+        if org:
+            org_pid = org["pid"]
+
+    def _filter_org(search):
+        if org_pid:
+            return search.filter("term", **{"organisation__pid": org_pid})
+        return search
 
     try:
-        if is_global:
-            rows = []
-            for org in Organisation.get_all():
-                if org.is_test_organisation():
-                    continue
-                pid = org["pid"]
-                rows.append({
-                    "name": org["name"],
-                    "documents": DocumentsSearch().filter("term", organisation__pid=pid).count(),
-                    "items": ItemsSearch().filter("term", organisation__pid=pid).count(),
-                    "libraries": LibrariesSearch().filter("term", organisation__pid=pid).count(),
-                })
-            return {"mode": "global", "rows": rows}
-        else:
-            org = Organisation.get_record_by_viewcode(viewcode)
-            if not org:
-                return {}
-            rows = []
-            for lib in org.get_libraries():
-                lib_pid = lib["pid"]
-                rows.append({
-                    "name": lib["name"],
-                    "documents": DocumentsSearch().filter("term", library_pid=lib_pid).count(),
-                    "items": ItemsSearch().filter("term", library__pid=lib_pid).count(),
-                })
-            return {"mode": "org", "rows": rows}
+        documents = _filter_org(DocumentsSearch()).count()
+        items = _filter_org(ItemsSearch()).count()
+        libraries = _filter_org(LibrariesSearch()).count()
+        patrons = _filter_org(PatronsSearch()).count()
     except Exception:
         return {}
+
+    return {
+        "documents": documents,
+        "items": items,
+        "libraries": libraries,
+        "patrons": patrons,
+    }
 
 
 def prepare_jsonschema(schema):

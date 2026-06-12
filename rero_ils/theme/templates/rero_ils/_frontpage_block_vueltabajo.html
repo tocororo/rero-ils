@@ -21,64 +21,53 @@
   {%- endfor %}
 {%- endif %}
 
-{# --- Row 1: Estadísticas desglosadas (full width) ------------------------ #}
+{# --- Row 1: Estadísticas generales (full width) ------------------------- #}
 {%- set stats = public_stats(viewcode) %}
-{%- if stats and stats.rows %}
+{%- if stats %}
 <section class="col-12 px-4 pt-4">
   <h5>{{ _('Estadísticas') }}</h5>
-  {%- if stats.mode == 'global' %}
-  {# Global: desglose por organización #}
-  <table class="table table-sm table-hover table-bordered">
-    <thead class="thead-light">
-      <tr>
-        <th>{{ _('Organización') }}</th>
-        <th class="text-right">
-          <i class="fa fa-file-text-o mr-1" aria-hidden="true"></i>{{ _('Documentos') }}
-        </th>
-        <th class="text-right">
-          <i class="fa fa-book mr-1" aria-hidden="true"></i>{{ _('Ejemplares') }}
-        </th>
-        <th class="text-right">
-          <i class="fa fa-university mr-1" aria-hidden="true"></i>{{ _('Bibliotecas') }}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for row in stats.rows %}
-      <tr>
-        <td>{{ row.name }}</td>
-        <td class="text-right">{{ row.documents }}</td>
-        <td class="text-right">{{ row.items }}</td>
-        <td class="text-right">{{ row.libraries }}</td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  {# Org: desglose por biblioteca #}
-  <table class="table table-sm table-hover table-bordered">
-    <thead class="thead-light">
-      <tr>
-        <th>{{ _('Biblioteca') }}</th>
-        <th class="text-right">
-          <i class="fa fa-file-text-o mr-1" aria-hidden="true"></i>{{ _('Documentos') }}
-        </th>
-        <th class="text-right">
-          <i class="fa fa-book mr-1" aria-hidden="true"></i>{{ _('Ejemplares') }}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for row in stats.rows %}
-      <tr>
-        <td>{{ row.name }}</td>
-        <td class="text-right">{{ row.documents }}</td>
-        <td class="text-right">{{ row.items }}</td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
-  {%- endif %}
+  <div class="row text-center">
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card border-success">
+        <div class="card-body py-3">
+          <p class="display-4 text-success font-weight-bold mb-1">{{ stats.documents | int }}</p>
+          <p class="text-muted small mb-0">
+            <i class="fa fa-file-text-o mr-1" aria-hidden="true"></i>{{ _('Documentos') }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card border-success">
+        <div class="card-body py-3">
+          <p class="display-4 text-success font-weight-bold mb-1">{{ stats.items | int }}</p>
+          <p class="text-muted small mb-0">
+            <i class="fa fa-book mr-1" aria-hidden="true"></i>{{ _('Ejemplares') }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card border-success">
+        <div class="card-body py-3">
+          <p class="display-4 text-success font-weight-bold mb-1">{{ stats.libraries | int }}</p>
+          <p class="text-muted small mb-0">
+            <i class="fa fa-university mr-1" aria-hidden="true"></i>{{ _('Bibliotecas') }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card border-success">
+        <div class="card-body py-3">
+          <p class="display-4 text-success font-weight-bold mb-1">{{ stats.patrons | int }}</p>
+          <p class="text-muted small mb-0">
+            <i class="fa fa-users mr-1" aria-hidden="true"></i>{{ _('Usuarios') }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 {%- endif %}
 
