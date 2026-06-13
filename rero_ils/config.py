@@ -4094,11 +4094,16 @@ OAUTH2SERVER_COVER_TEMPLATE = "rero_ils/oauth/base.html"
 from .oauth.dex import DexOAuthSettingsHelper
 from .oauth.registration_form import dex_registration_form
 
-_dex = DexOAuthSettingsHelper()
+_dex = DexOAuthSettingsHelper(
+    title="Identidades UPR",
+    description="Proveedor de identidades de la UPR", 
+    base_url='https://idp.upr.edu.cu',
+    # base_url='http://127.0.0.1:5556',
+)
 OAUTHCLIENT_REMOTE_APPS = dict(dex=_dex.remote_app)
 
 #: Credentials placeholder — override with real values in invenio.cfg.
-DEX_APP_CREDENTIALS = dict(consumer_key="", consumer_secret="")
+DEX_APP_CREDENTIALS = dict(consumer_key="localhost-alma", consumer_secret="yoddur_strongs04dlds_secret_hedWsre")
 
 #: Remove the password field from the OAuth sign-up form.
 OAUTHCLIENT_SIGNUP_FORM = dex_registration_form
