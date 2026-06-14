@@ -1,112 +1,72 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
+```
+# Logs and temp files
+*.log
+*.tmp
+*.swp
 
-# Idea software family
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
 .idea/
 
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Application logs
-logs/*
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*,cover
-.pytest_cache/
-test.db
-
-# end-to-end testing
-.e2e_screenshots
-
-# Translations
-*.mo
-
-# Django stuff:
-*.log
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Vim swapfiles
-.*.sw?
-
-celerybeat-schedule
-schedule.db
-
-# Environment variables
-.env
-.python-version
-
-# Virtual studio pref
-.vscode
-
-# Coverage xml file
-cov.xml
-
-# ES mapping files
-tmp/
-
-# Wiki search index (generated at runtime by `invenio flask_wiki init-index`)
-data/wiki/_index/
-
-# error files from documents creation
-data/*_errors.xml
-
-# Cypress
-tests/e2e/cypress/node_modules
-tests/e2e/cypress/cypress/videos
-tests/e2e/cypress/cypress/screenshots
-tests/e2e/cypress/cypress/integration/test
-
-# tests
-tests/data/documents_items_lofi_items.json
-
 # Dependencies
-/node_modules
+node_modules/
+venv/
+.venv/
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+dist/
+build/
+target/
+.gradle/
 
-# Macosx
+# OS generated files
 .DS_Store
+Thumbs.db
 
-# Files
-/data/files
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
 
+# Compiled files
+*.pyc
+*.class
+*.o
+*.exe
+*.dll
+*.so
+*.a
+*.obj
+*.out
+
+# Compressed files
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
+```
 data.upr/legacy.no
