@@ -1,0 +1,192 @@
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
+#
+# RERO ILS — Importación del catálogo legacy (pasos 2-6) por base de datos.
+#
+# Procesa cada biblioteca (BCT, BECSH, FCF, FCP) de forma independiente:
+#   1. marc21tojson  (MARC21 XML → JSON rero-ils)
+#   2. fixtures create (carga de documentos en la BD)
+#   3. reindex (opcional, con -r)
+#
+# Depende de los ficheros generados por legacy_import.py (paso 1).
+#
+# Uso:
+#   uv run scripts/import_legacy.upr
+#   uv run scripts/import_legacy.upr -d BCT              # solo una BD
+#   uv run scripts/import_legacy.upr -D ./data.upr       # ruta alternativa
+#   uv run scripts/import_legacy.upr -r                   # reindexar al final
+#   uv run scripts/import_legacy.upr -c                   # continuar si falla una BD
+
+DATA_PATH=./data.upr
+DATABASES=(BCT BECSH FCF FCP)
+SINGLE_DB=""
+DO_REINDEX=false
+STOP_EXECUTION=true
+
+NC='\033[0m'
+INFO_COLOR='\033[1;97;44m'
+SUCCESS_COLOR='\033[1;97;42m'
+ERROR_COLOR='\033[1;97;41m'
+STEP_COLOR='\033[1;97;46m'
+
+PROGRAM=$(basename "$0")
+
+msg()         { echo -e "${1}" 1>&2; }
+colored_msg() { msg "${1}[${2}]: ${3}${NC}"; }
+info_msg()    { colored_msg "${INFO_COLOR}"    "INFO"    "${1}"; }
+step_msg()    { colored_msg "${STEP_COLOR}"    "PASO"    "${1}"; }
+error_msg()   { colored_msg "${ERROR_COLOR}"   "ERROR"   "${1}"; }
+success_msg() { colored_msg "${SUCCESS_COLOR}" "SUCCESS" "${1}"; }
+
+error_msg+exit() { error_msg "${1}" && exit 1; }
+
+msg "PROGRAM: ${PROGRAM}"
+
+if [[ -z "${VIRTUAL_ENV}" ]]; then
+  error_msg+exit "Error - Launch this script via uv command:\n\tuv run ${PROGRAM}"
+fi
+
+while [ $# -gt 0 ]; do
+  case $1 in
+  -D|--data_path) DATA_PATH=$2; shift ;;
+  -d|--database)  SINGLE_DB=$2; shift ;;
+  -r|--reindex)   DO_REINDEX=true ;;
+  -c|--continue)  STOP_EXECUTION=false ;;
+  (--) shift; break ;;
+  (-*) error_msg+exit "$0: Unrecognized option $1" ;;
+  (*) break ;;
+  esac
+  shift
+done
+
+LEGACY_DIR="${DATA_PATH}/legacy"
+DB_DIR="${LEGACY_DIR}/db"
+
+if [[ ! -d "${DB_DIR}" ]]; then
+  error_msg+exit "Directory not found: ${DB_DIR}"
+fi
+
+# Determine which databases to process
+if [[ -n "${SINGLE_DB}" ]]; then
+  if [[ ! -d "${DB_DIR}/${SINGLE_DB}" ]]; then
+    error_msg+exit "Database directory not found: ${DB_DIR}/${SINGLE_DB}"
+  fi
+  DBS=("${SINGLE_DB}")
+  info_msg "Processing single database: ${SINGLE_DB}"
+else
+  DBS=("${DATABASES[@]}")
+  info_msg "Processing all databases: ${DBS[*]}"
+fi
+
+# ---------------------------------------------------------------------------
+# Step 3 — Pause cover URL queue worker
+# ---------------------------------------------------------------------------
+step_msg "3 — Pause cover URL queue worker"
+invenio reroils documents cover-url-queue-worker pause
+
+# ---------------------------------------------------------------------------
+# Process each database
+# ---------------------------------------------------------------------------
+TOTAL_GOOD=0
+TOTAL_ERROR=0
+
+for DB in "${DBS[@]}"; do
+  msg ""
+  info_msg "=== Processing database: ${DB} ==="
+
+  FIX_MRCXML="${DB_DIR}/${DB}/marc21.fix.mrcxml"
+  FIX_JSON="${DB_DIR}/${DB}/marc21.fix.json"
+  ERROR_MRCXML="${DB_DIR}/${DB}/marc21.tojson.error.mrcxml"
+
+  if [[ ! -f "${FIX_MRCXML}" ]]; then
+    error_msg "File not found: ${FIX_MRCXML}. Run legacy_import.py first."
+    if $STOP_EXECUTION; then
+      exit 1
+    else
+      continue
+    fi
+  fi
+
+  # ---------------------------------------------------------------------------
+  # Step 2 — Convert MARC21 XML to rero-ils JSON
+  # ---------------------------------------------------------------------------
+  step_msg "2 — marc21tojson: ${DB}"
+  eval "invenio reroils documents marc21tojson \
+    -t rero -v -r \
+    '${FIX_MRCXML}' \
+    '${FIX_JSON}' \
+    '${ERROR_MRCXML}'"
+  RC=$?
+
+  if [[ $RC -ne 0 ]]; then
+    error_msg "marc21tojson failed for ${DB} (exit code ${RC})"
+    if $STOP_EXECUTION; then
+      exit 1
+    else
+      continue
+    fi
+  fi
+
+  # Count converted records
+  if [[ -f "${FIX_JSON}" ]]; then
+    COUNT=$(python3 -c "import json; data=json.load(open('${FIX_JSON}')); print(len(data) if isinstance(data, list) else 0)" 2>/dev/null || echo "?")
+    success_msg "Converted ${COUNT} records for ${DB}"
+  fi
+
+  # ---------------------------------------------------------------------------
+  # Step 4 — Load documents via fixtures create
+  # ---------------------------------------------------------------------------
+  step_msg "4 — fixtures create: ${DB}"
+  eval "invenio reroils fixtures create \
+    --pid_type doc \
+    --schema 'https://bib.upr.edu.cu/schemas/documents/document-v0.0.1.json' \
+    --append \
+    --dont-stop \
+    '${FIX_JSON}'"
+  RC=$?
+
+  if [[ $RC -ne 0 ]]; then
+    error_msg "fixtures create failed for ${DB} (exit code ${RC})"
+    if $STOP_EXECUTION; then
+      exit 1
+    fi
+  else
+    success_msg "Documents loaded for ${DB}"
+  fi
+
+  # Count errors
+  if [[ -f "${ERROR_MRCXML}" ]]; then
+    ERR_COUNT=$(grep -c '<record>' "${ERROR_MRCXML}" 2>/dev/null || echo "0")
+    if [[ "${ERR_COUNT}" -gt 0 ]]; then
+      TOTAL_ERROR=$((TOTAL_ERROR + ERR_COUNT))
+      info_msg "Errors for ${DB}: ${ERR_COUNT} records in ${ERROR_MRCXML}"
+    fi
+  fi
+done
+
+# ---------------------------------------------------------------------------
+# Step 5 — Reindex documents (optional, with -r)
+# ---------------------------------------------------------------------------
+if $DO_REINDEX; then
+  msg ""
+  step_msg "5 — Reindex documents"
+  eval "invenio reroils index reindex -t doc --yes-i-know"
+  eval "invenio reroils index run --raise-on-error"
+  success_msg "Reindex complete"
+fi
+
+# ---------------------------------------------------------------------------
+# Step 6 — Resume cover URL queue worker
+# ---------------------------------------------------------------------------
+step_msg "6 — Resume cover URL queue worker"
+invenio reroils documents cover-url-queue-worker resume
+
+# ---------------------------------------------------------------------------
+# Done
+# ---------------------------------------------------------------------------
+msg ""
+success_msg "Import legacy complete!"
+if [[ $TOTAL_ERROR -gt 0 ]]; then
+  info_msg "Check error files for ${TOTAL_ERROR} records that could not be converted"
+fi
+exit 0

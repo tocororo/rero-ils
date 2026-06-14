@@ -67,16 +67,40 @@ Al terminar imprime estadísticas con el conteo por columnas:
 
 ---
 
-### Paso 2 — Convertir MARC21 a JSON rero-ils
+### Paso 2 — Convertir MARC21 a JSON rero-ils (por BD)
+
+Tras el paso 1, cada biblioteca tiene su propio `marc21.fix.mrcxml` en
+`legacy/db/<BD>/`. La conversión a JSON se ejecuta **por separado** para
+cada base de datos:
 
 ```bash
+# BCT
 invenio reroils documents marc21tojson \
-  -t rero \
-  -v \
-  -r \
-  data.upr/legacy/marc21.fix.mrcxml \
-  data.upr/legacy/marc21.fix.json \
-  data.upr/legacy/marc21.tojson.error.mrcxml
+  -t rero -v -r \
+  data.upr/legacy/db/BCT/marc21.fix.mrcxml \
+  data.upr/legacy/db/BCT/marc21.fix.json \
+  data.upr/legacy/db/BCT/marc21.tojson.error.mrcxml
+
+# BECSH
+invenio reroils documents marc21tojson \
+  -t rero -v -r \
+  data.upr/legacy/db/BECSH/marc21.fix.mrcxml \
+  data.upr/legacy/db/BECSH/marc21.fix.json \
+  data.upr/legacy/db/BECSH/marc21.tojson.error.mrcxml
+
+# FCF
+invenio reroils documents marc21tojson \
+  -t rero -v -r \
+  data.upr/legacy/db/FCF/marc21.fix.mrcxml \
+  data.upr/legacy/db/FCF/marc21.fix.json \
+  data.upr/legacy/db/FCF/marc21.tojson.error.mrcxml
+
+# FCP
+invenio reroils documents marc21tojson \
+  -t rero -v -r \
+  data.upr/legacy/db/FCP/marc21.fix.mrcxml \
+  data.upr/legacy/db/FCP/marc21.fix.json \
+  data.upr/legacy/db/FCP/marc21.tojson.error.mrcxml
 ```
 
 | Flag | Efecto |
@@ -85,12 +109,12 @@ invenio reroils documents marc21tojson \
 | `-v` | Verbose — muestra progreso y errores por consola |
 | `-r` | Requiere PID en cada registro; sin campo 001 van al fichero de error |
 
-Genera:
+Genera por cada BD:
 
 | Fichero | Contenido |
 |---|---|
-| `marc21.fix.json` | Documentos en formato JSON rero-ils, listos para cargar |
-| `marc21.tojson.error.mrcxml` | Registros que fallaron la conversión |
+| `db/<BD>/marc21.fix.json` | Documentos en formato JSON rero-ils, listos para cargar |
+| `db/<BD>/marc21.tojson.error.mrcxml` | Registros que fallaron la conversión |
 
 ---
 
@@ -104,15 +128,38 @@ invenio reroils documents cover-url-queue-worker pause
 
 ---
 
-### Paso 4 — Cargar los documentos
+### Paso 4 — Cargar los documentos (por BD)
+
+Cada biblioteca se carga de forma independiente:
 
 ```bash
+# BCT
 invenio reroils fixtures create \
   --pid_type doc \
   --schema 'https://bib.upr.edu.cu/schemas/documents/document-v0.0.1.json' \
-  --append \
-  --dont-stop \
-  data.upr/legacy/marc21.fix.json
+  --append --dont-stop \
+  data.upr/legacy/db/BCT/marc21.fix.json
+
+# BECSH
+invenio reroils fixtures create \
+  --pid_type doc \
+  --schema 'https://bib.upr.edu.cu/schemas/documents/document-v0.0.1.json' \
+  --append --dont-stop \
+  data.upr/legacy/db/BECSH/marc21.fix.json
+
+# FCF
+invenio reroils fixtures create \
+  --pid_type doc \
+  --schema 'https://bib.upr.edu.cu/schemas/documents/document-v0.0.1.json' \
+  --append --dont-stop \
+  data.upr/legacy/db/FCF/marc21.fix.json
+
+# FCP
+invenio reroils fixtures create \
+  --pid_type doc \
+  --schema 'https://bib.upr.edu.cu/schemas/documents/document-v0.0.1.json' \
+  --append --dont-stop \
+  data.upr/legacy/db/FCP/marc21.fix.json
 ```
 
 | Flag | Efecto |
@@ -182,18 +229,34 @@ invenio reroils index run --raise-on-error
 
 ## Investigar registros con error
 
-Los registros que fallen en el Paso 2 quedan en `marc21.tojson.error.mrcxml`.
+Los registros que fallen en el Paso 2 quedan en
+`db/<BD>/marc21.tojson.error.mrcxml` por cada biblioteca.
 La causa más frecuente es la ausencia del campo 245 (título).
 
 ```bash
-# Cuántos registros fallaron
-grep -c '<record>' data.upr/legacy/marc21.tojson.error.mrcxml
+# Cuántos registros fallaron por BD
+for db in BCT BECSH FCF FCP; do
+  echo -n "${db}: "
+  grep -c '<record>' "data.upr/legacy/db/${db}/marc21.tojson.error.mrcxml" 2>/dev/null || echo "0"
+done
 
-# PIDs de los registros con error
-grep -A2 'controlfield tag="001"' data.upr/legacy/marc21.tojson.error.mrcxml
+# PIDs de los registros con error (todas las BD juntos)
+grep -A2 'controlfield tag="001"' data.upr/legacy/db/*/marc21.tojson.error.mrcxml
 ```
 
 ---
+
+## Script automatizado
+
+El script `scripts/import_legacy.upr` ejecuta los pasos 2-6 por separado para
+cada base de datos:
+
+```bash
+uv run scripts/import_legacy.upr          # todas las BD
+uv run scripts/import_legacy.upr -d BCT    # solo una
+uv run scripts/import_legacy.upr -r        # incluir reindex al final
+uv run scripts/import_legacy.upr -c        # continuar si una BD falla
+```
 
 ## Resumen del flujo
 
@@ -201,11 +264,11 @@ grep -A2 'controlfield tag="001"' data.upr/legacy/marc21.tojson.error.mrcxml
 legacy_import.py
       │
       ▼
-marc21.fix.mrcxml
+db/<BD>/marc21.fix.mrcxml   (4 BDs)
       │
       ▼  marc21tojson -t rero
-      ├──▶ marc21.fix.json ──────▶ fixtures create --pid_type doc
-      │                                    │
-      └──▶ marc21.tojson.error.mrcxml      ▼
-           (investigar manualmente)   reindex -t doc
+      ├──▶ db/<BD>/marc21.fix.json ──────▶ fixtures create --pid_type doc
+      │                                            │
+      └──▶ db/<BD>/marc21.tojson.error.mrcxml      ▼
+           (investigar manualmente)           reindex -t doc
 ```

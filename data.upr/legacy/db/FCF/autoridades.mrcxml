@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection xmlns="http://www.loc.gov/MARC21/slim">
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">12</controlfield>
+    <controlfield tag="003">BNF</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">z</controlfield>
+    <datafield tag="010" ind1=" " ind2=" ">
+      <subfield code="*"/>
+    </datafield>
+    <datafield tag="014" ind1=" " ind2=" ">
+      <subfield code="*"/>
+    </datafield>
+    <datafield tag="016" ind1=" " ind2=" ">
+      <subfield code="*">13</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*"/>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="*">BNJM</subfield>
+    </datafield>
+    <datafield tag="042" ind1=" " ind2=" ">
+      <subfield code="*">1234</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="*">Martí, José Julián</subfield>
+    </datafield>
+    <datafield tag="400" ind1=" " ind2=" ">
+      <subfield code="*">Martí, José</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="*">José Martí</subfield>
+    </datafield>
+    <datafield tag="530" ind1=" " ind2=" ">
+      <subfield code="*">La Edad de Oro</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">fghdfghf</controlfield>
+    <controlfield tag="003">fghfghf</controlfield>
+    <controlfield tag="005">fghfghfghfgh</controlfield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">gdfgdfg</controlfield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">50</controlfield>
+    <controlfield tag="003">BPR</controlfield>
+    <controlfield tag="005">guardado</controlfield>
+    <controlfield tag="006">sencillo</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">abstracto</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="*">buena</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="*">Basilio</subfield>
+    </datafield>
+    <datafield tag="110" ind1=" " ind2=" ">
+      <subfield code="*">prueba</subfield>
+    </datafield>
+    <datafield tag="667" ind1=" " ind2=" ">
+      <subfield code="*">5</subfield>
+    </datafield>
+    <datafield tag="880" ind1=" " ind2=" ">
+      <subfield code="*">si</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">12</controlfield>
+    <controlfield tag="003">BNF</controlfield>
+    <controlfield tag="005">guardado</controlfield>
+    <controlfield tag="006">sencillo</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">abstracto</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="*">buena</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="*">Basilio</subfield>
+    </datafield>
+    <datafield tag="110" ind1=" " ind2=" ">
+      <subfield code="*">prueba</subfield>
+    </datafield>
+    <datafield tag="667" ind1=" " ind2=" ">
+      <subfield code="*">5</subfield>
+    </datafield>
+    <datafield tag="880" ind1=" " ind2=" ">
+      <subfield code="*">si</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">12</controlfield>
+    <controlfield tag="003">BNF</controlfield>
+    <controlfield tag="005">tratar de guardar</controlfield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">24</controlfield>
+    <controlfield tag="003">ident</controlfield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="*">Basilio</subfield>
+    </datafield>
+    <datafield tag="700" ind1=" " ind2=" ">
+      <subfield code="*">asiento</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">100</controlfield>
+    <controlfield tag="003">ident</controlfield>
+    <controlfield tag="005">guardado</controlfield>
+    <controlfield tag="006">tesis</controlfield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">100</controlfield>
+    <controlfield tag="003">ident</controlfield>
+    <controlfield tag="005">guardado</controlfield>
+    <controlfield tag="006">tesis</controlfield>
+    <datafield tag="663" ind1=" " ind2=" ">
+      <subfield code="*">uoiui</subfield>
+    </datafield>
+    <datafield tag="880" ind1=" " ind2=" ">
+      <subfield code="*">uioiu</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001"/>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001"/>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">numero-prueba</controlfield>
+    <controlfield tag="003">iden-prueba</controlfield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="*">nombre-personal-prueba</subfield>
+    </datafield>
+    <datafield tag="663" ind1=" " ind2=" ">
+      <subfield code="*">referencia-prueba</subfield>
+    </datafield>
+    <datafield tag="880" ind1=" " ind2=" ">
+      <subfield code="*">presentacion-prueba</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">prueba</controlfield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">prueba2</controlfield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001"/>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001"/>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001"/>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">prueba3</controlfield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="003">prueba4</controlfield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">basilio </controlfield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">basilio </controlfield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="*">gfhgfhfgh</subfield>
+    </datafield>
+    <datafield tag="510" ind1=" " ind2=" ">
+      <subfield code="*">tyuytut</subfield>
+    </datafield>
+    <datafield tag="663" ind1=" " ind2=" ">
+      <subfield code="*">ghkjj</subfield>
+    </datafield>
+    <datafield tag="880" ind1=" " ind2=" ">
+      <subfield code="*">tyutyu</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">zsdfgdf</controlfield>
+    <controlfield tag="005">gdfgfdg</controlfield>
+    <controlfield tag="006">dfgdfg</controlfield>
+    <controlfield tag="009">fghfhffg</controlfield>
+    <datafield tag="010" ind1=" " ind2=" ">
+      <subfield code="*">gfhfgh</subfield>
+    </datafield>
+    <datafield tag="014" ind1=" " ind2=" ">
+      <subfield code="*">fghfg</subfield>
+    </datafield>
+    <datafield tag="016" ind1=" " ind2=" ">
+      <subfield code="*">fghfgh</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">gfhfgh</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="*">fghfg</subfield>
+    </datafield>
+    <datafield tag="042" ind1=" " ind2=" ">
+      <subfield code="*">fghfghfghfghf</subfield>
+    </datafield>
+    <datafield tag="400" ind1=" " ind2=" ">
+      <subfield code="*">fghfg</subfield>
+    </datafield>
+    <datafield tag="410" ind1=" " ind2=" ">
+      <subfield code="*">hfghfg</subfield>
+    </datafield>
+    <datafield tag="411" ind1=" " ind2=" ">
+      <subfield code="*">hfghgfh</subfield>
+    </datafield>
+    <datafield tag="430" ind1=" " ind2=" ">
+      <subfield code="*">fghfghfghfg</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="*">fghgfh</subfield>
+    </datafield>
+    <datafield tag="510" ind1=" " ind2=" ">
+      <subfield code="*">fghfghfghfgh</subfield>
+    </datafield>
+    <datafield tag="511" ind1=" " ind2=" ">
+      <subfield code="*">fdfghfg</subfield>
+    </datafield>
+    <datafield tag="530" ind1=" " ind2=" ">
+      <subfield code="*">hfghdfhfhdfdfg</subfield>
+    </datafield>
+    <datafield tag="700" ind1=" " ind2=" ">
+      <subfield code="*">ghjgjghjg</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="*">ftghfghf</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">A24</controlfield>
+    <controlfield tag="003">ergtergtde</controlfield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">A2722683</controlfield>
+    <controlfield tag="003">eewew</controlfield>
+    <controlfield tag="005">dfsdfsdf</controlfield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">A2859541</controlfield>
+    <controlfield tag="003">sadasdasdas</controlfield>
+    <controlfield tag="005">asdsadadasasd</controlfield>
+  </record>
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="001">A2945520</controlfield>
+    <controlfield tag="003">dsfdfsdfsdfds sdfsdfsdfsdfs</controlfield>
+  </record>
+</collection>
