@@ -68,7 +68,7 @@
   {
     "pid": "2",
     "code": "UPR-BECSH",
-    "name": "Biblioteca de Economía, Ciencias Sociales y Humanísticas",
+    "name": "Biblioteca de Economía y Ciencias Sociales y Humanísticas ",
     "address": "Universidad de Pinar del Río, Pinar del Río, Cuba",
     "email": "becsh@upr.edu.cu",
     "organisation": {
@@ -134,7 +134,7 @@
   {
     "pid": "3",
     "code": "UPR-FCF",
-    "name": "Biblioteca de la Facultad de Cultura Física",
+    "name": "Biblioteca Cultura Física",
     "address": "Universidad de Pinar del Río, Pinar del Río, Cuba",
     "email": "fcf@upr.edu.cu",
     "organisation": {
@@ -200,7 +200,7 @@
   {
     "pid": "4",
     "code": "UPR-FCP",
-    "name": "Biblioteca de la Facultad de Ciencias Políticas",
+    "name": "Biblioteca de Ciencias Pedagógicas",
     "address": "Universidad de Pinar del Río, Pinar del Río, Cuba",
     "email": "fcp@upr.edu.cu",
     "organisation": {

@@ -32,6 +32,14 @@ biblioteca (BCT, BECSH, FCF, FCP).
 El script `legacy_import.py` pre-procesa esos ficheros antes de cargarlos
 en rero-ils.
 
+### Paso 0 - Extraer entidades legacy
+
+El script extract_entities.py se encarga de extraer las entidades del los ficheros MARC XML. 
+
+Se ejecuta el siguiente comando. 
+
+python extract_entities.py -i legacy/db/BCT/marc21.mrcxml legacy/db/BECSH/marc21.mrcxml legacy/db/FCF/marc21.mrcxml legacy/db/FCP/marc21.mrcxml -o local_entities_orig.json
+
 ### Paso 1 — Pre-procesar el MARC21 XML
 
 ```bash
