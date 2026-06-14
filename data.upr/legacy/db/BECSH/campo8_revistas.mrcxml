@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection xmlns="http://www.loc.gov/MARC21/slim">
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="005">161025</controlfield>
+    <controlfield tag="007">#</controlfield>
+    <datafield tag="015" ind1=" " ind2=" ">
+      <subfield code="*">abc</subfield>
+    </datafield>
+  </record>
+</collection>

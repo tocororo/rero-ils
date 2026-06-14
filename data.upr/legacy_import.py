@@ -307,11 +307,18 @@ def main():
     print(f'  {combined_fix}  ({len(all_good)} records)')
     print(f'  {combined_err}  ({len(all_errors)} records)')
     print()
-    print('Next step — convert to rero-ils JSON:')
-    print('  invenio reroils documents marc21tojson -t rero \\')
-    print(f'    {combined_fix} \\')
-    print(f'    {os.path.join(LEGACY_DIR, "marc21.fix.json")} \\')
-    print(f'    {os.path.join(LEGACY_DIR, "marc21.tojson.error.mrcxml")} -v -r')
+    print('Next step — convert to rero-ils JSON (per database):')
+    print('  uv run scripts/import_legacy.upr')
+    print()
+    print('  Or manually for each DB:')
+    for db in DATABASES:
+        input_path = os.path.join(DB_DIR, db, 'marc21.fix.mrcxml')
+        output_path = os.path.join(DB_DIR, db, 'marc21.fix.json')
+        err_path = os.path.join(DB_DIR, db, 'marc21.tojson.error.mrcxml')
+        print(f'  invenio reroils documents marc21tojson -t rero -v -r \\')
+        print(f'    {input_path} \\')
+        print(f'    {output_path} \\')
+        print(f'    {err_path}')
 
 
 if __name__ == '__main__':

@@ -1,12 +1,30 @@
 {# -*- coding: utf-8 -*-
 
-  Biblioteca de Vueltabajo
-  Universidad de Pinar del Río "Hermanos Saíz Montes de Oca"
+Biblioteca de Vueltabajo
+Universidad de Pinar del Río "Hermanos Saíz Montes de Oca"
 
 #}
 <div class="rero-slogan mb-4">
   <div class="container text-center">
     <h1>{{ _('Biblioteca de Vueltabajo') }}</h1>
-    <h2>{{ _('El conocimiento de Pinar del Río, al alcance de todos') }}</h2>
+
+
+    {# --- Org header: only shown when browsing a specific organisation -------- #}
+    {%- if viewcode != config.RERO_ILS_SEARCH_GLOBAL_VIEW_CODE %}
+      {%- for org in organisations if org.code == viewcode %}
+
+      <h2><i class="fa fa-university" aria-hidden="true"></i> {{ org.name }}</h2>
+
+      {%- endfor %}
+    
+    {%- else %}
+    <h3>{{ _('El conocimiento de Pinar del Río, al alcance de todos') }}</h3>
+    {%- endif %}
+
+
+
+
   </div>
+
+
 </div>

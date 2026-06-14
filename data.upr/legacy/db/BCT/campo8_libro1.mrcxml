@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection xmlns="http://www.loc.gov/MARC21/slim">
+  <record>
+    <leader>000000a00000000000004500</leader>
+    <controlfield tag="005">180125</controlfield>
+    <controlfield tag="007">1–9</controlfield>
+    <controlfield tag="006">#</controlfield>
+    <datafield tag="033" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="015" ind1=" " ind2=" ">
+      <subfield code="*">cu</subfield>
+    </datafield>
+    <datafield tag="028" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="035" ind1=" " ind2=" ">
+      <subfield code="*">English</subfield>
+    </datafield>
+    <datafield tag="030" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="031" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="022" ind1=" " ind2=" ">
+      <subfield code="*">f</subfield>
+    </datafield>
+    <datafield tag="023" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="024" ind1=" " ind2=" ">
+      <subfield code="*">d</subfield>
+    </datafield>
+    <datafield tag="029" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="034" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="011" ind1=" " ind2=" ">
+      <subfield code="*">1–9</subfield>
+    </datafield>
+  </record>
+</collection>
