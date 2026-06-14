@@ -20,11 +20,13 @@ status](https://hosted.weblate.org/widgets/rero_plus/-/rero-ils/svg-badge.svg)](
     <img src=".github/images/logo-global.svg" alt="RERO ILS" width="80" height="80">
   </a>
 
-<h2 align="center">RERO ILS</h2>
+<h2 align="center">Biblioteca de Vueltabajo</h2>
 
   <p align="center">
-    The elegant solution for heritage, public and school libraries or networks.
+    Biblioteca virtual pública que integra la información de todos los fondos físicos y digitales de las bibliotecas y centros de documentación de la provincia de Pinar del Río, Cuba.
     <br />
+    <strong>Basado en <a href="https://github.com/rero/rero-ils">RERO-ILS</a></strong>
+    ·
     <a href="https://ils.test.rero.ch/"><strong>Live Demo »</strong></a>
     ·
     <a href="https://bib.rero.ch/help/home/"><strong>User docs »</strong></a>
@@ -47,7 +49,7 @@ status](https://hosted.weblate.org/widgets/rero_plus/-/rero-ils/svg-badge.svg)](
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-        <li><a href="#rero-ils">RERO ILS</a></li>
+        <li><a href="#biblioteca-de-vueltabajo">Biblioteca de Vueltabajo</a></li>
         <li><a href="#built-with">Built with</a></li>
       </ul>
     </li>
@@ -78,11 +80,35 @@ status](https://hosted.weblate.org/widgets/rero_plus/-/rero-ils/svg-badge.svg)](
 </div>
 <br />
 
-## RERO ILS
+## Biblioteca de Vueltabajo
 
-RERO ILS is a new generation open source [integrated library system](https://en.wikipedia.org/wiki/Integrated_library_system) developed in Switzerland by [RERO+](https://rero.ch/) in collaboration with the Catholic University of Louvain ([UCLouvain](https://uclouvain.be/)). It allows the management of library networks or independent libraries (document acquisition, circulation, cataloguing, search) and offers a public interface for users.
+La **Biblioteca de Vueltabajo** es una biblioteca virtual pública desarrollada por la Universidad de Pinar del Río "Hermanos Saíz Montes de Oca" (UPR) en Cuba. Este proyecto integra los recursos bibliográficos físicos y digitales de todas las bibliotecas y centros de documentación de la provincia de Pinar del Río, creando un ecosistema digital unificado y multisectorial.
 
-RERO ILS has been under heavy development since 2017 as a replacement for RERO network's legacy software. Its first major release (`v1.0.0`) was published at the end of 2020. The first real-life production instance has been live since June 2021. Since then, it is being actively maintained and developed by a committed team of professionals from Switzerland, in order to improve upon its current features and satisfy its users' needs.
+**Esta implementación está basada en [RERO-ILS](https://github.com/rero/rero-ils)**, un sistema de gestión bibliotecaria de código abierto desarrollado por RERO+ en Suiza, adaptado y configurado para las necesidades específicas del territorio cubano.
+
+### Contexto
+
+Vueltabajo, región ubicada en la provincia de Pinar del Río, Cuba, se distingue por su diversidad geográfica y riqueza histórica. Esta riqueza natural, histórica y productiva demanda un acceso ágil y centralizado al conocimiento generado en y sobre la región. Sin embargo, la fragmentación de la información bibliográfica y la ausencia de plataformas digitales adaptadas impedían que este legado se tradujera en herramientas prácticas para el desarrollo local.
+
+### Solución
+
+La Biblioteca de Vueltabajo surge como respuesta a esta necesidad, aprovechando capacidades técnicas existentes de la UPR y aprendiendo de errores pasados. Su enfoque es integrador y multisectorial, articulando recursos bibliográficos para el desarrollo local, con potencial aplicable a nivel nacional.
+
+### Beneficiarios
+
+* **Red de bibliotecas públicas** (Ministerio de Cultura)
+* **Bibliotecas escolares** (Ministerio de Educación)
+* **Gobierno Provincial**
+* **Asociaciones civiles** (ASCUBI, SOCICT, UIC)
+* **Archivo Provincial**
+* **Universidad de Pinar del Río**
+
+### Objetivos
+
+* Unificar recursos dispersos bajo una plataforma única con interoperabilidad técnica y gobernanza colaborativa
+* Escalar capacidades técnicas hacia un modelo multisectorial usando herramientas de código abierto
+* Implementar un modelo de gestión participativa con comité técnico multisectorial
+* Convertir la biblioteca en puente entre conocimiento y acción para sectores productivos
 
 ## Built with
 
@@ -98,21 +124,21 @@ RERO ILS has been under heavy development since 2017 as a replacement for RERO n
 
 ## Demo
 
-To explore the system, you can try the [test instance](https://ils.test.rero.ch/) or take a look at one of the production instances: [RERO+ network](https://bib.rero.ch/) (live since Summer 2021) and [UCLouvain network](https://ils.bib.uclouvain.be/) (live since early 2022).
+Para explorar el sistema, puede visitar la [instancia de prueba](https://ils.test.rero.ch/) o revisar las instancias en producción: [red RERO+](https://bib.rero.ch/) (activa desde verano 2021) y [red UCLouvain](https://ils.bib.uclouvain.be/) (activa desde principios de 2022).
 
 ## Features
 
-* :globe_with_meridians: **Consortial model:** built primarily for library networks, large or small, with several levels of configuration included (organization, library).
-* :books: **Cataloguing and serial management:** modern cataloguing editor in compliance with current standards (RDA, BibFrame); in-depth management of periodicals, subscriptions, and issue predictions.
-* :computer: **Online catalog:** public online catalog with simple but powerful search and filtering functions; customizable views by organization and library; seamless integration of resources from external platforms (ebooks, databases, etc.).
-* :book: **Circulation module:** perform all the operations required by libraries: check-out, check-in, item requests, interlibrary loans, patron management, in a modern, fast and ergonomic web interface.
-* :arrows_clockwise: **Data interaction and openness:** JSON formatted bibliographic data [Bibframe model](https://www.loc.gov/bibframe/) with a powerful API to interact with the database.
+* :globe_with_meridians: **Modelo consortial:** construido principalmente para redes de bibliotecas, grandes o pequeñas, con varios niveles de configuración (organización, biblioteca).
+* :books: **Catálogo y gestión de publicaciones seriadas:** editor de catalogación moderno conforme a estándares actuales (RDA, BibFrame); gestión profunda de periódicos, suscripciones y predicción de números.
+* :computer: **Catálogo en línea:** catálogo público en línea con funciones de búsqueda y filtrado simples pero potentes; vistas personalizables por organización y biblioteca; integración perfecta de recursos de plataformas externas (libros electrónicos, bases de datos, etc.).
+* :book: **Módulo de circulación:** realiza todas las operaciones requeridas por las bibliotecas: préstamo, devolución, reservas de ítems, gestión de usuarios, préstamos interbibliotecarios, en una interfaz web moderna, rápida y ergonómica.
+* :arrows_clockwise: **Interacción de datos y apertura:** datos bibliográficos en formato JSON [modelo Bibframe](https://www.loc.gov/bibframe/) con una API potente para interactuar con la base de datos.
 
 ## Use RERO ILS
 
-RERO ILS is open source and can be can be deployed and hosted by anyone, provided they can afford the required configuration or development effort. It can also be hosted [*as a service*](https://www.rero.ch/en/products/ils#discover) by RERO+ for any interested library or organisation.
+La Biblioteca de Vueltabajo está basada en **RERO ILS**, un sistema de código abierto que puede ser desplegado y alojado por cualquier persona, siempre que pueda asumir el esfuerzo de configuración o desarrollo requerido. RERO ILS también puede ser alojado [*como servicio*](https://www.rero.ch/en/products/ils#discover) por RERO+ para cualquier biblioteca u organización interesada.
 
-The [user documentation](https://bib.rero.ch/help/home/) for RERO ILS is hosted on [flask-wiki](https://github.com/rero/flask-wiki/).
+La [documentación de usuario](https://bib.rero.ch/help/home/) para RERO ILS está alojada en [flask-wiki](https://github.com/rero/flask-wiki/).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -120,26 +146,26 @@ The [user documentation](https://bib.rero.ch/help/home/) for RERO ILS is hosted 
 
 ## Install
 
-* The installation process is described in a [specific file](INSTALL.md).
-* To run a development environment you can check this [documentation](https://github.com/rero/developer-resources/blob/master/rero-instances/rero-ils/dev_installation.md).
+* El proceso de instalación se describe en un [archivo específico](INSTALL.md).
+* Para ejecutar un entorno de desarrollo, puede consultar esta [documentación](https://github.com/rero/developer-resources/blob/master/rero-instances/rero-ils/dev_installation.md).
 
 ## The ecosystem
 
 ### Three GitHub repositories for RERO ILS
 
-The [rero-ils GitHub project](https://github.com/rero/rero-ils) contains the main project for RERO ILS, basically providing the `invenio` backend. To work on the frontend of the project, you also need [rero-ils-ui](https://github.com/rero/rero-ils-ui), which is based on [ng-core](https://github.com/rero/ng-core).
+El [proyecto rero-ils en GitHub](https://github.com/rero/rero-ils) contiene el proyecto principal para RERO ILS, proporcionando básicamente el backend `invenio`. Para trabajar en el frontend del proyecto, también necesita [rero-ils-ui](https://github.com/rero/rero-ils-ui), que está basado en [ng-core](https://github.com/rero/ng-core).
 
 ### MEF
 
-The [MEF](https://github.com/rero/rero-mef) (*Multilingual Entity File*), provides authorities (or entities) to RERO ILS, in two languages: French and German (for now). This is used to link documents to controlled descriptions of authors and subjects. MEF can aggregate multiple authority files, such as [IdRef](https://www.idref.fr/) and [GND](https://www.dnb.de/DE/Professionell/Standardisierung/GND/gnd_node.html). These authority files are then aligned through [VIAF](https://viaf.org), thus providing multilingual authorities.
+El [MEF](https://github.com/rero/rero-mef) (*Multilingual Entity File*), proporciona autoridades (o entidades) a RERO ILS, en dos idiomas: francés y alemán (por ahora). Esto se utiliza para vincular documentos a descripciones controladas de autores y materias. MEF puede agregar múltiples archivos de autoridad, como [IdRef](https://www.idref.fr/) y [GND](https://www.dnb.de/DE/Professionell/Standardisierung/GND/gnd_node.html). Estos archivos de autoridad se alinean a través de [VIAF](https://viaf.org), proporcionando así autoridades multilingües.
 
-As a result, in order to run RERO ILS, you need to either use our [public MEF server](https://mef.test.rero.ch), or run your own.
+Como resultado, para ejecutar RERO ILS, necesita usar nuestro [servidor MEF público](https://mef.test.rero.ch), o ejecutar el suyo propio.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # Contact
 
-* If you have questions, you can ask the development team on [Gitter](https://gitter.im/rero/reroils).
-* In case of a security issue, please contact <security@rero.ch>.
+* Si tiene preguntas, puede preguntar al equipo de desarrollo en [Gitter](https://gitter.im/rero/reroils).
+* En caso de un problema de seguridad, por favor contacte a <security@rero.ch>.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
