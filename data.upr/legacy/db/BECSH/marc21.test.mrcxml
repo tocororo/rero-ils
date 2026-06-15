@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection xmlns="http://www.loc.gov/MARC21/slim">
+  <record>
+    <leader>00000cLm0a0000000#a04500</leader>
+    <controlfield tag="001">M2001</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">841211         cu a   fr#   #001 0#spadd</controlfield>
+    <datafield tag="020" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+    </datafield>
+    <datafield tag="084" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2"># - No definido</subfield>
+      <subfield code="a">57-2500</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="1">b-Apellido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">Freifelder, David</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="1">1-Con asiento secundario</subfield>
+      <subfield code="2">0/9-Número de caracteres iniciales presentes que se ignoran en la alfabetización</subfield>
+      <subfield code="a">Molecular biology</subfield>
+      <subfield code="b">A Comprehesive Itroduction to Prokaryotes and Eukaryotes</subfield>
+      <subfield code="c">David Freifelder</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="1"># - No se aplica/Sin información disponible/Primer editor conocido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editorial Científico Técnica</subfield>
+      <subfield code="c">1983</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">979 p.</subfield>
+      <subfield code="b">: graf.</subfield>
+      <subfield code="c">; 20 cm.</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">0-Nivel no especificado</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">BIOLOGIA MOLECULAR</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>007050L00000003610004500</leader>
+    <controlfield tag="001">M1002</controlfield>
+    <controlfield tag="005">c</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">760518         ru #   fr#   #001 0#engdd</controlfield>
+    <datafield tag="010" ind1=" " ind2=" ">
+      <subfield code="*">true</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">eng</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">RU</subfield>
+    </datafield>
+    <datafield tag="084" ind1=" " ind2=" ">
+      <subfield code="a">10-414</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Plekhanov, G. V.</subfield>
+    </datafield>
+    <datafield tag="245" ind1="1" ind2="1">
+      <subfield code="a">The development of the monist view of history</subfield>
+      <subfield code="c">G. V.  Plekhanov, N. Beltov</subfield>
+    </datafield>
+    <datafield tag="250" ind1=" " ind2=" ">
+      <subfield code="a"> 3. ed.</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">Moscú</subfield>
+      <subfield code="b">Editorial Progreso</subfield>
+      <subfield code="c">1974</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="*">l</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">334 p. </subfield>
+      <subfield code="c">; 12 cm.</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">5</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="650" ind1="1" ind2="4">
+      <subfield code="a">MATERIALISMO HISTORICO</subfield>
+    </datafield>
+    <datafield tag="700" ind1=" " ind2=" ">
+      <subfield code="a">Beltov, N.</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20161201 11:22:38</subfield>
+      <subfield code="o">sergio.barrios</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>005450L00000003010004500</leader>
+    <controlfield tag="001">M1003</controlfield>
+    <controlfield tag="005">c</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">751028         cu #   fr#   #001 0#spadd</controlfield>
+    <datafield tag="010" ind1=" " ind2=" ">
+      <subfield code="*">true</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">spa</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="084" ind1=" " ind2=" ">
+      <subfield code="a">10-408</subfield>
+    </datafield>
+    <datafield tag="245" ind1="1" ind2="1">
+      <subfield code="a">Lecturas sobre historia de la filosofía</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editorial Pueblo y Educación</subfield>
+      <subfield code="c">1973</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">368 p. </subfield>
+      <subfield code="c">; 23 cm.</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">5</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="650" ind1="1" ind2="4">
+      <subfield code="a">HISTORIA </subfield>
+      <subfield code="b">FILOSOFIA </subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>006990L00000003370004500</leader>
+    <controlfield tag="001">M1004</controlfield>
+    <controlfield tag="005">c</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">760709         cu #   fr#   #001 0#spadd</controlfield>
+    <datafield tag="010" ind1=" " ind2=" ">
+      <subfield code="*">true</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">spa</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="084" ind1=" " ind2=" ">
+      <subfield code="a">10-409</subfield>
+    </datafield>
+    <datafield tag="100" ind1="1" ind2=" ">
+      <subfield code="a">Bunge, Mario</subfield>
+    </datafield>
+    <datafield tag="245" ind1="1" ind2="1">
+      <subfield code="a">La investigación científica: su estrategia y su filosofía</subfield>
+      <subfield code="c">Mario Bunge</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editorial Ciencias Sociales</subfield>
+      <subfield code="c">1972</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">955 p. </subfield>
+      <subfield code="c">; 23 cm.</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">5</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="650" ind1="1" ind2="4">
+      <subfield code="a">INVESTIGACION CIENTIFICA </subfield>
+      <subfield code="a">FILOSOFIA</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20150713 02:35:21</subfield>
+      <subfield code="o">arianna</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20150715 04:24:37</subfield>
+      <subfield code="o">arianna</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>005860L00000003130004500</leader>
+    <controlfield tag="001">M1005</controlfield>
+    <controlfield tag="005">c</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">760206         cu #   fr#   #001 0#spadd</controlfield>
+    <datafield tag="010" ind1=" " ind2=" ">
+      <subfield code="*">true</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">spa</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="084" ind1=" " ind2=" ">
+      <subfield code="a">10-410</subfield>
+    </datafield>
+    <datafield tag="100" ind1="1" ind2=" ">
+      <subfield code="a">Engels, Federico, 1820-1895</subfield>
+    </datafield>
+    <datafield tag="245" ind1="1" ind2="1">
+      <subfield code="a">Anti-Duhring</subfield>
+      <subfield code="c">Federico Engels</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editorial Pueblo y Educación</subfield>
+      <subfield code="c">1973</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">522 p. </subfield>
+      <subfield code="c">; 19 cm.</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">5</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="650" ind1="1" ind2="4">
+      <subfield code="a">FILOSOFIA MARXISTA LENINISTA</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>000000L00000000000004500</leader>
+    <controlfield tag="001">M1006</controlfield>
+    <controlfield tag="005">c</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">760614         cu #   fr#   #001 0#spadd</controlfield>
+    <datafield tag="084" ind1=" " ind2=" ">
+      <subfield code="a">10-411</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Torres, Eduardo</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Antología del pensamiento medieval</subfield>
+      <subfield code="c">Eduardo Torres</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editorial Ciencias Sociales</subfield>
+      <subfield code="c">1975</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">596 p.</subfield>
+      <subfield code="c">; 23 cm.</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a">FILOSOFIA MEDIEVAL</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>006080L00000003250004500</leader>
+    <controlfield tag="001">M1007</controlfield>
+    <controlfield tag="005">c</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">760515         ru #   fr#   #000 0#engdd</controlfield>
+    <datafield tag="010" ind1=" " ind2=" ">
+      <subfield code="*">true</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">eng</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">RU</subfield>
+    </datafield>
+    <datafield tag="084" ind1=" " ind2=" ">
+      <subfield code="a">10-412</subfield>
+    </datafield>
+    <datafield tag="100" ind1="1" ind2=" ">
+      <subfield code="a">Momjan, H.</subfield>
+    </datafield>
+    <datafield tag="245" ind1="1" ind2="1">
+      <subfield code="a">Marxism and the Renegade Garaudy</subfield>
+      <subfield code="c">H. Momjan</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">Moscú</subfield>
+      <subfield code="b">Editorial Progreso</subfield>
+      <subfield code="c">1974</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">232 p. </subfield>
+      <subfield code="c">; 20 cm.</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">5</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="650" ind1="1" ind2="4">
+      <subfield code="a">FILOSOFIA MARXISTA LENINISTA</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20141017 11:16:18</subfield>
+      <subfield code="o">arianna</subfield>
+    </datafield>
+  </record>
+</collection>

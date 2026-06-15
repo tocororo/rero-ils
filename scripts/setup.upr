@@ -179,6 +179,12 @@ eval ${PREFIX} invenio reroils index reindex -d -t budg --yes-i-know
 
 eval ${PREFIX} invenio reroils index run --raise-on-error
 
+
+info_msg "- Local entities ${DATA_PATH}/local_entities_legacy.json ${CREATE_LAZY} ${DONT_STOP}"
+eval ${PREFIX} invenio reroils fixtures create --pid_type locent --schema 'https://bib.upr.edu.cu/schemas/local_entities/local_entity-v0.0.1.json' ${DATA_PATH}/local_entities_legacy.json --append ${CREATE_LAZY} ${DONT_STOP}
+eval ${PREFIX} invenio reroils index reindex -t locent --yes-i-know
+eval ${PREFIX} invenio reroils index run --raise-on-error
+
 # ---------------------------------------------------------------------------
 # Scheduler (all tasks disabled — no external services)
 # ---------------------------------------------------------------------------

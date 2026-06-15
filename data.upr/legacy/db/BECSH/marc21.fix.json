@@ -1,0 +1,660 @@
+[
+  {
+    "adminMetadata": {
+      "encodingLevel": "Unknown"
+    },
+    "issuance": {
+      "main_type": "rdami:1001",
+      "subtype": "materialUnit"
+    },
+    "pid": "2001",
+    "fiction_statement": "non_fiction",
+    "language": [
+      {
+        "value": "spa",
+        "type": "bf:Language"
+      }
+    ],
+    "contribution": [
+      {
+        "entity": {
+          "type": "bf:Person",
+          "authorized_access_point": "Freifelder, David"
+        },
+        "role": [
+          "cre"
+        ]
+      }
+    ],
+    "responsibilityStatement": [
+      [
+        {
+          "value": "David Freifelder"
+        }
+      ]
+    ],
+    "title": [
+      {
+        "mainTitle": [
+          {
+            "value": "Molecular biology"
+          }
+        ],
+        "subtitle": [
+          {
+            "value": "A Comprehesive Itroduction to Prokaryotes and Eukaryotes"
+          }
+        ],
+        "type": "bf:Title"
+      }
+    ],
+    "provisionActivity": [
+      {
+        "type": "bf:Publication",
+        "startDate": 9999,
+        "place": [
+          {
+            "country": "cu"
+          }
+        ],
+        "statement": [
+          {
+            "type": "bf:Place",
+            "label": [
+              {
+                "value": "La Habana"
+              }
+            ]
+          },
+          {
+            "type": "bf:Agent",
+            "label": [
+              {
+                "value": "Editorial Cient\u00edfico T\u00e9cnica"
+              }
+            ]
+          },
+          {
+            "label": [
+              {
+                "value": "1983"
+              }
+            ],
+            "type": "Date"
+          }
+        ]
+      }
+    ],
+    "extent": "979 p.",
+    "note": [
+      {
+        "noteType": "otherPhysicalDetails",
+        "label": ": graf."
+      }
+    ],
+    "illustrativeContent": [
+      "graphs"
+    ],
+    "dimensions": [
+      "; 20 cm"
+    ],
+    "type": [
+      {
+        "main_type": "docmaintype_book",
+        "subtype": "docsubtype_other_book"
+      }
+    ]
+  },
+  {
+    "adminMetadata": {
+      "encodingLevel": "Unknown"
+    },
+    "issuance": {
+      "main_type": "rdami:1001",
+      "subtype": "materialUnit"
+    },
+    "pid": "1002",
+    "fiction_statement": "non_fiction",
+    "language": [
+      {
+        "value": "eng",
+        "type": "bf:Language"
+      }
+    ],
+    "contribution": [
+      {
+        "entity": {
+          "type": "bf:Person",
+          "authorized_access_point": "Plekhanov, G. V"
+        },
+        "role": [
+          "cre"
+        ]
+      },
+      {
+        "entity": {
+          "type": "bf:Person",
+          "authorized_access_point": "Beltov, N"
+        },
+        "role": [
+          "ctb"
+        ]
+      }
+    ],
+    "responsibilityStatement": [
+      [
+        {
+          "value": "G. V.  Plekhanov, N. Beltov"
+        }
+      ]
+    ],
+    "title": [
+      {
+        "mainTitle": [
+          {
+            "value": "The development of the monist view of history"
+          }
+        ],
+        "type": "bf:Title"
+      }
+    ],
+    "editionStatement": [
+      {
+        "editionDesignation": [
+          {
+            "value": "3. ed"
+          }
+        ]
+      }
+    ],
+    "provisionActivity": [
+      {
+        "type": "bf:Publication",
+        "startDate": 9999,
+        "place": [
+          {
+            "country": "ru"
+          }
+        ],
+        "statement": [
+          {
+            "type": "bf:Place",
+            "label": [
+              {
+                "value": "Mosc\u00fa"
+              }
+            ]
+          },
+          {
+            "type": "bf:Agent",
+            "label": [
+              {
+                "value": "Editorial Progreso"
+              }
+            ]
+          },
+          {
+            "label": [
+              {
+                "value": "1974"
+              }
+            ],
+            "type": "Date"
+          }
+        ]
+      }
+    ],
+    "extent": "334 p.",
+    "dimensions": [
+      "; 12 cm"
+    ],
+    "type": [
+      {
+        "main_type": "docmaintype_book",
+        "subtype": "docsubtype_other_book"
+      }
+    ]
+  },
+  {
+    "adminMetadata": {
+      "encodingLevel": "Unknown"
+    },
+    "issuance": {
+      "main_type": "rdami:1001",
+      "subtype": "materialUnit"
+    },
+    "pid": "1003",
+    "fiction_statement": "non_fiction",
+    "language": [
+      {
+        "value": "spa",
+        "type": "bf:Language"
+      }
+    ],
+    "title": [
+      {
+        "mainTitle": [
+          {
+            "value": "Lecturas sobre historia de la filosof\u00eda"
+          }
+        ],
+        "type": "bf:Title"
+      }
+    ],
+    "provisionActivity": [
+      {
+        "type": "bf:Publication",
+        "startDate": 9999,
+        "place": [
+          {
+            "country": "cu"
+          }
+        ],
+        "statement": [
+          {
+            "type": "bf:Place",
+            "label": [
+              {
+                "value": "La Habana"
+              }
+            ]
+          },
+          {
+            "type": "bf:Agent",
+            "label": [
+              {
+                "value": "Editorial Pueblo y Educaci\u00f3n"
+              }
+            ]
+          },
+          {
+            "label": [
+              {
+                "value": "1973"
+              }
+            ],
+            "type": "Date"
+          }
+        ]
+      }
+    ],
+    "extent": "368 p.",
+    "dimensions": [
+      "; 23 cm"
+    ],
+    "type": [
+      {
+        "main_type": "docmaintype_book",
+        "subtype": "docsubtype_other_book"
+      }
+    ]
+  },
+  {
+    "adminMetadata": {
+      "encodingLevel": "Unknown"
+    },
+    "issuance": {
+      "main_type": "rdami:1001",
+      "subtype": "materialUnit"
+    },
+    "pid": "1004",
+    "fiction_statement": "non_fiction",
+    "language": [
+      {
+        "value": "spa",
+        "type": "bf:Language"
+      }
+    ],
+    "contribution": [
+      {
+        "entity": {
+          "type": "bf:Person",
+          "authorized_access_point": "Bunge, Mario"
+        },
+        "role": [
+          "cre"
+        ]
+      }
+    ],
+    "responsibilityStatement": [
+      [
+        {
+          "value": "Mario Bunge"
+        }
+      ]
+    ],
+    "title": [
+      {
+        "mainTitle": [
+          {
+            "value": "La investigaci\u00f3n cient\u00edfica: su estrategia y su filosof\u00eda"
+          }
+        ],
+        "type": "bf:Title"
+      }
+    ],
+    "provisionActivity": [
+      {
+        "type": "bf:Publication",
+        "startDate": 9999,
+        "place": [
+          {
+            "country": "cu"
+          }
+        ],
+        "statement": [
+          {
+            "type": "bf:Place",
+            "label": [
+              {
+                "value": "La Habana"
+              }
+            ]
+          },
+          {
+            "type": "bf:Agent",
+            "label": [
+              {
+                "value": "Editorial Ciencias Sociales"
+              }
+            ]
+          },
+          {
+            "label": [
+              {
+                "value": "1972"
+              }
+            ],
+            "type": "Date"
+          }
+        ]
+      }
+    ],
+    "extent": "955 p.",
+    "dimensions": [
+      "; 23 cm"
+    ],
+    "type": [
+      {
+        "main_type": "docmaintype_book",
+        "subtype": "docsubtype_other_book"
+      }
+    ]
+  },
+  {
+    "adminMetadata": {
+      "encodingLevel": "Unknown"
+    },
+    "issuance": {
+      "main_type": "rdami:1001",
+      "subtype": "materialUnit"
+    },
+    "pid": "1005",
+    "fiction_statement": "non_fiction",
+    "language": [
+      {
+        "value": "spa",
+        "type": "bf:Language"
+      }
+    ],
+    "contribution": [
+      {
+        "entity": {
+          "type": "bf:Person",
+          "authorized_access_point": "Engels, Federico, 1820-1895"
+        },
+        "role": [
+          "cre"
+        ]
+      }
+    ],
+    "responsibilityStatement": [
+      [
+        {
+          "value": "Federico Engels"
+        }
+      ]
+    ],
+    "title": [
+      {
+        "mainTitle": [
+          {
+            "value": "Anti-Duhring"
+          }
+        ],
+        "type": "bf:Title"
+      }
+    ],
+    "provisionActivity": [
+      {
+        "type": "bf:Publication",
+        "startDate": 9999,
+        "place": [
+          {
+            "country": "cu"
+          }
+        ],
+        "statement": [
+          {
+            "type": "bf:Place",
+            "label": [
+              {
+                "value": "La Habana"
+              }
+            ]
+          },
+          {
+            "type": "bf:Agent",
+            "label": [
+              {
+                "value": "Editorial Pueblo y Educaci\u00f3n"
+              }
+            ]
+          },
+          {
+            "label": [
+              {
+                "value": "1973"
+              }
+            ],
+            "type": "Date"
+          }
+        ]
+      }
+    ],
+    "extent": "522 p.",
+    "dimensions": [
+      "; 19 cm"
+    ],
+    "type": [
+      {
+        "main_type": "docmaintype_book",
+        "subtype": "docsubtype_other_book"
+      }
+    ]
+  },
+  {
+    "adminMetadata": {
+      "encodingLevel": "Unknown"
+    },
+    "issuance": {
+      "main_type": "rdami:1001",
+      "subtype": "materialUnit"
+    },
+    "pid": "1006",
+    "fiction_statement": "non_fiction",
+    "language": [
+      {
+        "value": "spa",
+        "type": "bf:Language"
+      }
+    ],
+    "contribution": [
+      {
+        "entity": {
+          "type": "bf:Person",
+          "authorized_access_point": "Torres, Eduardo"
+        },
+        "role": [
+          "cre"
+        ]
+      }
+    ],
+    "responsibilityStatement": [
+      [
+        {
+          "value": "Eduardo Torres"
+        }
+      ]
+    ],
+    "title": [
+      {
+        "mainTitle": [
+          {
+            "value": "Antolog\u00eda del pensamiento medieval"
+          }
+        ],
+        "type": "bf:Title"
+      }
+    ],
+    "provisionActivity": [
+      {
+        "type": "bf:Publication",
+        "startDate": 9999,
+        "place": [
+          {
+            "country": "cu"
+          }
+        ],
+        "statement": [
+          {
+            "type": "bf:Place",
+            "label": [
+              {
+                "value": "La Habana"
+              }
+            ]
+          },
+          {
+            "type": "bf:Agent",
+            "label": [
+              {
+                "value": "Editorial Ciencias Sociales"
+              }
+            ]
+          },
+          {
+            "label": [
+              {
+                "value": "1975"
+              }
+            ],
+            "type": "Date"
+          }
+        ]
+      }
+    ],
+    "extent": "596 p.",
+    "dimensions": [
+      "; 23 cm"
+    ],
+    "type": [
+      {
+        "main_type": "docmaintype_book",
+        "subtype": "docsubtype_other_book"
+      }
+    ]
+  },
+  {
+    "adminMetadata": {
+      "encodingLevel": "Unknown"
+    },
+    "issuance": {
+      "main_type": "rdami:1001",
+      "subtype": "materialUnit"
+    },
+    "pid": "1007",
+    "fiction_statement": "non_fiction",
+    "language": [
+      {
+        "value": "eng",
+        "type": "bf:Language"
+      }
+    ],
+    "contribution": [
+      {
+        "entity": {
+          "type": "bf:Person",
+          "authorized_access_point": "Momjan, H"
+        },
+        "role": [
+          "cre"
+        ]
+      }
+    ],
+    "responsibilityStatement": [
+      [
+        {
+          "value": "H. Momjan"
+        }
+      ]
+    ],
+    "title": [
+      {
+        "mainTitle": [
+          {
+            "value": "Marxism and the Renegade Garaudy"
+          }
+        ],
+        "type": "bf:Title"
+      }
+    ],
+    "provisionActivity": [
+      {
+        "type": "bf:Publication",
+        "startDate": 9999,
+        "place": [
+          {
+            "country": "ru"
+          }
+        ],
+        "statement": [
+          {
+            "type": "bf:Place",
+            "label": [
+              {
+                "value": "Mosc\u00fa"
+              }
+            ]
+          },
+          {
+            "type": "bf:Agent",
+            "label": [
+              {
+                "value": "Editorial Progreso"
+              }
+            ]
+          },
+          {
+            "label": [
+              {
+                "value": "1974"
+              }
+            ],
+            "type": "Date"
+          }
+        ]
+      }
+    ],
+    "extent": "232 p.",
+    "dimensions": [
+      "; 20 cm"
+    ],
+    "type": [
+      {
+        "main_type": "docmaintype_book",
+        "subtype": "docsubtype_other_book"
+      }
+    ]
+  }
+]

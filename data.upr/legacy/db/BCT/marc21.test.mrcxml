@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection xmlns="http://www.loc.gov/MARC21/slim">
+  <record>
+    <leader>00000cLm0a0000000#a04500</leader>
+    <controlfield tag="001">M2001</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">190409#1–9 spaf###0000dspa</controlfield>
+    <datafield tag="084" ind1=" " ind2=" ">
+      <subfield code="a">57-2500</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Freifelder, David</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Molecular biology</subfield>
+      <subfield code="b">A Comprehesive Introduction to prokaryotes and eukaryotes</subfield>
+      <subfield code="c">David Freifelder</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editorial Científico Técnica</subfield>
+      <subfield code="c">1983</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">979 p.</subfield>
+      <subfield code="b">: graf.</subfield>
+      <subfield code="c">; 20 cm.</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a">BIOLOGIA MOLECULAR</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>005870L00000002770004500</leader>
+    <controlfield tag="001">M2002</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">76719          cu a   fr#   #001 0#spadd</controlfield>
+    <datafield tag="010" ind1=" " ind2=" ">
+      <subfield code="*">true</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">spa</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="084" ind1=" " ind2=" ">
+      <subfield code="a">59-2487</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="1">
+      <subfield code="a">Anatomía y fisiología para ingenieros pecuarios</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Edición Revolucionaria</subfield>
+      <subfield code="c">[s.a.]</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a"> 951 p. </subfield>
+      <subfield code="b">: il. </subfield>
+      <subfield code="c">; 30 cm.</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">5</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="401" ind1=" " ind2=" ">
+      <subfield code="*">true</subfield>
+    </datafield>
+    <datafield tag="650" ind1="1" ind2="4">
+      <subfield code="a">ANATOMIA</subfield>
+      <subfield code="b">FISIOLOGIA</subfield>
+      <subfield code="b">GANADO</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20150121 01:47:22</subfield>
+      <subfield code="o">ana</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20160201 03:39:32</subfield>
+      <subfield code="o">anateresa</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>005680L00000002770004500</leader>
+    <controlfield tag="001">M2003</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">821125         cu #   fr#   #001 0#spadd</controlfield>
+    <datafield tag="010" ind1=" " ind2=" ">
+      <subfield code="*">true</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">spa</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">IT</subfield>
+    </datafield>
+    <datafield tag="084" ind1=" " ind2=" ">
+      <subfield code="a">59-2300</subfield>
+    </datafield>
+    <datafield tag="100" ind1="1" ind2=" ">
+      <subfield code="a">McDiarmid, A.</subfield>
+    </datafield>
+    <datafield tag="245" ind1="1" ind2="1">
+      <subfield code="a">Enfermedades de los animales salvajes en libertad</subfield>
+      <subfield code="c">A. McDiarmid</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">Roma</subfield>
+      <subfield code="b">Editorial FAO</subfield>
+      <subfield code="c">1962</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">129 p. </subfield>
+      <subfield code="c">; 25 cm.</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">5</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="401" ind1=" " ind2=" ">
+      <subfield code="*">true</subfield>
+    </datafield>
+    <datafield tag="650" ind1="1" ind2="4">
+      <subfield code="a">ANIMALES SALVAJES</subfield>
+      <subfield code="x">ENFERMEDADES</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20141110 11:48:02</subfield>
+      <subfield code="o">ana</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>005910L00000002890004500</leader>
+    <controlfield tag="001">M2004</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">760626         cu a   fr#   #001 0#spadd</controlfield>
+    <datafield tag="010" ind1=" " ind2=" ">
+      <subfield code="*">true</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">spa</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="084" ind1=" " ind2=" ">
+      <subfield code="a">59-2444</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Storer, Tracy I.</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="1">
+      <subfield code="a">Zoología general</subfield>
+      <subfield code="c">Tracy I. Stoner, Robert L. Vsinger</subfield>
+    </datafield>
+    <datafield tag="250" ind1=" " ind2=" ">
+      <subfield code="a">3. ed.</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editorial Instituto del Libro</subfield>
+      <subfield code="c">1968</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">1003 p. </subfield>
+      <subfield code="b">: il. </subfield>
+      <subfield code="c">; 30 cm.</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">5</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="401" ind1=" " ind2=" ">
+      <subfield code="*">true</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a">ZOOLOGIA</subfield>
+    </datafield>
+    <datafield tag="700" ind1="1" ind2="2">
+      <subfield code="a"> Vsinger, Robert L.</subfield>
+    </datafield>
+  </record>
+</collection>

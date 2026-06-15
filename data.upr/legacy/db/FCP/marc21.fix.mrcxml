@@ -1,0 +1,595 @@
+<?xml version='1.0' encoding='utf-8'?>
+<collection xmlns="http://www.loc.gov/MARC21/slim" xmlns="http://www.loc.gov/MARC21/slim"><record>
+    <leader>00000cLm0a0000000#a04500</leader>
+    <controlfield tag="001">REROILS:M7001</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">171030b #      cu ||||#|#af##|00|0#spa#d</controlfield>
+    <datafield tag="020" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">959-13-1140-0</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">9-1</subfield>
+      <subfield code="b">Fer</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Fernández, Milagros, 1924-</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Los Obreros Pinareños</subfield>
+      <subfield code="b">breves apuntes para su historia</subfield>
+      <subfield code="c">Milagros Fernández Vera, Julio A. Valdes Herrera</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editora Política</subfield>
+      <subfield code="c">1985</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">168 p.</subfield>
+      <subfield code="b">: il.</subfield>
+      <subfield code="c">; 20 cm.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Premio Monografia</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a">HISTORIA</subfield>
+      <subfield code="a">OBREROS</subfield>
+      <subfield code="a">LUCHAS</subfield>
+      <subfield code="z">PINAR DEL RIO</subfield>
+      <subfield code="z">CUBA</subfield>
+    </datafield>
+    <datafield tag="700" ind1=" " ind2=" ">
+      <subfield code="a">Valdes Herrera, Julio A., 1927-</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>000000L00000000000004500</leader>
+    <controlfield tag="001">REROILS:M7002</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">931201b                                 </controlfield>
+    <datafield tag="020" ind1=" " ind2=" ">
+      <subfield code="a">959-010054-6</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">D342(7291)Con</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Constitución de la República de Cuba</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editora Política</subfield>
+      <subfield code="c">1992</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">59 p.</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>006290L00000003250004500</leader>
+    <controlfield tag="001">REROILS:M7003</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">931201b                                 </controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">UCP PR</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">9-08SamH</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Sampedro Brito, Mario</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Historia de Cuba (1934-1958) : selección de materiales</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">[s.n.]</subfield>
+      <subfield code="c">1988</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">, v.t.</subfield>
+      <subfield code="b" />
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">, v.t.</subfield>
+      <subfield code="b" />
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">"Escritos pedagógicos"</subfield>
+    </datafield>
+    <datafield tag="580" ind1=" " ind2=" ">
+      <subfield code="a">6</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+    <datafield tag="900" ind1=" " ind2=" ">
+      <subfield code="l">t 16972t 16973t 16974t 16975t 16976t 16977</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20160126 10:10:47</subfield>
+      <subfield code="o">sol.franco</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>005990L00000003130004500</leader>
+    <controlfield tag="001">REROILS:M7004</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">931201b                                 </controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="020" ind1=" " ind2=" ">
+      <subfield code="a">959-010-0018</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">UCP PR</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">9-091LeóS</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">León Cotayo, Nicanor</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Sitiada la esperanza : bloqueo económico de EEUU a Cuba : selección de temas</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Pueblo y Educación</subfield>
+      <subfield code="c">1992</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">80</subfield>
+      <subfield code="b" />
+    </datafield>
+    <datafield tag="580" ind1=" " ind2=" ">
+      <subfield code="a">3</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+    <datafield tag="900" ind1=" " ind2=" ">
+      <subfield code="l">169101691116912</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20160126 10:11:09</subfield>
+      <subfield code="o">sol.franco</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>005140L00000003130004500</leader>
+    <controlfield tag="001">REROILS:M7005</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">931201b                                 </controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">UCP PR</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">9-091NúñP</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Núñez Jiménez, Antonio</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Patria o muerte</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">INRA</subfield>
+      <subfield code="c">1961</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a" />
+      <subfield code="b">il.</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">494 </subfield>
+      <subfield code="b">il.</subfield>
+    </datafield>
+    <datafield tag="580" ind1=" " ind2=" ">
+      <subfield code="a">1</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+    <datafield tag="900" ind1=" " ind2=" ">
+      <subfield code="l">16924</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20160126 10:11:35</subfield>
+      <subfield code="o">sol.franco</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>005030L00000002890004500</leader>
+    <controlfield tag="001">REROILS:M7006</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">931201b                                 </controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">UCP PR</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">9-His</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Historia de Cuba : 1930-1959 materiales de estudio</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Pueblo y Educación</subfield>
+      <subfield code="c">1985</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">502</subfield>
+      <subfield code="b" />
+    </datafield>
+    <datafield tag="580" ind1=" " ind2=" ">
+      <subfield code="a">2</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+    <datafield tag="900" ind1=" " ind2=" ">
+      <subfield code="l">1699616997</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20160126 10:11:58</subfield>
+      <subfield code="o">sol.franco</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>005130L00000003010004500</leader>
+    <controlfield tag="001">REROILS:M7007</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">931201b                                 </controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">UCP PR</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">910NúñG</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Núñez Jiménez, Antonio</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Geografía del campismo</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Gente Nueva</subfield>
+      <subfield code="c">1990</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">354 </subfield>
+      <subfield code="b" />
+    </datafield>
+    <datafield tag="580" ind1=" " ind2=" ">
+      <subfield code="a">3</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+    <datafield tag="900" ind1=" " ind2=" ">
+      <subfield code="l">169381693916940</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20160126 10:12:20</subfield>
+      <subfield code="o">sol.franco</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>005540L00000003130004500</leader>
+    <controlfield tag="001">REROILS:M7008</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">931201b                                 </controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">UCP PR</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">551.4AceG</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Acevedo González, Manuel</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Geografía física de Cuba</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Pueblo y Educación</subfield>
+      <subfield code="c">1980</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">, v.2 t.</subfield>
+      <subfield code="b" />
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">, v.2 t.</subfield>
+      <subfield code="b" />
+    </datafield>
+    <datafield tag="580" ind1=" " ind2=" ">
+      <subfield code="a">2</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+    <datafield tag="900" ind1=" " ind2=" ">
+      <subfield code="l">16665 t16919 t</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20160126 10:12:47</subfield>
+      <subfield code="o">sol.franco</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>006400L00000003250004500</leader>
+    <controlfield tag="001">REROILS:M7009</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">931201b                                 </controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">UCP PR</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">546PonQ</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Ponjuan Dante, Adolfo</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Blanco Prieto, JoséNovoa Blanco, Jesús</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Química inorgánica I</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Libros para la Educación</subfield>
+      <subfield code="c">1981</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">t.</subfield>
+      <subfield code="b" />
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">La biblioteca posee t.1 y 3</subfield>
+    </datafield>
+    <datafield tag="580" ind1=" " ind2=" ">
+      <subfield code="a">6</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+    <datafield tag="900" ind1=" " ind2=" ">
+      <subfield code="l">7775 t7776 t7777 t11324 t11325 t11326 t</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20160126 10:13:34</subfield>
+      <subfield code="o">sol.franco</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>006320L00000003130004500</leader>
+    <controlfield tag="001">REROILS:M70010</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">931201b                                 </controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">UCP PR</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">330.9Geo</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Rodríguez Rodríguez, Armando</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Geografía económica general y de Cuba : octavo grado</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Pueblo y Educación</subfield>
+      <subfield code="c">1990</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a" />
+      <subfield code="b">(Colección Secundaria Básica)</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">130 </subfield>
+      <subfield code="b">(Colección Secundaria Básica)</subfield>
+    </datafield>
+    <datafield tag="580" ind1=" " ind2=" ">
+      <subfield code="a">3</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+    <datafield tag="900" ind1=" " ind2=" ">
+      <subfield code="l">169841698516986</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20160126 10:14:16</subfield>
+      <subfield code="o">sol.franco</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+</collection>

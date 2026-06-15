@@ -1,0 +1,402 @@
+[
+  {
+    "adminMetadata": {
+      "encodingLevel": "Unknown"
+    },
+    "issuance": {
+      "main_type": "rdami:1001",
+      "subtype": "materialUnit"
+    },
+    "pid": "2001",
+    "fiction_statement": "non_fiction",
+    "language": [
+      {
+        "value": "spa",
+        "type": "bf:Language"
+      }
+    ],
+    "contribution": [
+      {
+        "entity": {
+          "type": "bf:Person",
+          "authorized_access_point": "Freifelder, David"
+        },
+        "role": [
+          "cre"
+        ]
+      }
+    ],
+    "responsibilityStatement": [
+      [
+        {
+          "value": "David Freifelder"
+        }
+      ]
+    ],
+    "title": [
+      {
+        "mainTitle": [
+          {
+            "value": "Molecular biology"
+          }
+        ],
+        "subtitle": [
+          {
+            "value": "A Comprehesive Introduction to prokaryotes and eukaryotes"
+          }
+        ],
+        "type": "bf:Title"
+      }
+    ],
+    "provisionActivity": [
+      {
+        "type": "bf:Publication",
+        "startDate": 9999,
+        "place": [
+          {
+            "country": "sp"
+          }
+        ],
+        "statement": [
+          {
+            "type": "bf:Place",
+            "label": [
+              {
+                "value": "La Habana"
+              }
+            ]
+          },
+          {
+            "type": "bf:Agent",
+            "label": [
+              {
+                "value": "Editorial Cient\u00edfico T\u00e9cnica"
+              }
+            ]
+          },
+          {
+            "label": [
+              {
+                "value": "1983"
+              }
+            ],
+            "type": "Date"
+          }
+        ]
+      }
+    ],
+    "extent": "979 p.",
+    "note": [
+      {
+        "noteType": "otherPhysicalDetails",
+        "label": ": graf."
+      }
+    ],
+    "illustrativeContent": [
+      "graphs"
+    ],
+    "dimensions": [
+      "; 20 cm"
+    ],
+    "type": [
+      {
+        "main_type": "docmaintype_book",
+        "subtype": "docsubtype_other_book"
+      }
+    ]
+  },
+  {
+    "adminMetadata": {
+      "encodingLevel": "Unknown"
+    },
+    "issuance": {
+      "main_type": "rdami:1001",
+      "subtype": "materialUnit"
+    },
+    "pid": "2002",
+    "fiction_statement": "non_fiction",
+    "language": [
+      {
+        "value": "spa",
+        "type": "bf:Language"
+      }
+    ],
+    "title": [
+      {
+        "mainTitle": [
+          {
+            "value": "Anatom\u00eda y fisiolog\u00eda para ingenieros pecuarios"
+          }
+        ],
+        "type": "bf:Title"
+      }
+    ],
+    "provisionActivity": [
+      {
+        "type": "bf:Publication",
+        "startDate": 9999,
+        "place": [
+          {
+            "country": "cu"
+          }
+        ],
+        "statement": [
+          {
+            "type": "bf:Place",
+            "label": [
+              {
+                "value": "La Habana"
+              }
+            ]
+          },
+          {
+            "type": "bf:Agent",
+            "label": [
+              {
+                "value": "Edici\u00f3n Revolucionaria"
+              }
+            ]
+          },
+          {
+            "label": [
+              {
+                "value": "[s.a.]"
+              }
+            ],
+            "type": "Date"
+          }
+        ]
+      }
+    ],
+    "extent": " 951 p.",
+    "note": [
+      {
+        "noteType": "otherPhysicalDetails",
+        "label": ": il."
+      }
+    ],
+    "illustrativeContent": [
+      "illustrations"
+    ],
+    "dimensions": [
+      "; 30 cm"
+    ],
+    "type": [
+      {
+        "main_type": "docmaintype_book",
+        "subtype": "docsubtype_other_book"
+      }
+    ]
+  },
+  {
+    "adminMetadata": {
+      "encodingLevel": "Unknown"
+    },
+    "issuance": {
+      "main_type": "rdami:1001",
+      "subtype": "materialUnit"
+    },
+    "pid": "2003",
+    "fiction_statement": "non_fiction",
+    "language": [
+      {
+        "value": "spa",
+        "type": "bf:Language"
+      }
+    ],
+    "contribution": [
+      {
+        "entity": {
+          "type": "bf:Person",
+          "authorized_access_point": "McDiarmid, A"
+        },
+        "role": [
+          "cre"
+        ]
+      }
+    ],
+    "responsibilityStatement": [
+      [
+        {
+          "value": "A. McDiarmid"
+        }
+      ]
+    ],
+    "title": [
+      {
+        "mainTitle": [
+          {
+            "value": "Enfermedades de los animales salvajes en libertad"
+          }
+        ],
+        "type": "bf:Title"
+      }
+    ],
+    "provisionActivity": [
+      {
+        "type": "bf:Publication",
+        "startDate": 9999,
+        "place": [
+          {
+            "country": "cu"
+          }
+        ],
+        "statement": [
+          {
+            "type": "bf:Place",
+            "label": [
+              {
+                "value": "Roma"
+              }
+            ]
+          },
+          {
+            "type": "bf:Agent",
+            "label": [
+              {
+                "value": "Editorial FAO"
+              }
+            ]
+          },
+          {
+            "label": [
+              {
+                "value": "1962"
+              }
+            ],
+            "type": "Date"
+          }
+        ]
+      }
+    ],
+    "extent": "129 p.",
+    "dimensions": [
+      "; 25 cm"
+    ],
+    "type": [
+      {
+        "main_type": "docmaintype_book",
+        "subtype": "docsubtype_other_book"
+      }
+    ]
+  },
+  {
+    "adminMetadata": {
+      "encodingLevel": "Unknown"
+    },
+    "issuance": {
+      "main_type": "rdami:1001",
+      "subtype": "materialUnit"
+    },
+    "pid": "2004",
+    "fiction_statement": "non_fiction",
+    "language": [
+      {
+        "value": "spa",
+        "type": "bf:Language"
+      }
+    ],
+    "contribution": [
+      {
+        "entity": {
+          "type": "bf:Person",
+          "authorized_access_point": "Storer, Tracy I"
+        },
+        "role": [
+          "cre"
+        ]
+      },
+      {
+        "entity": {
+          "type": "bf:Person",
+          "authorized_access_point": " Vsinger, Robert L"
+        },
+        "role": [
+          "ctb"
+        ]
+      }
+    ],
+    "responsibilityStatement": [
+      [
+        {
+          "value": "Tracy I. Stoner, Robert L. Vsinger"
+        }
+      ]
+    ],
+    "title": [
+      {
+        "mainTitle": [
+          {
+            "value": "Zoolog\u00eda general"
+          }
+        ],
+        "type": "bf:Title"
+      }
+    ],
+    "editionStatement": [
+      {
+        "editionDesignation": [
+          {
+            "value": "3. ed"
+          }
+        ]
+      }
+    ],
+    "provisionActivity": [
+      {
+        "type": "bf:Publication",
+        "startDate": 9999,
+        "place": [
+          {
+            "country": "cu"
+          }
+        ],
+        "statement": [
+          {
+            "type": "bf:Place",
+            "label": [
+              {
+                "value": "La Habana"
+              }
+            ]
+          },
+          {
+            "type": "bf:Agent",
+            "label": [
+              {
+                "value": "Editorial Instituto del Libro"
+              }
+            ]
+          },
+          {
+            "label": [
+              {
+                "value": "1968"
+              }
+            ],
+            "type": "Date"
+          }
+        ]
+      }
+    ],
+    "extent": "1003 p.",
+    "note": [
+      {
+        "noteType": "otherPhysicalDetails",
+        "label": ": il."
+      }
+    ],
+    "illustrativeContent": [
+      "illustrations"
+    ],
+    "dimensions": [
+      "; 30 cm"
+    ],
+    "type": [
+      {
+        "main_type": "docmaintype_book",
+        "subtype": "docsubtype_other_book"
+      }
+    ]
+  }
+]

@@ -1,0 +1,510 @@
+<?xml version='1.0' encoding='utf-8'?>
+<collection xmlns="http://www.loc.gov/MARC21/slim" xmlns="http://www.loc.gov/MARC21/slim"><record>
+    <leader>00000cLm0a0000000#a04500</leader>
+    <controlfield tag="001">REROILS:M4002</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">180405b #      cu ||||#|#af#m|00|0#spa#d</controlfield>
+    <datafield tag="020" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">959-08-0728-3</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="1">0-Ed. completa</subfield>
+      <subfield code="a">972.91</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="1">b-Apellido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">López Civeira, Francisca</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="1">1-Con asiento secundario</subfield>
+      <subfield code="2">0/9-Número de caracteres iniciales presentes que se ignoran en la alfabetización</subfield>
+      <subfield code="a">Cuba y su historia</subfield>
+      <subfield code="c">Francisca López Civeira, Oscar Loyola Vega, Arnaldo Silva León</subfield>
+    </datafield>
+    <datafield tag="250" ind1=" " ind2=" ">
+      <subfield code="1"># - No definido</subfield>
+      <subfield code="2"># - No definido</subfield>
+      <subfield code="a">2a ed.</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="1"># - No se aplica/Sin información disponible/Primer editor conocido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editorial Gente Nueva</subfield>
+      <subfield code="c">2005</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">276 p.</subfield>
+      <subfield code="c">15 cm.</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">HISTORIA</subfield>
+      <subfield code="z">CUBA</subfield>
+    </datafield>
+    <datafield tag="700" ind1=" " ind2=" ">
+      <subfield code="1">1 - Apellido</subfield>
+      <subfield code="2">2 - Asiento analítico</subfield>
+      <subfield code="a">Silva León, Arnaldo</subfield>
+      <subfield code="d">coaut.</subfield>
+    </datafield>
+    <datafield tag="700" ind1=" " ind2=" ">
+      <subfield code="a">Loyola Vega, Oscar</subfield>
+    </datafield>
+  <library>FCF</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>00000cLm000000000#a04500</leader>
+    <controlfield tag="001">REROILS:M4003</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">180216b #      cu ||||#|#af#m|00|0#spa#d</controlfield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="1">0-Ed. completa</subfield>
+      <subfield code="a">612</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="1">b-Apellido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">Guyton, Arthur C.</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="1">1-Con asiento secundario</subfield>
+      <subfield code="2">0/9-Número de caracteres iniciales presentes que se ignoran en la alfabetización</subfield>
+      <subfield code="a">Tratado de fisiología médica</subfield>
+      <subfield code="c">Arthur C. Guyton, John E. Hall</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="1"># - No se aplica/Sin información disponible/Primer editor conocido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">Nueva York</subfield>
+      <subfield code="b">Editorial Interamericana</subfield>
+      <subfield code="c">1996</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">4 t.</subfield>
+      <subfield code="b">il.</subfield>
+      <subfield code="c">28 cm.</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">FISIOLOGIA</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">MEDICINA</subfield>
+    </datafield>
+    <datafield tag="700" ind1=" " ind2=" ">
+      <subfield code="1">1 - Apellido</subfield>
+      <subfield code="2"># - No se provee información</subfield>
+      <subfield code="a">Hall, John E.</subfield>
+      <subfield code="c">coaut.</subfield>
+    </datafield>
+  <library>FCF</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>00000cLm0a0000000#a04500</leader>
+    <controlfield tag="001">REROILS:M4004</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">180216b #      cu ||||#|#af#m|00|0#spa#d</controlfield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="1">0-Ed. completa</subfield>
+      <subfield code="a">796.42</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="1">b-Apellido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">Fuentes Ferrer, Basilio</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="1">1-Con asiento secundario</subfield>
+      <subfield code="2">0/9-Número de caracteres iniciales presentes que se ignoran en la alfabetización</subfield>
+      <subfield code="a">Atletismo cubano. Los mejores entre la élite del mundo 1950-2002</subfield>
+      <subfield code="c">Basilio Fuentes Ferrer</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="1"># - No se aplica/Sin información disponible/Primer editor conocido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editorial Científico-Técnica</subfield>
+      <subfield code="c">2005</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">235 p.</subfield>
+      <subfield code="b">il.</subfield>
+      <subfield code="c">18 cm. - (Colección Deportes)</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">ATLETISMO</subfield>
+      <subfield code="y">1950-2002</subfield>
+      <subfield code="z">CUBA</subfield>
+    </datafield>
+  <library>FCF</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>00000cLm0a0000000#a04500</leader>
+    <controlfield tag="001">REROILS:M4005</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">180216b #      cu ||||#|#af#m|00|0#spa#d</controlfield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="1">0-Ed. completa</subfield>
+      <subfield code="a">614</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="1">b-Apellido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">Gómez Valdés, Annia</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="1">1-Con asiento secundario</subfield>
+      <subfield code="2">0/9-Número de caracteres iniciales presentes que se ignoran en la alfabetización</subfield>
+      <subfield code="a">Material de consulta. Deformaciones posturales</subfield>
+      <subfield code="c">Annia Gómez Valdés, Idelfonso Javiqué Leal</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="1"># - No se aplica/Sin información disponible/Primer editor conocido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">Pinar del Río</subfield>
+      <subfield code="b">Editorial Facultad de Cultura Física "Nancy Uranga Romagoza"</subfield>
+      <subfield code="c">2004</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">60 p.</subfield>
+      <subfield code="b">il.</subfield>
+      <subfield code="c">32 cm.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">Material de Consulta</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">POSTURA</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">CULTURA FISICA TERAPEUTICA</subfield>
+    </datafield>
+    <datafield tag="700" ind1=" " ind2=" ">
+      <subfield code="1">1 - Apellido</subfield>
+      <subfield code="2"># - No se provee información</subfield>
+      <subfield code="a">Javiqué Leal, Idelfonso</subfield>
+      <subfield code="c">coaut.</subfield>
+    </datafield>
+  <library>FCF</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>000000L00000000000004500</leader>
+    <controlfield tag="001">REROILS:M4006</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">281015s        cu #   fr#   #001 0#spadd</controlfield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">4753</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Gómez Valdés, AnniaQuetglas González, Luis RenéHernández Monsibaéz, Arlenys</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Sobre la Cultura Física en la tercera edad</subfield>
+      <subfield code="c">Annia Goméz Valdés, Luis René QuetglasGonzález, Arlenys Hernández Monsibaéz</subfield>
+    </datafield>
+    <datafield tag="250" ind1=" " ind2=" ">
+      <subfield code="a">1. ed.</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">Pinar del Río</subfield>
+      <subfield code="b">Facultad de Cultura Física</subfield>
+      <subfield code="c">2006</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">23 p.</subfield>
+      <subfield code="c">32cm.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Material de Consulta</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a">CULTURA FÍSICA</subfield>
+      <subfield code="a">ANCIANOS</subfield>
+      <subfield code="v">Manual</subfield>
+      <subfield code="z">Cuba</subfield>
+    </datafield>
+    <datafield tag="700" ind1=" " ind2=" ">
+      <subfield code="a">Quetglas González ,Luis René ; Hernández Monsibaéz Arlenys</subfield>
+    </datafield>
+  <library>FCF</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>00000cLm0a0000000#a04500</leader>
+    <controlfield tag="001">REROILS:M4007</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">180216b #      cu ||||#|#af#m|00|0#spa#d</controlfield>
+    <datafield tag="020" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">959-7133-48-2</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="1">0-Ed. completa</subfield>
+      <subfield code="a">796.6</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="1">b-Apellido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">García León, Joel</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="1">1-Con asiento secundario</subfield>
+      <subfield code="2">0/9-Número de caracteres iniciales presentes que se ignoran en la alfabetización</subfield>
+      <subfield code="a">La Vuelta es Cuba</subfield>
+      <subfield code="c">Joel García León</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="1"># - No se aplica/Sin información disponible/Primer editor conocido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editorial Deportes</subfield>
+      <subfield code="c">2005</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">245 p.</subfield>
+      <subfield code="b">il.</subfield>
+      <subfield code="c">18 cm.</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">HISTORIA</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">CICLISMO</subfield>
+      <subfield code="z">CUBA</subfield>
+    </datafield>
+  <library>FCF</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>00000cLm0a0000000#a04500</leader>
+    <controlfield tag="001">REROILS:M4008</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">180216b #      cu ||||#|#af#m|00|0#spa#d</controlfield>
+    <datafield tag="020" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">959-7133-68-7</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="1">0-Ed. completa</subfield>
+      <subfield code="a">796.357</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="1">0-Sin asiento secundario</subfield>
+      <subfield code="2">0/9-Número de caracteres iniciales presentes que se ignoran en la alfabetización</subfield>
+      <subfield code="a">Guía oficial de béisbol ; 44 serie nacional</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="1"># - No se aplica/Sin información disponible/Primer editor conocido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editorial Deportes</subfield>
+      <subfield code="c">2005</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">491 p.</subfield>
+      <subfield code="b">il.</subfield>
+      <subfield code="c">32 cm.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">Temporada 2004-2005</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">BEISBOL</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">GUIAS</subfield>
+    </datafield>
+  <library>FCF</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>00000cLm0a0000000#a04500</leader>
+    <controlfield tag="001">REROILS:M4009</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">180216b #      cu ||||#|#af#m|00|0#spa#d</controlfield>
+    <datafield tag="020" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">959-219-195-6</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="1">0-Ed. completa</subfield>
+      <subfield code="a">796.357</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="1">b-Apellido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">Martínez de Osaba y Goenaga, Juan Antonio, 1947-</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="1">1-Con asiento secundario</subfield>
+      <subfield code="2">0/9-Número de caracteres iniciales presentes que se ignoran en la alfabetización</subfield>
+      <subfield code="a">Nosotros los peloteros</subfield>
+      <subfield code="c">Juan A. Martínez de Osaba y Goenaga</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="1"># - No se aplica/Sin información disponible/Primer editor conocido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">Pinar del Río</subfield>
+      <subfield code="b">Editorial Ediciones Loynaz</subfield>
+      <subfield code="c">2005</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">132 p.</subfield>
+      <subfield code="b">il.</subfield>
+      <subfield code="c">18 cm.</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">BEISBOL</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">HISTORIA</subfield>
+    </datafield>
+  <library>FCF</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>00000cLm0a0000000#a04500</leader>
+    <controlfield tag="001">REROILS:M40010</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">180216b #      cu ||||#|#af#m|00|0#spa#d</controlfield>
+    <datafield tag="020" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">84-88424-56-6</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="1">0-Ed. completa</subfield>
+      <subfield code="a">790</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="1">0-Sin asiento secundario</subfield>
+      <subfield code="2">0/9-Número de caracteres iniciales presentes que se ignoran en la alfabetización</subfield>
+      <subfield code="a">La Forma física del deportista. Como se consigue y se mantiene</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="1"># - No se aplica/Sin información disponible/Primer editor conocido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">Madrid</subfield>
+      <subfield code="b">Editorial Globus Comunicación S.A.</subfield>
+      <subfield code="c">1993</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">111 p.</subfield>
+      <subfield code="b">il.</subfield>
+      <subfield code="c">18 cm.</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">DEPORTES</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">ALIMENTACION</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">ENTRENAMIENTO</subfield>
+    </datafield>
+  <library>FCF</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>00000cLm0a0000000#a04500</leader>
+    <controlfield tag="001">REROILS:M40011</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">180216b #      cu ||||#|#af#m|00|0#spa#d</controlfield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="1">0-Ed. completa</subfield>
+      <subfield code="a">796.325</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="1">b-Apellido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">Medina Salinas, Jorge</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="1">1-Con asiento secundario</subfield>
+      <subfield code="2">0/9-Número de caracteres iniciales presentes que se ignoran en la alfabetización</subfield>
+      <subfield code="a">Voleibol en la táctica</subfield>
+      <subfield code="c">Jorge Medina Salinas</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="1"># - No se aplica/Sin información disponible/Primer editor conocido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">México</subfield>
+      <subfield code="b">Editorial Universidad Nacional Autónoma</subfield>
+      <subfield code="c">1992</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">p. v.</subfield>
+      <subfield code="b">il.</subfield>
+      <subfield code="c">32 cm. - (Colección Dirección General de Actividades Deportivas y Recreativas)</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">VOLEIBOL</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">TACTICA</subfield>
+    </datafield>
+  <library>FCF</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+</collection>

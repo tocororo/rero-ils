@@ -204,7 +204,7 @@ def process_database(db_name, countries, languages):
 
     Returns (total_count, good_records, error_records, stats_dict).
     """
-    input_path = os.path.join(DB_DIR, db_name, 'marc21.mrcxml')
+    input_path = os.path.join(DB_DIR, db_name, 'marc21.test.mrcxml')
     ET.register_namespace('', 'http://www.loc.gov/MARC21/slim')
     tree = ET.parse(input_path)
     root = tree.getroot()
