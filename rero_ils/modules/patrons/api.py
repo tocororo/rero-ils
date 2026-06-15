@@ -34,9 +34,11 @@ from werkzeug.local import LocalProxy
 
 from rero_ils.modules.api import IlsRecord, IlsRecordsIndexer, IlsRecordsSearch
 from rero_ils.modules.fetchers import id_fetcher
+from rero_ils.modules.ill_requests.api import ILLRequestsSearch
 from rero_ils.modules.libraries.api import Library
 from rero_ils.modules.loans.models import LoanState
 from rero_ils.modules.minters import id_minter
+from rero_ils.modules.operation_logs.extensions import OperationLogObserverExtension
 from rero_ils.modules.organisations.api import Organisation
 from rero_ils.modules.patron_transactions.api import PatronTransaction
 from rero_ils.modules.patron_transactions.utils import (
@@ -102,7 +104,7 @@ class Patron(IlsRecord):
     model_cls = PatronMetadata
     schema = "patrons/patron-v0.0.1.json"
 
-    _extensions = [UserDataExtension()]
+    _extensions = [UserDataExtension(), OperationLogObserverExtension()]
 
     def extended_validation(self, **kwargs):
         """Return reasons for validation failures, otherwise True.
@@ -157,7 +159,7 @@ class Patron(IlsRecord):
         record._update_roles()
         return record
 
-    def update(self, data, commit=True, dbcommit=False, reindex=False):
+    def update(self, data, commit=False, dbcommit=False, reindex=False):
         """Update data for record."""
         super().update(Patron._clean_data(data), commit, dbcommit, reindex)
         self._update_roles()
@@ -345,20 +347,25 @@ class Patron(IlsRecord):
             .exclude("terms", state=exclude_states)
         )
         template_query = TemplatesSearch().filter("term", creator__pid=self.pid)
+        ill_query = ILLRequestsSearch().filter("term", patron__pid=self.pid)
         if get_pids:
             loans = sorted_pids(loan_query)
             transactions = get_transactions_pids_for_patron(self.pid, status="open")
             templates = sorted_pids(template_query)
+            ill_requests = sorted_pids(ill_query)
         else:
             loans = loan_query.count()
             transactions = get_transactions_count_for_patron(self.pid, status="open")
             templates = template_query.count()
+            ill_requests = ill_query.count()
         if loans:
             links["loans"] = loans
         if transactions:
             links["transactions"] = transactions
         if templates:
             links["templates"] = templates
+        if ill_requests:
+            links["ill_requests"] = ill_requests
         return links
 
     def reasons_to_keep(self):
@@ -640,7 +647,7 @@ class Patron(IlsRecord):
         """
 
         def basic_query(channel):
-            """Return basic ES query."""
+            """Return basic search query."""
             return (
                 PatronsSearch()
                 .filter("term", user_id=user.id)

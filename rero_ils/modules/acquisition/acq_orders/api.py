@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2026 RERO
 # Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 
 """API for manipulating Acquisition Orders."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from functools import partial
 
 from flask_babel import gettext as _
@@ -169,7 +169,7 @@ class AcqOrder(AcquisitionIlsRecord):
         results = search.execute()
         statuses = [hit.key for hit in results.aggregations.status.buckets]
 
-        # If the ES query return multiple values, then we can remove
+        # If the search query return multiple values, then we can remove
         # 'CANCELLED' status to compute the correct order status value.
         if len(statuses) > 1 and AcqOrderLineStatus.CANCELLED in statuses:
             statuses.remove(AcqOrderLineStatus.CANCELLED)
@@ -454,7 +454,7 @@ class AcqOrder(AcquisitionIlsRecord):
         """
         # Create the notification and dispatch it synchronously.
         record = {
-            "creation_date": datetime.now(timezone.utc).isoformat(),
+            "creation_date": datetime.now(UTC).isoformat(),
             "notification_type": NotificationType.ACQUISITION_ORDER,
             "context": {
                 "order": {"$ref": get_ref_for_pid("acor", self.pid)},
@@ -482,7 +482,7 @@ class AcqOrder(AcquisitionIlsRecord):
 
 
 class AcqOrdersIndexer(IlsRecordsIndexer):
-    """Indexing documents in Elasticsearch."""
+    """Indexing documents in search index."""
 
     record_cls = AcqOrder
 
@@ -496,10 +496,10 @@ class AcqOrdersIndexer(IlsRecordsIndexer):
     def delete(self, record):
         """Delete a record from indexer.
 
-        First delete order lines from the ES index, then delete the order.
+        First delete order lines from the search index, then delete the order.
         """
-        es_query = AcqOrderLinesSearch().filter("term", acq_order__pid=record.pid)
-        if es_query.count():
-            es_query.delete()
+        search_query = AcqOrderLinesSearch().filter("term", acq_order__pid=record.pid)
+        if search_query.count():
+            search_query.delete()
             AcqOrderLinesSearch.flush_and_refresh()
         super().delete(record)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2026 RERO
 # Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
@@ -47,7 +47,7 @@ def get_profile_countries():
     return [(option.get("value"), _(option.get("label"))) for option in options]
 
 
-def get_readonly_profile_fields() -> list[str]:
+def get_readonly_profile_fields():
     """Disallow to edit some fields for patrons."""
     if current_user.has_role("patron"):
         return ["first_name", "last_name", "birth_date"]
@@ -209,15 +209,10 @@ class User:
             raise ValidationError(str(e)) from e
 
     @classmethod
-    @property
-    def fields(cls):
-        """Validate password."""
-        return cls.profile_fields + cls.user_fields
-
-    @classmethod
     def remove_fields(cls, data):
-        """."""
-        return {k: v for k, v in data.items() if k not in cls.fields}
+        """Remove user-specific fields from data."""
+        fields = cls.profile_fields + cls.user_fields
+        return {k: v for k, v in data.items() if k not in fields}
 
     @classmethod
     def get_record(cls, user_id):
@@ -238,7 +233,7 @@ class User:
             "metadata": self.dumps_metadata(True),
         }
 
-    def dumps_metadata(self, dump_patron: bool = False) -> dict:
+    def dumps_metadata(self, dump_patron=False):
         """Dumps the profile, email, roles metadata.
 
         :param dump_patron: is the patron metadata should be dumped.

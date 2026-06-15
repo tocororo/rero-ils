@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2026 RERO
 # Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,9 @@ import jinja2
 from elasticsearch_dsl import connections
 from flask import Blueprint
 from flask_bootstrap import Bootstrap4
+from flask_login import current_user
 from flask_login.signals import user_loaded_from_cookie, user_logged_in, user_logged_out
-from flask_principal import identity_loaded
+from flask_principal import RoleNeed, identity_loaded
 from flask_wiki import Wiki
 from invenio_base.signals import app_loaded
 from invenio_base.utils import obj_or_import_string
@@ -43,12 +44,12 @@ from redis import Redis
 
 from rero_ils.filter import (
     address_block,
+    angular_assets,
     empty_data,
     format_date_filter,
     get_record_by_ref,
     jsondumps,
     message_filter,
-    node_assets,
     text_to_id,
     to_pretty_json,
     translate,
@@ -113,12 +114,16 @@ def on_identity_loaded(sender, identity):
 
     Add custom RERO-ILS ``Needs`` that will be used to manage policies on
     application resources.
-    Assuming that ``RoleNeed`` and ``UserNeed`` are already populated by
-    flask modules.
+    Since flask-security-invenio 4.x populates ``RoleNeed`` using
+    ``role.id`` (integer), we also add ``RoleNeed(role.name)`` so that
+    name-based permission checks keep working.
 
     @param sender: the sender application.
     @param identity: the identity to enrich.
     """
+    for role in getattr(current_user, "roles", []):
+        identity.provides.add(RoleNeed(role.name))
+
     if current_librarian:
         identity.provides.update(
             [
@@ -194,7 +199,7 @@ class REROILSAPP:
             # register filters
             app.add_template_filter(get_record_by_ref)
             app.add_template_filter(format_date_filter, name="format_date")
-            app.add_template_global(node_assets)
+            app.add_template_global(angular_assets)
             app.add_template_filter(to_pretty_json, name="tojson_pretty")
             app.add_template_filter(text_to_id)
             app.add_template_filter(jsondumps)
@@ -231,11 +236,11 @@ class REROILSAPP:
         REROILSAPP.register_sru_api_blueprint(app)
         if db_log := app.config.get("RERO_ILS_DB_LOGGING"):
             logging.getLogger("sqlalchemy.engine").setLevel(db_log)
-        if es_log := app.config.get("RERO_ILS_ES_LOGGING"):
-            es_trace_logger = logging.getLogger("elasticsearch.trace")
-            es_trace_logger.setLevel(es_log)
+        if search_log := app.config.get("RERO_ILS_SEARCH_LOGGING"):
+            search_trace_logger = logging.getLogger("elasticsearch.trace")
+            search_trace_logger.setLevel(search_log)
             handler = logging.StreamHandler()
-            es_trace_logger.addHandler(handler)
+            search_trace_logger.addHandler(handler)
         app_loaded.connect(set_boosting_query_fields)
         connections.add_connection("default", current_search_client)
 

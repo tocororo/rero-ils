@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2026 RERO
 # Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,6 @@ from copy import deepcopy
 from uuid import uuid4
 
 import click
-import pytz
 from celery import current_app as current_celery_app
 from elasticsearch.exceptions import NotFoundError
 from elasticsearch.helpers import bulk
@@ -52,7 +51,7 @@ ils_record_format_checker = FormatChecker()
 
 @ils_record_format_checker.checks("email")
 @ils_record_format_checker.checks("idn-email")
-def _strong_email_validation(instance) -> bool:
+def _strong_email_validation(instance):
     """Allow to validate an email address (only email format, not DNS)."""
     if not isinstance(instance, str):
         return False
@@ -121,7 +120,7 @@ class IlsRecordsSearch(RecordsSearch):
         raise NotFoundError(f"Record not found pid: {pid}")
 
     def get_records_by_pids(self, pids, fields=None):
-        """Get ES hits by pids.
+        """Get search hits by pids.
 
         :param pids: the list of record pids to retrieve.
         :param fields: a list of field to return. If ``None`` all fields will
@@ -271,7 +270,7 @@ class IlsRecord(Record):
                 persistent_identifier = PersistentIdentifier.get(cls.provider.pid_type, pid)
                 return super().get_record(persistent_identifier.object_uuid, with_deleted=with_deleted)
             # TODO: is it better to raise a error or to return None?
-            except (NoResultFound, PIDDoesNotExistError):
+            except NoResultFound, PIDDoesNotExistError:
                 return None
         return None
 
@@ -299,7 +298,7 @@ class IlsRecord(Record):
             PersistentIdentifier.get(cls.provider.pid_type, pid)
             return True
 
-        except (NoResultFound, PIDDoesNotExistError):
+        except NoResultFound, PIDDoesNotExistError:
             return False
 
     @classmethod
@@ -621,7 +620,7 @@ class IlsRecordsIndexer(RecordIndexer):
         :param op_type: Indexing operation (one of ``index``, ``create``,
             ``delete`` or ``update``).
         :param index: The search engine index. (Default: ``None``)
-        :param doc_type: The Elasticsearch doc_type. (Default: ``None``)
+        :param doc_type: The search index doc_type. (Default: ``None``)
         """
         with self.create_producer() as producer:
             for rec in record_id_iterator:
@@ -661,7 +660,7 @@ class IlsRecordsIndexer(RecordIndexer):
         """Bulk index action.
 
         :param payload: Decoded message body.
-        :return: Dictionary defining an Elasticsearch bulk 'index' action.
+        :return: Dictionary defining a search index bulk 'index' action.
         """
         record = self.record_cls.get_record(payload["id"])
         index = self.record_to_index(record)
@@ -685,8 +684,8 @@ class IlsRecordsIndexer(RecordIndexer):
         """Prepare record data for indexing.
 
         :param record: The record to prepare.
-        :param index: The Elasticsearch index.
-        :param arguments: The arguments to send to Elasticsearch upon indexing.
+        :param index: The search index.
+        :param arguments: The arguments to send to search index upon indexing.
         :param **kwargs: Extra parameters.
         :return: The record metadata.
         """
@@ -705,10 +704,10 @@ class IlsRecordsIndexer(RecordIndexer):
             # data = copy.deepcopy(record.replace_refs())
             data = record.replace_refs().dumps() if current_app.config.get("INDEXER_REPLACE_REFS") else record.dumps()
 
-        data["_created"] = pytz.utc.localize(record.created).isoformat() if record.created else None
-        data["_updated"] = pytz.utc.localize(record.updated).isoformat() if record.updated else None
+        data["_created"] = record.created.isoformat() if record.created else None
+        data["_updated"] = record.updated.isoformat() if record.updated else None
 
-        # Allow modification of data prior to sending to Elasticsearch.
+        # Allow modification of data prior to sending to search index.
         before_record_index.send(
             current_app._get_current_object(),
             json=data,

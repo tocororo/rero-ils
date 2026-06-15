@@ -16,8 +16,12 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-"""
-SRU & CQL.
+"""SRU (Search/Retrieve via URL) and CQL (Contextual Query Language) support.
 
-http://www.loc.gov/standards/sru/.
+Implements the SRU 1.1 protocol for searching documents via standard CQL queries,
+including query parsing, Elasticsearch translation, and result set management.
+
+See Also:
+    - SRU Standard: http://www.loc.gov/standards/sru/
+    - CQL Specification: http://www.loc.gov/standards/sru/cql/
 """

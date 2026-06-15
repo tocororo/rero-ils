@@ -68,10 +68,10 @@ class PostprocessorMixin(PostprocessorMixinInterface):
         self._postprocess_search_links(results, pid_fetcher)
         return results
 
-    def _postprocess_search_links(self, search_results, pid_fetcher) -> None:
+    def _postprocess_search_links(self, search_results, pid_fetcher):
         """Post-process search links.
 
-        :param search_results: Elasticsearch search result.
+        :param search_results: search index search result.
         :param pid_fetcher: Persistent identifier fetcher related to records
                             into the search result.
         """
@@ -80,7 +80,7 @@ class PostprocessorMixin(PostprocessorMixinInterface):
         url = url_for(f"invenio_records_rest.{pid_type}_list", _external=True)
         search_results["links"].update({"create": url})
 
-    def _postprocess_search_hit(self, hit: dict) -> None:
+    def _postprocess_search_hit(self, hit):
         """Post-process a specific search hit.
 
         :param hit: the dictionary representing an ElasticSearch search hit.
@@ -89,7 +89,7 @@ class PostprocessorMixin(PostprocessorMixinInterface):
         #   Override this method in subclass to operate specific
         #   modification/enrichment on a search hit.
 
-    def _postprocess_search_aggregations(self, aggregations: dict) -> None:
+    def _postprocess_search_aggregations(self, aggregations):
         """Post-process aggregations from a search result.
 
         :param aggregations: the dictionary representing ElasticSearch
@@ -192,7 +192,7 @@ class CachedDataSerializerMixin:
 
 
 class StreamSerializerMixin:
-    """Utility class to deal with streamed result response (ES.scan())."""
+    """Utility class to deal with streamed result response (search.scan())."""
 
     """ The default chunk size to use. This attribute can be override."""
     chunk_size = 1000
@@ -206,7 +206,7 @@ class StreamSerializerMixin:
           hits with outside data. For example: reading a list 2400 loans with
           a chunk_size=1000, you will get 3 chunks (1000, 1000, 400). For each
           chunk, you could extract the list of related document pids and call
-          once ES document index to get document data ==> 3 calls to document
+          once search document index to get document data ==> 3 calls to document
           index instead of potentially 2400 (much better).
 
         :param results: the result iterator to process.

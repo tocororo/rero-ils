@@ -79,7 +79,7 @@ class DocumentJSONSerializer(JSONSerializer, CachedDataSerializerMixin):
             IndexerDumper()._process_host_document(None, metadata)
         return data
 
-    def _postprocess_search_hit(self, hit: dict) -> None:
+    def _postprocess_search_hit(self, hit):
         """Post-process each hit of a search result."""
         view_id, view_code = DocumentJSONSerializer._get_view_information()
         metadata = hit.get("metadata", {})
@@ -101,7 +101,7 @@ class DocumentJSONSerializer(JSONSerializer, CachedDataSerializerMixin):
             ]
         super()._postprocess_search_hit(hit)
 
-    def _postprocess_search_aggregations(self, aggregations: dict) -> None:
+    def _postprocess_search_aggregations(self, aggregations):
         """Post-process aggregations from a search result."""
         view_id, view_code = DocumentJSONSerializer._get_view_information()
 
@@ -239,7 +239,7 @@ class DocumentExportJSONSerializer(JSONSerializer):
         """Serialize a search result.
 
         :param pid_fetcher: Persistent identifier fetcher.
-        :param search_result: Elasticsearch search result.
+        :param search_result: search index search result.
         :param links: Dictionary of links to add to response.
         :param item_links_factory: Factory function for record links.
         """

@@ -34,6 +34,7 @@ from rero_ils.modules.documents.dojson.contrib.jsontomarc21.model import (
 )
 from rero_ils.modules.entities.remote_entities.api import RemoteEntitiesSearch
 from rero_ils.modules.serializers import JSONSerializer
+from rero_ils.modules.sru.cql_parser import SRU_MARCXML_SCHEMA_URI
 from rero_ils.modules.utils import strip_chars
 
 DEFAULT_LANGUAGE = LocalProxy(lambda: current_app.config.get("BABEL_DEFAULT_LANGUAGE"))
@@ -110,7 +111,7 @@ class DocumentMARCXMLSerializer(JSONSerializer):
         links_factory=None,
         **kwargs,
     ):
-        """Transform an Elasticsearch search hit into MARC 21 representation.
+        """Transform a search index search hit into MARC 21 representation.
 
         Converts a document record from RERO ILS JSON format to MARC 21 format
         using DoJSON transformation rules. Optionally includes holdings and items
@@ -118,7 +119,7 @@ class DocumentMARCXMLSerializer(JSONSerializer):
 
         Args:
             pid (str): Persistent identifier of the document.
-            record_hit (dict): Elasticsearch hit source containing document data.
+            record_hit (dict): search index hit source containing document data.
             language (str, optional): Target language for language-dependent fields.
                 Affects contribution label selection. Defaults to None.
             with_holdings_items (bool, optional): Whether to include holdings and
@@ -177,11 +178,11 @@ class DocumentMARCXMLSerializer(JSONSerializer):
         location_pids=None,
         item_links_factory=None,
     ):
-        """Transform multiple Elasticsearch hits into MARC 21 records with entity resolution.
+        """Transform multiple search index hits into MARC 21 records with entity resolution.
 
         This method processes multiple search hits efficiently by:
             1. Collecting all contribution entity PIDs from all hits
-            2. Batch-fetching all entities in a single Elasticsearch query
+            2. Batch-fetching all entities in a single search index query
             3. Enriching each contribution with full entity data
             4. Applying language-specific source ordering for agent labels
             5. Transforming each record to MARC 21 format
@@ -190,7 +191,7 @@ class DocumentMARCXMLSerializer(JSONSerializer):
         entities individually for each record.
 
         Args:
-            hits (list): List of Elasticsearch search hits, each containing
+            hits (list): List of search index search hits, each containing
                 a '_source' field with document data.
             pid_fetcher (callable): Function to extract PID from document ID.
             language (str): Target language for entity label selection. Used to
@@ -214,19 +215,19 @@ class DocumentMARCXMLSerializer(JSONSerializer):
             for different languages.
         """
         # Collect all contribution entity PIDs from all hits for batch resolution.
-        # This prevents N+1 query problem by fetching all entities in one ES query.
+        # This prevents N+1 query problem by fetching all entities in one search query.
         contribution_pids = []
         for hit in hits:
             for contribution in hit["_source"].get("contribution", []):
                 if contribution_pid := contribution.get("entity", {}).get("pid"):
                     contribution_pids.append(contribution_pid)
-        # Batch-fetch all unique entities from Elasticsearch and cache them
+        # Batch-fetch all unique entities from search index and cache them
         # in a dictionary for O(1) lookup during record processing.
         search = RemoteEntitiesSearch().filter("terms", pid=list(set(contribution_pids)))
-        es_contributions = {}
+        search_contributions = {}
         for hit in search.scan():
             contribution = hit.to_dict()
-            es_contributions[contribution["pid"]] = contribution
+            search_contributions[contribution["pid"]] = contribution
 
         # Get language-specific source order for agent labels (e.g., prefer idref
         # for French, gnd for German). Falls back to default language if not found.
@@ -242,9 +243,9 @@ class DocumentMARCXMLSerializer(JSONSerializer):
             contributions = document.get("contribution", [])
             for contribution in contributions:
                 contribution_pid = contribution.get("entity", {}).get("pid")
-                if contribution_pid in es_contributions:
+                if contribution_pid in search_contributions:
                     # Deep copy prevents modifying the cached entity data
-                    contribution["entity"] = deepcopy(es_contributions[contribution_pid])
+                    contribution["entity"] = deepcopy(search_contributions[contribution_pid])
                     # Select the best authorized access point based on language preferences
                     replace_contribution_sources(contribution=contribution, source_order=source_order)
 
@@ -268,7 +269,7 @@ class DocumentMARCXMLSerializer(JSONSerializer):
     #     """Serialize a search result.
     #
     #     :param pid_fetcher: Persistent identifier fetcher.
-    #     :param search_result: Elasticsearch search result.
+    #     :param search_result: search index search result.
     #     :param item_links_factory: Factory function for the items in result.
     #         (Default: ``None``)
     #     :returns: The objects serialized.
@@ -336,15 +337,15 @@ class DocumentMARCXMLSRUSerializer(DocumentMARCXMLSerializer):
         MARC 21 records with proper namespace declarations and metadata.
 
         Args:
-            total (dict): Total hits information from Elasticsearch with 'value' key.
+            total (dict): Total hits information from search index with 'value' key.
             records (list or dict): Either a list of MARC records (for search results)
                 or a single MARC record dict. Each record should be a GroupableOrderedDict
                 with MARC fields as keys (e.g., 'leader', '245__', '100__').
             sru (dict): SRU request parameters containing:
                 - start_record (int): Starting position in result set
                 - maximum_records (int): Number of records requested
-                - query (str): Original CQL query string
-                - query_es (str): Elasticsearch query translation
+                - cql_query (str): Original CQL query string
+                - search_query (str): search index query translation
             xslt_filename (str, optional): Path to XSLT stylesheet for transformation.
                 Currently disabled but can be used for output formatting. Defaults to None.
             prefix (str, optional): XML namespace prefix for MARC fields.
@@ -363,7 +364,7 @@ class DocumentMARCXMLSRUSerializer(DocumentMARCXMLSerializer):
         _ = xslt_filename  # intentionally unused; kept for API compatibility
         element = ElementMaker(namespace=self.MARC21_ZS, nsmap={"zs": self.MARC21_ZS})
 
-        def dump_record(record, idx):
+        def dump_record(record, idx, schema=SRU_MARCXML_SCHEMA_URI):
             """Serialize a single MARC record to SRU XML format.
 
             Converts a MARC record dictionary into an XML structure with:
@@ -374,6 +375,7 @@ class DocumentMARCXMLSRUSerializer(DocumentMARCXMLSerializer):
             Args:
                 record (GroupableOrderedDict): MARC record with fields as keys.
                 idx (int): Record position in the result set (1-based).
+                schema (str): Canonical schema URI to embed in the record element.
 
             Returns:
                 lxml.etree.Element: SRU record element containing the MARC data.
@@ -381,8 +383,8 @@ class DocumentMARCXMLSRUSerializer(DocumentMARCXMLSerializer):
             rec_element = ElementMaker(namespace=self.MARC21_REC, nsmap={prefix: self.MARC21_REC})
             data_element = ElementMaker(namespace=self.MARC21_REC, nsmap={prefix: self.MARC21_REC})
             rec = element.record()
+            rec.append(element.recordSchema(schema))
             rec.append(element.recordPacking("xml"))
-            rec.append(element.recordSchema("marcxml"))
 
             rec_record_data = element.recordData()
             rec_data = rec_element.record()
@@ -455,33 +457,41 @@ class DocumentMARCXMLSRUSerializer(DocumentMARCXMLSerializer):
             root = dump_record(records, 1)
         else:
             number_of_records = total["value"]
+            operation = sru.get("operation")
             start_record = sru.get("start_record", 1)
             maximum_records = sru.get("maximum_records", 0)
-            query = sru.get("query")
-            query_es = sru.get("query_es")
+            cql_query = sru.get("cql_query")
+            search_query = sru.get("search_query")
+            record_schema = sru.get("record_schema", SRU_MARCXML_SCHEMA_URI)
+            result_set_id = sru.get("result_set_id")
+            result_set_ttl = sru.get("result_set_ttl", 0)
             next_record = start_record + maximum_records
             root = element.searchRetrieveResponse()
             root.append(element.version("1.1"))
             root.append(element.numberOfRecords(str(number_of_records)))
-            if next_record > 1 and next_record <= number_of_records:
-                root.append(element.nextRecordPosition(str(next_record)))
+            if result_set_id:
+                root.append(element.resultSetId(result_set_id))
+                root.append(element.resultSetIdleTime(str(result_set_ttl)))
             data = element.records()
             for idx, record in enumerate(records, start_record):
-                data.append(dump_record(record, idx))
-            root.append(data)
+                data.append(dump_record(record, idx, record_schema))
+            if len(data):
+                root.append(data)
+            if maximum_records > 0 and next_record <= number_of_records:
+                root.append(element.nextRecordPosition(str(next_record)))
             echoed_search_rr = element.echoedSearchRetrieveRequest()
             echoed_search_rr.append(element.version("1.1"))
-            if query:
-                echoed_search_rr.append(element.query(query))
-            if query_es:
-                echoed_search_rr.append(element.query_es(query_es))
-            if start_record:
-                echoed_search_rr.append(element.startRecord(str(start_record)))
-            if maximum_records:
-                echoed_search_rr.append(element.maximumRecords(str(maximum_records)))
+            if operation:
+                echoed_search_rr.append(element.operation(operation))
+            if cql_query:
+                echoed_search_rr.append(element.query(cql_query))
+            if search_query:
+                echoed_search_rr.append(element.search_query(search_query))
+            echoed_search_rr.append(element.startRecord(str(start_record)))
+            echoed_search_rr.append(element.maximumRecords(str(maximum_records)))
             echoed_search_rr.append(element.recordPacking("XML"))
-            echoed_search_rr.append(element.recordSchema("info:sru/schema/1/marcxml-v1.1-light"))
-            echoed_search_rr.append(element.resultSetTTL("0"))
+            echoed_search_rr.append(element.recordSchema(record_schema))
+            echoed_search_rr.append(element.resultSetTTL(str(result_set_ttl)))
             root.append(echoed_search_rr)
 
         # Needed if we use display with XSLT file.
@@ -498,7 +508,7 @@ class DocumentMARCXMLSRUSerializer(DocumentMARCXMLSerializer):
         return etree.tostring(root, pretty_print=True, xml_declaration=True, encoding="UTF-8", **kwargs)
 
     def serialize_search(self, pid_fetcher, search_result, item_links_factory=None, **kwargs):
-        """Serialize Elasticsearch search results into SRU MARCXML format.
+        """Serialize search index search results into SRU MARCXML format.
 
         This method orchestrates the complete serialization process:
             1. Extracts language and filtering parameters from request
@@ -511,11 +521,11 @@ class DocumentMARCXMLSRUSerializer(DocumentMARCXMLSerializer):
             - without_items: Flag to exclude holdings/items (default: False)
 
         Organisation/library/location filters are automatically extracted from
-        the Elasticsearch query string when present.
+        the search index query string when present.
 
         Args:
             pid_fetcher (callable): Function to extract PID from document ID.
-            search_result (dict): Elasticsearch search response with structure:
+            search_result (dict): search index search response with structure:
                 - hits.total: Total number of matching documents
                 - hits.hits: Array of search result hits
                 - hits.sru: SRU-specific metadata (query, pagination)
@@ -532,7 +542,7 @@ class DocumentMARCXMLSRUSerializer(DocumentMARCXMLSerializer):
             serializer = DocumentMARCXMLSRUSerializer()
             xml = serializer.serialize_search(
                 pid_fetcher=lambda id, doc: doc['pid'],
-                search_result=es_response
+                search_result=search_response
             )
         """
         # Extract request parameters for language and item inclusion
@@ -540,13 +550,13 @@ class DocumentMARCXMLSRUSerializer(DocumentMARCXMLSerializer):
         without_items_param = request.args.get("without_items", "").lower()
         with_holdings_items = without_items_param not in ("true", "1", "yes")
 
-        # Parse organisation/library/location filters from the Elasticsearch query.
+        # Parse organisation/library/location filters from the search index query.
         # These filters control which holdings/items are included in the output.
         sru = search_result["hits"].get("sru", {})
-        query_es = sru.get("query_es", "")
-        organisation_pids = re.findall(r"organisation_pid:([A-Za-z0-9_-]+)", query_es)
-        library_pids = re.findall(r"library_pid:([A-Za-z0-9_-]+)", query_es)
-        location_pids = re.findall(r"holdings\.location\.pid:([A-Za-z0-9_-]+)", query_es)
+        search_query = sru.get("search_query", "")
+        organisation_pids = re.findall(r"organisation_pid:([A-Za-z0-9_-]+)", search_query)
+        library_pids = re.findall(r"library_pid:([A-Za-z0-9_-]+)", search_query)
+        location_pids = re.findall(r"holdings\.location\.pid:([A-Za-z0-9_-]+)", search_query)
         records = self.transform_records(
             hits=search_result["hits"]["hits"],
             pid_fetcher=pid_fetcher,

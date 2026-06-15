@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019-2024 RERO
+# Copyright (C) 2019-2026 RERO
 # Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
@@ -84,7 +84,7 @@ def doc_item_view_method(pid, record, template=None, **kwargs):
         template,
         pid=pid,
         record=record,
-        es_record=record.dumps(document_indexer_dumper),
+        search_record=record.dumps(document_indexer_dumper),
         holdings_count=holdings_count,
         viewcode=viewcode,
         recordType="documents",
@@ -182,7 +182,7 @@ def contribution_format(contributions, language, viewcode, with_roles=False):
 
 
 @blueprint.app_template_filter()
-def doc_entity_label(entity, language=None, part_separator=" - ") -> str:
+def doc_entity_label(entity, language=None, part_separator=" - "):
     """Format an entity according to the available keys.
 
     :param entity: the entity to analyze.
@@ -363,7 +363,7 @@ def create_title_alternate_graphic(titles, responsibility_statement=None):
 
 
 @blueprint.app_template_filter()
-def document_types(record, translate: bool = True) -> list[str]:
+def document_types(record, translate=True):
     """Get document types.
 
     :param record: record
@@ -377,7 +377,7 @@ def document_types(record, translate: bool = True) -> list[str]:
 
 
 @blueprint.app_template_filter()
-def document_main_type(record, translate: bool = True):
+def document_main_type(record, translate=True):
     """Get first document main type.
 
     :param record: record

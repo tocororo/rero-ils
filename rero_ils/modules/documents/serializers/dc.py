@@ -29,6 +29,7 @@ from werkzeug.local import LocalProxy
 
 from rero_ils.modules.documents.api import Document
 from rero_ils.modules.documents.dojson.contrib.jsontodc import dublincore
+from rero_ils.modules.sru.cql_parser import SRU_DC_SCHEMA_URI
 
 from ..dumpers import document_replace_refs_dumper
 from ..utils import process_i18n_literal_fields
@@ -108,7 +109,7 @@ class DublinCoreSerializer(_DublinCoreSerializer):
 
         Args:
             pid (str): Persistent identifier of the document.
-            record (dict): Elasticsearch hit source (minimal record data).
+            record (dict): search index hit source (minimal record data).
             links_factory (callable, optional): Factory function for generating
                 record links. Defaults to None.
             language (str, optional): Target language for i18n fields.
@@ -128,7 +129,7 @@ class DublinCoreSerializer(_DublinCoreSerializer):
         )
 
     def serialize_search(self, pid_fetcher, search_result, links=None, item_links_factory=None, **kwargs):
-        """Serialize Elasticsearch search results into Dublin Core XML.
+        """Serialize search index search results into Dublin Core XML.
 
         Generates an SRU-compliant searchRetrieveResponse containing Dublin Core
         records for all search hits. The response includes:
@@ -146,7 +147,7 @@ class DublinCoreSerializer(_DublinCoreSerializer):
         Args:
             pid_fetcher (callable): Function to extract persistent identifier from hits.
                 Currently unused; PIDs are extracted directly from record source.
-            search_result (dict): Elasticsearch search response containing:
+            search_result (dict): search index search response containing:
                 - hits.total.value: Total number of matching documents
                 - hits.hits: List of search result hits
                 - hits.sru: SRU-specific metadata (optional)
@@ -166,17 +167,25 @@ class DublinCoreSerializer(_DublinCoreSerializer):
         """
         total = search_result["hits"]["total"]["value"]
         sru = search_result["hits"].get("sru", {})
+        operation = sru.get("operation")
         start_record = sru.get("start_record", 0)
         maximum_records = sru.get("maximum_records", 0)
-        query = sru.get("query")
-        query_es = sru.get("query_es")
-        next_record = start_record + maximum_records + 1
+        cql_query = sru.get("cql_query")
+        search_query = sru.get("search_query")
+        record_schema = sru.get("record_schema", SRU_DC_SCHEMA_URI)
+        result_set_id = sru.get("result_set_id")
+        result_set_ttl = sru.get("result_set_ttl", 0)
+        next_record = start_record + maximum_records
 
-        element = ElementMaker()
+        srw_ns = "http://www.loc.gov/zing/srw/"
+        element = ElementMaker(namespace=srw_ns, nsmap={"zs": srw_ns})
         xml_root = element.searchRetrieveResponse()
         if sru:
             xml_root.append(element.version("1.1"))
         xml_root.append(element.numberOfRecords(str(total)))
+        if result_set_id:
+            xml_root.append(element.resultSetId(result_set_id))
+            xml_root.append(element.resultSetIdleTime(str(result_set_ttl)))
         xml_records = element.records()
 
         language = request.args.get("ln", DEFAULT_LANGUAGE)
@@ -197,20 +206,24 @@ class DublinCoreSerializer(_DublinCoreSerializer):
                 attribs=self.container_attribs,
             )
             xml_records.append(element_record)
-        xml_root.append(xml_records)
+        if len(xml_records):
+            xml_root.append(xml_records)
 
         if sru:
+            if maximum_records > 0 and next_record <= total:
+                xml_root.append(element.nextRecordPosition(str(next_record)))
             echoed_search_rr = element.echoedSearchRetrieveRequest()
-            if query:
-                echoed_search_rr.append(element.query(query))
-            if query_es:
-                echoed_search_rr.append(element.query_es(query_es))
-            if start_record:
-                echoed_search_rr.append(element.startRecord(str(start_record)))
-            if next_record > 1 and next_record < total:
-                echoed_search_rr.append(element.nextRecordPosition(str(next_record)))
-            if maximum_records:
-                echoed_search_rr.append(element.maximumRecords(str(maximum_records)))
+            echoed_search_rr.append(element.version("1.1"))
+            if operation:
+                echoed_search_rr.append(element.operation(operation))
+            if cql_query:
+                echoed_search_rr.append(element.query(cql_query))
+            if search_query:
+                echoed_search_rr.append(element.search_query(search_query))
+            echoed_search_rr.append(element.startRecord(str(start_record)))
+            echoed_search_rr.append(element.maximumRecords(str(maximum_records)))
             echoed_search_rr.append(element.recordPacking("XML"))
+            echoed_search_rr.append(element.recordSchema(record_schema))
+            echoed_search_rr.append(element.resultSetTTL(str(result_set_ttl)))
             xml_root.append(echoed_search_rr)
         return etree.tostring(xml_root, encoding="utf-8", method="xml", pretty_print=True)

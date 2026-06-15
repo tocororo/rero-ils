@@ -452,6 +452,11 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": schedules.crontab(minute=2, hour=2),  # Every day at 02:02 UTC,
         "enabled": False,
     },
+    "celery.delete-inactive-patrons": {
+        "task": "rero_ils.modules.patrons.tasks.task_delete_inactive_patrons",
+        "schedule": schedules.crontab(minute=0, hour=4, day_of_month="1"),  # 1st of each month at 04:00 UTC
+        "enabled": False,
+    },
     "celery.delete-standard-holdings-having-no-items": {
         "task": (
             "rero_ils.modules.holdings.tasks.delete_standard_holdings_having_no_items"
@@ -616,8 +621,8 @@ APP_DEFAULT_SECURE_HEADERS = {
     "session_cookie_secure": True,
     "session_cookie_http_only": True,
 }
-#: Sets cookie with the secure flag (by default False)
-SESSION_COOKIE_SECURE = False
+#: Sets cookie with the secure flag
+SESSION_COOKIE_SECURE = True
 #: Since HAProxy and Nginx route all requests no matter the host header
 #: provided, the allowed hosts variable is set to localhost. In production it
 #: should be set to the correct host and it is strongly recommended to only
@@ -649,7 +654,7 @@ DEBUG_TB_INTERCEPT_REDIRECTS = False
 # RERO_ILS_DB_LOGGING = 1
 
 #: Enable Indexer logging (level)
-# RERO_ILS_ES_LOGGING = 1
+# RERO_ILS_SEARCH_LOGGING = 1
 
 # REST API Configuration
 # ======================
@@ -676,7 +681,7 @@ REST_MIMETYPE_QUERY_ARG_NAME = "format"
 """Name of the query argument to specify the mimetype wanted for the output."""
 
 MAX_RESULT_WINDOW = 100000
-"""max result window for ES, must be the same in json mapping files."""
+"""max result window for search, must be the same in json mapping files."""
 
 RECORDS_REST_ENDPOINTS = dict(
     coll=dict(
@@ -2780,7 +2785,7 @@ RECORDS_REST_FACETS = dict(
     ),
 )
 
-# Elasticsearch fields boosting by index
+# search index fields boosting by index
 RERO_ILS_QUERY_BOOSTING = {
     "documents": [
         "autocomplete_title^3",
@@ -3393,6 +3398,7 @@ RERO_ILS_ENABLE_OPERATION_LOG = {
     "items": "item",
     "ill_requests": "illr",
     "local_entities": "locent",
+    "patrons": "ptrn",
 }
 RERO_ILS_ENABLE_OPERATION_LOG_VALIDATION = False
 
@@ -4023,6 +4029,8 @@ RERO_INVENIO_BASE_EXPORT_REST_ENDPOINTS = dict(
 RERO_ILS_SRU_NUMBER_OF_RECORDS = 100
 # Maximum number of records which can be harvested with an request.
 RERO_ILS_SRU_MAXIMUM_RECORDS = 1000
+# Result set cache lifetime in seconds (0 disables result sets).
+RERO_ILS_SRU_RESULT_SET_TTL = 300
 
 # SIP2
 # ====

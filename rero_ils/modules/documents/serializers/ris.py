@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2026 RERO
 # Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
@@ -59,7 +59,7 @@ class RISSerializer(SerializerMixinInterface):
         """Serialize a search result.
 
         :param pid_fetcher: Persistent identifier fetcher.
-        :param search_result: Elasticsearch search result.
+        :param search_result: search index search result.
         :param links: Dictionary of links to add to response.
         :param item_links_factory: Factory function for record links.
         """
@@ -92,7 +92,7 @@ class RISFormatter(BaseDocumentFormatterMixin):
         """Return RIS export for single record."""
         return f"{self._fetch_fields()}ER{self.separator}\n"
 
-    def _doctype_mapper(self, main_type: str, sub_type: str | None = None):
+    def _doctype_mapper(self, main_type, sub_type=None):
         """Document type mapper.
 
         :param: main_type: main document type.

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2026 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -18,15 +18,12 @@
 """Operation log record extensions."""
 
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from functools import partialmethod
 
-import pytz
 from deepdiff import DeepDiff
 from flask import request as flask_request
 from invenio_records.extensions import RecordExtension
-
-from rero_ils.modules.patrons.api import current_librarian
 
 from ..utils import extracted_data_from_ref
 from .models import OperationLogOperation
@@ -53,8 +50,15 @@ class OperationLogFactory:
         :param operation: the trigger operation on this record.
         :return a dict representing the operation log to register.
         """
+        # avoid circular import
+        from rero_ils.modules.patrons.api import current_librarian
+
+        # Skip if the record has no pid (e.g. hard delete of a soft-deleted
+        # record whose data has been cleared).
+        if not record.get("pid"):
+            return None
         oplg = {
-            "date": datetime.now(timezone.utc).isoformat(),
+            "date": datetime.now(UTC).isoformat(),
             "record": {"value": record.get("pid"), "type": record.provider.pid_type},
             "operation": operation,
             "user_name": "system",  # default value, could be override
@@ -94,8 +98,8 @@ class OperationLogFactory:
         """Build and register an operation log."""
         from .api import OperationLog
 
-        data = self._build_operation_log(record, operation)
-        OperationLog.create(data)
+        if data := self._build_operation_log(record, operation):
+            OperationLog.create(data)
 
 
 class OperationLogObserverExtension(RecordExtension, OperationLogFactory):
@@ -209,7 +213,7 @@ class DatesExtension(RecordExtension):
 
         :param record: the record metadata.
         """
-        iso_now = pytz.utc.localize(datetime.utcnow()).isoformat()
+        iso_now = datetime.now(UTC).isoformat()
         for date_field in ["_created", "_updated"]:
             if not record.get(date_field):
                 record[date_field] = iso_now

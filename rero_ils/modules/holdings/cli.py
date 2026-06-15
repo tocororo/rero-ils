@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2026 RERO
 # Copyright (C) 2019-2023 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 
 import json
 import random
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import click
 from flask.cli import with_appcontext
@@ -38,8 +38,8 @@ from rero_ils.modules.utils import read_json_record
 
 def get_document_pid_by_rero_number(rero_control_number):
     """Get pid of document by rero control number."""
-    es_documents = DocumentsSearch().filter("term", identifiedBy__value__raw=rero_control_number).source("pid")
-    documents = [document.pid for document in es_documents.scan()]
+    search_documents = DocumentsSearch().filter("term", identifiedBy__value__raw=rero_control_number).source("pid")
+    documents = [document.pid for document in search_documents.scan()]
     return documents[0] if documents else None
 
 
@@ -163,5 +163,5 @@ def create_patterns(infile, verbose, debug, lazy):
     process_late_issues(dbcommit=True, reindex=True)
     # make late issues ready for a claim
     for issue in ItemIssue.get_issues_by_status(status=ItemIssueStatus.LATE):
-        issue["issue"]["status_date"] = (datetime.now(timezone.utc) - timedelta(days=8)).isoformat()
+        issue["issue"]["status_date"] = (datetime.now(UTC) - timedelta(days=8)).isoformat()
         issue.update(issue, dbcommit=True, reindex=True)

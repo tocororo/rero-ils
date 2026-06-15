@@ -143,7 +143,7 @@ def test_patron_has_valid_subscriptions(
     patron_sion.add_subscription(patron_type_youngsters_sion, start, end)
     assert patron_sion.has_valid_subscription
 
-    # Create a old subscription for `patron_sion`. Call ES to know patrons with
+    # Create a old subscription for `patron_sion`. Call search to know patrons with
     # an obsolete subscription. This query should return the recently updated
     # patron.
     start = datetime.now() - timedelta(days=20)
@@ -628,3 +628,18 @@ def test_patrons_blocked(client, librarian_martigny, patron_martigny, patron3_ma
     res = client.get(list_url)
     hits = get_json(res)["hits"]
     assert hits["total"]["value"] == 1
+
+
+def test_patron_get_links_to_me_ill_requests(
+    app,
+    patron_martigny,
+    ill_request_martigny,
+):
+    """Test that get_links_to_me includes ILL requests."""
+    links = patron_martigny.get_links_to_me()
+    assert "ill_requests" in links
+    assert links["ill_requests"] > 0
+
+    links_pids = patron_martigny.get_links_to_me(get_pids=True)
+    assert "ill_requests" in links_pids
+    assert len(links_pids["ill_requests"]) > 0

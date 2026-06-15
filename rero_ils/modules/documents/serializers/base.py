@@ -117,8 +117,8 @@ class BaseDocumentFormatterMixin(ABC):
         def _extract_part_of_title_callback(part_of):
             """Extract title for the partOf document."""
             pid = part_of.get("document", {}).get("pid")
-            if es_doc := DocumentsSearch().get_record_by_pid(pid):
-                title = es_doc.to_dict().get("title", [])
+            if search_doc := DocumentsSearch().get_record_by_pid(pid):
+                title = search_doc.to_dict().get("title", [])
                 return next(filter(lambda x: x.get("type") == "bf:Title", title), {}).get("_text")
             return None
 
@@ -137,7 +137,7 @@ class BaseDocumentFormatterMixin(ABC):
     def _get_authors(self):
         """Return authors."""
 
-        def _extract_contribution_callback(contribution) -> str:
+        def _extract_contribution_callback(contribution):
             """Extract value for the given contribution."""
             agent = contribution.get("entity", {})
             role = contribution.get("role", [])
@@ -154,7 +154,7 @@ class BaseDocumentFormatterMixin(ABC):
     def _get_secondary_authors(self):
         """Return other authors."""
 
-        def _extract_contribution_callback(contribution) -> str:
+        def _extract_contribution_callback(contribution):
             """Extract value for the given contribution."""
             agent = contribution.get("entity", {})
             role = contribution.get("role", [])

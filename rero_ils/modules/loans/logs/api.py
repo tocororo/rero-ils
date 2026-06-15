@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019-2023 RERO
+# Copyright (C) 2019-2026 RERO
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -17,7 +17,7 @@
 
 """Loans logs API."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from rero_ils.modules.operation_logs.api import OperationLog, OperationLogsSearch
 from rero_ils.modules.operation_logs.logs.api import SpecificOperationLog
@@ -32,7 +32,7 @@ class LoanOperationLogsSearch(OperationLogsSearch):
         """Get the operation logs base es search.
 
         :param triggers: list[str] - loan triggers value to filter
-        :return: an elasticsearch dsl search query
+        :return: a search index dsl search query
         """
         query = self.filter("term", record__type="loan").filter("terms", loan__trigger=triggers)
         if date_range:
@@ -45,7 +45,7 @@ class LoanOperationLog(OperationLog, SpecificOperationLog):
 
     @classmethod
     def create(cls, data, id_=None, index_refresh="false", **kwargs):
-        """Create a new record instance and store it in elasticsearch.
+        """Create a new record instance and store it in search index.
 
         :param loan_data: Dict with the loan metadata.
         :param id_: Specify a UUID to use for the new record, instead of
@@ -124,7 +124,7 @@ class NoCirculationOperationLog(OperationLog, SpecificOperationLog):
 
     @classmethod
     def create(cls, scan, id_=None, index_refresh="false", **kwargs):
-        """Create a new record instance and store it in elasticsearch.
+        """Create a new record instance and store it in search index.
         :param item_data: Dict with the item metadata.
         :param loan: Dict with the loan metadata.
         :param message: Message for item category.
@@ -153,7 +153,7 @@ class NoCirculationOperationLog(OperationLog, SpecificOperationLog):
         log = {
             "record": {"value": item_pid, "type": "scan_item"},
             "operation": "create",
-            "date": datetime.now(timezone.utc).isoformat(),
+            "date": datetime.now(UTC).isoformat(),
             "scan": scan,
         }
 

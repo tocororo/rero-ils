@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # RERO ILS
-# Copyright (C) 2019-2022 RERO
+# Copyright (C) 2019-2026 RERO
 # Copyright (C) 2019-2022 UCLouvain
 #
 # This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,6 @@
 
 from copy import deepcopy
 
-import pytz
 from flask import json, request
 from flask_babel import gettext as _
 from invenio_jsonschemas import current_jsonschemas
@@ -54,13 +53,13 @@ class JSONSerializer(_JSONSerializer, PostprocessorMixin):
             "metadata": metadata,
             "links": links_factory(pid, record=record, **kwargs),
             "revision": record.revision_id,
-            "created": (pytz.utc.localize(record.created).isoformat() if record.created else None),
-            "updated": (pytz.utc.localize(record.updated).isoformat() if record.updated else None),
+            "created": (record.created.isoformat() if record.created else None),
+            "updated": (record.updated.isoformat() if record.updated else None),
         }
 
     @staticmethod
     def preprocess_search_hit(pid, record_hit, links_factory=None, **kwargs):
-        """Prepare a record hit from Elasticsearch for serialization."""
+        """Prepare a record hit from search index for serialization."""
         record = _JSONSerializer.preprocess_search_hit(
             pid=pid, record_hit=record_hit, links_factory=links_factory, kwargs=kwargs
         )
@@ -73,7 +72,7 @@ class JSONSerializer(_JSONSerializer, PostprocessorMixin):
         """Serialize a search result.
 
         :param pid_fetcher: Persistent identifier fetcher.
-        :param search_result: Elasticsearch search result.
+        :param search_result: search index search result.
         :param links: Dictionary of links to add to response.
         :param item_links_factory: Factory function for record links.
         """
