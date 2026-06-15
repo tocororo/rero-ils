@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<collection xmlns="http://www.loc.gov/MARC21/slim">
-  <record>
+<?xml version='1.0' encoding='utf-8'?>
+<collection xmlns="http://www.loc.gov/MARC21/slim" xmlns="http://www.loc.gov/MARC21/slim"><record>
     <leader>00000cLm0a0000000#a04500</leader>
     <controlfield tag="001">M2001</controlfield>
     <controlfield tag="005">n</controlfield>
@@ -221,4 +220,66 @@
       <subfield code="a"> Vsinger, Robert L.</subfield>
     </datafield>
   </record>
-</collection>
+  <record>
+    <leader>005700L00000002770004500</leader>
+    <controlfield tag="001">M2005</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">760717         cu a   fr#   #000 0#spadd</controlfield>
+    <datafield tag="010" ind1=" " ind2=" ">
+      <subfield code="*">true</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">spa</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="084" ind1=" " ind2=" ">
+      <subfield code="a">59-2445</subfield>
+    </datafield>
+    <datafield tag="100" ind1="1" ind2=" ">
+      <subfield code="a">Pérez Farfante, Isabel</subfield>
+    </datafield>
+    <datafield tag="245" ind1="1" ind2="1">
+      <subfield code="a">Nueva zoología</subfield>
+      <subfield code="c">Isabel Pérez Farfante</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editorial Publicaciones Culturales</subfield>
+      <subfield code="c">[s.a.]</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">439 p. </subfield>
+      <subfield code="b">: il. </subfield>
+      <subfield code="c">; 20 cm.</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">5</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="401" ind1=" " ind2=" ">
+      <subfield code="*">true</subfield>
+    </datafield>
+    <datafield tag="650" ind1="1" ind2=" ">
+      <subfield code="a">ZOOLOGIA</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20160303 11:01:23</subfield>
+      <subfield code="o">anateresa</subfield>
+    </datafield>
+  </record>
+  </collection>

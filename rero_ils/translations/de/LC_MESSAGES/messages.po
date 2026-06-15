@@ -525,18 +525,22 @@ msgid "idref"
 msgstr "IdRef"
 
 #: rero_ils/manual_translations.txt:31
+msgid "ui_language_es"
+msgstr "Español"
+
+#: rero_ils/manual_translations.txt:32
 msgid "ui_language_en"
 msgstr "English"
 
-#: rero_ils/manual_translations.txt:32
+#: rero_ils/manual_translations.txt:33
 msgid "ui_language_fr"
 msgstr "Français"
 
-#: rero_ils/manual_translations.txt:33
+#: rero_ils/manual_translations.txt:34
 msgid "ui_language_de"
 msgstr "Deutsch"
 
-#: rero_ils/manual_translations.txt:34
+#: rero_ils/manual_translations.txt:35
 msgid "ui_language_it"
 msgstr "Italiano"
 

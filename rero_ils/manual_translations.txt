@@ -28,6 +28,7 @@ _('rero')
 _('idref')
 
 # Menu language
+_('ui_language_es')
 _('ui_language_en')
 _('ui_language_fr')
 _('ui_language_de')

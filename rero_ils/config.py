@@ -207,13 +207,14 @@ RATELIMIT_ENABLED = False
 # I18N
 # ====
 #: Default language
-BABEL_DEFAULT_LANGUAGE = "en"
-RERO_ILS_DEFAULT_LANGUAGE = "eng"
+BABEL_DEFAULT_LANGUAGE = "es"
+RERO_ILS_DEFAULT_LANGUAGE = "spa"
 #: Default time zone
 BABEL_DEFAULT_TIMEZONE = "America/Havana"
 #: Other supported languages (do not include the default language in list).
 I18N_LANGUAGES = [
     ("es", _("Spanish")),
+    ("en", _("English")),
     ("fr", _("French")),
     ("de", _("German")),
     ("it", _("Italian")),

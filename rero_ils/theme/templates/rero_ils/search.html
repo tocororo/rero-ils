@@ -21,7 +21,11 @@
 {%- set title = _('Documents') ~ ' | ' ~ _(config.THEME_SITENAME) %}
 
 {%- block page_body %}
+<div class="flex-grow-1 container">
+{%- block body %}
    <public-search-root class="container mt-4 rero-ils-ui" />
+{%- endblock body %}
+</div>
 {%- endblock page_body -%}
 
 {%- block javascript %}

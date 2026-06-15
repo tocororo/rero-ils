@@ -1,5 +1,13 @@
 # run dev
 
+## add angular projects in dev mode
+
+nvm use v22
+
+uv run scripts/russian_dolls -c ../ng-core/ -u ../rero-ils-ui/
+
+
+
 ## 1- en ng-core
 
 Esta es la libreria base de angular. 

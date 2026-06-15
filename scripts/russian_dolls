@@ -115,7 +115,7 @@ FRONTEND_PACKAGE="${FRONTEND_DIR}/build/${PACKAGE_NAME}"
 # packages ng-core
 info_msg "NG-CORE ❯ packaging…"
 cd "${NG_DIR}" \
-  && npm ci \
+  && npm ci --force \
   && npm run pack \
   && cd - &>/dev/null \
   || error_msg+exit "NG-CORE ❯ packaging failed!"
@@ -124,8 +124,8 @@ success_msg "NG-CORE ❯ successfully packaged."
 # packages rero-ils-ui using previous ng-core package
 info_msg "UI ❯ including ng-core + packaging…"
 cd "${FRONTEND_DIR}" \
-  && npm ci \
-  && npm i "${NG_PACKAGE}" --no-save \
+  && npm ci --force \
+  && npm i "${NG_PACKAGE}" --no-save --force \
   && npm run pack \
   && cd - &>/dev/null \
   || error_msg+exit "UI ❯ packaging failed!"
