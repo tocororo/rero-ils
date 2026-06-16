@@ -34,11 +34,67 @@ en rero-ils.
 
 ### Paso 0 - Extraer entidades legacy
 
-El script extract_entities.py se encarga de extraer las entidades del los ficheros MARC XML. 
+El script `extract_entities.py` extrae las local entities (Person, Topic,
+Organisation, Place, Temporal, Work) de los ficheros MARC21 XML. La salida es una
+**carpeta** con **dos ficheros JSON por tipo**: `<tipo>.json` (entidades sin
+enriquecer) y `<tipo>.enriched.json` (entidades enriquecidas desde una fuente de
+autoridad externa).
 
-Se ejecuta el siguiente comando. 
+#### Extracción base (sin red)
 
-python extract_entities.py -i legacy/db/BCT/marc21.mrcxml legacy/db/BECSH/marc21.mrcxml legacy/db/FCF/marc21.mrcxml legacy/db/FCP/marc21.mrcxml -o local_entities_orig.json
+```bash
+python extract_entities.py \
+  -i legacy/db/BCT/marc21.mrcxml legacy/db/BECSH/marc21.mrcxml \
+     legacy/db/FCF/marc21.mrcxml legacy/db/FCP/marc21.mrcxml \
+  -o legacy/entities
+```
+
+Detalles relevantes de la extracción:
+
+- **Topics (650/653/655)**: el `$a` se trocea en términos individuales separados
+  por `;` o por guion de subdivisión (`Materia1 - Materia2`), **sin** romper rangos
+  de fecha (`1853-1895`).
+- **Personas mal ubicadas en 650**: las entradas con patrón `Apellido, Nombre,
+  AAAA-AAAA` se reclasifican como Person (no como Topic).
+- **Places y Temporals**: se extraen de las subdivisiones de 650 (`$z` → Place,
+  `$y`/cronológicas → Temporal), además de 651/648 si aparecen.
+- Personas también desde 100/700/600; organizaciones desde 110/710/610 y
+  congresos desde 111/711/611; obras desde 130/630/730/240.
+
+#### Enriquecimiento externo (opcional, `--enrich`)
+
+Consulta fuentes de autoridad y, en el primer match, adjunta un `identifier` y
+marca la entidad como enriquecida. Las llamadas se **cachean en disco**
+(`legacy/.enrich_cache/`, reanudable) y se aplican límites de tasa.
+
+Fuentes por tipo (en orden, gana el primer match):
+
+| Tipo | Fuentes |
+|---|---|
+| Person | VIAF · BNE · ORCID · Wikidata |
+| Topic | LCSH · BNE · GND · UNESCO · Wikidata |
+| Place | GeoNames · GND · Wikidata |
+| Organisation | VIAF · ROR · GND · ISNI · Wikidata |
+| Work | VIAF · WorldCat · OpenLibrary · Wikidata |
+| Temporal | Wikidata · GND |
+
+```bash
+# Prueba acotada (5 entidades por tipo)
+python extract_entities.py -i legacy/db/BCT/marc21.mrcxml -o /tmp/ent \
+  --enrich --enrich-limit 5
+
+# Enriquecimiento completo (GeoNames y WorldCat requieren credencial)
+python extract_entities.py -i legacy/db/*/marc21.mrcxml -o legacy/entities \
+  --enrich --geonames-user MIUSUARIO --worldcat-key MICLAVE
+```
+
+| Flag | Efecto |
+|---|---|
+| `--enrich` | Activa el enriquecimiento externo |
+| `--enrich-types` | Limita los tipos (`person,topic,place,...`) |
+| `--enrich-limit N` | Máximo de entidades por tipo (pruebas) |
+| `--geonames-user` | Usuario de GeoNames (o variable `GEONAMES_USER`); sin él se omite |
+| `--worldcat-key` | Clave de la WorldCat Search API (o `WORLDCAT_KEY`); sin ella se omite |
 
 ### Paso 1 — Pre-procesar el MARC21 XML
 

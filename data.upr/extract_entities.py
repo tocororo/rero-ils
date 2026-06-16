@@ -1,575 +1,483 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Script para extraer entidades locales desde archivos MARC XML.
-Procesa múltiples archivos y genera un único JSON con todas las entidades únicas.
+"""Extrae entidades locales desde archivos MARC21 XML.
+
+Genera Person, Topic, Organisation, Place, Temporal y Work a partir de los
+registros bibliográficos heredados. La salida es una carpeta con dos JSON por
+tipo: ``<tipo>.json`` (no enriquecidas) y ``<tipo>.enriched.json`` (enriquecidas
+desde una fuente de autoridad externa cuando se usa ``--enrich``).
 """
 
-import os
-import sys
-import json
-import re
 import argparse
+import json
+import os
+import re
+import sys
 import xml.etree.ElementTree as ET
 from difflib import SequenceMatcher
 
-# Configuración de Namespaces de MARC21
 NAMESPACES = {'marc': 'http://www.loc.gov/MARC21/slim'}
+SCHEMA_BASE = 'https://bib.upr.edu.cu/schemas/local_entities'
+
+# Dash used as a subject-subdivision separator: not surrounded by digits, so a
+# year range such as "1853-1895" is left intact.
+SUBDIV_DASH = re.compile(r'(?<!\d)\s*-\s*(?!\d)')
+
+# A 650/600 value that is really a personal name: "Surname, Given ... 1853-1895".
+# The character after the first comma must be a letter (a given name), which
+# rules out events like "Guerra de independencia, 1895-1898".
+PERSON_IN_SUBJECT = re.compile(r'^[^,]+,\s*[A-Za-zÀ-ÿ].*?\b\d{3,4}\b')
+
+# Year or year range at the end of a personal-name string.
+TRAILING_DATES = re.compile(r'(\d{3,4})\s*-\s*(\d{0,4})\s*$')
+
 
 def normalize_text(text):
     """Normaliza el texto para usarlo como clave de deduplicación."""
     if not text:
-        return ""
+        return ''
     return re.sub(r'\s+', ' ', text).strip().lower()
 
+
+def sf_text(df, code):
+    """Devuelve el texto del primer subcampo ``code`` o None."""
+    sf = df.find(f'marc:subfield[@code="{code}"]', NAMESPACES)
+    return sf.text.strip() if sf is not None and sf.text and sf.text.strip() else None
+
+
+def sf_all(df, code):
+    """Devuelve la lista de textos de todos los subcampos ``code``."""
+    out = []
+    for sf in df.findall(f'marc:subfield[@code="{code}"]', NAMESPACES):
+        if sf.text and sf.text.strip():
+            out.append(sf.text.strip())
+    return out
+
+
 # ==============================================================================
-# EXTRACCIÓN DE PERSONAS (Campos 100, 700)
+# ALMACÉN DE ENTIDADES (un diccionario por tipo, deduplicado y con PID propio)
 # ==============================================================================
 
-def extract_persons(record, entities_dict):
-    """Extrae personas de los campos MARC 100 y 700."""
-    
-    def parse_dates(dates_str):
-        """Parsea el subcampo $d de MARC para extraer birth/death."""
-        if not dates_str:
-            return None, None
-        
-        dates_str = dates_str.strip()
-        birth = None
-        death = None
-        
-        if '-' in dates_str and not dates_str.startswith('-'):
-            parts = dates_str.split('-')
-            if len(parts) == 2:
-                birth_year = re.search(r'\d{4}', parts[0])
-                death_year = re.search(r'\d{4}', parts[1])
-                if birth_year:
-                    birth = birth_year.group(0)
-                if death_year:
-                    death = death_year.group(0)
-        elif 'b.' in dates_str.lower():
-            match = re.search(r'\d{4}', dates_str)
-            if match:
-                birth = match.group(0)
-        elif 'd.' in dates_str.lower():
-            match = re.search(r'\d{4}', dates_str)
-            if match:
-                death = match.group(0)
-        
-        return birth, death
-    
-    def build_authorized_access_point(name, dates, qualifier=None, numeration=None):
-        """Construye el authorized_access_point según reglas RDA."""
-        aap = name
-        if qualifier and qualifier not in [name, '']:
-            aap += f", {qualifier}"
-        if numeration and numeration not in [name, '']:
-            aap += f", {numeration}"
-        if dates:
-            aap += f", {dates}"
-        return aap
-    
-    for tag in ['100', '700']:
+class EntityStore:
+    """Acumula entidades por tipo, deduplicadas, con PID secuencial por tipo."""
+
+    PREFIX = {
+        'bf:Person': 'pers',
+        'bf:Topic': 'top',
+        'bf:Organisation': 'org',
+        'bf:Place': 'plc',
+        'bf:Temporal': 'tmp',
+        'bf:Work': 'wrk',
+    }
+    FILENAME = {
+        'bf:Person': 'persons',
+        'bf:Topic': 'topics',
+        'bf:Organisation': 'organisations',
+        'bf:Place': 'places',
+        'bf:Temporal': 'temporals',
+        'bf:Work': 'works',
+    }
+
+    def __init__(self):
+        self.by_type = {etype: {} for etype in self.PREFIX}
+
+    def add(self, etype, key, entity):
+        """Inserta ``entity`` bajo ``key`` si no existe ya. Devuelve la entidad
+        almacenada (nueva o previa) o None si la clave es vacía."""
+        bucket = self.by_type[etype]
+        if not key:
+            return None
+        if key in bucket:
+            return bucket[key]
+        entity['pid'] = f'{self.PREFIX[etype]}_{len(bucket) + 1:05d}'
+        bucket[key] = entity
+        return entity
+
+
+def make_entity(etype, schema_name, **fields):
+    """Construye el esqueleto de una entidad con el orden de campos habitual."""
+    entity = {
+        '$schema': f'{SCHEMA_BASE}/{schema_name}-v0.0.1.json',
+        'type': etype,
+    }
+    entity.update(fields)
+    entity['source_catalog'] = 'upr_legacy'
+    return entity
+
+
+# ==============================================================================
+# PERSONAS (campos 100, 700, 600 y entradas 650 reclasificadas)
+# ==============================================================================
+
+def parse_dates(dates_str):
+    """Parsea fechas de nacimiento/muerte de un texto tipo ``1853-1895``."""
+    if not dates_str:
+        return None, None
+    dates_str = dates_str.strip()
+    birth = death = None
+    if '-' in dates_str and not dates_str.startswith('-'):
+        parts = dates_str.split('-')
+        if len(parts) == 2:
+            b = re.search(r'\d{4}', parts[0])
+            d = re.search(r'\d{4}', parts[1])
+            if b:
+                birth = b.group(0)
+            if d:
+                death = d.group(0)
+    elif 'b.' in dates_str.lower():
+        m = re.search(r'\d{4}', dates_str)
+        if m:
+            birth = m.group(0)
+    elif 'd.' in dates_str.lower():
+        m = re.search(r'\d{4}', dates_str)
+        if m:
+            death = m.group(0)
+    return birth, death
+
+
+def person_access_point(name, dates, qualifier=None, numeration=None):
+    """Construye el authorized_access_point de una persona según RDA."""
+    aap = name
+    if qualifier and qualifier not in (name, ''):
+        aap += f', {qualifier}'
+    if numeration and numeration not in (name, ''):
+        aap += f', {numeration}'
+    if dates:
+        aap += f', {dates}'
+    return aap
+
+
+def add_person(store, name, dates=None, qualifier=None, numeration=None,
+               fuller=None):
+    """Crea y almacena una persona a partir de sus componentes."""
+    name = name.strip(' ,')
+    norm_key = normalize_text(name)
+    if not norm_key:
+        return
+    birth, death = parse_dates(dates)
+    dates_str = None
+    if birth and death:
+        dates_str = f'{birth}-{death}'
+    elif birth:
+        dates_str = f'{birth}-'
+    elif death:
+        dates_str = f'-{death}'
+    aap = person_access_point(name, dates_str, qualifier, numeration)
+    entity = make_entity('bf:Person', 'person', name=name,
+                         authorized_access_point=aap)
+    if birth:
+        entity['date_of_birth'] = birth
+    if death:
+        entity['date_of_death'] = death
+    if qualifier:
+        entity['qualifier'] = qualifier
+    if numeration:
+        entity['numeration'] = numeration
+    if fuller:
+        entity['fuller_form_of_name'] = fuller
+    store.add('bf:Person', norm_key, entity)
+
+
+def extract_persons(record, store):
+    """Extrae personas de los campos 100, 700 y 600."""
+    for tag in ('100', '700', '600'):
         for df in record.findall(f'.//marc:datafield[@tag="{tag}"]', NAMESPACES):
-            name_sf = df.find('marc:subfield[@code="a"]', NAMESPACES)
-            numeration_sf = df.find('marc:subfield[@code="b"]', NAMESPACES)
-            titles_sf = df.find('marc:subfield[@code="c"]', NAMESPACES)
-            dates_sf = df.find('marc:subfield[@code="d"]', NAMESPACES)
-            fuller_sf = df.find('marc:subfield[@code="q"]', NAMESPACES)
-            non_std_sf = df.find('marc:subfield[@code="g"]', NAMESPACES)
-            
-            if name_sf is None or not name_sf.text:
+            raw_name = sf_text(df, 'a')
+            if not raw_name:
                 continue
-            
-            raw_name = name_sf.text.strip()
-            
-            if ';' in raw_name:
-                names = [n.strip() for n in raw_name.split(';') if n.strip()]
-            else:
-                names = [raw_name]
-            
+            numeration = sf_text(df, 'b')
+            qualifier = sf_text(df, 'c')
+            dates = sf_text(df, 'd')
+            fuller = sf_text(df, 'q')
+            non_std = sf_text(df, 'g')
+            if non_std:
+                qualifier = f'{qualifier}, {non_std}' if qualifier else non_std
+
+            names = [n.strip() for n in raw_name.split(';') if n.strip()] \
+                if ';' in raw_name else [raw_name]
             for name in names:
-                norm_key = normalize_text(name)
-                if not norm_key or norm_key in entities_dict:
-                    continue
-                
-                numeration = numeration_sf.text.strip() if numeration_sf is not None and numeration_sf.text else None
-                qualifier = titles_sf.text.strip() if titles_sf is not None and titles_sf.text else None
-                dates = dates_sf.text.strip() if dates_sf is not None and dates_sf.text else None
-                fuller = fuller_sf.text.strip() if fuller_sf is not None and fuller_sf.text else None
-                
-                if non_std_sf is not None and non_std_sf.text:
-                    if qualifier:
-                        qualifier += f", {non_std_sf.text.strip()}"
-                    else:
-                        qualifier = non_std_sf.text.strip()
-                
-                birth, death = parse_dates(dates)
-                
-                dates_str = None
-                if birth and death:
-                    dates_str = f"{birth}-{death}"
-                elif birth:
-                    dates_str = f"{birth}-"
-                elif death:
-                    dates_str = f"-{death}"
-                
-                aap = build_authorized_access_point(name, dates_str, qualifier, numeration)
-                pid = f"pers_{len(entities_dict) + 1:05d}"
-                
-                entity = {
-                    "$schema": "https://bib.upr.edu.cu/schemas/local_entities/person-v0.0.1.json",
-                    "pid": pid,
-                    "type": "bf:Person",
-                    "name": name,
-                    "authorized_access_point": aap
-                }
-                
-                if birth:
-                    entity["date_of_birth"] = birth
-                if death:
-                    entity["date_of_death"] = death
-                if qualifier:
-                    entity["qualifier"] = qualifier
-                if numeration:
-                    entity["numeration"] = numeration
-                if fuller:
-                    entity["fuller_form_of_name"] = fuller
-                
-                entity["source_catalog"] = "upr_legacy"
-                entities_dict[norm_key] = entity
+                # En 600 las fechas suelen venir embebidas en $a, no en $d.
+                local_dates = dates
+                if not local_dates:
+                    m = TRAILING_DATES.search(name)
+                    if m:
+                        local_dates = m.group(0)
+                        name = name[:m.start()].strip(' ,')
+                add_person(store, name, local_dates, qualifier, numeration, fuller)
+
 
 # ==============================================================================
-# EXTRACCIÓN DE TÓPICOS/MATERIAS (Campos 650, 655)
+# TÓPICOS / LUGARES / TEMPORALES (campos 650, 653, 655, 651, 648)
 # ==============================================================================
 
-def extract_topics(record, entities_dict):
+def split_subject_terms(value):
+    """Divide un valor de materia en términos individuales.
+
+    Separa por ``;`` y por el guion de subdivisión, pero conserva intactos los
+    rangos de año (``1853-1895``).
     """
-    Extrae materias (tópicos) de los campos MARC 650 y 655.
-    - 650: Materias temáticas (genreForm: false)
-    - 655: Términos de género/forma (genreForm: true)
+    terms = []
+    for chunk in re.split(r'\s*;\s*', value):
+        for part in SUBDIV_DASH.split(chunk):
+            part = part.strip(' -')
+            if part:
+                terms.append(part)
+    return terms
+
+
+def add_topic(store, term, genre_form):
+    norm_key = normalize_text(term)
+    if not norm_key:
+        return
+    entity = make_entity('bf:Topic', 'topic', name=term,
+                         authorized_access_point=term, genreForm=genre_form)
+    # Reordenar source_catalog tras genreForm para respetar propertiesOrder.
+    store.add('bf:Topic', norm_key, entity)
+
+
+def add_simple(store, etype, schema_name, term):
+    norm_key = normalize_text(term)
+    if not norm_key:
+        return
+    entity = make_entity(etype, schema_name, name=term,
+                         authorized_access_point=term)
+    store.add(etype, norm_key, entity)
+
+
+def extract_subjects(record, store):
+    """Extrae tópicos, lugares y temporales de 650/653/655/651/648.
+
+    - ``650 $a``  → personas (si parece nombre con fechas) o tópicos
+    - ``650 $b``  → tópicos adicionales (uso local del export)
+    - ``650 $x``  → tópicos (subdivisión general)
+    - ``650 $z`` / ``651`` → lugares
+    - ``650 $y`` / ``648`` → temporales
+    - ``650 $v`` / ``655`` → tópicos genreForm
+    - ``653 $a``  → tópicos no controlados
     """
-    
-    def build_topic_string(df):
-        """Construye la cadena completa del tópico concatenando subdivisiones."""
-        parts = []
-        for code in ['a', 'b', 'x', 'z', 'v']:
-            sf = df.find(f'marc:subfield[@code="{code}"]', NAMESPACES)
-            if sf is not None and sf.text:
-                parts.append(sf.text.strip())
-        return " - ".join(parts) if parts else None
-    
-    def extract_single_topic(df, is_genre_form):
-        """Extrae un tópico individual de un datafield."""
-        topic_str = build_topic_string(df)
-        
-        if not topic_str:
-            return
-        
-        norm_key = normalize_text(topic_str)
-        if not norm_key or norm_key in entities_dict:
-            return
-        
-        pid = f"top_{len(entities_dict) + 1:05d}"
-        
-        entity = {
-            "$schema": "https://bib.upr.edu.cu/schemas/local_entities/topic-v0.0.1.json",
-            "pid": pid,
-            "type": "bf:Topic",
-            "name": topic_str,
-            "authorized_access_point": topic_str,
-            "genreForm": is_genre_form,
-            "source_catalog": "upr_legacy"
-        }
-        
-        entities_dict[norm_key] = entity
-    
     for df in record.findall('.//marc:datafield[@tag="650"]', NAMESPACES):
-        extract_single_topic(df, is_genre_form=False)
-    
+        main = sf_text(df, 'a')
+        if main:
+            if PERSON_IN_SUBJECT.match(main) and '-' in main:
+                m = TRAILING_DATES.search(main)
+                dates = m.group(0) if m else None
+                name = main[:m.start()].strip(' ,') if m else main
+                add_person(store, name, dates)
+            else:
+                for term in split_subject_terms(main):
+                    add_topic(store, term, genre_form=False)
+        for extra in sf_all(df, 'b') + sf_all(df, 'x'):
+            for term in split_subject_terms(extra):
+                add_topic(store, term, genre_form=False)
+        for place in sf_all(df, 'z'):
+            add_simple(store, 'bf:Place', 'place', place)
+        for temporal in sf_all(df, 'y'):
+            add_simple(store, 'bf:Temporal', 'temporal', temporal)
+        for form in sf_all(df, 'v'):
+            add_topic(store, form, genre_form=True)
+
+    for df in record.findall('.//marc:datafield[@tag="653"]', NAMESPACES):
+        for term in sf_all(df, 'a'):
+            for t in split_subject_terms(term):
+                add_topic(store, t, genre_form=False)
+
     for df in record.findall('.//marc:datafield[@tag="655"]', NAMESPACES):
-        extract_single_topic(df, is_genre_form=True)
+        for term in sf_all(df, 'a'):
+            add_topic(store, term, genre_form=True)
+
+    for df in record.findall('.//marc:datafield[@tag="651"]', NAMESPACES):
+        for code in ('a', 'z'):
+            for place in sf_all(df, code):
+                add_simple(store, 'bf:Place', 'place', place)
+
+    for df in record.findall('.//marc:datafield[@tag="648"]', NAMESPACES):
+        for code in ('a', 'y'):
+            for temporal in sf_all(df, code):
+                add_simple(store, 'bf:Temporal', 'temporal', temporal)
+
 
 # ==============================================================================
-# EXTRACCIÓN DE ORGANIZACIONES (Campos 110, 710)
+# ORGANIZACIONES (campos 110, 710, 111, 711, 610, 611)
 # ==============================================================================
 
-def extract_organizations(record, entities_dict):
-    """
-    Extrae organizaciones de los campos MARC 110 y 710.
-    Detecta automáticamente si es conferencia basado en $c, $d, $n.
-    """
-    
-    def build_authorized_access_point(name, subordinate_units, is_conference, 
-                                     conf_place=None, conf_date=None, conf_numbering=None):
-        """Construye el authorized_access_point según reglas RDA."""
-        if is_conference:
-            aap = name
-            conf_parts = []
-            if conf_numbering:
-                conf_parts.append(conf_numbering)
-            if conf_date:
-                conf_parts.append(conf_date)
-            if conf_place:
-                conf_parts.append(conf_place)
-            
-            if conf_parts:
-                aap += f" ({' : '.join(conf_parts)})"
-            
-            return aap
-        else:
-            aap = name
-            if subordinate_units:
-                for unit in subordinate_units:
-                    aap += f". {unit}"
-            return aap
-    
-    def extract_single_organization(df):
-        """Extrae una organización individual de un datafield 110 o 710."""
-        
-        name_sf = df.find('marc:subfield[@code="a"]', NAMESPACES)
-        if name_sf is None or not name_sf.text:
-            return
-        
-        name = name_sf.text.strip()
-        
-        subordinate_units = []
-        for b_sf in df.findall('marc:subfield[@code="b"]', NAMESPACES):
-            if b_sf.text:
-                subordinate_units.append(b_sf.text.strip())
-        
-        conf_place_sf = df.find('marc:subfield[@code="c"]', NAMESPACES)
-        conf_date_sf = df.find('marc:subfield[@code="d"]', NAMESPACES)
-        conf_numbering_sf = df.find('marc:subfield[@code="n"]', NAMESPACES)
-        
-        conf_place = conf_place_sf.text.strip() if conf_place_sf is not None and conf_place_sf.text else None
-        conf_date = conf_date_sf.text.strip() if conf_date_sf is not None and conf_date_sf.text else None
-        conf_numbering = conf_numbering_sf.text.strip() if conf_numbering_sf is not None and conf_numbering_sf.text else None
-        
-        is_conference = bool(conf_date or conf_numbering)
-        
+def org_access_point(name, subordinate_units, is_conference,
+                     conf_place=None, conf_date=None, conf_numbering=None):
+    """Construye el authorized_access_point de una organización según RDA."""
+    if is_conference:
+        aap = name
+        conf_parts = [p for p in (conf_numbering, conf_date, conf_place) if p]
+        if conf_parts:
+            aap += f" ({' : '.join(conf_parts)})"
+        return aap
+    aap = name
+    for unit in subordinate_units:
+        aap += f'. {unit}'
+    return aap
+
+
+def extract_organizations(record, store):
+    """Extrae organizaciones de 110/710/610 (cuerpos) y 111/711/611 (congresos)."""
+    corporate_tags = ('110', '710', '610')
+    conference_tags = ('111', '711', '611')
+
+    for df in record.findall('.//marc:datafield', NAMESPACES):
+        tag = df.get('tag')
+        if tag not in corporate_tags + conference_tags:
+            continue
+        name = sf_text(df, 'a')
+        if not name:
+            continue
+        subordinate_units = sf_all(df, 'b')
+        conf_place = sf_text(df, 'c')
+        conf_date = sf_text(df, 'd')
+        conf_numbering = sf_text(df, 'n')
+        is_conference = tag in conference_tags or bool(conf_date or conf_numbering)
+
         norm_key = normalize_text(name)
-        if not norm_key or norm_key in entities_dict:
-            return
-        
-        pid = f"org_{len(entities_dict) + 1:05d}"
-        
-        aap = build_authorized_access_point(
-            name, subordinate_units, is_conference,
-            conf_place, conf_date, conf_numbering
-        )
-        
-        entity = {
-            "$schema": "https://bib.upr.edu.cu/schemas/local_entities/organisation-v0.0.1.json",
-            "pid": pid,
-            "type": "bf:Organisation",
-            "name": name,
-            "authorized_access_point": aap,
-            "conference": is_conference,
-            "source_catalog": "upr_legacy"
-        }
-        
+        if not norm_key:
+            continue
+        aap = org_access_point(name, subordinate_units, is_conference,
+                               conf_place, conf_date, conf_numbering)
+        entity = make_entity('bf:Organisation', 'organisation', name=name,
+                             authorized_access_point=aap)
         if subordinate_units:
-            entity["subordinate_units"] = subordinate_units
+            entity['subordinate_units'] = subordinate_units
         if conf_place:
-            entity["conference_place"] = conf_place
+            entity['conference_place'] = conf_place
         if conf_date:
-            entity["conference_date"] = conf_date
+            entity['conference_date'] = conf_date
         if conf_numbering:
-            entity["conference_numbering"] = conf_numbering
-        
-        entities_dict[norm_key] = entity
-    
-    for tag in ['110', '710']:
-        for df in record.findall(f'.//marc:datafield[@tag="{tag}"]', NAMESPACES):
-            extract_single_organization(df)
+            entity['conference_numbering'] = conf_numbering
+        entity['conference'] = is_conference
+        store.add('bf:Organisation', norm_key, entity)
+
 
 # ==============================================================================
-# EXTRACCIÓN DE LUGARES (Campos 151, 751)
+# OBRAS / TÍTULOS UNIFORMES (campos 130, 630, 730, 240)
 # ==============================================================================
 
-def extract_places(record, entities_dict):
-    """
-    Extrae lugares geográficos de los campos MARC 151 y 751.
-    Estos son lugares independientes, no subdivisiones dentro de materias.
-    """
-    
-    def build_place_string(df):
-        """Construye la cadena completa del lugar."""
-        parts = []
-        for code in ['a', 'z']:
-            sf = df.find(f'marc:subfield[@code="{code}"]', NAMESPACES)
-            if sf is not None and sf.text:
-                parts.append(sf.text.strip())
-        return " - ".join(parts) if parts else None
-    
-    def extract_single_place(df):
-        """Extrae un lugar individual de un datafield 151 o 751."""
-        place_str = build_place_string(df)
-        
-        if not place_str:
-            return
-        
-        norm_key = normalize_text(place_str)
-        if not norm_key or norm_key in entities_dict:
-            return
-        
-        pid = f"plc_{len(entities_dict) + 1:05d}"
-        
-        entity = {
-            "$schema": "https://bib.upr.edu.cu/schemas/local_entities/place-v0.0.1.json",
-            "pid": pid,
-            "type": "bf:Place",
-            "name": place_str,
-            "authorized_access_point": place_str,
-            "source_catalog": "upr_legacy"
-        }
-        
-        entities_dict[norm_key] = entity
-    
-    for tag in ['151', '751']:
-        for df in record.findall(f'.//marc:datafield[@tag="{tag}"]', NAMESPACES):
-            extract_single_place(df)
-
-# ==============================================================================
-# EXTRACCIÓN DE TÉRMINOS TEMPORALES (Campos 148, 758)
-# ==============================================================================
-
-def extract_temporals(record, entities_dict):
-    """
-    Extrae términos temporales/cronológicos de los campos MARC 148 y 758.
-    Estos son términos independientes, no subdivisiones dentro de materias.
-    """
-    
-    def build_temporal_string(df):
-        """Construye la cadena completa del término temporal."""
-        parts = []
-        for code in ['a', 'y']:
-            sf = df.find(f'marc:subfield[@code="{code}"]', NAMESPACES)
-            if sf is not None and sf.text:
-                parts.append(sf.text.strip())
-        return " - ".join(parts) if parts else None
-    
-    def extract_single_temporal(df):
-        """Extrae un término temporal individual de un datafield 148 o 758."""
-        temporal_str = build_temporal_string(df)
-        
-        if not temporal_str:
-            return
-        
-        norm_key = normalize_text(temporal_str)
-        if not norm_key or norm_key in entities_dict:
-            return
-        
-        pid = f"tmp_{len(entities_dict) + 1:05d}"
-        
-        entity = {
-            "$schema": "https://bib.upr.edu.cu/schemas/local_entities/temporal-v0.0.1.json",
-            "pid": pid,
-            "type": "bf:Temporal",
-            "name": temporal_str,
-            "authorized_access_point": temporal_str,
-            "source_catalog": "upr_legacy"
-        }
-        
-        entities_dict[norm_key] = entity
-    
-    for tag in ['148', '758']:
-        for df in record.findall(f'.//marc:datafield[@tag="{tag}"]', NAMESPACES):
-            extract_single_temporal(df)
-
-# ==============================================================================
-# EXTRACCIÓN DE OBRAS / TÍTULOS UNIFORMES (Campos 130, 630, 730)
-# ==============================================================================
-
-def extract_works(record, entities_dict):
-    """
-    Extrae obras (títulos uniformes) de los campos MARC 130, 630 y 730.
-    El creator se obtiene del campo 100 del mismo registro (si existe).
-    """
-    
-    # Primero, buscar el autor principal del registro (100 $a)
+def extract_works(record, store):
+    """Extrae obras (títulos uniformes) de 130/630/730/240."""
     creator = None
     author_100 = record.find('.//marc:datafield[@tag="100"]', NAMESPACES)
     if author_100 is not None:
-        name_sf = author_100.find('marc:subfield[@code="a"]', NAMESPACES)
-        if name_sf is not None and name_sf.text:
-            creator = name_sf.text.strip()
-    
-    def build_work_title(df):
-        """
-        Construye el título completo del Work.
-        Concatena $a (título), $n (número de sección), $p (nombre de sección).
-        """
+        creator = sf_text(author_100, 'a')
+
+    def build_title(df):
         parts = []
-        title_sf = df.find('marc:subfield[@code="a"]', NAMESPACES)
-        if title_sf is not None and title_sf.text:
-            parts.append(title_sf.text.strip())
-        
-        for code in ['n', 'p']:
-            for sf in df.findall(f'marc:subfield[@code="{code}"]', NAMESPACES):
-                if sf.text:
-                    parts.append(sf.text.strip())
-        
-        return ". ".join(parts) if parts else None
-    
-    def build_authorized_access_point(title, creator, date=None):
-        """
-        Construye el authorized_access_point según reglas RDA.
-        Formato: "Creator. Title (Date)" o "Title (Date)"
-        """
-        if creator:
-            aap = f"{creator}. {title}"
-        else:
-            aap = title
-        
-        if date:
-            aap += f" ({date})"
-        
-        return aap
-    
-    def extract_single_work(df):
-        """Extrae un Work individual de un datafield 130, 630 o 730."""
-        title = build_work_title(df)
-        
-        if not title:
-            return
-        
-        date_sf = df.find('marc:subfield[@code="f"]', NAMESPACES)
-        date = date_sf.text.strip() if date_sf is not None and date_sf.text else None
-        
-        dedup_key = normalize_text(title)
-        if creator:
-            dedup_key = f"{dedup_key}||{normalize_text(creator)}"
-        
-        if not dedup_key or dedup_key in entities_dict:
-            return
-        
-        pid = f"wrk_{len(entities_dict) + 1:05d}"
-        
-        aap = build_authorized_access_point(title, creator, date)
-        
-        entity = {
-            "$schema": "https://bib.upr.edu.cu/schemas/local_entities/work-v0.0.1.json",
-            "pid": pid,
-            "type": "bf:Work",
-            "title": title,
-            "authorized_access_point": aap,
-            "source_catalog": "upr_legacy"
-        }
-        
-        if creator:
-            entity["creator"] = creator
-        
-        entities_dict[dedup_key] = entity
-    
-    for tag in ['130', '630', '730']:
+        title = sf_text(df, 'a')
+        if title:
+            parts.append(title)
+        for code in ('n', 'p'):
+            parts.extend(sf_all(df, code))
+        return '. '.join(parts) if parts else None
+
+    for tag in ('130', '630', '730', '240'):
         for df in record.findall(f'.//marc:datafield[@tag="{tag}"]', NAMESPACES):
-            extract_single_work(df)
+            title = build_title(df)
+            if not title:
+                continue
+            date = sf_text(df, 'f')
+            dedup_key = normalize_text(title)
+            if creator:
+                dedup_key = f'{dedup_key}||{normalize_text(creator)}'
+            aap = f'{creator}. {title}' if creator else title
+            if date:
+                aap += f' ({date})'
+            entity = make_entity('bf:Work', 'work', title=title,
+                                 authorized_access_point=aap)
+            if creator:
+                entity['creator'] = creator
+            store.add('bf:Work', dedup_key, entity)
+
 
 # ==============================================================================
 # DETECCIÓN DE POSIBLES DUPLICADOS
 # ==============================================================================
 
-def find_potential_duplicates(entities_list, similarity_threshold=0.85):
-    """
-    Encuentra posibles duplicados basándose en similitud de texto.
-    Solo compara entidades del mismo tipo.
-    
-    Args:
-        entities_list: Lista de entidades extraídas
-        similarity_threshold: Umbral de similitud (0.0 a 1.0)
-    
-    Returns:
-        Lista de diccionarios con los posibles duplicados
-    """
+def find_potential_duplicates(store, similarity_threshold=0.85):
+    """Encuentra posibles duplicados por similitud de texto dentro de cada tipo."""
     duplicates = []
-    
-    # Agrupar entidades por tipo
-    entities_by_type = {}
-    for entity in entities_list:
-        entity_type = entity['type']
-        if entity_type not in entities_by_type:
-            entities_by_type[entity_type] = []
-        entities_by_type[entity_type].append(entity)
-    
-    # Comparar entidades del mismo tipo
-    for entity_type, entities in entities_by_type.items():
-        print(f"  Buscando duplicados en {entity_type} ({len(entities)} entidades)...")
-        
+    for etype, bucket in store.by_type.items():
+        entities = list(bucket.values())
+        if len(entities) < 2:
+            continue
+        print(f'  Buscando duplicados en {etype} ({len(entities)} entidades)...')
+        field = 'title' if etype == 'bf:Work' else 'name'
         for i in range(len(entities)):
             for j in range(i + 1, len(entities)):
-                # Comparar por 'name' para Person, Topic, Organisation, Place, Temporal
-                # Comparar por 'title' para Work
-                if entity_type == 'bf:Work':
-                    text1 = entities[i].get('title', '')
-                    text2 = entities[j].get('title', '')
-                else:
-                    text1 = entities[i].get('name', '')
-                    text2 = entities[j].get('name', '')
-                
-                if not text1 or not text2:
+                t1 = entities[i].get(field, '')
+                t2 = entities[j].get(field, '')
+                if not t1 or not t2:
                     continue
-                
-                similarity = SequenceMatcher(None, text1.lower(), text2.lower()).ratio()
-                
+                similarity = SequenceMatcher(None, t1.lower(), t2.lower()).ratio()
                 if similarity_threshold <= similarity < 1.0:
                     duplicates.append({
-                        'type': entity_type,
+                        'type': etype,
                         'entity1': entities[i],
                         'entity2': entities[j],
-                        'similarity': similarity
+                        'similarity': similarity,
                     })
-    
     return duplicates
+
 
 # ==============================================================================
 # PROCESAMIENTO DE ARCHIVOS
 # ==============================================================================
 
-def process_file(xml_path, entities_dict, total_records_processed):
-    """
-    Procesa un archivo XML y extrae todas las entidades.
-    
-    Args:
-        xml_path: Ruta al archivo XML
-        entities_dict: Diccionario global de entidades (se modifica in-place)
-        total_records_processed: Contador de registros procesados
-    
-    Returns:
-        Número de registros procesados en este archivo
-    """
-    print(f"\n📄 Procesando: {xml_path}")
-    
+def process_file(xml_path, store, total_records_processed):
+    """Procesa un archivo XML y extrae todas las entidades."""
+    print(f'\n📄 Procesando: {xml_path}')
     try:
-        tree = ET.parse(xml_path)
-        root = tree.getroot()
+        root = ET.parse(xml_path).getroot()
     except Exception as e:
-        print(f"  ❌ Error al leer el archivo: {e}")
+        print(f'  ❌ Error al leer el archivo: {e}')
         return 0
-    
+
     records = root.findall('.//marc:record', NAMESPACES)
-    file_records = len(records)
-    
-    print(f"  Registros encontrados: {file_records}")
-    
-    for i, record in enumerate(records):
+    print(f'  Registros encontrados: {len(records)}')
+
+    for record in records:
         total_records_processed += 1
-        
         if total_records_processed % 1000 == 0:
-            print(f"  ... procesados {total_records_processed} registros en total. "
-                  f"Entidades únicas: {len(entities_dict)}")
-        
-        extract_persons(record, entities_dict)
-        extract_topics(record, entities_dict)
-        extract_organizations(record, entities_dict)
-        extract_places(record, entities_dict)
-        extract_temporals(record, entities_dict)
-        extract_works(record, entities_dict)
-    
-    print(f"  ✅ Archivo completado. Entidades únicas hasta ahora: {len(entities_dict)}")
-    
-    return file_records
+            total = sum(len(b) for b in store.by_type.values())
+            print(f'  ... {total_records_processed} registros. Entidades: {total}')
+        extract_persons(record, store)
+        extract_subjects(record, store)
+        extract_organizations(record, store)
+        extract_works(record, store)
+
+    total = sum(len(b) for b in store.by_type.values())
+    print(f'  ✅ Archivo completado. Entidades únicas hasta ahora: {total}')
+    return len(records)
+
+
+# ==============================================================================
+# SALIDA
+# ==============================================================================
+
+def write_output(store, output_dir):
+    """Escribe dos JSON por tipo: ``<tipo>.json`` y ``<tipo>.enriched.json``."""
+    os.makedirs(output_dir, exist_ok=True)
+    summary = {}
+    for etype, bucket in store.by_type.items():
+        plain, enriched = [], []
+        for entity in bucket.values():
+            entity = dict(entity)
+            if entity.pop('_enriched', False):
+                enriched.append(entity)
+            else:
+                plain.append(entity)
+        name = EntityStore.FILENAME[etype]
+        with open(os.path.join(output_dir, f'{name}.json'), 'w',
+                  encoding='utf-8') as f:
+            json.dump(plain, f, ensure_ascii=False, indent=2)
+        with open(os.path.join(output_dir, f'{name}.enriched.json'), 'w',
+                  encoding='utf-8') as f:
+            json.dump(enriched, f, ensure_ascii=False, indent=2)
+        summary[etype] = (len(plain), len(enriched))
+    return summary
+
 
 # ==============================================================================
 # FUNCIÓN PRINCIPAL
@@ -577,152 +485,102 @@ def process_file(xml_path, entities_dict, total_records_processed):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Extrae entidades locales desde archivos MARC XML.',
+        description='Extrae entidades locales desde archivos MARC21 XML.',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-Ejemplos de uso:
-  # Procesar un solo archivo
-  python extract_entities.py -i legacy/marc21.fix.mrcxml -o legacy/local_entities.json
-  
-  # Procesar múltiples archivos
-  python extract_entities.py -i BCT.xml BECSH.xml FCF.xml -o legacy/local_entities.json
-  
-  # Usar patrón glob (requiere shell expansion)
-  python extract_entities.py -i legacy/*.xml -o legacy/local_entities.json
-  
-  # Ajustar umbral de similitud para duplicados
-  python extract_entities.py -i legacy/*.xml -o legacy/local_entities.json --similarity 0.90
-        """
+Ejemplos:
+  # Extracción base (sin red): una carpeta con dos JSON por tipo
+  python extract_entities.py -i legacy/db/*/marc21.mrcxml -o legacy/entities
+
+  # Con enriquecimiento externo acotado para pruebas
+  python extract_entities.py -i legacy/db/BCT/marc21.mrcxml -o /tmp/ent \\
+      --enrich --enrich-limit 20 --geonames-user MIUSER
+        """,
     )
-    
-    parser.add_argument(
-        '-i', '--input',
-        nargs='+',
-        required=True,
-        help='Uno o más archivos XML de entrada (separados por espacio)'
-    )
-    
-    parser.add_argument(
-        '-o', '--output',
-        required=True,
-        help='Archivo JSON de salida con todas las entidades extraídas'
-    )
-    
-    parser.add_argument(
-        '--similarity',
-        type=float,
-        default=0.85,
-        help='Umbral de similitud para detectar posibles duplicados (0.0 a 1.0, default: 0.85)'
-    )
-    
-    parser.add_argument(
-        '--no-duplicates-report',
-        action='store_true',
-        help='No generar reporte de posibles duplicados'
-    )
-    
+    parser.add_argument('-i', '--input', nargs='+', required=True,
+                        help='Uno o más archivos MARC21 XML de entrada.')
+    parser.add_argument('-o', '--output', required=True,
+                        help='Carpeta de salida (dos JSON por tipo de entidad).')
+    parser.add_argument('--similarity', type=float, default=0.85,
+                        help='Umbral de similitud para el reporte de duplicados.')
+    parser.add_argument('--no-duplicates-report', action='store_true',
+                        help='No generar el reporte de posibles duplicados.')
+    parser.add_argument('--enrich', action='store_true',
+                        help='Enriquecer las entidades con fuentes externas.')
+    parser.add_argument('--enrich-types', default=None,
+                        help='Tipos a enriquecer, separados por coma '
+                             '(person,topic,organisation,place,temporal,work).')
+    parser.add_argument('--enrich-limit', type=int, default=None,
+                        help='Máximo de entidades a enriquecer por tipo (pruebas).')
+    parser.add_argument('--geonames-user', default=os.environ.get('GEONAMES_USER'),
+                        help='Usuario de GeoNames (o variable GEONAMES_USER).')
+    parser.add_argument('--worldcat-key', default=os.environ.get('WORLDCAT_KEY'),
+                        help='Clave de la WorldCat Search API (o WORLDCAT_KEY).')
     args = parser.parse_args()
-    
-    # Verificar que los archivos de entrada existan
+
     for xml_path in args.input:
         if not os.path.exists(xml_path):
-            print(f"❌ Error: El archivo no existe: {xml_path}")
+            print(f'❌ Error: El archivo no existe: {xml_path}')
             sys.exit(1)
-    
-    print("=" * 80)
-    print("🚀 EXTRACCIÓN DE ENTIDADES LOCALES DESDE MARC XML")
-    print("=" * 80)
-    print(f"\nArchivos de entrada: {len(args.input)}")
-    print(f"Archivo de salida: {args.output}")
-    print(f"Umbral de similitud: {args.similarity}")
-    
-    # Diccionario global de entidades
-    entities_dict = {}
+
+    print('=' * 80)
+    print('🚀 EXTRACCIÓN DE ENTIDADES LOCALES DESDE MARC21 XML')
+    print('=' * 80)
+    print(f'\nArchivos de entrada: {len(args.input)}')
+    print(f'Carpeta de salida: {args.output}')
+
+    store = EntityStore()
     total_records = 0
-    
-    # Procesar cada archivo
     for xml_path in args.input:
-        records_in_file = process_file(xml_path, entities_dict, total_records)
-        total_records += records_in_file
-    
-    # Convertir el diccionario a lista
-    final_entities = list(entities_dict.values())
-    
-    # Crear directorio de salida si no existe
-    output_dir = os.path.dirname(args.output)
-    if output_dir and not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-    
-    # Guardar en archivo JSON
-    print(f"\n💾 Guardando entidades en: {args.output}")
-    with open(args.output, 'w', encoding='utf-8') as f:
-        json.dump(final_entities, f, ensure_ascii=False, indent=2)
-    
-    # Estadísticas finales
-    print("\n" + "=" * 80)
-    print("📊 ESTADÍSTICAS FINALES")
-    print("=" * 80)
-    print(f"Total de registros procesados: {total_records}")
-    print(f"Total de entidades únicas extraídas: {len(final_entities)}")
-    
-    stats = {}
-    for entity in final_entities:
-        entity_type = entity['type']
-        stats[entity_type] = stats.get(entity_type, 0) + 1
-    
-    print("\nEntidades por tipo:")
-    for entity_type, count in sorted(stats.items()):
-        print(f"  {entity_type}: {count}")
-    
-    # Reporte de posibles duplicados
+        total_records += process_file(xml_path, store, total_records)
+
+    if args.enrich:
+        from enrichers import enrich_store
+        enrich_store(store, types=args.enrich_types, limit=args.enrich_limit,
+                     geonames_user=args.geonames_user,
+                     worldcat_key=args.worldcat_key)
+
+    summary = write_output(store, args.output)
+
+    print('\n' + '=' * 80)
+    print('📊 ESTADÍSTICAS FINALES')
+    print('=' * 80)
+    print(f'Total de registros procesados: {total_records}')
+    print('\nEntidades por tipo (no enriquecidas / enriquecidas):')
+    for etype in sorted(summary):
+        plain, enriched = summary[etype]
+        print(f'  {etype}: {plain} / {enriched}')
+
     if not args.no_duplicates_report:
-        print("\n" + "=" * 80)
-        print("🔍 ANÁLISIS DE POSIBLES DUPLICADOS")
-        print("=" * 80)
-        print(f"Umbral de similitud: {args.similarity}")
-        
-        duplicates = find_potential_duplicates(final_entities, args.similarity)
-        
+        print('\n' + '=' * 80)
+        print('🔍 ANÁLISIS DE POSIBLES DUPLICADOS')
+        print('=' * 80)
+        duplicates = find_potential_duplicates(store, args.similarity)
         if duplicates:
-            print(f"\n⚠️  Se encontraron {len(duplicates)} posibles duplicados:")
-            
-            # Mostrar primeros 20 duplicados
+            print(f'\n⚠️  {len(duplicates)} posibles duplicados (primeros 20):')
             for i, dup in enumerate(duplicates[:20], 1):
-                print(f"\n  {i}. [{dup['type']}]")
-                print(f"     Entidad 1: {dup['entity1'].get('name', dup['entity1'].get('title', 'N/A'))}")
-                print(f"     Entidad 2: {dup['entity2'].get('name', dup['entity2'].get('title', 'N/A'))}")
-                print(f"     Similitud: {dup['similarity']:.2%}")
-            
-            if len(duplicates) > 20:
-                print(f"\n  ... y {len(duplicates) - 20} duplicados más")
-            
-            # Guardar reporte de duplicados en archivo separado
-            duplicates_report_path = args.output.replace('.json', '_duplicates.json')
-            print(f"\n💾 Guardando reporte completo de duplicados en: {duplicates_report_path}")
-            
-            duplicates_report = []
-            for dup in duplicates:
-                duplicates_report.append({
-                    'type': dup['type'],
-                    'similarity': dup['similarity'],
-                    'entity1_pid': dup['entity1']['pid'],
-                    'entity1_name': dup['entity1'].get('name', dup['entity1'].get('title')),
-                    'entity2_pid': dup['entity2']['pid'],
-                    'entity2_name': dup['entity2'].get('name', dup['entity2'].get('title'))
-                })
-            
-            with open(duplicates_report_path, 'w', encoding='utf-8') as f:
-                json.dump(duplicates_report, f, ensure_ascii=False, indent=2)
+                field = 'title' if dup['type'] == 'bf:Work' else 'name'
+                print(f"  {i}. [{dup['type']}] "
+                      f"{dup['entity1'].get(field)} ≈ {dup['entity2'].get(field)} "
+                      f"({dup['similarity']:.2%})")
+            report_path = os.path.join(args.output, 'duplicates.json')
+            report = [{
+                'type': d['type'],
+                'similarity': d['similarity'],
+                'entity1_pid': d['entity1']['pid'],
+                'entity2_pid': d['entity2']['pid'],
+            } for d in duplicates]
+            with open(report_path, 'w', encoding='utf-8') as f:
+                json.dump(report, f, ensure_ascii=False, indent=2)
+            print(f'\n💾 Reporte completo: {report_path}')
         else:
-            print("\n✅ No se encontraron posibles duplicados")
-    
-    print("\n" + "=" * 80)
-    print("✅ ¡PROCESO COMPLETADO!")
-    print("=" * 80)
-    print(f"\nArchivo de entidades: {args.output}")
-    if not args.no_duplicates_report and duplicates:
-        print(f"Reporte de duplicados: {duplicates_report_path}")
-    print()
+            print('\n✅ No se encontraron posibles duplicados')
+
+    print('\n' + '=' * 80)
+    print('✅ ¡PROCESO COMPLETADO!')
+    print('=' * 80)
+    print(f'\nCarpeta de entidades: {args.output}\n')
+
 
 if __name__ == '__main__':
     main()
