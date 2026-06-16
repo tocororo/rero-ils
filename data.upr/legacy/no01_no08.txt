@@ -1,0 +1,29 @@
+db/BCT/marc21.mrcxml---000000a00000000000004500 
+   BCT docmaintype_book docsubtype_other_book 200101b---
+db/FCP/marc21.mrcxml---001140000000000970004500 
+     n 
+     Libro 
+     a 
+     m 
+     
+       # 
+     
+     
+       a 
+     
+   FCP docmaintype_book docsubtype_other_book 200101b---
+db/FCP/marc21.mrcxml---001370000000001090004500 
+     n 
+     Tesis 
+     t 
+     m 
+     
+       # 
+     
+     
+       a 
+     
+     
+       CAMPUS-RFM 
+     
+   FCP docmaintype_book docsubtype_thesis docmaintype_book docsubtype_other_book 200101b---

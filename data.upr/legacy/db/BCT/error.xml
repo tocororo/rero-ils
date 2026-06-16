@@ -1,0 +1,59 @@
+  <record>
+    <leader>00000nLm0a00000001a04500</leader>
+    <controlfield tag="001">REROILS:C786442523</controlfield>
+    <controlfield tag="005">005 20201008140542</controlfield>
+    <controlfield tag="008">201008a1–9 cuafr##0000#spa</controlfield>
+    <datafield tag="020" ind1=" " ind2=" ">
+      <subfield code="a">978-959-07-2003</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="1">0-Ed. completa</subfield>
+      <subfield code="a">621.38</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="1">b-Apellido</subfield>
+      <subfield code="a">Nagy, Agnes S.</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="1">1-Con asiento secundario</subfield>
+      <subfield code="a">Electrónica y sus aplicaciones en la era de la ciencia y la tecnología</subfield>
+      <subfield code="c">Agnes S. Nagy; Adelaida Torres Colón; Alberto Hernández Pérez</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editorial Félix Varela</subfield>
+      <subfield code="c">2015</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">t.</subfield>
+      <subfield code="b">il.</subfield>
+      <subfield code="c">22 cm.</subfield>
+    </datafield>
+    <datafield tag="440" ind1=" " ind2=" ">
+      <subfield code="a">Electrónica Analógica</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">La biblioteca posee el tomo 1</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="a">ELECTRONICA</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="a">ELECTRONICA ANALOGICA</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="a">TECNOLOGIA</subfield>
+    </datafield>
+    <datafield tag="700" ind1=" " ind2=" ">
+      <subfield code="1">1 - Apellido</subfield>
+      <subfield code="a">Torres Colón, Adelaida</subfield>
+    </datafield>
+    <datafield tag="700" ind1=" " ind2=" ">
+      <subfield code="1">1 - Apellido</subfield>
+      <subfield code="a">Hernández Pérez, Alberto</subfield>
+    </datafield>
+  <datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_thesis</subfield></datafield></record>

@@ -1,0 +1,91 @@
+821125         cu #   fr#   #001 0#spadd
+961207c19469999be |||m|| ||||0 || 0fre d
+110218s2007    fr ||| |  ||||00|  |fre d
+180216b #cuaf#m#0000#spa
+
+76719          cu a   fr#   #001 0#spadd
+
+841211         cu a   fr#   #001   0#spadd
+841211 cu a fr# #001 0#spadd
+
+190409#1–9 spaf###0000dspa
+190409#1–9 spaf###0000dspa
+
+821125         cu #   fr#   #001 0#spadd
+user
+arianna
+Anaira 2021
+
+
+181024#1–9 spaf###0000dspa
+181024#1–9 spaf###0000dspa
+180130# #cuaf###0000dspa
+180125#1–91–9cuaf#d#0000#English
+180125#1–91–9cuaf#d#0000#spa
+180125#1–91–9cuaf#d#0000#spa
+
+
+  <record>
+    <leader>005870L00000002770004500</leader>
+    <controlfield tag="001">REROILS:M2002</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">76719          cu a   fr#   #001 0#spadd</controlfield>
+    <datafield tag="010" ind1=" " ind2=" ">
+      <subfield code="*">true</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">spa</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="084" ind1=" " ind2=" ">
+      <subfield code="a">59-2487</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="1">
+      <subfield code="a">Anatomía y fisiología para ingenieros pecuarios</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Edición Revolucionaria</subfield>
+      <subfield code="c">[s.a.]</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a"> 951 p. </subfield>
+      <subfield code="b">: il. </subfield>
+      <subfield code="c">; 30 cm.</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">5</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="401" ind1=" " ind2=" ">
+      <subfield code="*">true</subfield>
+    </datafield>
+    <datafield tag="650" ind1="1" ind2="4">
+      <subfield code="a">ANATOMIA</subfield>
+      <subfield code="b">FISIOLOGIA</subfield>
+      <subfield code="b">GANADO</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20150121 01:47:22</subfield>
+      <subfield code="o">ana</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20160201 03:39:32</subfield>
+      <subfield code="o">anateresa</subfield>
+    </datafield>
+  <datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>

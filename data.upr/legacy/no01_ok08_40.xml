@@ -1,0 +1,215 @@
+<collection xmlns="http://www.loc.gov/MARC21/slim" xmlns="http://www.loc.gov/MARC21/slim"><record>
+    <leader>011130000000003490004500</leader>
+    <controlfield tag="005">c</controlfield>
+    <controlfield tag="005">201506091827.38</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="006">Tesis</controlfield>
+    <controlfield tag="006">t</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">080415s        cu #   frm   #001 0#spamd</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="020" ind1=" " ind2=" ">
+      <subfield code="*">Campo obligatorio</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="*">8</subfield>
+      <subfield code="a">spa</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">TM-5717</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Morales Pérez, Katia</subfield>
+    </datafield>
+    <datafield tag="245" ind1="2" ind2="0">
+      <subfield code="a">Estrategia didáctica para la apreciación de la música de concierto, en los estudiantes de segundo año de la carrera de Español-Literatura</subfield>
+      <subfield code="c">Katia Morales Pérez, Yadyra de la Caridad Piñera Concepción, tutor</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">P. del Río</subfield>
+      <subfield code="b">Editorial Universidad de Ciencias Pedagógicas</subfield>
+      <subfield code="c">2014</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">69 h. </subfield>
+      <subfield code="b">: il. </subfield>
+      <subfield code="c"> ; 25cm</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Contiene CD "Por los caminos de la música de concierto"</subfield>
+    </datafield>
+    <datafield tag="650" ind1="1" ind2="4">
+      <subfield code="a">ESTRATEGIA, DIDACTICA, MUSICA, EDUCACION MUSICAL, ESTUDIANTES, ESPAÑOL-LITARATURA  ;    Piñara Concepción Yadira de la Caridad, tutora</subfield>
+    </datafield>
+    <datafield tag="850" ind1=" " ind2=" ">
+      <subfield code="*">CAMPUS-RFM</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20150608 11:10:12</subfield>
+      <subfield code="o">belkis</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20150608 11:33:13</subfield>
+      <subfield code="o">belkis</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20150608 11:33:28</subfield>
+      <subfield code="o">belkis</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20150609 06:27:38</subfield>
+      <subfield code="o">belkis</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_thesis</subfield></datafield><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>009830000000003250004500</leader>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="005">201507062016.58</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="006">Tesis</controlfield>
+    <controlfield tag="006">t</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">290415s        cu a   frm   #001 0#spa#d</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="020" ind1=" " ind2=" ">
+      <subfield code="*">Campo obligatorio</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="*">8</subfield>
+      <subfield code="a">spa</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">TM-5762</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="*">1 1 </subfield>
+      <subfield code="a">Pozo Cabrera, Alexis</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="*">2020</subfield>
+      <subfield code="a">Sistema de ejercicios profesionalizados para el cálculo de los elementos de rosca, para estudiantes de segundo año de la especialidad de Tornería</subfield>
+      <subfield code="c">Aguilar Hernández, Vadim</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">P. del Río</subfield>
+      <subfield code="b">Editorial Universidad de Cienicas Pedagógicas</subfield>
+      <subfield code="c">2013</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">60 h.</subfield>
+      <subfield code="b"> : il.</subfield>
+      <subfield code="c"> ; 20cm</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Tesis en opción al título académico de Máster en Ciencias de la Educación</subfield>
+    </datafield>
+    <datafield tag="650" ind1="1" ind2="4">
+      <subfield code="a">EJERCICIOS, CALCULO, ESTUDIANTES, EDUCACION TECNICA Y PROFESIONAL  ;   Aguilar Hernández, Vadím</subfield>
+    </datafield>
+    <datafield tag="850" ind1=" " ind2=" ">
+      <subfield code="*">CAMPUS-RFM</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20150622 07:21:42</subfield>
+      <subfield code="o">belkis</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20150706 08:16:58</subfield>
+      <subfield code="o">belkis</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_thesis</subfield></datafield><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>010440000000003250004500</leader>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="005">201510081847.50</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="006">Tesis</controlfield>
+    <controlfield tag="006">t</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">070515s        cu a   frm   #001 0#spa#d</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="020" ind1=" " ind2=" ">
+      <subfield code="*">Campo obligatorio</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="*">8</subfield>
+      <subfield code="a">spa</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">TM-5783</subfield>
+    </datafield>
+    <datafield tag="100" ind1="1" ind2=" ">
+      <subfield code="a">Córdova Cruz, Daylis</subfield>
+    </datafield>
+    <datafield tag="245" ind1="2" ind2="0">
+      <subfield code="a">Sistema de talleres para la preparación de los especialistas del Centro de Diagnóstico y Orientación (CDO) en la utilización de las técnicas de estudio a las familias</subfield>
+      <subfield code="c">Daylis Córdova Cruz, Maura Barrios García, tutora</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">P. del Río</subfield>
+      <subfield code="b">Universidad de Ciencias Pedagógicas</subfield>
+      <subfield code="c">2013</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="b">70 h.</subfield>
+      <subfield code="c"> :il.</subfield>
+      <subfield code="e"> ; 25cm</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Tesis presentada en opción al Título Académico de Máster en Ciencias de la Educación</subfield>
+    </datafield>
+    <datafield tag="650" ind1="1" ind2="4">
+      <subfield code="a">EDUCACION ESPECIAL, CENTRO DE DIAGNOSTICO Y ORINETACION, FAMILIA, SAN LUIS,  Barrios García, Maura, tutora</subfield>
+    </datafield>
+    <datafield tag="850" ind1=" " ind2=" ">
+      <subfield code="*">CAMPUS-RFM</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20151008 06:47:50</subfield>
+      <subfield code="o">belkis</subfield>
+    </datafield>
+    <datafield tag="980" ind1=" " ind2=" ">
+      <subfield code="d">20160629 04:13:33</subfield>
+      <subfield code="o">sergio.barrios</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_thesis</subfield></datafield><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  </collection>

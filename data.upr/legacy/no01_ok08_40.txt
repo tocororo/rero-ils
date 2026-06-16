@@ -1,0 +1,3 @@
+db/FCP/marc21.mrcxml---noid---40---080415s        cu #   frm   #001 0#spamd
+db/FCP/marc21.mrcxml---noid---40---290415s        cu a   frm   #001 0#spa#d
+db/FCP/marc21.mrcxml---noid---40---070515s        cu a   frm   #001 0#spa#d

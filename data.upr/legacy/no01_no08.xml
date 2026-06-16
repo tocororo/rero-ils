@@ -1,0 +1,33 @@
+<collection xmlns="http://www.loc.gov/MARC21/slim" xmlns="http://www.loc.gov/MARC21/slim"><record>
+    <leader>000000a00000000000004500</leader>
+  <library>BCT</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield><controlfield tag="008">200101b                                 </controlfield></record>
+  <record>
+    <leader>001140000000000970004500</leader>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield><controlfield tag="008">200101b                                 </controlfield></record>
+  <record>
+    <leader>001370000000001090004500</leader>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Tesis</controlfield>
+    <controlfield tag="006">t</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="850" ind1=" " ind2=" ">
+      <subfield code="*">CAMPUS-RFM</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_thesis</subfield></datafield><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield><controlfield tag="008">200101b                                 </controlfield></record>
+  </collection>

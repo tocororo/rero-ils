@@ -1,0 +1,62 @@
+exc:Traceback (most recent call last):
+  File "/home/malayo/dev/rero/rero-ils/data/upr/catalog_script.py", line 326, in modificar_registros
+    tag8_fixed_text = fix_upr_tag8(controlfield_008.text, countries, languages)
+  File "/home/malayo/dev/rero/rero-ils/data/upr/catalog_script.py", line 176, in fix_upr_tag8
+    if c18_34[c18_34_len - step] in ['#', 'a', 'b', 'c', 'd', 'e', 'f', 'i', 'j', 'k',
+IndexError: string index out of range
+---db/FCF/marc21.mrcxml---REROILS:M400825---17---920402         ru---False
+exc:Traceback (most recent call last):
+  File "/home/malayo/dev/rero/rero-ils/data/upr/catalog_script.py", line 327, in modificar_registros
+    if len(tag8_fixed_text) == 40:
+TypeError: object of type 'NoneType' has no len()
+---db/FCF/marc21.mrcxml---REROILS:M4001126---33---005 20171113160245               ---False
+exc:Traceback (most recent call last):
+  File "/home/malayo/dev/rero/rero-ils/data/upr/catalog_script.py", line 327, in modificar_registros
+    if len(tag8_fixed_text) == 40:
+TypeError: object of type 'NoneType' has no len()
+---db/FCF/marc21.mrcxml---REROILS:M4001233---33---005 20171113160245               ---False
+exc:Traceback (most recent call last):
+  File "/home/malayo/dev/rero/rero-ils/data/upr/catalog_script.py", line 327, in modificar_registros
+    if len(tag8_fixed_text) == 40:
+TypeError: object of type 'NoneType' has no len()
+---db/FCF/marc21.mrcxml---REROILS:M6003176---32---       wau#   #r#   #001 0#eng d---True
+exc:Traceback (most recent call last):
+  File "/home/malayo/dev/rero/rero-ils/data/upr/catalog_script.py", line 327, in modificar_registros
+    if len(tag8_fixed_text) == 40:
+TypeError: object of type 'NoneType' has no len()
+---db/FCP/marc21.mrcxml---REROILS:M7001673---4---7-02---False
+exc:Traceback (most recent call last):
+  File "/home/malayo/dev/rero/rero-ils/data/upr/catalog_script.py", line 327, in modificar_registros
+    if len(tag8_fixed_text) == 40:
+TypeError: object of type 'NoneType' has no len()
+---db/FCP/marc21.mrcxml---REROILS:M7001689---4---7-02---False
+exc:Traceback (most recent call last):
+  File "/home/malayo/dev/rero/rero-ils/data/upr/catalog_script.py", line 327, in modificar_registros
+    if len(tag8_fixed_text) == 40:
+TypeError: object of type 'NoneType' has no len()
+---db/FCP/marc21.mrcxml---REROILS:M7001693---4---7-02---False
+exc:Traceback (most recent call last):
+  File "/home/malayo/dev/rero/rero-ils/data/upr/catalog_script.py", line 327, in modificar_registros
+    if len(tag8_fixed_text) == 40:
+TypeError: object of type 'NoneType' has no len()
+---db/FCP/marc21.mrcxml---REROILS:M7002965---5---04/O3---False
+exc:Traceback (most recent call last):
+  File "/home/malayo/dev/rero/rero-ils/data/upr/catalog_script.py", line 327, in modificar_registros
+    if len(tag8_fixed_text) == 40:
+TypeError: object of type 'NoneType' has no len()
+---db/FCP/marc21.mrcxml---REROILS:M7004329---6---09 /03---False
+exc:Traceback (most recent call last):
+  File "/home/malayo/dev/rero/rero-ils/data/upr/catalog_script.py", line 327, in modificar_registros
+    if len(tag8_fixed_text) == 40:
+TypeError: object of type 'NoneType' has no len()
+---db/FCP/marc21.mrcxml---REROILS:M70016101---4---2011---True
+exc:Traceback (most recent call last):
+  File "/home/malayo/dev/rero/rero-ils/data/upr/catalog_script.py", line 327, in modificar_registros
+    if len(tag8_fixed_text) == 40:
+TypeError: object of type 'NoneType' has no len()
+---db/FCP/marc21.mrcxml---REROILS:M70016102---4---2011---True
+exc:Traceback (most recent call last):
+  File "/home/malayo/dev/rero/rero-ils/data/upr/catalog_script.py", line 327, in modificar_registros
+    if len(tag8_fixed_text) == 40:
+TypeError: object of type 'NoneType' has no len()
+---db/FCP/marc21.mrcxml---REROILS:M70017822---4---0112---True

@@ -1,0 +1,631 @@
+<collection xmlns="http://www.loc.gov/MARC21/slim" xmlns="http://www.loc.gov/MARC21/slim"><record>
+    <leader>000000L00000000000004500</leader>
+    <controlfield tag="001">REROILS:M400825</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">920402         ru</controlfield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">612.1</subfield>
+      <subfield code="b">Kar</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Karpman, V. L.</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Dinámica de la circulación sanguínea en los deportistas</subfield>
+      <subfield code="c">V. L. Karpman, B. G. Liubina</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">Moscú</subfield>
+      <subfield code="b">Editorial Vneshtorgizdat</subfield>
+      <subfield code="c">1991</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">123 p.</subfield>
+      <subfield code="c">23 cm.</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a">MEDICINA DEPORTIVA</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a">SANGRE Y CIRCULACION</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a">DINAMICA</subfield>
+    </datafield>
+    <datafield tag="700" ind1=" " ind2=" ">
+      <subfield code="a">Liubina, B. G.</subfield>
+    </datafield>
+  <library>FCF</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>00000cLm0a0000000#a04500</leader>
+    <controlfield tag="001">REROILS:M4001126</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">005 20171113160245               </controlfield>
+    <datafield tag="020" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">959-06-0912-0</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="1">0-Ed. completa</subfield>
+      <subfield code="a">320</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="1">b-Apellido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">Montoya, Roberto</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="1">1-Con asiento secundario</subfield>
+      <subfield code="2">0/9-Número de caracteres iniciales presentes que se ignoran en la alfabetización</subfield>
+      <subfield code="a">La Impunidad imperial</subfield>
+      <subfield code="b">cómo Estados Unidos legalizó la tortura y "blindó" ante la justicia a sus militares, agentes y mercenarios</subfield>
+      <subfield code="c">Roberto Montoya</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="1"># - No se aplica/Sin información disponible/Primer editor conocido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editorial de Ciencias Sociales</subfield>
+      <subfield code="c">2006</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">229 p.</subfield>
+      <subfield code="c">24 cm.</subfield>
+    </datafield>
+    <datafield tag="440" ind1=" " ind2=" ">
+      <subfield code="1">- # No definido</subfield>
+      <subfield code="2">0-9 (Número de caracteres a ignorar en la alfabetización)</subfield>
+      <subfield code="a">Colección Una mirada a los Estados Unidos</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">POLITICA</subfield>
+    </datafield>
+  <library>FCF</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>00000cLm0a0000000#a04500</leader>
+    <controlfield tag="001">REROILS:M4001233</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">005 20171113160245               </controlfield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="1">0-Ed. completa</subfield>
+      <subfield code="a">796.323</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="1">b-Apellido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">Paz Rodriguez, Pedro Luis de la</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="1">1-Con asiento secundario</subfield>
+      <subfield code="2">0/9-Número de caracteres iniciales presentes que se ignoran en la alfabetización</subfield>
+      <subfield code="a">Baloncesto : aspectos historicos, metodológicos y de organización de competencias</subfield>
+      <subfield code="c">Pedro Luis de la Paz Rodríguez</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="1"># - No se aplica/Sin información disponible/Primer editor conocido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Editorial Pueblo y Educación</subfield>
+      <subfield code="c">1989</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="1">#-No definido</subfield>
+      <subfield code="2">#-No definido</subfield>
+      <subfield code="a">93 p.</subfield>
+      <subfield code="b">il.</subfield>
+      <subfield code="c">24 cm.</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">BALONCESTO</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="1">1-Primario</subfield>
+      <subfield code="2">4 - Fuente no especificada</subfield>
+      <subfield code="a">ENSEÑANZA</subfield>
+    </datafield>
+  <library>FCF</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>007630T00000003130004500</leader>
+    <controlfield tag="001">REROILS:M6003176</controlfield>
+    <controlfield tag="005">201410300526.00</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Tesis</controlfield>
+    <controlfield tag="006">t</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">       wau#   #r#   #001 0#eng d</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">144</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Ávila Miranda, Ada Caridad</subfield>
+      <subfield code="a">Soumah Figueroa, Johnny Kaba tutor</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Propuesta de un conjunto de ejercicios de calentamiento especiales en el fútbol para los atletas de la categoría 13-14 de la EIDE "Ormany Arenado" en la Provincia de Pinar del Río</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">Pinar del Río</subfield>
+      <subfield code="b">FCF</subfield>
+      <subfield code="c">2008</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="*">n</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="*">m</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">47 h. : il. ; 32 cm.</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">0</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">5</subfield>
+    </datafield>
+    <datafield tag="301" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">TDE</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a">FUTBOLEJERCICIOS ESPECIALESCALENTAMIENTO</subfield>
+    </datafield>
+    <datafield tag="850" ind1=" " ind2=" ">
+      <subfield code="*">CAMPUS-NUR</subfield>
+    </datafield>
+  <library>FCF</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_thesis</subfield></datafield><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>004620L00000002410004500</leader>
+    <controlfield tag="001">REROILS:M7001673</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">7-02</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">UCP PR</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">823;Bro;J Llenar no está en estante</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Bronté, Charlotte</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Jane Eyre</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Instituto Cubano del Libro</subfield>
+      <subfield code="c">1999</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a" />
+      <subfield code="b">(Ediciones Huracán)</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">265 p.</subfield>
+      <subfield code="b">(Ediciones Huracán)</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>004170L00000002290004500</leader>
+    <controlfield tag="001">REROILS:M7001689</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">7-02</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">UCP PR</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">MX</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">841;Can</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">El Cantar del Roldán</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">México</subfield>
+      <subfield code="b">Ed. Porrúa</subfield>
+      <subfield code="c">c1990</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a" />
+      <subfield code="b">(Colección Sepan cuantos; 279)</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">146 p.</subfield>
+      <subfield code="b">(Colección Sepan cuantos; 279)</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>004290L00000002410004500</leader>
+    <controlfield tag="001">REROILS:M7001693</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">7-02</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">UCP PR</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">641;Cár;V</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Cárdenas Alpízar, Bartolo</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Los Vegetales en la cocina cubana</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">Santiago de Cuba</subfield>
+      <subfield code="b">Ed. Oriente</subfield>
+      <subfield code="c">c1998</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a" />
+      <subfield code="b">i.l</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">154 p.</subfield>
+      <subfield code="b">i.l</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>004400L00000002650004500</leader>
+    <controlfield tag="001">REROILS:M7002965</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">04/O3</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">UCP PR</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">335.4;Mar</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Marx, Carlos,</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Engels, Federico</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Sobre la religión</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">La Habana</subfield>
+      <subfield code="b">Política</subfield>
+      <subfield code="c">1963</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">325 </subfield>
+      <subfield code="b" />
+    </datafield>
+    <datafield tag="580" ind1=" " ind2=" ">
+      <subfield code="a">3</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+    <datafield tag="900" ind1=" " ind2=" ">
+      <subfield code="l">357535743573</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>008930L00000002770004500</leader>
+    <controlfield tag="001">REROILS:M7004329</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Libro</controlfield>
+    <controlfield tag="006">a</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">09 /03</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">UCP PR</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">ES</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">909AlvL</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Alvarez Santaló, León Carlos</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Los Siglos de la historia</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">Barcelona</subfield>
+      <subfield code="b">Aula abierta salvat</subfield>
+      <subfield code="c">1981</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a" />
+      <subfield code="b">il. -- (Colección Salvat Temas Clave ; 34)</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">64 </subfield>
+      <subfield code="b">il. -- (Colección Salvat Temas Clave ; 34)</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+      <subfield code="a">Los historiadores modernos trabajan bajo la perspectiva de que su tarea es uno de los más profundos intentos que el hombre puede llevar a cabo para comprender su propia vida. Así, la historia del mundo occidental no puede aislarse  del conjunto de circunstancias ideológicas, sociales, económicas..., que condicionan cada momento histórico.  </subfield>
+    </datafield>
+    <datafield tag="580" ind1=" " ind2=" ">
+      <subfield code="a">1 </subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+    <datafield tag="900" ind1=" " ind2=" ">
+      <subfield code="l">24149</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>008440T00000002770004500</leader>
+    <controlfield tag="001">REROILS:M70016101</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Tesis</controlfield>
+    <controlfield tag="006">t</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">2011</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">TM-4488</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Royero Caso, Maricel</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Martinez Bencomo, Haydee Elena  , tutor</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Sistema de actividades para contribuir al desarrollo de la comprensión lectora en las actividades de la biblioteca escolar</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">UCP "Rafael Maria de Mendive", Pinar del Río</subfield>
+      <subfield code="c">2011</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">60 h.</subfield>
+      <subfield code="b" />
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Máster en Ciencias de la Educación </subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+      <subfield code="a">Propone desde el currículo de la biblioteca escolar, actividades para el desarrollo de habilidades en los alumnos, considerandose esta como herramienta de trabajo útil y valiosa para el nivel primario</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+    <datafield tag="850" ind1=" " ind2=" ">
+      <subfield code="*">CAMPUS-RFM</subfield>
+    </datafield>
+    <datafield tag="900" ind1=" " ind2=" ">
+      <subfield code="l">TM-4488</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_thesis</subfield></datafield><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>007740T00000002890004500</leader>
+    <controlfield tag="001">REROILS:M70016102</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Tesis</controlfield>
+    <controlfield tag="006">t</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">2011</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">TM-4489</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Caballero Benítez, Lidia Esther</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Morejón Carmona, Xiomara  , tutor</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Sistema de tareas para fortalecer el valor responsabilidad desde la asignatura Lengua Española, en los escolares de trecer grado</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">UCP "Rafael Maria de Mendive", Pinar del Río</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">60 h.</subfield>
+      <subfield code="b" />
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Máster en Ciencias de la Educación</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+      <subfield code="a">Trata acerca de la educación en valores y como estos se han convertido en el centro de los procesos educativos</subfield>
+    </datafield>
+    <datafield tag="580" ind1=" " ind2=" ">
+      <subfield code="a">1</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+    <datafield tag="850" ind1=" " ind2=" ">
+      <subfield code="*">CAMPUS-RFM</subfield>
+    </datafield>
+    <datafield tag="900" ind1=" " ind2=" ">
+      <subfield code="l">TM-4489</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_thesis</subfield></datafield><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  <record>
+    <leader>009640T00000003010004500</leader>
+    <controlfield tag="001">REROILS:M70017822</controlfield>
+    <controlfield tag="005">n</controlfield>
+    <controlfield tag="006">Tesis</controlfield>
+    <controlfield tag="006">t</controlfield>
+    <controlfield tag="007">m</controlfield>
+    <controlfield tag="008">0112</controlfield>
+    <datafield tag="017" ind1=" " ind2=" ">
+      <subfield code="*">#</subfield>
+    </datafield>
+    <datafield tag="018" ind1=" " ind2=" ">
+      <subfield code="*">a</subfield>
+    </datafield>
+    <datafield tag="041" ind1=" " ind2=" ">
+      <subfield code="a">Es</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">CU</subfield>
+    </datafield>
+    <datafield tag="082" ind1=" " ind2=" ">
+      <subfield code="a">TM-3243</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Rosabal Hernández, Esther</subfield>
+    </datafield>
+    <datafield tag="100" ind1=" " ind2=" ">
+      <subfield code="a">Márquez Águila, Damary , tutor</subfield>
+    </datafield>
+    <datafield tag="245" ind1=" " ind2=" ">
+      <subfield code="a">Sistema de actividades para el fortalecimiento del aprendizaje de la Historia de Cuba desde el pensamiento martiano</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">UCP "Rafael María de Mendive Daumy", Pinar del Río</subfield>
+      <subfield code="c">2010</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a" />
+      <subfield code="b">il.</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">83 h. (anexos).</subfield>
+      <subfield code="b">il.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Máster en Ciencias de la Educación</subfield>
+    </datafield>
+    <datafield tag="520" ind1=" " ind2=" ">
+      <subfield code="a">Este trabajo permitió mejorar sustancialmente los resultados de los alumnos de sexto grado en el estudio de la Historia de Cuba desde la obra martiana, demostrando el carácter científico-pedagógico del mismo, potenciando el nuevo modelo educativo de la escuela primaria actual.</subfield>
+    </datafield>
+    <datafield tag="580" ind1=" " ind2=" ">
+      <subfield code="a">1</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2=" ">
+      <subfield code="a" />
+    </datafield>
+    <datafield tag="850" ind1=" " ind2=" ">
+      <subfield code="*">CAMPUS-RFM</subfield>
+    </datafield>
+    <datafield tag="900" ind1=" " ind2=" ">
+      <subfield code="l">TM-3243</subfield>
+    </datafield>
+  <library>FCP</library><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_thesis</subfield></datafield><datafield tag="339" ind1=" " ind2=" "><subfield code="a">docmaintype_book</subfield><subfield code="b">docsubtype_other_book</subfield></datafield></record>
+  </collection>
