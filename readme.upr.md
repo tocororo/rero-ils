@@ -6,6 +6,8 @@ nvm use v22
 
 uv run scripts/russian_dolls -c ../ng-core/ -u ../rero-ils-ui/
 
+uv run scripts/bootstrap -t ../rero-ils-ui/build/rero-rero-ils-ui-21.0.0.tgz 
+
 
 
 ## 1- en ng-core
