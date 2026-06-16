@@ -272,3 +272,33 @@ db/<BD>/marc21.fix.mrcxml   (4 BDs)
       └──▶ db/<BD>/marc21.tojson.error.mrcxml      ▼
            (investigar manualmente)           reindex -t doc
 ```
+
+
+
+
+## Ajustes
+
+
+Materias: 
+las materias aveces estan separadas por guion - ... hay que separarlas en temas distintos. 
+
+Autores
+Aveces estan separados por Coma... 
+
+
+
+
+Campo 084
+En CT y SCESH
+XX-YYYY o R.XX-YYYY
+
+XX la clasificacion Clasificación Decimal Universal (CDU)
+YYYY Un consecutivo. 
+
+R significa Referencia 
+
+
+En FCF y FCP
+Campo 082 Es la Clasificacion DEcimal DeWEY 
+pero tambien puede tener la forma X-Y que es una clasificacion de biblioteca nacional de cuba 
+
